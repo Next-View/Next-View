@@ -1,0 +1,10 @@
+C:\Project\Next-View\nv-test\bin\Debug\nv-test.dll
+C:\Project\Next-View\nv-test\bin\Debug\nv-test.pdb
+C:\Project\Next-View\nv-test\bin\Debug\Next-View.exe
+C:\Project\Next-View\nv-test\bin\Debug\WeifenLuo.WinFormsUI.Docking.dll
+C:\Project\Next-View\nv-test\bin\Debug\Next-View.pdb
+C:\Project\Next-View\nv-test\bin\Debug\nunit.framework.pdb
+C:\Project\Next-View\nv-test\bin\Debug\nunit.framework.xml
+C:\Project\Next-View\nv-test\obj\x86\Debug\nv-test.csprojResolveAssemblyReference.cache
+C:\Project\Next-View\nv-test\obj\x86\Debug\nv-test.dll
+C:\Project\Next-View\nv-test\obj\x86\Debug\nv-test.pdb

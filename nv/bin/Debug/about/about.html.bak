@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Next-View about</title>
+
+</head>
+<body>
+<div align="center">
+<big><big><big>Next-View</big></big></big><br>
+<big>
+Image Viewer, Browser and Organizer<br>
+<img style="width: 64px; height: 64px;" alt="Next-View" src="next-view.png"><br>
+<a href="http://www.next-view.org">
+<small>http://www.next-view.org</small></a><br>
+<br>
+Version 0.1<br>
+<br>
+<br>
+<font face="Arial">
+Open Source<br>
+<small>GNU General Public License<br>
+Copyright (c)&nbsp;2017-2018 Martin A. Schnell <br>
+<small>
+All rights reserved</small>
+</small></font></big></div>
+<hr style="height: 2px; width: 70%;" align="center">
+<div align="center"><big><font face="Arial"><small><big>Development</big><br>
+<big>
+</big>Developed using SharpDevelop and Visual Studio<br>
+<a href="http://www.icsharpcode.net/opensource/sd"><img style="border: 0px solid ; width: 60px; height: 60px;" alt="SharpDevelop" src="SharpDevelop.png"></a>&nbsp;
+<br>
+<a href="http://www.icsharpcode.net/opensource/sd"><small>http://www.icsharpcode.net/opensource/sd</small></a><br>
+<br>
+Development is hosted at GitHub<br>
+<a href="http://bookpiles.sourceforge.net"><img alt="sourceforge" src="sflogo.png" border="0" height="31" width="88"></a><br>
+<a href="http://tagosphere.sourceforge.net"><small>http://tagosphere.sourceforge.net</small></a><br>
+<br>
+Developer<br>
+Martin A. Schnell<br>
+</small></font></big></div>
+<hr style="height: 2px; width: 70%;" align="center">
+<div align="center"><big><font face="Arial"><small><big style="font-weight: bold;">Components</big><br>
+<br>
+<br>
+DockPanelSuite<br>
+<a href="http://dockpanelsuite.com/"><small>http://dockpanelsuite.com</small></a><br><br></small></font></big><big><font face="Arial"><small>
+nUnit<br><img style="width: 100px; height: 53px;" alt="nUnit" src="nunit.png"><br>
+<a href="http://www.nunit.org"><small>http://www.nunit.org</small></a></small></font></big><br><big><font face="Arial"><small><br>
+</small></font></big><br>
+<big><font face="Arial"><small><small><br>
+</small>
+</small></font></big></div>
+</body></html>

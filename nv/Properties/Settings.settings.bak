@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SettingsFile CurrentProfile="(Default)" GeneratedClassNamespace="nr.Properties" GeneratedClassName="Settings" xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings>
+    <Setting Name="Editor" Type="System.String" Scope="User" Roaming="false">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="FileColWidth" Type="System.Int32" Scope="User" Roaming="false">
+      <Value Profile="(Default)">100</Value>
+    </Setting>
+    <Setting Name="FileH" Type="System.Int32" Scope="User" Roaming="false">
+      <Value Profile="(Default)">500</Value>
+    </Setting>
+    <Setting Name="FileW" Type="System.Int32" Scope="User" Roaming="false">
+      <Value Profile="(Default)">800</Value>
+    </Setting>
+    <Setting Name="FileX" Type="System.Int32" Scope="User" Roaming="false">
+      <Value Profile="(Default)">160</Value>
+    </Setting>
+    <Setting Name="FileY" Type="System.Int32" Scope="User" Roaming="false">
+      <Value Profile="(Default)">160</Value>
+    </Setting>
+    <Setting Name="Language" Type="System.String" Scope="User" Roaming="false">
+      <Value Profile="(Default)">en</Value>
+    </Setting>
+    <Setting Name="LastProject" Type="System.String" Scope="User" Roaming="false">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="LastTab" Type="System.Int32" Scope="User" Roaming="false">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="MainH" Type="System.Int32" Scope="User" Roaming="false">
+      <Value Profile="(Default)">600</Value>
+    </Setting>
+    <Setting Name="MainW" Type="System.Int32" Scope="User" Roaming="false">
+      <Value Profile="(Default)">900</Value>
+    </Setting>
+    <Setting Name="MainX" Type="System.Int32" Scope="User" Roaming="false">
+      <Value Profile="(Default)">100</Value>
+    </Setting>
+    <Setting Name="MainY" Type="System.Int32" Scope="User" Roaming="false">
+      <Value Profile="(Default)">100</Value>
+    </Setting>
+    <Setting Name="ProxyName" Type="System.String" Scope="User" Roaming="false">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ProxyPassword" Type="System.String" Scope="User" Roaming="false">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ProxyPort" Type="System.String" Scope="User" Roaming="false">
+      <Value Profile="(Default)">80</Value>
+    </Setting>
+    <Setting Name="ProxyUsername" Type="System.String" Scope="User" Roaming="false">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="UpgradeRequired" Type="System.Boolean" Scope="User" Roaming="false">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="UseMediaDefault" Type="System.Boolean" Scope="User" Roaming="false">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="UseProxy" Type="System.Boolean" Scope="User" Roaming="false">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
