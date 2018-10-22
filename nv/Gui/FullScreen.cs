@@ -107,6 +107,10 @@ namespace Next_View
 				case 187:    // +
 					FRenamePicPlus();
 					break;
+				case 109:    // -
+				case 189:    // -					
+					FRemovePicPlus();
+					break;
 				case 13:     // Enter
 				case 27:     // esc   end full screen
 					FullScreenEnd();
@@ -121,6 +125,7 @@ namespace Next_View
 				_currentPath = pPath;
 
 			 	if (!File.Exists(pPath)){
+			 		fullBox.SizeMode = PictureBoxSizeMode.CenterImage;
 			 		fullBox.Image = fullBox.ErrorImage;
 			 		return false;
 			 	}
@@ -236,6 +241,22 @@ namespace Next_View
 			}
 		}
 
+		public void	FRemovePicPlus()
+		{
+			string fname = Path.GetFileNameWithoutExtension(_currentPath);
+			string fext = Path.GetExtension(_currentPath);
+			string lastChar = fname.Substring(fname.Length - 1);
+			if (lastChar == "+"){
+				fname = fname.Substring(0, fname.Length - 1);	
+				string newPath = Path.GetDirectoryName(_currentPath) + @"\" + fname + fext;
+				if (FFileRename(_currentPath, newPath)) {
+					_il.RenameListLog(_currentPath, newPath);
+					_currentPath = newPath;
+					FPicLoad(_currentPath, true);
+				}
+			}
+		}
+		
 		bool FFileRename(string nameFrom, string nameTo)
 		{
 			try {

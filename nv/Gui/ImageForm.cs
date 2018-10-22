@@ -174,7 +174,7 @@ namespace	Next_View
 
 		void FrmImageKeyDown(object sender, KeyEventArgs e)
 		{
-			//Debug.WriteLine("key:	" + e.KeyValue.ToString());   // KeyCode?
+			Debug.WriteLine("key:	" + e.KeyValue.ToString());   // KeyCode?
 
 			bool alt = false;
 			if (e.Modifiers == Keys.Alt){
@@ -231,6 +231,10 @@ namespace	Next_View
 				case 187:    // +
 					RenamePicPlus();
 					break;
+				case 109:    // -
+				case 189:    // -
+					RemovePicPlus();
+					break;				
 				case 13:    // enter  full screen
 					ShowFullScreen();
 					break;
@@ -261,6 +265,7 @@ namespace	Next_View
 				_currentPath = pPath;
 
 				if (!File.Exists(pPath)){
+					picBox.SizeMode = PictureBoxSizeMode.CenterImage;
 					picBox.Image = picBox.ErrorImage;
 					return false;
 				}
@@ -417,6 +422,25 @@ namespace	Next_View
 			}
 		}
 
+		public void	RemovePicPlus()
+		{
+			string fname = Path.GetFileNameWithoutExtension(_currentPath);
+			string fext = Path.GetExtension(_currentPath);
+			string lastChar = fname.Substring(fname.Length - 1);
+			if (lastChar == "+"){
+				fname = fname.Substring(0, fname.Length - 1);	
+				string newPath = Path.GetDirectoryName(_currentPath) + @"\" + fname + fext;
+				if (FileRename2(_currentPath, newPath)) {
+					_il.RenameListLog(_currentPath, newPath);
+					_currentPath = newPath;
+					PicLoad(_currentPath, true);
+				}
+				else {
+					Debug.WriteLine("no rename");
+				}
+			}
+		}
+		
 		bool FileRename2(string nameFrom, string nameTo)
 		{
 			try {

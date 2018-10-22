@@ -407,7 +407,7 @@ namespace Next_View
 			this.bnHelp});
 			this.toolStrip2.Location = new System.Drawing.Point(3, 0);
 			this.toolStrip2.Name = "toolStrip2";
-			this.toolStrip2.Size = new System.Drawing.Size(192, 27);
+			this.toolStrip2.Size = new System.Drawing.Size(231, 27);
 			this.toolStrip2.TabIndex = 1;
 			// 
 			// bnOpen

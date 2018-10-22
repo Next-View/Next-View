@@ -75,15 +75,24 @@ namespace Next_View
 			m_Image.Show(dockPanel1, DockState.Document);      // sequence of tabs
 			//m_Image.Show(dockPanel1, DockState.Document);     // set active
 
-
-
-			if (File.Exists(Settings.Default.LastImage))
-			{
+			string firstImage;
+			string[] args = Environment.GetCommandLineArgs();
+			firstImage = args[1];
+			if (File.Exists(firstImage)) {
+				m_Image.PicScan(firstImage, false);
+				m_Image.PicLoad(firstImage, true);
+			}
+			else if (File.Exists(Settings.Default.LastImage)) {
 				m_Image.PicScan(Settings.Default.LastImage, false);
 				m_Image.PicLoad(Settings.Default.LastImage, true);
 			}
 			else {
-				this.statusLabel1.Text = "No image loaded";
+				string userImagePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\Pictures";
+				if (Directory.Exists(userImagePath)) {
+					m_Image.PicScan(userImagePath, false);
+				}
+				firstImage = Directory.GetCurrentDirectory() + @"\Next-View-0.1.png";
+				m_Image.PicLoad(firstImage, true);
 			}
 		}
 
