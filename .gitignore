@@ -1,0 +1,18 @@
+# editor files
+*.bak
+
+# generated
+*.pdb
+*.exe
+
+
+# ignore dirs
+bin/
+obj/
+packages/
+
+# Windows detritus
+Thumbs.db
+Desktop.ini
+
+
