@@ -1,6 +1,0 @@
-
-https://github.com/dockpanelsuite/dockpanelsuite
-
-
-
-Die Metadatendatei 'C:\Exe-Data\DocPanel\dockpanelsuite-Release_3.0.2\WinFormsUI\bin\Debug\WeifenLuo.WinFormsUI.Docking.dll' konnte nicht gefunden werden. (CS0006)
