@@ -1,5 +1,6 @@
 # editor files
 *.bak
+nv-to-do.txt
 
 # generated
 *.pdb
