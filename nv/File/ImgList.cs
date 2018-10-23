@@ -86,6 +86,7 @@ namespace	Next_View
 										.Where(file	=> _validExtensions.Any(file.ToLower().EndsWith))
 										.ToList();
 				}
+				_imList.Sort();
 			}
 			else {
 				Debug.WriteLine("no dir change");

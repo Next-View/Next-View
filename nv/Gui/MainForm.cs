@@ -75,9 +75,11 @@ namespace Next_View
 			m_Image.Show(dockPanel1, DockState.Document);      // sequence of tabs
 			//m_Image.Show(dockPanel1, DockState.Document);     // set active
 
-			string firstImage;
+			string firstImage = "";
 			string[] args = Environment.GetCommandLineArgs();
-			firstImage = args[1];
+			if (args.Length > 1){
+				firstImage = args[1];
+			}
 			if (File.Exists(firstImage)) {
 				m_Image.PicScan(firstImage, false);
 				m_Image.PicLoad(firstImage, true);
