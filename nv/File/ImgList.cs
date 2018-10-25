@@ -20,6 +20,7 @@ using	System.Collections.Generic;		// List
 using	System.Diagnostics;	 //	Debug
 using	System.IO;	 //	path
 using	System.Linq;	 //	order	by
+using System.Runtime.InteropServices;
 
 namespace	Next_View
 {
@@ -86,7 +87,8 @@ namespace	Next_View
 										.Where(file	=> _validExtensions.Any(file.ToLower().EndsWith))
 										.ToList();
 				}
-				_imList.Sort();
+				FilenameComparer fc = new FilenameComparer();
+				_imList.Sort(fc);
 			}
 			else {
 				Debug.WriteLine("no dir change");
@@ -252,4 +254,15 @@ namespace	Next_View
 	}  // end ImgList
 
 
+	public class FilenameComparer: IComparer<string>
+	{
+		[DllImport("shlwapi.dll", CharSet = CharSet.Unicode)]
+		static extern Int32 StrCmpLogical(String x, String y);
+	
+	  	public int Compare(string x, string y)
+	 	{
+	  		return StrCmpLogical(x, y);
+	  	}
+	}
+	
 }
