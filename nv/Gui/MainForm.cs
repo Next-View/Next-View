@@ -18,6 +18,9 @@ History:
 using System;
 using System.Diagnostics;  // Debug
 using System.IO;   // path
+using System.Runtime.InteropServices;
+using System.Security.AccessControl;
+using System.Threading;
 using System.Windows.Forms;
 using Next_View.Properties;
 using WeifenLuo.WinFormsUI.Docking;
@@ -31,6 +34,7 @@ namespace Next_View
 	{
 		private DeserializeDockContent _deserializeDockContent;
 		public frmImage  m_Image; //  = new frmImage();
+		static EventWaitHandle s_event ;
 
 		public frmMain()
 		{
@@ -46,20 +50,46 @@ namespace Next_View
 			_deserializeDockContent = new DeserializeDockContent(GetContentFromPersistString);
 		}
 
+		protected override void WndProc(ref Message m) {
+			if(m.Msg == NativeMethods.WM_SHOWME) {
+				ShowMe();
+			}
+			base.WndProc(ref m);
+    }
+
+		void ShowMe()
+		{
+			if(WindowState == FormWindowState.Minimized) {
+				WindowState = FormWindowState.Normal;
+			}
+			bool top = TopMost;
+			TopMost = true;
+			TopMost = top;
+    	}
+
 		//--------------------------  form  ---------------------------//
 
 		void FrmMainLoad(object sender, EventArgs e)
 		{
-			if (Properties.Settings.Default.UpgradeRequired)
-			{
-				Settings.Default.Upgrade();
-				Settings.Default.UpgradeRequired = false;
-				Settings.Default.Save( );
+			bool created ;
+			s_event = new EventWaitHandle (false, EventResetMode.ManualReset, "Next-View", out created);   //  instead of mutex
+    	if (created){
+				if (Properties.Settings.Default.UpgradeRequired)
+				{
+					Settings.Default.Upgrade();
+					Settings.Default.UpgradeRequired = false;
+					Settings.Default.Save( );
+				}
+				this.Width = Settings.Default.MainW;
+				this.Height = Settings.Default.MainH;
+				this.Left = Settings.Default.MainX;
+				this.Top = Settings.Default.MainY;
 			}
-			this.Width = Settings.Default.MainW;
-			this.Height = Settings.Default.MainH;
-			this.Left = Settings.Default.MainX;
-			this.Top = Settings.Default.MainY;
+			else {
+				NvSendMsg();
+				//MessageBox.Show("not single");
+				ExitApp();
+			}
 		}
 
 		void FrmMainShown(object sender, EventArgs e)
@@ -171,10 +201,7 @@ namespace Next_View
 
 		void MnuExitClick(object sender, EventArgs e)
 		{
-			this.Close();
-			Debug.WriteLine("Exit:");
-			Application.Exit();      // exit self
-			Environment.Exit(0);     // kill by win
+			ExitApp();
 		}
 
 		//--------------------------  menu edit ---------------------------//
@@ -314,10 +341,31 @@ namespace Next_View
 
 		void MnuTestClick(object sender, EventArgs e)
 		{
-			int i = 4;
-			int b = 100/(i-4);
+			//UnlockDir();
 
 		}
+
+		//--------------------------  functions  ---------------------------//
+
+
+
+
+		void ExitApp()
+		{
+			this.Close();
+			Debug.WriteLine("Exit:");
+			Application.Exit();      // exit self
+			Environment.Exit(0);     // kill by win
+		}
+
+		void NvSendMsg()
+		{
+			NativeMethods.PostMessage((IntPtr)NativeMethods.HWND_BROADCAST,
+				NativeMethods.WM_SHOWME,
+				IntPtr.Zero,
+				IntPtr.Zero);
+		}
+
 
 		void TestScreen()
 		{
@@ -330,6 +378,24 @@ namespace Next_View
 				Debug.WriteLine("Primary : " + screen.Primary.ToString());
 
 			}
+		}
+
+		void UnlockDir()
+		{
+   			try
+     	 	{
+     			string folderPath = @"C:\temp\Images\6Pic";
+     			string adminUserName = Environment.UserName;// getting your adminUserName
+     			DirectorySecurity ds = Directory.GetAccessControl(folderPath);
+     			FileSystemAccessRule fsa = new FileSystemAccessRule(adminUserName,FileSystemRights.FullControl, AccessControlType.Deny);
+     			ds.RemoveAccessRule(fsa);
+     			Directory.SetAccessControl(folderPath, ds);
+     			MessageBox.Show("UnLocked");
+     		}
+     		catch (Exception ex)
+     		{
+        		MessageBox.Show(ex.Message);
+     		}
 		}
 
 
@@ -367,6 +433,14 @@ namespace Next_View
 	}
 	//--------------------------------------------------------------//
 
+	class NativeMethods {
+		public const int HWND_BROADCAST = 0xffff;
+		public static readonly int WM_SHOWME = RegisterWindowMessage("WM_SHOWME");
+		[DllImport("user32")]
+		public static extern bool PostMessage(IntPtr hwnd, int msg, IntPtr wparam, IntPtr lparam);
+		[DllImport("user32")]
+		public static extern int RegisterWindowMessage(string message);
+	}
 
 	public delegate void HandleStatusMainChange(object sender, SetStatusMainEventArgs e);
 
