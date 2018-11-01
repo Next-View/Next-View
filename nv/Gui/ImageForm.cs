@@ -294,12 +294,12 @@ namespace	Next_View
 					float scFactor = (float) _scWidth / _scHeight;
 					float imFactor = (float) imWidth / imHeight;
 					if (imFactor > scFactor){   // wide img
-						int ih = (imHeight * (_scWidth - _borderWidth) / imWidth) + _borderHeight;
-						SetWindowSize(_scWidth, ih + 1);
+						int ih = (imHeight * (_scWidth - _borderWidth) / imWidth);
+						SetWindowSize(_scWidth, ih + _borderHeight);
 					}
 					else {    // high img
 						int iw = (imWidth * (_scHeight - _borderHeight) / imHeight);// + _borderWidth;
-						SetWindowSize(iw + 2, _scHeight);
+						SetWindowSize(iw + _borderWidth, _scHeight);
 					}
 				}
 				else {  // small img
