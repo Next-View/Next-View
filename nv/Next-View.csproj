@@ -40,7 +40,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <StartAction>Project</StartAction>
     <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
-    <StartArguments>C:\temp\Images\6Pic\5a.jpg</StartArguments>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -74,6 +73,9 @@
     </Reference>
     <Reference Include="WeifenLuo.WinFormsUI.Docking">
       <HintPath>3rdParty\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+    </Reference>
+    <Reference Include="XDMessaging">
+      <HintPath>bin\Debug\XDMessaging.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

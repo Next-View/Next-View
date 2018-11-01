@@ -71,7 +71,7 @@ namespace	Next_View
 			int pbWidth = picBox.Width;
 			Debug.WriteLine("picbox-2 W / H: {0}/{1}", pbWidth, pbHeight);
 			_borderWidth = _mainWidth - pbWidth;
-			_borderHeight = _mainHeight - pbHeight + 20;
+			_borderHeight = _mainHeight - pbHeight;
 
 		}
 
@@ -234,7 +234,7 @@ namespace	Next_View
 				case 109:    // -
 				case 189:    // -
 					RemovePicPlus();
-					break;				
+					break;
 				case 13:    // enter  full screen
 					ShowFullScreen();
 					break;
@@ -290,19 +290,21 @@ namespace	Next_View
 
 				if ((imWidth + _borderWidth > _scWidth) || (imHeight + _borderHeight > _scHeight)){
 					picBox.SizeMode = PictureBoxSizeMode.Zoom;
+					picBox.BackColor = SystemColors.Control;
 					float scFactor = (float) _scWidth / _scHeight;
-					float imFactor = (float) (imWidth + _borderWidth) / (imHeight + _borderHeight);
+					float imFactor = (float) imWidth / imHeight;
 					if (imFactor > scFactor){   // wide img
-						int ih = (imHeight + _borderHeight) * _scWidth / (imWidth + _borderWidth);
-						SetWindowSize(_scWidth, ih);
+						int ih = (imHeight * (_scWidth - _borderWidth) / imWidth) + _borderHeight;
+						SetWindowSize(_scWidth, ih + 1);
 					}
 					else {    // high img
-						int iw = (imWidth + _borderWidth) * _scHeight / (imHeight + _borderHeight);
-						SetWindowSize(iw, _scHeight);
+						int iw = (imWidth * (_scHeight - _borderHeight) / imHeight);// + _borderWidth;
+						SetWindowSize(iw + 2, _scHeight);
 					}
 				}
 				else {  // small img
 					picBox.SizeMode = PictureBoxSizeMode.CenterImage;
+					picBox.BackColor = Color.Black;
 					SetWindowSize(imWidth + _borderWidth, imHeight + _borderHeight );
 				}
 				Settings.Default.LastImage = pPath;
@@ -428,7 +430,7 @@ namespace	Next_View
 			string fext = Path.GetExtension(_currentPath);
 			string lastChar = fname.Substring(fname.Length - 1);
 			if (lastChar == "+"){
-				fname = fname.Substring(0, fname.Length - 1);	
+				fname = fname.Substring(0, fname.Length - 1);
 				string newPath = Path.GetDirectoryName(_currentPath) + @"\" + fname + fext;
 				if (FileRename2(_currentPath, newPath)) {
 					_il.RenameListLog(_currentPath, newPath);
@@ -440,7 +442,7 @@ namespace	Next_View
 				}
 			}
 		}
-		
+
 		bool FileRename2(string nameFrom, string nameTo)
 		{
 			try {

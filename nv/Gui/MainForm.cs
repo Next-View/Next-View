@@ -24,6 +24,7 @@ using System.Threading;
 using System.Windows.Forms;
 using Next_View.Properties;
 using WeifenLuo.WinFormsUI.Docking;
+using XDMessaging;
 
 namespace Next_View
 {
@@ -35,7 +36,8 @@ namespace Next_View
 		private DeserializeDockContent _deserializeDockContent;
 		public frmImage  m_Image; //  = new frmImage();
 		static EventWaitHandle s_event ;
-
+		private XDListener listener;
+		
 		public frmMain()
 		{
 			//
@@ -71,9 +73,13 @@ namespace Next_View
 
 		void FrmMainLoad(object sender, EventArgs e)
 		{
+			listener = new XDListener();
+			listener.MessageReceived += new XDListener.XDMessageHandler(listener_MessageReceived);
+			listener.RegisterChannel("NVMessage");
+			
 			bool created ;
 			s_event = new EventWaitHandle (false, EventResetMode.ManualReset, "Next-View", out created);   //  instead of mutex
-    	if (created){
+    		if (created){
 				if (Properties.Settings.Default.UpgradeRequired)
 				{
 					Settings.Default.Upgrade();
@@ -86,8 +92,13 @@ namespace Next_View
 				this.Top = Settings.Default.MainY;
 			}
 			else {
-				NvSendMsg();
-				//MessageBox.Show("not single");
+				string[] args = Environment.GetCommandLineArgs();
+				string commandLine = "S";
+				if (args.Length > 1){
+					commandLine = args[1];
+				}
+				XDBroadcast.SendToChannel("NVMessage", commandLine);   // receive: listener_MessageReceived
+				// NvSendMsg();  does not work work strings, 
 				ExitApp();
 			}
 		}
@@ -341,7 +352,7 @@ namespace Next_View
 
 		void MnuTestClick(object sender, EventArgs e)
 		{
-			//UnlockDir();
+			TestScreen();
 
 		}
 
@@ -358,6 +369,16 @@ namespace Next_View
 			Environment.Exit(0);     // kill by win
 		}
 
+		void listener_MessageReceived(object sender, XDMessageEventArgs e)
+		{
+			string commandLine = e.DataGram.Message;
+			if (File.Exists(commandLine)) {
+				m_Image.PicScan(commandLine, false);
+				m_Image.PicLoad(commandLine, true);
+			}	
+			ShowMe();		
+		}
+		
 		void NvSendMsg()
 		{
 			NativeMethods.PostMessage((IntPtr)NativeMethods.HWND_BROADCAST,
@@ -376,7 +397,6 @@ namespace Next_View
 				Debug.WriteLine("Type: " + screen.GetType().ToString());
 				Debug.WriteLine("Working Area: " + screen.WorkingArea.ToString());
 				Debug.WriteLine("Primary : " + screen.Primary.ToString());
-
 			}
 		}
 
