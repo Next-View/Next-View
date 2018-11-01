@@ -9,6 +9,7 @@ nv-to-do.txt
 
 # ignore dirs
 bin/
+dev/
 obj/
 packages/
 
