@@ -131,8 +131,8 @@ namespace Next_View
 			}
 			else {
 				string userImagePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\Pictures";
-				if (Directory.Exists(userImagePath)) {
-					m_Image.PicScan(userImagePath, false);
+				if (Directory.Exists(userImagePath)) { 
+					m_Image.PicScan(userImagePath, true);
 				}
 				firstImage = Directory.GetCurrentDirectory() + @"\Next-View-0.1.png";
 				m_Image.PicLoad(firstImage, true);
@@ -179,11 +179,6 @@ namespace Next_View
 			}
 		}
 
-		void MnuStartEditorClick(object sender, EventArgs e)
-		{
-			m_Image.StartEditor();
-		}
-
 		private void recentItem_Click(object sender, EventArgs e)
 		{
 			string picPath = sender.ToString();
@@ -222,7 +217,17 @@ namespace Next_View
 			frmOption frm = new frmOption();
 			frm.ShowDialog();
 		}
+		
+		void MnuStartEditorClick(object sender, EventArgs e)
+		{
+			m_Image.StartEditor();
+		}
 
+		void MnuSearchClick(object sender, EventArgs e)
+		{
+			m_Image.SearchPic();
+		}
+		
 		//--------------------------  menu view ---------------------------//
 
 		void MnuNextImageClick(object sender, EventArgs e)
@@ -448,6 +453,7 @@ namespace Next_View
 			this.Height = h;
 			Debug.WriteLine("set size W / H: {0}/{1}", w, h);
 		}
+
 
 
 	}

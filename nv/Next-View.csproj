@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>nextview</RootNamespace>
+    <RootNamespace>Next_View</RootNamespace>
     <AssemblyName>Next-View</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -23,6 +23,7 @@
     <RunSourceAnalysis>False</RunSourceAnalysis>
     <NoWin32Manifest>False</NoWin32Manifest>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <ApplicationIcon>..\dev\icons\Icon 48-1.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -109,6 +110,10 @@
     <Compile Include="Gui\Rename.Designer.cs">
       <DependentUpon>Rename.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\SearchForm.cs" />
+    <Compile Include="Gui\SearchForm.Designer.cs">
+      <DependentUpon>SearchForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -132,6 +137,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\Rename.resx">
       <DependentUpon>Rename.Designer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\SearchForm.resx">
+      <DependentUpon>SearchForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

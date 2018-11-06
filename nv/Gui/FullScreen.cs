@@ -33,6 +33,8 @@ namespace Next_View
 		int _fHeight = 0;
 		int _fWidth = 0;
 		string _currentPath = "";
+		Image _fullImg;
+
 		public string ReturnPath {get;set;}
 
 		public FullScreen(ImgList il)
@@ -55,6 +57,11 @@ namespace Next_View
 			bool alt = false;
 			if (e.Modifiers == Keys.Alt){
 				alt = true;
+			}
+
+			bool ctrl = false;
+			if (e.Modifiers == Keys.Control){
+				ctrl = true;
 			}
 
 			switch(e.KeyValue)
@@ -91,6 +98,7 @@ namespace Next_View
 				case 8:    // back
 					FBackPic();
 					break;
+
 				case 68:    // d   dark
 					FDarkPic();
 					break;
@@ -103,12 +111,18 @@ namespace Next_View
 				case 46:    // del
 					FDelPic();
 					break;
+				case 70:    // ctrl F
+					if (ctrl){
+						FSearchPic();
+					}
+					break;
+
 				case 107:    // +
 				case 187:    // +
 					FRenamePicPlus();
 					break;
 				case 109:    // -
-				case 189:    // -					
+				case 189:    // -
 					FRemovePicPlus();
 					break;
 				case 13:     // Enter
@@ -130,22 +144,25 @@ namespace Next_View
 			 		return false;
 			 	}
 
-				Image fullImg;
+				// Image fullImg;
 				using (var bmpTemp = new Bitmap(pPath))
 				{
-					 fullImg = new Bitmap(bmpTemp);
+					 _fullImg = new Bitmap(bmpTemp);
+					if(_fullImg != null)
+						((IDisposable)bmpTemp).Dispose();
 				}
+				GC.Collect();    // memory from old images not collected often enough
 
 				string ext = Path.GetExtension(pPath).ToLower();
 				if (ext == ".gif"){
 					fullBox.Image = Image.FromFile(pPath);    // workaround, only direct load makes gif animation, but file can't be renamed
 				}
 				else {
-					fullBox.Image = fullImg;
+					fullBox.Image = _fullImg;
 				}
 
-				int pHeight = fullImg.Height;
-				int pWidth = fullImg.Width;
+				int pHeight = _fullImg.Height;
+				int pWidth = _fullImg.Width;
 				if ((pHeight > _fHeight) || (pWidth > _fWidth)){
 					fullBox.SizeMode = PictureBoxSizeMode.Zoom;
 				}
@@ -247,7 +264,7 @@ namespace Next_View
 			string fext = Path.GetExtension(_currentPath);
 			string lastChar = fname.Substring(fname.Length - 1);
 			if (lastChar == "+"){
-				fname = fname.Substring(0, fname.Length - 1);	
+				fname = fname.Substring(0, fname.Length - 1);
 				string newPath = Path.GetDirectoryName(_currentPath) + @"\" + fname + fext;
 				if (FFileRename(_currentPath, newPath)) {
 					_il.RenameListLog(_currentPath, newPath);
@@ -256,7 +273,7 @@ namespace Next_View
 				}
 			}
 		}
-		
+
 		bool FFileRename(string nameFrom, string nameTo)
 		{
 			try {
@@ -286,6 +303,20 @@ namespace Next_View
 				}
 				else {
 					fullBox.Image = null;
+				}
+			}
+		}
+
+		public void	FSearchPic()
+		{
+			SearchForm frm = new SearchForm(_currentPath, _il);
+			frm.ShowDialog();
+
+			string pPath = "";
+			if (frm._SearchReturn) {
+				if (_il.DirPicFirst(ref pPath)){
+					_currentPath = pPath;
+					FPicLoad(_currentPath, true);
 				}
 			}
 		}

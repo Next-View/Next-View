@@ -29,7 +29,7 @@ namespace	Next_View
 	///	</summary>
 	public class ImgList
 	{
-		List<string> _imList = new List<string>();
+		public List<string> _imList = new List<string>();
 		int _picPos = 1;
 		string _picDir = "";
 		readonly string[]	_validExtensions	=	new	[] {".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tif", ".ico", ".wmf", ".emf"};

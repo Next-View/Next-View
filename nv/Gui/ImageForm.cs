@@ -39,6 +39,7 @@ namespace	Next_View
 		int _borderWidth = 0;
 		string _picSelection = "Directory:";
 		string _currentPath = "";
+		Image _myImg;
 
 		public event HandleStatusMainChange	 StatusChanged;
 
@@ -180,12 +181,19 @@ namespace	Next_View
 			if (e.Modifiers == Keys.Alt){
 				alt = true;
 			}
+			bool ctrl = false;
+			if (e.Modifiers == Keys.Control){
+				ctrl = true;
+			}
 
 			switch(e.KeyValue)
 			{
 				case 39:  //  ->
 					if (alt){
 						ForwardPic();
+					}
+					else if (ctrl){
+						NextPicDir();
 					}
 					else {
 						NextPic();
@@ -198,6 +206,9 @@ namespace	Next_View
 				case 37:  // <-
 					if (alt){
 						BackPic();
+					}
+					else if (ctrl){
+						PriorPicDir();
 					}
 					else {
 						PriorPic();
@@ -215,6 +226,7 @@ namespace	Next_View
 				case 8:    // back
 					BackPic();
 					break;
+
 				case 68:    // d   dark
 					DarkPic();
 					break;
@@ -227,6 +239,12 @@ namespace	Next_View
 				case 46:    // del
 					DelPic();
 					break;
+				case 70:    // ctrl F
+					if (ctrl){
+						SearchPic();
+					}
+					break;
+
 				case 107:    // +
 				case 187:    // +
 					RenamePicPlus();
@@ -270,22 +288,25 @@ namespace	Next_View
 					return false;
 				}
 
-				Image myImg;
-				using (var bmpTemp = new Bitmap(pPath))      // abort for invalid jpg
+				//Image myImg;
+				using (Image bmpTemp = new Bitmap(pPath))      // abort for invalid jpg
 				{
-					 myImg = new Bitmap(bmpTemp);
+					_myImg = new Bitmap(bmpTemp);
+					if(bmpTemp != null)
+						((IDisposable)bmpTemp).Dispose();
 				}
+				GC.Collect();
 
 				string ext = Path.GetExtension(pPath).ToLower();
 				if (ext == ".gif"){
 					picBox.Image = Image.FromFile(pPath);    // workaround, only direct load makes gif animation, but file can't be renamed
 				}
 				else {
-					picBox.Image = myImg;
+					picBox.Image = _myImg;
 				}
 
-				int imHeight = myImg.Height;
-				int imWidth = myImg.Width;
+				int imHeight = _myImg.Height;
+				int imWidth = _myImg.Width;
 				//Debug.WriteLine("Image W / H: {0}/{1}", imWidth, imHeight);
 
 				if ((imWidth + _borderWidth > _scWidth) || (imHeight + _borderHeight > _scHeight)){
@@ -340,6 +361,15 @@ namespace	Next_View
 			}
 		}
 
+		public void	NextPicDir()
+		{
+			PicScan(_currentPath, false);
+			int picPos = 0;
+			int picAll = 0;
+			_il.DirPosPath(ref picPos, ref picAll, _currentPath);
+			NextPic();
+		}
+
 		public void	PriorPic()
 		{
 			string pPath = "";
@@ -349,6 +379,15 @@ namespace	Next_View
 			else {
 				SetStatusText("No image loaded");
 			}
+		}
+
+		public void	PriorPicDir()
+		{
+			PicScan(_currentPath, false);
+			int picPos = 0;
+			int picAll = 0;
+			_il.DirPosPath(ref picPos, ref picAll, _currentPath);
+			PriorPic();
 		}
 
 		public void	FirstPic()
@@ -469,6 +508,21 @@ namespace	Next_View
 			}
 			else {
 
+			}
+		}
+
+		public void	SearchPic()
+		{
+			SearchForm frm = new SearchForm(_currentPath, _il);
+			frm.ShowDialog();
+
+			string pPath = "";
+			if (frm._SearchReturn) {
+				if (_il.DirPicFirst(ref pPath)){
+					_currentPath = pPath;
+					_picSelection = "Search:";
+					PicLoad(_currentPath, true);
+				}
 			}
 		}
 

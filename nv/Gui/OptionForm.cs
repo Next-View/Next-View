@@ -17,7 +17,6 @@ History:
 
 using System;
 using System.Diagnostics;
-//using System.Drawing;
 using System.IO;   // path
 using System.Windows.Forms;
 using System.Xml;        // XmlTextReader
