@@ -144,6 +144,13 @@ namespace Next_View
 			 		return false;
 			 	}
 
+				using (FileStream stream = new FileStream(pPath, FileMode.Open, FileAccess.Read))
+				{
+					_fullImg = Image.FromStream(stream);  // abort for gif
+					stream.Close();
+				}
+				GC.Collect();
+    			
 				// Image fullImg;
 				using (var bmpTemp = new Bitmap(pPath))
 				{

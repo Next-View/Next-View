@@ -289,13 +289,20 @@ namespace	Next_View
 				}
 
 				//Image myImg;
-				using (Image bmpTemp = new Bitmap(pPath))      // abort for invalid jpg
+				using (FileStream stream = new FileStream(pPath, FileMode.Open, FileAccess.Read))
 				{
-					_myImg = new Bitmap(bmpTemp);
-					if(bmpTemp != null)
-						((IDisposable)bmpTemp).Dispose();
+					_myImg = Image.FromStream(stream);  // abort for gif
+					stream.Close();
 				}
 				GC.Collect();
+    			
+				//using (Image bmpTemp = new Bitmap(pPath))      // abort for invalid jpg
+				//{
+				//	_myImg = new Bitmap(bmpTemp);
+				//	if(bmpTemp != null)
+				//		((IDisposable)bmpTemp).Dispose();
+				//}
+				//GC.Collect();
 
 				string ext = Path.GetExtension(pPath).ToLower();
 				if (ext == ".gif"){
@@ -601,9 +608,10 @@ namespace	Next_View
 				this.StatusChanged(this, e);
 			}
 		}
+		
 		void FrmImagePreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
 		{
-			e.IsInputKey = true;
+			e.IsInputKey = true;     // triggers keydown for arrow keys
 		}
 
 
