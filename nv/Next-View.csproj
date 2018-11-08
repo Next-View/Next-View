@@ -23,7 +23,7 @@
     <RunSourceAnalysis>False</RunSourceAnalysis>
     <NoWin32Manifest>False</NoWin32Manifest>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
-    <ApplicationIcon>..\dev\icons\Icon 48-1.ico</ApplicationIcon>
+    <ApplicationIcon>Gui\next-view-48.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -76,7 +76,7 @@
       <HintPath>3rdParty\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
     <Reference Include="XDMessaging">
-      <HintPath>bin\Debug\XDMessaging.dll</HintPath>
+      <HintPath>3rdParty\XDMessaging.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

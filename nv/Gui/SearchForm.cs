@@ -71,11 +71,20 @@ namespace Next_View
 		void CmdSearchClick(object sender, EventArgs e)
 		{
 			string sFor = edSearchFor.Text;
+			_pDir = edSearchIn.Text;
 			if (sFor == ""){
 				MessageBox.Show ("Search for something" , "Search error",
 						MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}
-			else {
+			else if (_pDir == ""){
+				MessageBox.Show ("Search directory must not be empty" , "Search error",
+						MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+			}
+			else if (!Directory.Exists(_pDir)) { 
+				MessageBox.Show ("Search does not exist" , "Search error",
+						MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+			}
+			else {		
 				listSearch.Items.Clear();
 				int fCount = 0;
 				this.statusLabel2.Text = "";
