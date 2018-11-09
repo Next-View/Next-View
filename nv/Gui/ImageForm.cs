@@ -40,6 +40,7 @@ namespace	Next_View
 		string _picSelection = "Directory:";
 		string _currentPath = "";
 		Image _myImg;
+		bool loadNextPic = true;
 
 		public event HandleStatusMainChange	 StatusChanged;
 
@@ -59,7 +60,7 @@ namespace	Next_View
 			_scWidth = Screen.FromControl(this).Bounds.Width;
 			//Debug.WriteLine("Screen W / H: {0}/{1}", _scWidth, _scHeight);
 
-			Debug.WriteLine("main W / H: {0}/{1}", mainWidth, mainHeight);
+			//Debug.WriteLine("main W / H: {0}/{1}", mainWidth, mainHeight);
 
 		}
 
@@ -70,7 +71,7 @@ namespace	Next_View
 		{
 			int pbHeight = picBox.Height;
 			int pbWidth = picBox.Width;
-			Debug.WriteLine("picbox-2 W / H: {0}/{1}", pbWidth, pbHeight);
+			//Debug.WriteLine("picbox-2 W / H: {0}/{1}", pbWidth, pbHeight);
 			_borderWidth = _mainWidth - pbWidth;
 			_borderHeight = _mainHeight - pbHeight;
 
@@ -172,9 +173,20 @@ namespace	Next_View
 			Help.ShowHelp(this,	"Next-View.chm", "Fieldlist.htm");
 		}
 
+		void FrmImagePreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+		{
+			e.IsInputKey = true;     // triggers keydown for arrow keys
+		}
+
+		void FrmImageKeyUp(object sender, KeyEventArgs e)
+		{
+			Debug.WriteLine("key up");
+		}
 
 		void FrmImageKeyDown(object sender, KeyEventArgs e)
 		{
+
+			Debug.WriteLine(" ");
 			Debug.WriteLine("key:	" + e.KeyValue.ToString());   // KeyCode?
 
 			bool alt = false;
@@ -185,8 +197,15 @@ namespace	Next_View
 			if (e.Modifiers == Keys.Control){
 				ctrl = true;
 			}
+			if (loadNextPic){
+				loadNextPic = false;           // eat up keys
+				KDown(e.KeyValue, ctrl, alt);
+			}
+		}
 
-			switch(e.KeyValue)
+		public bool KDown(int kValue, bool ctrl, bool alt)
+		{
+			switch(kValue)
 			{
 				case 39:  //  ->
 					if (alt){
@@ -257,7 +276,8 @@ namespace	Next_View
 					ShowFullScreen();
 					break;
 			}
-
+			loadNextPic = true;
+			return true;
 			//  ctrl 17
 		}
 
@@ -295,7 +315,8 @@ namespace	Next_View
 					stream.Close();
 				}
 				GC.Collect();
-    			
+ 				Application.DoEvents();
+
 				//using (Image bmpTemp = new Bitmap(pPath))      // abort for invalid jpg
 				//{
 				//	_myImg = new Bitmap(bmpTemp);
@@ -336,6 +357,7 @@ namespace	Next_View
 					SetWindowSize(imWidth + _borderWidth, imHeight + _borderHeight );
 				}
 				Settings.Default.LastImage = pPath;
+				Debug.WriteLine("pic end " + pPath);
 				return true;
 			}
 			catch (Exception e)
@@ -608,12 +630,6 @@ namespace	Next_View
 				this.StatusChanged(this, e);
 			}
 		}
-		
-		void FrmImagePreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-		{
-			e.IsInputKey = true;     // triggers keydown for arrow keys
-		}
-
 
 
 

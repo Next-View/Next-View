@@ -92,6 +92,7 @@ namespace Next_View
 			this.DragOver += new System.Windows.Forms.DragEventHandler(this.FrmImageDragOver);
 			this.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.FrmImageHelpRequested);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FrmImageKeyDown);
+			this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.FrmImageKeyUp);
 			this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.FrmImagePreviewKeyDown);
 			((System.ComponentModel.ISupportInitialize)(this.picBox)).EndInit();
 			this.ResumeLayout(false);

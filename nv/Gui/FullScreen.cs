@@ -47,7 +47,7 @@ namespace Next_View
 
 			_fHeight = Screen.FromControl(this).Bounds.Height;
 			_fWidth = Screen.FromControl(this).Bounds.Width;
-			Debug.WriteLine("Full Image W / H: {0}/{1}", _fWidth, _fHeight);
+			//Debug.WriteLine("Full Image W / H: {0}/{1}", _fWidth, _fHeight);
 
 		}
 
@@ -150,15 +150,7 @@ namespace Next_View
 					stream.Close();
 				}
 				GC.Collect();
-    			
-				// Image fullImg;
-				using (var bmpTemp = new Bitmap(pPath))
-				{
-					 _fullImg = new Bitmap(bmpTemp);
-					if(_fullImg != null)
-						((IDisposable)bmpTemp).Dispose();
-				}
-				GC.Collect();    // memory from old images not collected often enough
+ 				Application.DoEvents();
 
 				string ext = Path.GetExtension(pPath).ToLower();
 				if (ext == ".gif"){

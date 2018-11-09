@@ -37,7 +37,7 @@ namespace Next_View
 		public frmImage  m_Image; //  = new frmImage();
 		static EventWaitHandle s_event ;
 		private XDListener listener;
-		
+
 		public frmMain()
 		{
 			//
@@ -76,7 +76,7 @@ namespace Next_View
 			listener = new XDListener();
 			listener.MessageReceived += new XDListener.XDMessageHandler(listener_MessageReceived);
 			listener.RegisterChannel("NVMessage");
-			
+
 			bool created ;
 			s_event = new EventWaitHandle (false, EventResetMode.ManualReset, "Next-View", out created);   //  instead of mutex
     		if (created){
@@ -98,7 +98,7 @@ namespace Next_View
 					commandLine = args[1];
 				}
 				XDBroadcast.SendToChannel("NVMessage", commandLine);   // receive: listener_MessageReceived
-				// NvSendMsg();  does not work work strings, 
+				// NvSendMsg();  does not work work strings,
 				ExitApp();
 			}
 		}
@@ -131,7 +131,7 @@ namespace Next_View
 			}
 			else {
 				string userImagePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\Pictures";
-				if (Directory.Exists(userImagePath)) { 
+				if (Directory.Exists(userImagePath)) {
 					m_Image.PicScan(userImagePath, true);
 				}
 				firstImage = Directory.GetCurrentDirectory() + @"\Next-View-0.1.png";
@@ -217,7 +217,7 @@ namespace Next_View
 			frmOption frm = new frmOption();
 			frm.ShowDialog();
 		}
-		
+
 		void MnuStartEditorClick(object sender, EventArgs e)
 		{
 			m_Image.StartEditor();
@@ -227,7 +227,7 @@ namespace Next_View
 		{
 			m_Image.SearchPic();
 		}
-		
+
 		//--------------------------  menu view ---------------------------//
 
 		void MnuNextImageClick(object sender, EventArgs e)
@@ -380,10 +380,10 @@ namespace Next_View
 			if (File.Exists(commandLine)) {
 				m_Image.PicScan(commandLine, false);
 				m_Image.PicLoad(commandLine, true);
-			}	
-			ShowMe();		
+			}
+			ShowMe();
 		}
-		
+
 		void NvSendMsg()
 		{
 			NativeMethods.PostMessage((IntPtr)NativeMethods.HWND_BROADCAST,
@@ -451,7 +451,7 @@ namespace Next_View
 			int h = e.nHeight;
 			this.Width = w;
 			this.Height = h;
-			Debug.WriteLine("set size W / H: {0}/{1}", w, h);
+			// Debug.WriteLine("set size W / H: {0}/{1}", w, h);
 		}
 
 
