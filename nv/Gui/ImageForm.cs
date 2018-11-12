@@ -171,7 +171,8 @@ namespace	Next_View
 
 		void FrmImageHelpRequested(object	sender,	HelpEventArgs	hlpevent)
 		{
-			Help.ShowHelp(this,	"Next-View.chm", "Fieldlist.htm");
+			//Help.ShowHelp(this,	"Next-View.chm", "Fieldlist.htm");
+			MessageBox.Show("Help not yet done", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 		}
 
 		void FrmImagePreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
@@ -269,7 +270,7 @@ namespace	Next_View
 						Test();
 					}
 					break;
-					
+
 				case 107:    // +
 				case 187:    // +
 					RenamePicPlus();
@@ -565,9 +566,9 @@ namespace	Next_View
 		{
 			m_Image2  = new frmImage(400, 400);
 			m_Image2.Show();
-			
+
 		}
-		
+
 		public void	ShowFullScreen()
 		{
 			string pPath = "";
@@ -593,59 +594,59 @@ namespace	Next_View
 				Util.StartEditor(editorPath, _currentPath);
 			}
 		}
-		
+
 		// ------------------------------		pop up 	----------------------------------------------------------
-		
+
 		void PopOpenClick(object sender, EventArgs e)
 		{
-	
+
 		}
-		
+
 		void PopRenameClick(object sender, EventArgs e)
 		{
-	
+
 		}
-		
+
 		void PopDeleteClick(object sender, EventArgs e)
 		{
-	
+
 		}
-		
+
 		void PopSearchClick(object sender, EventArgs e)
 		{
-	
+
 		}
-		
+
 		void PopStartEditorClick(object sender, EventArgs e)
 		{
-	
+
 		}
-		
+
 		void PopNextClick(object sender, EventArgs e)
 		{
-	
+
 		}
-		
+
 		void PopPriorClick(object sender, EventArgs e)
 		{
-	
+
 		}
-		
+
 		void PopRefreshClick(object sender, EventArgs e)
 		{
-	
+
 		}
-		
+
 		void PopFullscreenClick(object sender, EventArgs e)
 		{
-	
+
 		}
-		
+
 		void PopCloseClick(object sender, EventArgs e)
 		{
 			this.Close();
 		}
-		
+
 		// ------------------------------		delegates 	----------------------------------------------------------
 
 		public void	SetWindowText(string text2)
@@ -653,7 +654,7 @@ namespace	Next_View
 			// called	by: PicLoad
 			// output: main.HandleWindow
 			this.Text = text2 + "  -  Next-View";
-			
+
 			OnWindowChanged(new	SetStatusMainEventArgs(text2));
 			Application.DoEvents();
 		}

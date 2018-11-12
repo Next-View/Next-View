@@ -287,17 +287,24 @@ namespace Next_View
 
 		void MnuWebClick(object sender, EventArgs e)
 		{
-			//?
+			Process.Start("http://www.next-view.org/index.htm");
 		}
 
 		void MnuHelp1Click(object sender, EventArgs e)
 		{
-			Help.ShowHelp(this, "Next-View.chm");
+			//Help.ShowHelp(this, "Next-View.chm");
+			MessageBox.Show("Help not yet done", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 		}
 
 		void FrmMainHelpRequested(object sender, HelpEventArgs hlpevent)   // F1
 		{
-			Help.ShowHelp(this, "Next-View.chm", "Main.htm");
+			//Help.ShowHelp(this, "Next-View.chm", "Main.htm");
+			MessageBox.Show("Help not yet done", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+		}
+
+		void MnuGithubClick(object sender, EventArgs e)
+		{
+			Process.Start("https://github.com/Next-View/Next-View");
 		}
 
 		//--------------------------  methods  ------------------------------------//
@@ -453,6 +460,7 @@ namespace Next_View
 			this.Height = h;
 			// Debug.WriteLine("set size W / H: {0}/{1}", w, h);
 		}
+
 
 
 

@@ -8,11 +8,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle ("Next-View")]
-[assembly: AssemblyDescription ("Image viewer and Browser")]
+[assembly: AssemblyDescription ("Image viewer and browser")]
 [assembly: AssemblyConfiguration ("")]
 [assembly: AssemblyCompany ("")]
 [assembly: AssemblyProduct ("Next-View")]
-[assembly: AssemblyCopyright ("Copyright M. Schnell 2018")]
+[assembly: AssemblyCopyright ("Copyright M. Schnell 2017")]
 [assembly: AssemblyTrademark ("")]
 [assembly: AssemblyCulture ("")]
 // This sets the default COM visibility of types in the assembly to invisible.
