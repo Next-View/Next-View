@@ -46,16 +46,135 @@ namespace Next_View
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			this.popPath = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.popImage = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.popOpen = new System.Windows.Forms.ToolStripMenuItem();
+			this.popRename = new System.Windows.Forms.ToolStripMenuItem();
+			this.popDelete = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+			this.popSearch = new System.Windows.Forms.ToolStripMenuItem();
+			this.popStartEditor = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+			this.popNext = new System.Windows.Forms.ToolStripMenuItem();
+			this.popPrior = new System.Windows.Forms.ToolStripMenuItem();
+			this.popRefresh = new System.Windows.Forms.ToolStripMenuItem();
+			this.popFullscreen = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+			this.popClose = new System.Windows.Forms.ToolStripMenuItem();
 			this.picBox = new System.Windows.Forms.PictureBox();
+			this.popImage.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picBox)).BeginInit();
 			this.SuspendLayout();
 			// 
-			// popPath
+			// popImage
 			// 
-			this.popPath.ImageScalingSize = new System.Drawing.Size(20, 20);
-			this.popPath.Name = "popPath";
-			this.popPath.Size = new System.Drawing.Size(61, 4);
+			this.popImage.ImageScalingSize = new System.Drawing.Size(20, 20);
+			this.popImage.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.popOpen,
+			this.popRename,
+			this.popDelete,
+			this.toolStripSeparator1,
+			this.popSearch,
+			this.popStartEditor,
+			this.toolStripSeparator2,
+			this.popNext,
+			this.popPrior,
+			this.popRefresh,
+			this.popFullscreen,
+			this.toolStripSeparator3,
+			this.popClose});
+			this.popImage.Name = "popPath";
+			this.popImage.Size = new System.Drawing.Size(191, 262);
+			// 
+			// popOpen
+			// 
+			this.popOpen.Name = "popOpen";
+			this.popOpen.Size = new System.Drawing.Size(190, 24);
+			this.popOpen.Text = "Open...";
+			this.popOpen.Click += new System.EventHandler(this.PopOpenClick);
+			// 
+			// popRename
+			// 
+			this.popRename.Name = "popRename";
+			this.popRename.ShortcutKeyDisplayString = "F2";
+			this.popRename.Size = new System.Drawing.Size(190, 24);
+			this.popRename.Text = "Rename...";
+			this.popRename.Click += new System.EventHandler(this.PopRenameClick);
+			// 
+			// popDelete
+			// 
+			this.popDelete.Name = "popDelete";
+			this.popDelete.ShortcutKeyDisplayString = "Del";
+			this.popDelete.Size = new System.Drawing.Size(190, 24);
+			this.popDelete.Text = "Delete";
+			this.popDelete.Click += new System.EventHandler(this.PopDeleteClick);
+			// 
+			// toolStripSeparator1
+			// 
+			this.toolStripSeparator1.Name = "toolStripSeparator1";
+			this.toolStripSeparator1.Size = new System.Drawing.Size(187, 6);
+			// 
+			// popSearch
+			// 
+			this.popSearch.Name = "popSearch";
+			this.popSearch.Size = new System.Drawing.Size(190, 24);
+			this.popSearch.Text = "Search...";
+			this.popSearch.Click += new System.EventHandler(this.PopSearchClick);
+			// 
+			// popStartEditor
+			// 
+			this.popStartEditor.Name = "popStartEditor";
+			this.popStartEditor.Size = new System.Drawing.Size(190, 24);
+			this.popStartEditor.Text = "Start editor...";
+			this.popStartEditor.Click += new System.EventHandler(this.PopStartEditorClick);
+			// 
+			// toolStripSeparator2
+			// 
+			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			this.toolStripSeparator2.Size = new System.Drawing.Size(187, 6);
+			// 
+			// popNext
+			// 
+			this.popNext.Name = "popNext";
+			this.popNext.ShortcutKeyDisplayString = "->";
+			this.popNext.Size = new System.Drawing.Size(190, 24);
+			this.popNext.Text = "Next image";
+			this.popNext.Click += new System.EventHandler(this.PopNextClick);
+			// 
+			// popPrior
+			// 
+			this.popPrior.Name = "popPrior";
+			this.popPrior.ShortcutKeyDisplayString = "<-";
+			this.popPrior.Size = new System.Drawing.Size(190, 24);
+			this.popPrior.Text = "Prior image";
+			this.popPrior.Click += new System.EventHandler(this.PopPriorClick);
+			// 
+			// popRefresh
+			// 
+			this.popRefresh.Name = "popRefresh";
+			this.popRefresh.ShortcutKeyDisplayString = "F5";
+			this.popRefresh.Size = new System.Drawing.Size(190, 24);
+			this.popRefresh.Text = "Refresh";
+			this.popRefresh.Click += new System.EventHandler(this.PopRefreshClick);
+			// 
+			// popFullscreen
+			// 
+			this.popFullscreen.Name = "popFullscreen";
+			this.popFullscreen.ShortcutKeyDisplayString = "Enter";
+			this.popFullscreen.Size = new System.Drawing.Size(190, 24);
+			this.popFullscreen.Text = "Full screen";
+			this.popFullscreen.Click += new System.EventHandler(this.PopFullscreenClick);
+			// 
+			// toolStripSeparator3
+			// 
+			this.toolStripSeparator3.Name = "toolStripSeparator3";
+			this.toolStripSeparator3.Size = new System.Drawing.Size(187, 6);
+			// 
+			// popClose
+			// 
+			this.popClose.Name = "popClose";
+			this.popClose.Size = new System.Drawing.Size(190, 24);
+			this.popClose.Text = "Close";
+			this.popClose.Click += new System.EventHandler(this.PopCloseClick);
 			// 
 			// picBox
 			// 
@@ -73,10 +192,11 @@ namespace Next_View
 			// 
 			this.AllowDrop = true;
 			this.AllowEndUserDocking = false;
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.SystemColors.ControlDark;
 			this.ClientSize = new System.Drawing.Size(727, 449);
+			this.ContextMenuStrip = this.popImage;
 			this.Controls.Add(this.picBox);
 			this.DockAreas = ((WeifenLuo.WinFormsUI.Docking.DockAreas)(((((WeifenLuo.WinFormsUI.Docking.DockAreas.DockLeft | WeifenLuo.WinFormsUI.Docking.DockAreas.DockRight) 
 			| WeifenLuo.WinFormsUI.Docking.DockAreas.DockTop) 
@@ -94,11 +214,25 @@ namespace Next_View
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FrmImageKeyDown);
 			this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.FrmImageKeyUp);
 			this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.FrmImagePreviewKeyDown);
+			this.popImage.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.picBox)).EndInit();
 			this.ResumeLayout(false);
 
 		}
-		private System.Windows.Forms.ContextMenuStrip popPath;
+		private System.Windows.Forms.ContextMenuStrip popImage;
 		private System.Windows.Forms.PictureBox picBox;
+		private System.Windows.Forms.ToolStripMenuItem popOpen;
+		private System.Windows.Forms.ToolStripMenuItem popRename;
+		private System.Windows.Forms.ToolStripMenuItem popDelete;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+		private System.Windows.Forms.ToolStripMenuItem popSearch;
+		private System.Windows.Forms.ToolStripMenuItem popStartEditor;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+		private System.Windows.Forms.ToolStripMenuItem popNext;
+		private System.Windows.Forms.ToolStripMenuItem popPrior;
+		private System.Windows.Forms.ToolStripMenuItem popRefresh;
+		private System.Windows.Forms.ToolStripMenuItem popFullscreen;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+		private System.Windows.Forms.ToolStripMenuItem popClose;
 	}
 }

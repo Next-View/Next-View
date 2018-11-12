@@ -1,11 +1,20 @@
-﻿/*
- * Created by SharpDevelop.
- * User: martin
- * Date: 05.10.2018
- * Time: 22:49
- *
- * To change this template use Tools | Options | Coding | Edit Standard Headers.
- */
+﻿/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+File name:     rename.cs
+Description:   rename form for next-view
+Copyright:     Copyright (c) Martin A. Schnell, 2018
+Licence:       GNU General Public License
+               This program is free software; you can redistribute it and/or
+               modify it under the terms of the GNU General Public License
+               as published by the Free Software Foundation.
+
+               This program is free software: you can redistribute it and/or modify
+               it under the terms of the GNU General Public License as published by
+               the Free Software Foundation, either version 3 of the License, or
+               (at your option) any later version.
+History:
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 using System;
 using System.Drawing;
 using	System.IO;	 //	path

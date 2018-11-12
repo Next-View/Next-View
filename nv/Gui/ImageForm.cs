@@ -41,6 +41,7 @@ namespace	Next_View
 		string _currentPath = "";
 		Image _myImg;
 		bool loadNextPic = true;
+		public frmImage  m_Image2;
 
 		public event HandleStatusMainChange	 StatusChanged;
 
@@ -180,7 +181,7 @@ namespace	Next_View
 
 		void FrmImageKeyUp(object sender, KeyEventArgs e)
 		{
-			Debug.WriteLine("key up");
+			loadNextPic = true;
 		}
 
 		void FrmImageKeyDown(object sender, KeyEventArgs e)
@@ -263,7 +264,12 @@ namespace	Next_View
 						SearchPic();
 					}
 					break;
-
+				case 84:    // ctrl T
+					if (ctrl){
+						Test();
+					}
+					break;
+					
 				case 107:    // +
 				case 187:    // +
 					RenamePicPlus();
@@ -555,6 +561,13 @@ namespace	Next_View
 			}
 		}
 
+		public void	Test()
+		{
+			m_Image2  = new frmImage(400, 400);
+			m_Image2.Show();
+			
+		}
+		
 		public void	ShowFullScreen()
 		{
 			string pPath = "";
@@ -580,13 +593,67 @@ namespace	Next_View
 				Util.StartEditor(editorPath, _currentPath);
 			}
 		}
-
+		
+		// ------------------------------		pop up 	----------------------------------------------------------
+		
+		void PopOpenClick(object sender, EventArgs e)
+		{
+	
+		}
+		
+		void PopRenameClick(object sender, EventArgs e)
+		{
+	
+		}
+		
+		void PopDeleteClick(object sender, EventArgs e)
+		{
+	
+		}
+		
+		void PopSearchClick(object sender, EventArgs e)
+		{
+	
+		}
+		
+		void PopStartEditorClick(object sender, EventArgs e)
+		{
+	
+		}
+		
+		void PopNextClick(object sender, EventArgs e)
+		{
+	
+		}
+		
+		void PopPriorClick(object sender, EventArgs e)
+		{
+	
+		}
+		
+		void PopRefreshClick(object sender, EventArgs e)
+		{
+	
+		}
+		
+		void PopFullscreenClick(object sender, EventArgs e)
+		{
+	
+		}
+		
+		void PopCloseClick(object sender, EventArgs e)
+		{
+			this.Close();
+		}
+		
 		// ------------------------------		delegates 	----------------------------------------------------------
 
 		public void	SetWindowText(string text2)
 		{
-			// called	by:
-			// output: main.HandleStatus
+			// called	by: PicLoad
+			// output: main.HandleWindow
+			this.Text = text2 + "  -  Next-View";
+			
 			OnWindowChanged(new	SetStatusMainEventArgs(text2));
 			Application.DoEvents();
 		}
@@ -601,8 +668,8 @@ namespace	Next_View
 
 		public void	SetWindowSize(int w, int h)
 		{
-			// called	by:
-			// output: main.HandleStatus
+			// called	by: PicLoad
+			// output: main.SetWindowSize
 			OnWindowSize(new SetSizeEventArgs(w, h));
 			Application.DoEvents();
 		}
@@ -617,7 +684,7 @@ namespace	Next_View
 
 		public void	SetStatusText(string text1)
 		{
-			// called	by:
+			// called	by: PicLoad, 'no img loaded'
 			// output: main.HandleStatus
 			OnStatusChanged(new	SetStatusMainEventArgs(text1));
 			Application.DoEvents();

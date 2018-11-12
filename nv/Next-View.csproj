@@ -23,7 +23,7 @@
     <RunSourceAnalysis>False</RunSourceAnalysis>
     <NoWin32Manifest>False</NoWin32Manifest>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
-    <ApplicationIcon>Gui\next-view-48.ico</ApplicationIcon>
+    <ApplicationIcon>Gui\next-view-256.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
     <PlatformTarget>x86</PlatformTarget>

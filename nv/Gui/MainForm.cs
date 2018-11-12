@@ -34,7 +34,7 @@ namespace Next_View
 	public partial class frmMain : Form
 	{
 		private DeserializeDockContent _deserializeDockContent;
-		public frmImage  m_Image; //  = new frmImage();
+		public frmImage  m_Image; //   new frmImage();
 		static EventWaitHandle s_event ;
 		private XDListener listener;
 
