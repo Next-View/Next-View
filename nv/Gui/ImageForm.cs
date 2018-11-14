@@ -604,42 +604,42 @@ namespace	Next_View
 
 		void PopRenameClick(object sender, EventArgs e)
 		{
-
+			RenamePic();
 		}
 
 		void PopDeleteClick(object sender, EventArgs e)
 		{
-
+			DelPic();
 		}
 
 		void PopSearchClick(object sender, EventArgs e)
 		{
-
+			SearchPic();
 		}
 
 		void PopStartEditorClick(object sender, EventArgs e)
 		{
-
+			StartEditor();
 		}
 
 		void PopNextClick(object sender, EventArgs e)
 		{
-
+			NextPic();
 		}
 
 		void PopPriorClick(object sender, EventArgs e)
 		{
-
+			PriorPic();
 		}
 
 		void PopRefreshClick(object sender, EventArgs e)
 		{
-
+			RefreshDir();
 		}
 
 		void PopFullscreenClick(object sender, EventArgs e)
 		{
-
+			ShowFullScreen();
 		}
 
 		void PopCloseClick(object sender, EventArgs e)

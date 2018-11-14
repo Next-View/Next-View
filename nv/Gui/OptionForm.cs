@@ -88,7 +88,7 @@ namespace Next_View
 		void CmdEditorClick(object sender, EventArgs e)
 		{
 			OpenFileDialog dialog = new OpenFileDialog();
-			// dialog.InitialDirectory = initialDirectory;
+			//? dialog.InitialDirectory = initialDirectory;
 			dialog.Filter = "Exe files (*.exe)|*.exe";
 			dialog.Title = "Select editor";
 

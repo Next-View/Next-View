@@ -46,6 +46,7 @@ namespace Next_View
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmImage));
 			this.popImage = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.popOpen = new System.Windows.Forms.ToolStripMenuItem();
 			this.popRename = new System.Windows.Forms.ToolStripMenuItem();
@@ -83,12 +84,13 @@ namespace Next_View
 			this.toolStripSeparator3,
 			this.popClose});
 			this.popImage.Name = "popPath";
-			this.popImage.Size = new System.Drawing.Size(191, 262);
+			this.popImage.Size = new System.Drawing.Size(195, 310);
 			// 
 			// popOpen
 			// 
+			this.popOpen.Image = ((System.Drawing.Image)(resources.GetObject("popOpen.Image")));
 			this.popOpen.Name = "popOpen";
-			this.popOpen.Size = new System.Drawing.Size(190, 24);
+			this.popOpen.Size = new System.Drawing.Size(194, 26);
 			this.popOpen.Text = "Open...";
 			this.popOpen.Click += new System.EventHandler(this.PopOpenClick);
 			// 
@@ -96,7 +98,7 @@ namespace Next_View
 			// 
 			this.popRename.Name = "popRename";
 			this.popRename.ShortcutKeyDisplayString = "F2";
-			this.popRename.Size = new System.Drawing.Size(190, 24);
+			this.popRename.Size = new System.Drawing.Size(194, 26);
 			this.popRename.Text = "Rename...";
 			this.popRename.Click += new System.EventHandler(this.PopRenameClick);
 			// 
@@ -104,47 +106,50 @@ namespace Next_View
 			// 
 			this.popDelete.Name = "popDelete";
 			this.popDelete.ShortcutKeyDisplayString = "Del";
-			this.popDelete.Size = new System.Drawing.Size(190, 24);
+			this.popDelete.Size = new System.Drawing.Size(194, 26);
 			this.popDelete.Text = "Delete";
 			this.popDelete.Click += new System.EventHandler(this.PopDeleteClick);
 			// 
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(187, 6);
+			this.toolStripSeparator1.Size = new System.Drawing.Size(191, 6);
 			// 
 			// popSearch
 			// 
+			this.popSearch.Image = ((System.Drawing.Image)(resources.GetObject("popSearch.Image")));
 			this.popSearch.Name = "popSearch";
-			this.popSearch.Size = new System.Drawing.Size(190, 24);
+			this.popSearch.Size = new System.Drawing.Size(194, 26);
 			this.popSearch.Text = "Search...";
 			this.popSearch.Click += new System.EventHandler(this.PopSearchClick);
 			// 
 			// popStartEditor
 			// 
 			this.popStartEditor.Name = "popStartEditor";
-			this.popStartEditor.Size = new System.Drawing.Size(190, 24);
+			this.popStartEditor.Size = new System.Drawing.Size(194, 26);
 			this.popStartEditor.Text = "Start editor...";
 			this.popStartEditor.Click += new System.EventHandler(this.PopStartEditorClick);
 			// 
 			// toolStripSeparator2
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(187, 6);
+			this.toolStripSeparator2.Size = new System.Drawing.Size(191, 6);
 			// 
 			// popNext
 			// 
+			this.popNext.Image = ((System.Drawing.Image)(resources.GetObject("popNext.Image")));
 			this.popNext.Name = "popNext";
 			this.popNext.ShortcutKeyDisplayString = "->";
-			this.popNext.Size = new System.Drawing.Size(190, 24);
+			this.popNext.Size = new System.Drawing.Size(194, 26);
 			this.popNext.Text = "Next image";
 			this.popNext.Click += new System.EventHandler(this.PopNextClick);
 			// 
 			// popPrior
 			// 
+			this.popPrior.Image = ((System.Drawing.Image)(resources.GetObject("popPrior.Image")));
 			this.popPrior.Name = "popPrior";
 			this.popPrior.ShortcutKeyDisplayString = "<-";
-			this.popPrior.Size = new System.Drawing.Size(190, 24);
+			this.popPrior.Size = new System.Drawing.Size(194, 26);
 			this.popPrior.Text = "Prior image";
 			this.popPrior.Click += new System.EventHandler(this.PopPriorClick);
 			// 
@@ -152,7 +157,7 @@ namespace Next_View
 			// 
 			this.popRefresh.Name = "popRefresh";
 			this.popRefresh.ShortcutKeyDisplayString = "F5";
-			this.popRefresh.Size = new System.Drawing.Size(190, 24);
+			this.popRefresh.Size = new System.Drawing.Size(194, 26);
 			this.popRefresh.Text = "Refresh";
 			this.popRefresh.Click += new System.EventHandler(this.PopRefreshClick);
 			// 
@@ -160,19 +165,20 @@ namespace Next_View
 			// 
 			this.popFullscreen.Name = "popFullscreen";
 			this.popFullscreen.ShortcutKeyDisplayString = "Enter";
-			this.popFullscreen.Size = new System.Drawing.Size(190, 24);
+			this.popFullscreen.Size = new System.Drawing.Size(194, 26);
 			this.popFullscreen.Text = "Full screen";
 			this.popFullscreen.Click += new System.EventHandler(this.PopFullscreenClick);
 			// 
 			// toolStripSeparator3
 			// 
 			this.toolStripSeparator3.Name = "toolStripSeparator3";
-			this.toolStripSeparator3.Size = new System.Drawing.Size(187, 6);
+			this.toolStripSeparator3.Size = new System.Drawing.Size(191, 6);
 			// 
 			// popClose
 			// 
+			this.popClose.Image = ((System.Drawing.Image)(resources.GetObject("popClose.Image")));
 			this.popClose.Name = "popClose";
-			this.popClose.Size = new System.Drawing.Size(190, 24);
+			this.popClose.Size = new System.Drawing.Size(194, 26);
 			this.popClose.Text = "Close";
 			this.popClose.Click += new System.EventHandler(this.PopCloseClick);
 			// 

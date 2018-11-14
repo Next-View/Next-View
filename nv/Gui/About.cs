@@ -16,7 +16,7 @@ History:
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 
-using System; 
+using System;
 using System.Configuration;
 using System.Diagnostics;
 //using System.Drawing;
@@ -52,7 +52,6 @@ namespace Next_View
 			string aboutPath = curDir + @"\about\about.html";
 			if (File.Exists(aboutPath)) {
 				webBrowser1.Url = new Uri("file:///" + aboutPath);
-				//webBrowser1.Url = new Uri("http://www.whatsmyuseragent.com/");
 			}
 			else {
 				webBrowser1.DocumentText = aboutPath + " about.html file is missing";

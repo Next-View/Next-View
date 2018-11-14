@@ -11,7 +11,7 @@ nv-to-do.txt
 bin/
 dev/
 obj/
-packages/
+
 
 # Windows detritus
 Thumbs.db

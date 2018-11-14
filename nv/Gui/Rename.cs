@@ -30,7 +30,6 @@ namespace Next_View
 		string _pPath;
 		public string _ReturnPath {get;set;}
 		char[] _invalidChars = {'*', '/', '\\', '[', ']', ':', ';', '|', '=', ',', '"'};
-		//readonly char[] Punctuation = "*&#...".ToCharArray();
 
 		public frmRename(string pPath)
 		{
