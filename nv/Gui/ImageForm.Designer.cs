@@ -92,6 +92,7 @@ namespace Next_View
 			this.popOpen.Name = "popOpen";
 			this.popOpen.Size = new System.Drawing.Size(194, 26);
 			this.popOpen.Text = "Open...";
+			this.popOpen.Visible = false;
 			this.popOpen.Click += new System.EventHandler(this.PopOpenClick);
 			// 
 			// popRename
@@ -180,6 +181,7 @@ namespace Next_View
 			this.popClose.Name = "popClose";
 			this.popClose.Size = new System.Drawing.Size(194, 26);
 			this.popClose.Text = "Close";
+			this.popClose.Visible = false;
 			this.popClose.Click += new System.EventHandler(this.PopCloseClick);
 			// 
 			// picBox
@@ -189,7 +191,7 @@ namespace Next_View
 			this.picBox.Location = new System.Drawing.Point(0, 0);
 			this.picBox.Margin = new System.Windows.Forms.Padding(2);
 			this.picBox.Name = "picBox";
-			this.picBox.Size = new System.Drawing.Size(727, 449);
+			this.picBox.Size = new System.Drawing.Size(545, 343);
 			this.picBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
 			this.picBox.TabIndex = 45;
 			this.picBox.TabStop = false;
@@ -201,7 +203,7 @@ namespace Next_View
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.SystemColors.ControlDark;
-			this.ClientSize = new System.Drawing.Size(727, 449);
+			this.ClientSize = new System.Drawing.Size(545, 343);
 			this.ContextMenuStrip = this.popImage;
 			this.Controls.Add(this.picBox);
 			this.DockAreas = ((WeifenLuo.WinFormsUI.Docking.DockAreas)(((((WeifenLuo.WinFormsUI.Docking.DockAreas.DockLeft | WeifenLuo.WinFormsUI.Docking.DockAreas.DockRight) 
@@ -209,6 +211,7 @@ namespace Next_View
 			| WeifenLuo.WinFormsUI.Docking.DockAreas.DockBottom) 
 			| WeifenLuo.WinFormsUI.Docking.DockAreas.Document)));
 			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Margin = new System.Windows.Forms.Padding(2);
 			this.Name = "frmImage";
 			this.Text = "Next-View";

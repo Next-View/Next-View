@@ -53,17 +53,20 @@ namespace Next_View
 			// 
 			this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Top;
 			this.webBrowser1.Location = new System.Drawing.Point(0, 0);
-			this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
+			this.webBrowser1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.webBrowser1.MinimumSize = new System.Drawing.Size(27, 25);
 			this.webBrowser1.Name = "webBrowser1";
-			this.webBrowser1.Size = new System.Drawing.Size(546, 425);
+			this.webBrowser1.Size = new System.Drawing.Size(728, 523);
 			this.webBrowser1.TabIndex = 0;
 			this.webBrowser1.TabStop = false;
+			this.webBrowser1.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.WebBrowser1Navigating);
 			// 
 			// cmdOk
 			// 
-			this.cmdOk.Location = new System.Drawing.Point(444, 456);
+			this.cmdOk.Location = new System.Drawing.Point(592, 561);
+			this.cmdOk.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
 			this.cmdOk.Name = "cmdOk";
-			this.cmdOk.Size = new System.Drawing.Size(75, 23);
+			this.cmdOk.Size = new System.Drawing.Size(100, 28);
 			this.cmdOk.TabIndex = 1;
 			this.cmdOk.Text = "&OK";
 			this.cmdOk.UseVisualStyleBackColor = true;
@@ -71,12 +74,13 @@ namespace Next_View
 			// 
 			// frmAbout
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(546, 502);
+			this.ClientSize = new System.Drawing.Size(728, 618);
 			this.Controls.Add(this.cmdOk);
 			this.Controls.Add(this.webBrowser1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+			this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
 			this.Name = "frmAbout";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "About";

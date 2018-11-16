@@ -49,6 +49,7 @@ namespace Next_View
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SearchForm));
 			this.cmdCancel = new System.Windows.Forms.Button();
 			this.cmdOk = new System.Windows.Forms.Button();
 			this.listSearch = new System.Windows.Forms.ListView();
@@ -69,7 +70,7 @@ namespace Next_View
 			// 
 			this.cmdCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.cmdCancel.Location = new System.Drawing.Point(21, 267);
-			this.cmdCancel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.cmdCancel.Margin = new System.Windows.Forms.Padding(2);
 			this.cmdCancel.Name = "cmdCancel";
 			this.cmdCancel.Size = new System.Drawing.Size(75, 24);
 			this.cmdCancel.TabIndex = 6;
@@ -95,7 +96,7 @@ namespace Next_View
 			this.listSearch.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
 			this.colFilename});
 			this.listSearch.Location = new System.Drawing.Point(0, 55);
-			this.listSearch.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.listSearch.Margin = new System.Windows.Forms.Padding(2);
 			this.listSearch.Name = "listSearch";
 			this.listSearch.Size = new System.Drawing.Size(632, 195);
 			this.listSearch.TabIndex = 5;
@@ -110,7 +111,7 @@ namespace Next_View
 			// edSearchFor
 			// 
 			this.edSearchFor.Location = new System.Drawing.Point(117, 10);
-			this.edSearchFor.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.edSearchFor.Margin = new System.Windows.Forms.Padding(2);
 			this.edSearchFor.Name = "edSearchFor";
 			this.edSearchFor.Size = new System.Drawing.Size(210, 20);
 			this.edSearchFor.TabIndex = 1;
@@ -137,7 +138,7 @@ namespace Next_View
 			// chkSubdir
 			// 
 			this.chkSubdir.Location = new System.Drawing.Point(488, 10);
-			this.chkSubdir.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.chkSubdir.Margin = new System.Windows.Forms.Padding(2);
 			this.chkSubdir.Name = "chkSubdir";
 			this.chkSubdir.Size = new System.Drawing.Size(143, 20);
 			this.chkSubdir.TabIndex = 3;
@@ -179,7 +180,7 @@ namespace Next_View
 			// edSearchIn
 			// 
 			this.edSearchIn.Location = new System.Drawing.Point(117, 35);
-			this.edSearchIn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.edSearchIn.Margin = new System.Windows.Forms.Padding(2);
 			this.edSearchIn.Name = "edSearchIn";
 			this.edSearchIn.Size = new System.Drawing.Size(345, 20);
 			this.edSearchIn.TabIndex = 4;
@@ -199,7 +200,8 @@ namespace Next_View
 			this.Controls.Add(this.listSearch);
 			this.Controls.Add(this.cmdOk);
 			this.Controls.Add(this.cmdCancel);
-			this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+			this.Margin = new System.Windows.Forms.Padding(2);
 			this.Name = "SearchForm";
 			this.Text = "SearchForm";
 			this.Shown += new System.EventHandler(this.SearchFormShown);

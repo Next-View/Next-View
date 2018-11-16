@@ -19,7 +19,6 @@ History:
 using System;
 using System.Configuration;
 using System.Diagnostics;
-//using System.Drawing;
 using System.IO;
 using System.Windows.Forms;   // for webBrowser
 
@@ -45,7 +44,7 @@ namespace Next_View
 		void frmAboutShown(object sender, EventArgs e)
 		{
 			Version v = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-			string ver = String.Format("Next-View Version: {0}.{1}.{2}", v.Major, v.Minor, v.Build);
+			string ver = String.Format("Next-View Version: {0}.{1}.{2}.{3}", v.Major, v.Minor, v.Build, v.Revision);
 			this.Text = ver;
 
 			string curDir = Directory.GetCurrentDirectory();
@@ -54,18 +53,27 @@ namespace Next_View
 				webBrowser1.Url = new Uri("file:///" + aboutPath);
 			}
 			else {
-				webBrowser1.DocumentText = aboutPath + " about.html file is missing";
+				webBrowser1.DocumentText = aboutPath + " file is missing";
 			}
-
 		}
 
+		void WebBrowser1Navigating(object sender, WebBrowserNavigatingEventArgs e)
+		{
+			string bUrl = e.Url.ToString();
+			Debug.WriteLine("url: " + bUrl);
+			if (bUrl.StartsWith("http")){
+				e.Cancel = true;
+				Process.Start(bUrl);
+			}
+		}
+				
 
 		void CmdOkClick(object sender, EventArgs e)
 		{
 			Debug.WriteLine("Path: " + System.Reflection.Assembly.GetExecutingAssembly().Location);
 			Debug.WriteLine("Version: " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version);
 			Debug.WriteLine("Conf: " + ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath);
-			Debug.WriteLine("Conf rl: " + ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath);
+			Debug.WriteLine("App path: " + ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath);
 			this.Close();
 		}
 
@@ -74,5 +82,7 @@ namespace Next_View
 		{
 			webBrowser1.Dispose();
 		}
+		
+
 	}
 }

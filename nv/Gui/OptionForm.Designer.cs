@@ -54,6 +54,7 @@ namespace Next_View
 			System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem(new string[] {
 			"Gif",
 			"GIF Format"}, 0);
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmOption));
 			this.tabOptions = new System.Windows.Forms.TabControl();
 			this.tabGeneral = new System.Windows.Forms.TabPage();
 			this.chkImageEditor = new System.Windows.Forms.CheckBox();
@@ -79,10 +80,9 @@ namespace Next_View
 			this.tabOptions.Controls.Add(this.tabGeneral);
 			this.tabOptions.Controls.Add(this.tabExtensions);
 			this.tabOptions.Location = new System.Drawing.Point(0, 0);
-			this.tabOptions.Margin = new System.Windows.Forms.Padding(4);
 			this.tabOptions.Name = "tabOptions";
 			this.tabOptions.SelectedIndex = 0;
-			this.tabOptions.Size = new System.Drawing.Size(753, 359);
+			this.tabOptions.Size = new System.Drawing.Size(565, 292);
 			this.tabOptions.TabIndex = 0;
 			// 
 			// tabGeneral
@@ -91,31 +91,28 @@ namespace Next_View
 			this.tabGeneral.Controls.Add(this.cmdEditor);
 			this.tabGeneral.Controls.Add(this.label5);
 			this.tabGeneral.Controls.Add(this.edEditor);
-			this.tabGeneral.Location = new System.Drawing.Point(4, 25);
-			this.tabGeneral.Margin = new System.Windows.Forms.Padding(4);
+			this.tabGeneral.Location = new System.Drawing.Point(4, 22);
 			this.tabGeneral.Name = "tabGeneral";
-			this.tabGeneral.Padding = new System.Windows.Forms.Padding(4);
-			this.tabGeneral.Size = new System.Drawing.Size(745, 330);
+			this.tabGeneral.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+			this.tabGeneral.Size = new System.Drawing.Size(557, 266);
 			this.tabGeneral.TabIndex = 0;
 			this.tabGeneral.Text = "General";
 			this.tabGeneral.UseVisualStyleBackColor = true;
 			// 
 			// chkImageEditor
 			// 
-			this.chkImageEditor.Location = new System.Drawing.Point(21, 78);
-			this.chkImageEditor.Margin = new System.Windows.Forms.Padding(4);
+			this.chkImageEditor.Location = new System.Drawing.Point(16, 63);
 			this.chkImageEditor.Name = "chkImageEditor";
-			this.chkImageEditor.Size = new System.Drawing.Size(568, 30);
+			this.chkImageEditor.Size = new System.Drawing.Size(426, 24);
 			this.chkImageEditor.TabIndex = 3;
 			this.chkImageEditor.Text = "Use this program to edit images";
 			this.chkImageEditor.UseVisualStyleBackColor = true;
 			// 
 			// cmdEditor
 			// 
-			this.cmdEditor.Location = new System.Drawing.Point(672, 28);
-			this.cmdEditor.Margin = new System.Windows.Forms.Padding(4);
+			this.cmdEditor.Location = new System.Drawing.Point(504, 23);
 			this.cmdEditor.Name = "cmdEditor";
-			this.cmdEditor.Size = new System.Drawing.Size(52, 28);
+			this.cmdEditor.Size = new System.Drawing.Size(39, 23);
 			this.cmdEditor.TabIndex = 2;
 			this.cmdEditor.Text = "...";
 			this.cmdEditor.UseVisualStyleBackColor = true;
@@ -123,19 +120,17 @@ namespace Next_View
 			// 
 			// label5
 			// 
-			this.label5.Location = new System.Drawing.Point(21, 28);
-			this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+			this.label5.Location = new System.Drawing.Point(16, 23);
 			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(89, 28);
+			this.label5.Size = new System.Drawing.Size(67, 23);
 			this.label5.TabIndex = 1;
 			this.label5.Text = "Image editor";
 			// 
 			// edEditor
 			// 
-			this.edEditor.Location = new System.Drawing.Point(119, 28);
-			this.edEditor.Margin = new System.Windows.Forms.Padding(4);
+			this.edEditor.Location = new System.Drawing.Point(89, 23);
 			this.edEditor.Name = "edEditor";
-			this.edEditor.Size = new System.Drawing.Size(544, 22);
+			this.edEditor.Size = new System.Drawing.Size(409, 20);
 			this.edEditor.TabIndex = 0;
 			// 
 			// tabExtensions
@@ -143,19 +138,21 @@ namespace Next_View
 			this.tabExtensions.Controls.Add(this.cmdExtAssign);
 			this.tabExtensions.Controls.Add(this.label6);
 			this.tabExtensions.Controls.Add(this.listExtensions);
-			this.tabExtensions.Location = new System.Drawing.Point(4, 25);
+			this.tabExtensions.Location = new System.Drawing.Point(4, 22);
+			this.tabExtensions.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 			this.tabExtensions.Name = "tabExtensions";
-			this.tabExtensions.Padding = new System.Windows.Forms.Padding(3);
-			this.tabExtensions.Size = new System.Drawing.Size(745, 330);
+			this.tabExtensions.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.tabExtensions.Size = new System.Drawing.Size(557, 266);
 			this.tabExtensions.TabIndex = 2;
 			this.tabExtensions.Text = "Extensions";
 			this.tabExtensions.UseVisualStyleBackColor = true;
 			// 
 			// cmdExtAssign
 			// 
-			this.cmdExtAssign.Location = new System.Drawing.Point(12, 262);
+			this.cmdExtAssign.Location = new System.Drawing.Point(9, 213);
+			this.cmdExtAssign.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 			this.cmdExtAssign.Name = "cmdExtAssign";
-			this.cmdExtAssign.Size = new System.Drawing.Size(146, 35);
+			this.cmdExtAssign.Size = new System.Drawing.Size(110, 28);
 			this.cmdExtAssign.TabIndex = 7;
 			this.cmdExtAssign.Text = "Assign";
 			this.cmdExtAssign.UseVisualStyleBackColor = true;
@@ -163,9 +160,10 @@ namespace Next_View
 			// 
 			// label6
 			// 
-			this.label6.Location = new System.Drawing.Point(12, 213);
+			this.label6.Location = new System.Drawing.Point(9, 173);
+			this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
 			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(594, 23);
+			this.label6.Size = new System.Drawing.Size(446, 19);
 			this.label6.TabIndex = 6;
 			this.label6.Text = "Associated file extensions";
 			// 
@@ -185,9 +183,10 @@ namespace Next_View
 			listViewItem1,
 			listViewItem2,
 			listViewItem3});
-			this.listExtensions.Location = new System.Drawing.Point(3, 3);
+			this.listExtensions.Location = new System.Drawing.Point(2, 2);
+			this.listExtensions.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 			this.listExtensions.Name = "listExtensions";
-			this.listExtensions.Size = new System.Drawing.Size(739, 191);
+			this.listExtensions.Size = new System.Drawing.Size(553, 156);
 			this.listExtensions.TabIndex = 5;
 			this.listExtensions.UseCompatibleStateImageBehavior = false;
 			this.listExtensions.View = System.Windows.Forms.View.Details;
@@ -209,10 +208,9 @@ namespace Next_View
 			// 
 			// cmdOk
 			// 
-			this.cmdOk.Location = new System.Drawing.Point(640, 405);
-			this.cmdOk.Margin = new System.Windows.Forms.Padding(4);
+			this.cmdOk.Location = new System.Drawing.Point(480, 329);
 			this.cmdOk.Name = "cmdOk";
-			this.cmdOk.Size = new System.Drawing.Size(100, 28);
+			this.cmdOk.Size = new System.Drawing.Size(75, 23);
 			this.cmdOk.TabIndex = 1;
 			this.cmdOk.Text = "&OK";
 			this.cmdOk.UseVisualStyleBackColor = true;
@@ -220,10 +218,9 @@ namespace Next_View
 			// 
 			// cmdCancel
 			// 
-			this.cmdCancel.Location = new System.Drawing.Point(13, 405);
-			this.cmdCancel.Margin = new System.Windows.Forms.Padding(4);
+			this.cmdCancel.Location = new System.Drawing.Point(10, 329);
 			this.cmdCancel.Name = "cmdCancel";
-			this.cmdCancel.Size = new System.Drawing.Size(100, 28);
+			this.cmdCancel.Size = new System.Drawing.Size(75, 23);
 			this.cmdCancel.TabIndex = 2;
 			this.cmdCancel.Text = "&Cancel";
 			this.cmdCancel.UseVisualStyleBackColor = true;
@@ -231,13 +228,13 @@ namespace Next_View
 			// 
 			// frmOption
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(753, 456);
+			this.ClientSize = new System.Drawing.Size(565, 370);
 			this.Controls.Add(this.cmdCancel);
 			this.Controls.Add(this.cmdOk);
 			this.Controls.Add(this.tabOptions);
-			this.Margin = new System.Windows.Forms.Padding(4);
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "frmOption";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Options";
