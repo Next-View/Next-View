@@ -41,6 +41,8 @@ namespace	Next_View
 		string _currentPath = "";
 		Image _myImg;
 		bool loadNextPic = true;
+		WinType _wType;
+		
 		public frmImage  m_Image2;
 
 		public event HandleStatusMainChange	 StatusChanged;
@@ -49,7 +51,7 @@ namespace	Next_View
 
 		public event HandleWindowSize WindowSize;
 
-		public frmImage(int mainWidth, int mainHeight)
+		public frmImage(int mainWidth, int mainHeight, WinType wType)
 		{
 			//
 			// The InitializeComponent() call	is required	for	Windows	Forms	designer support.
@@ -59,6 +61,10 @@ namespace	Next_View
 			_mainHeight = mainHeight;
 			_scHeight = Screen.FromControl(this).Bounds.Height;
 			_scWidth = Screen.FromControl(this).Bounds.Width;
+			_wType = wType;
+			if (_wType != WinType.normal){
+				popClose.Text = "Close";    // not 'Exit'
+			}
 			//Debug.WriteLine("Screen W / H: {0}/{1}", _scWidth, _scHeight);
 
 			//Debug.WriteLine("main W / H: {0}/{1}", mainWidth, mainHeight);
@@ -259,6 +265,11 @@ namespace	Next_View
 					break;
 				case 46:    // del
 					DelPic();
+					break;
+				case 79:    // O
+					if (ctrl){
+						OpenPic();
+					}
 					break;
 				case 70:    // ctrl F
 					if (ctrl){
@@ -547,6 +558,28 @@ namespace	Next_View
 			}
 		}
 
+		public void	OpenPic()
+		{
+			OpenFileDialog dialog = new OpenFileDialog();
+			string lastPath = Settings.Default.LastImage;
+			if (File.Exists(lastPath)){
+				if (Directory.Exists(Path.GetDirectoryName(lastPath))) {
+				  dialog.InitialDirectory = Path.GetDirectoryName(lastPath);
+				}
+			}
+			dialog.Filter = "All images |*.jpg;*.jpeg;*.png;*.gif;*.bmp;*.ico;*.tif;*.wmf;*.emf|JPEG files |*.jpg;*.jpeg|PNG files |*.png|GIF files |*.gif|Bitmap files |*.bmp|Icon files |*.ico|TIF files |*.tif|WMF files |*.wmf|EMF files |*.emf";
+			dialog.Title = "Select image";
+
+			if(dialog.ShowDialog() == DialogResult.OK)
+			{
+				string picPath = dialog.FileName;
+				PicScan(picPath, false);
+				PicLoad(picPath, true);
+				Settings.Default.LastImage = picPath;
+				Settings.Default.Save( );
+			}
+		}
+		
 		public void	SearchPic()
 		{
 			SearchForm frm = new SearchForm(_currentPath, _il);
@@ -564,7 +597,7 @@ namespace	Next_View
 
 		public void	Test()
 		{
-			m_Image2  = new frmImage(400, 400);
+			m_Image2  = new frmImage(400, 400, WinType.second);
 			m_Image2.Show();
 
 		}
@@ -599,7 +632,7 @@ namespace	Next_View
 
 		void PopOpenClick(object sender, EventArgs e)
 		{
-
+			OpenPic();
 		}
 
 		void PopRenameClick(object sender, EventArgs e)
@@ -644,7 +677,13 @@ namespace	Next_View
 
 		void PopCloseClick(object sender, EventArgs e)
 		{
-			this.Close();
+			if (_wType == WinType.second){
+				this.Close();
+			}
+			if (_wType == WinType.normal){
+				Application.Exit();      
+				Environment.Exit(0);     
+			}			
 		}
 
 		// ------------------------------		delegates 	----------------------------------------------------------
@@ -699,7 +738,13 @@ namespace	Next_View
 			}
 		}
 
-
-
 	}	 //	end	frmImage
+
+	public enum WinType
+	{
+		normal = 0,
+		full = 1,
+		second = 2
+	}
+    
 }

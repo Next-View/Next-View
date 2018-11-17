@@ -92,7 +92,6 @@ namespace Next_View
 			this.popOpen.Name = "popOpen";
 			this.popOpen.Size = new System.Drawing.Size(194, 26);
 			this.popOpen.Text = "Open...";
-			this.popOpen.Visible = false;
 			this.popOpen.Click += new System.EventHandler(this.PopOpenClick);
 			// 
 			// popRename
@@ -180,8 +179,7 @@ namespace Next_View
 			this.popClose.Image = ((System.Drawing.Image)(resources.GetObject("popClose.Image")));
 			this.popClose.Name = "popClose";
 			this.popClose.Size = new System.Drawing.Size(194, 26);
-			this.popClose.Text = "Close";
-			this.popClose.Visible = false;
+			this.popClose.Text = "Exit ";
 			this.popClose.Click += new System.EventHandler(this.PopCloseClick);
 			// 
 			// picBox

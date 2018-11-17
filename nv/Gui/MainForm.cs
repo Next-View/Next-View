@@ -108,7 +108,7 @@ namespace Next_View
 			int fHeight = this.Height;
 			int fWidth = this.Width;
 
-			m_Image  = new frmImage(fWidth, fHeight);
+			m_Image  = new frmImage(fWidth, fHeight, WinType.normal);
 			m_Image.StatusChanged += new HandleStatusMainChange(HandleStatus);
 			m_Image.WindowChanged += new HandleWindowMainChange(HandleWindow);
 			m_Image.WindowSize += new HandleWindowSize(HandleSize);
@@ -134,7 +134,7 @@ namespace Next_View
 				if (Directory.Exists(userImagePath)) {
 					m_Image.PicScan(userImagePath, true);
 				}
-				firstImage = Directory.GetCurrentDirectory() + @"\Next-View-0.1.png";
+				firstImage = Directory.GetCurrentDirectory() + @"\Next-View-0.2.png";
 				m_Image.PicLoad(firstImage, true);
 			}
 		}
@@ -158,25 +158,8 @@ namespace Next_View
 
 		void MnuOpenImageClick(object sender, EventArgs e)
 		{
-			OpenFileDialog dialog = new OpenFileDialog();
-			string lastPath = Settings.Default.LastImage;
-			if (File.Exists(lastPath)){
-				if (Directory.Exists(Path.GetDirectoryName(lastPath))) {
-				  dialog.InitialDirectory = Path.GetDirectoryName(lastPath);
-				}
-			}
-			dialog.Filter = "All images |*.jpg;*.jpeg;*.png;*.gif;*.bmp;*.ico;*.tif;*.wmf;*.emf|JPEG files |*.jpg;*.jpeg|PNG files |*.png|GIF files |*.gif|Bitmap files |*.bmp|Icon files |*.ico|TIF files |*.tif|WMF files |*.wmf|EMF files |*.emf";
-			dialog.Title = "Select image";
-
-			if(dialog.ShowDialog() == DialogResult.OK)
-			{
-				string picPath = dialog.FileName;
-				recentsToolStripMenuItem1.AddRecentItem(picPath);
-				m_Image.PicScan(picPath, false);
-				m_Image.PicLoad(picPath, true);
-				Settings.Default.LastImage = picPath;
-				Settings.Default.Save( );
-			}
+			m_Image.OpenPic();
+			recentsToolStripMenuItem1.AddRecentItem(Settings.Default.LastImage);
 		}
 
 		private void recentItem_Click(object sender, EventArgs e)
