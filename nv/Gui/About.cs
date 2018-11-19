@@ -47,7 +47,7 @@ namespace Next_View
 			string ver = String.Format("Next-View Version: {0}.{1}.{2}.{3}", v.Major, v.Minor, v.Build, v.Revision);
 			this.Text = ver;
 
-			string curDir = Directory.GetCurrentDirectory();
+			string curDir = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
 			string aboutPath = curDir + @"\about\about.html";
 			if (File.Exists(aboutPath)) {
 				webBrowser1.Url = new Uri("file:///" + aboutPath);
@@ -66,7 +66,7 @@ namespace Next_View
 				Process.Start(bUrl);
 			}
 		}
-				
+
 
 		void CmdOkClick(object sender, EventArgs e)
 		{
@@ -82,7 +82,7 @@ namespace Next_View
 		{
 			webBrowser1.Dispose();
 		}
-		
+
 
 	}
 }
