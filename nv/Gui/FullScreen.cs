@@ -308,7 +308,7 @@ namespace Next_View
 
 		public void	FSearchPic()
 		{
-			SearchForm frm = new SearchForm(_currentPath, _il);
+			SearchForm frm = new SearchForm(_currentPath, "", _il);
 			frm.ShowDialog();
 
 			string pPath = "";

@@ -98,6 +98,10 @@
     <Compile Include="Gui\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\MainForm.Designer1.cs">
+      <DependentUpon>MainForm.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="Gui\OptionForm.cs" />
     <Compile Include="Gui\OptionForm.Designer.cs">
       <DependentUpon>OptionForm.cs</DependentUpon>
@@ -128,6 +132,8 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MainForm.Designer1.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\OptionForm.resx">
       <DependentUpon>OptionForm.cs</DependentUpon>

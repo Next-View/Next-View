@@ -97,6 +97,7 @@ namespace	Next_View
 
 		public void	DirPosPath(ref int picPos, ref int picAll, string pPath)
 		{
+			// position of image in imageList 
 			_picPos = _imList.IndexOf(pPath);
 			if(_picPos < 0) _picPos = 0;
 			picPos = _picPos + 1;

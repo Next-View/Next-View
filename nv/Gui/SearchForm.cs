@@ -32,27 +32,55 @@ namespace Next_View
 		ImgList _il;
 		string _pDir;
 		public bool _SearchReturn {get;set;}
+		public string _lastSearchStr {get;set;}
+		public string _selImg {get;set;}
+		
 		List<string> _searchList2 = new List<string>();
-
-		public SearchForm(string pPath, ImgList il)
+		
+		public SearchForm(string pPath, string lastSearchStr, ImgList il)
 		{
 			//
 			// The InitializeComponent() call is required for Windows Forms designer support.
 			//
 			InitializeComponent();
 			_il = il;
-			_pDir = Path.GetDirectoryName(pPath);
+			if (File.Exists(pPath)){
+				_pDir = Path.GetDirectoryName(pPath);
+			}
+			_lastSearchStr = lastSearchStr;
 			_SearchReturn = false;
 			//
 			// TODO: Add constructor code after the InitializeComponent() call.
 			//
 		}
 
+		// ------------------------------		events form	----------------------------------------------------------
+		
 		void SearchFormShown(object sender, EventArgs e)
 		{
 			edSearchIn.Text = _pDir;
+			edSearchFor.Text = _lastSearchStr;
+			AcceptButton = cmdSearch;
 		}
 
+		void EdSearchForEnter(object sender, EventArgs e)
+		{
+			AcceptButton = cmdSearch;
+		}
+		
+		void EdSearchInEnter(object sender, EventArgs e)
+		{
+			AcceptButton = cmdSearch;
+		}
+
+				
+		void ListSearchDoubleClick(object sender, EventArgs e)
+		{
+			this.cmdOk.PerformClick();
+		}
+		
+		// ------------------------------		buttons	----------------------------------------------------------
+		
 		void CmdCancelClick(object sender, EventArgs e)
 		{
 			this.Close();
@@ -63,6 +91,12 @@ namespace Next_View
 			if (_searchList2.Count > 0){
 					_il.DirClear();
 					_il._imList = _searchList2;
+					if (listSearch.SelectedItems.Count > 0){
+						_selImg = listSearch.SelectedItems[0].Text;
+					}
+					else {
+						_selImg = "";
+					}
 					_SearchReturn = true;
 			}
 			this.Close();
@@ -70,6 +104,7 @@ namespace Next_View
 
 		void CmdSearchClick(object sender, EventArgs e)
 		{
+			_lastSearchStr = edSearchFor.Text;
 			string sFor = edSearchFor.Text;
 			_pDir = edSearchIn.Text;
 			if (sFor == ""){
@@ -86,13 +121,30 @@ namespace Next_View
 			}
 			else {		
 				listSearch.Items.Clear();
+				_searchList2.Clear();
 				int fCount = 0;
 				this.statusLabel2.Text = "";
 				DoSearch(_pDir, sFor, chkSubdir.Checked, ref fCount);
+				if (fCount > 0){
+					AcceptButton = cmdOk;
+				}
 				statusLabel2.Text = "Files found: " + fCount.ToString();
 			}
 		}
 
+		void CmdUpClick(object sender, EventArgs e)
+		{
+			string sDir = edSearchIn.Text;
+			if (Directory.Exists(sDir)){
+				var upperDir = Directory.GetParent(sDir);
+				if (upperDir != null) {
+					edSearchIn.Text = Directory.GetParent(sDir).FullName;
+				}
+			}
+		}
+		
+		// ------------------------------		functions 	----------------------------------------------------------
+		
 		public void	DoSearch(string startDir, string sFor, bool subDirs, ref int findCount)
 		{
 			List<string> searchList1 = new List<string>();
@@ -107,6 +159,9 @@ namespace Next_View
 									.Where(file	=> validExtensions.Any(file.ToLower().EndsWith))
 									.ToList();
 			}
+			FilenameComparer fc = new FilenameComparer();
+			searchList1.Sort(fc);
+						
 			foreach (string picPath in searchList1)
 			{
 				int strPos = Path.GetFileName(picPath).IndexOf(sFor);
@@ -117,9 +172,7 @@ namespace Next_View
 				}
 			}
 			findCount = _searchList2.Count;
-
 		}
-
 
 
 	}

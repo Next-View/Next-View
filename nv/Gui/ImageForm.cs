@@ -39,6 +39,7 @@ namespace	Next_View
 		int _borderWidth = 0;
 		string _picSelection = "Directory:";
 		string _currentPath = "";
+		string _lastSearchStr = "";
 		Image _myImg;
 		bool loadNextPic = true;
 		WinType _wType;
@@ -582,16 +583,23 @@ namespace	Next_View
 		
 		public void	SearchPic()
 		{
-			SearchForm frm = new SearchForm(_currentPath, _il);
+			SearchForm frm = new SearchForm(_currentPath, _lastSearchStr, _il);
 			frm.ShowDialog();
 
-			string pPath = "";
+			_lastSearchStr = frm._lastSearchStr;
 			if (frm._SearchReturn) {
-				if (_il.DirPicFirst(ref pPath)){
-					_currentPath = pPath;
-					_picSelection = "Search:";
-					PicLoad(_currentPath, true);
+				string selImg = frm._selImg;
+				int picPos = 0;
+				int picAll = 0;
+				if (selImg != ""){
+					_il.DirPosPath(ref picPos, ref picAll, selImg);
 				}
+				else {
+					_il.DirPicFirst(ref selImg);
+				}
+				_currentPath = selImg;
+				_picSelection = "Search:";
+				PicLoad(_currentPath, true);
 			}
 		}
 

@@ -134,6 +134,7 @@ namespace Next_View
 				if (Directory.Exists(userImagePath)) {
 					m_Image.PicScan(userImagePath, true);
 				}
+				Debug.WriteLine("pic path : " + userImagePath);
 				firstImage = Directory.GetCurrentDirectory() + @"\Next-View-0.2.png";
 				m_Image.PicLoad(firstImage, true);
 			}
@@ -302,7 +303,7 @@ namespace Next_View
 		}
 
 
-		//--------------------------  buttons  ---------------------------//
+		//--------------------------  toolbar  ---------------------------//
 
 
 		void BnOpenClick(object sender, EventArgs e)
@@ -442,6 +443,10 @@ namespace Next_View
 			this.Width = w;
 			this.Height = h;
 			// Debug.WriteLine("set size W / H: {0}/{1}", w, h);
+		}
+		void ToolStrip2ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+		{
+	
 		}
 
 
