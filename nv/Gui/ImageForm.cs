@@ -195,8 +195,8 @@ namespace	Next_View
 		void FrmImageKeyDown(object sender, KeyEventArgs e)
 		{
 
-			Debug.WriteLine(" ");
-			Debug.WriteLine("key:	" + e.KeyValue.ToString());   // KeyCode?
+			//Debug.WriteLine(" ");
+			//Debug.WriteLine("key:	" + e.KeyValue.ToString());   // KeyCode?
 
 			bool alt = false;
 			if (e.Modifiers == Keys.Alt){
@@ -277,9 +277,9 @@ namespace	Next_View
 						SearchPic();
 					}
 					break;
-				case 84:    // ctrl T
+				case 50:    // 2
 					if (ctrl){
-						Test();
+						ndScreen();
 					}
 					break;
 
@@ -291,6 +291,18 @@ namespace	Next_View
 				case 189:    // -
 					RemovePicPlus();
 					break;
+				case 84:    // T
+					if (alt){
+						TempmarkDelete();
+					}
+					else if (ctrl){
+						TempmarkGo();
+					}
+					else {
+						TempmarkPic();
+					}
+					break;
+					
 				case 13:    // enter  full screen
 					ShowFullScreen();
 					break;
@@ -376,7 +388,7 @@ namespace	Next_View
 					SetWindowSize(imWidth + _borderWidth, imHeight + _borderHeight );
 				}
 				Settings.Default.LastImage = pPath;
-				Debug.WriteLine("pic end " + pPath);
+				//Debug.WriteLine("pic end " + pPath);
 				return true;
 			}
 			catch (Exception e)
@@ -530,6 +542,30 @@ namespace	Next_View
 			}
 		}
 
+		public void	TempmarkDelete()
+		{
+			if (!_il.MarkDelete(_currentPath)){ 
+				MessageBox.Show("This image is not marked", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+			}
+		}
+
+		public void	TempmarkGo()
+		{
+			string markPath = "";
+			if (_il.MarkGo(ref markPath)){ 
+				PicLoad(markPath, true);
+				_currentPath = markPath;
+			}
+			else {
+				MessageBox.Show("No image is marked yet", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+			}
+		}
+
+		public void	TempmarkPic()
+		{
+			_il.MarkPic(_currentPath); 
+		}
+				
 		bool FileRename2(string nameFrom, string nameTo)
 		{
 			try {
@@ -603,7 +639,7 @@ namespace	Next_View
 			}
 		}
 
-		public void	Test()
+		public void	ndScreen()
 		{
 			m_Image2  = new frmImage(400, 400, WinType.second);
 			m_Image2.Show();

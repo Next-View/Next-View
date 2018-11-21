@@ -40,6 +40,9 @@ namespace	Next_View
 		int _logPos = -1;
 		int _logMax = -1;
 
+		List<string> _markList = new List<string>();
+		int _markPos = -1;
+		
 		public ImgList()
 		{
 
@@ -220,6 +223,7 @@ namespace	Next_View
 			if (pPos > -1){
 				 _logList[pPos] = nameTo;
 			}
+			RenameMarkList(nameFrom, nameTo);
 		}
 
 		public bool	DeleteListLog(string nameDel, ref string nameNext)
@@ -240,7 +244,8 @@ namespace	Next_View
 				_logPos--;
 				_logMax--;
 			}
-
+			MarkDelete(nameDel);
+			
 			if (_imList.Count > 0){
 				DirPicNext(ref nameNext);
 				return true;
@@ -250,7 +255,48 @@ namespace	Next_View
 			}
 		}
 
+		//--------------------------  temp mark  ------------------------------------//
 
+		public bool	MarkDelete(string pPath)
+		{
+			int rPos = _markList.IndexOf(pPath);
+			if(rPos > -1) {
+				_markList.RemoveAt(rPos);
+				return true;
+			}				
+			else {
+				return false;
+			}
+		}
+		
+		public bool	MarkGo(ref string pPath)
+		{
+			if (_markList.Count == 0){
+				return false;
+			}
+			_markPos++;
+			if (_markPos > _markList.Count - 1){
+				_markPos = 0;
+			}
+			
+ 			pPath = _markList[_markPos];
+ 			return true;
+		}
+				
+		public void	MarkPic(string pPath)
+		{
+			if (_markList.IndexOf(pPath) == -1){   // no dups
+				_markList.Add(pPath);
+			}
+		}
+
+		void RenameMarkList(string nameFrom, string nameTo)
+		{
+			int pPos = _markList.IndexOf(nameFrom);
+			if (pPos > -1){
+				 _markList[pPos] = nameTo;
+			}
+		}		
 
 	}  // end ImgList
 

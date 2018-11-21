@@ -123,10 +123,10 @@
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="cmdUp.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAS
-        dAAAEnQB3mYfeAAAAFpJREFUOE+1zEEKACAMA8H+/9OVVEHEmj0ZEA+zNH4v1/+adaELrGdkusD6xHdg
-        fWMfWD/xDqzfeAbWe9SbQW9664BGAXmNAvIaBeQ1CvCARgEe0CjAAxoEkQOJig8AZuhz+gAAAABJRU5E
-        rkJggg==
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABTSURBVDhPpcxRDgAREARR97/0IBPBKKLZ5H1s0VL57BNG
+        BUYFRgXGzox7h9HVcUPnDuM8Pj8CkcbNej8EGkXzZvihyzv4wBuMCowKjAqMCoyXkmVEKEbIayaF3AAA
+        AABJRU5ErkJggg==
 </value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

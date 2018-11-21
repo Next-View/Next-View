@@ -75,7 +75,7 @@ namespace Next_View
 			this.cmdCancel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.cmdCancel.Name = "cmdCancel";
 			this.cmdCancel.Size = new System.Drawing.Size(100, 30);
-			this.cmdCancel.TabIndex = 6;
+			this.cmdCancel.TabIndex = 7;
 			this.cmdCancel.Text = "&Cancel";
 			this.cmdCancel.UseVisualStyleBackColor = true;
 			this.cmdCancel.Click += new System.EventHandler(this.CmdCancelClick);
@@ -87,7 +87,7 @@ namespace Next_View
 			this.cmdOk.Margin = new System.Windows.Forms.Padding(4);
 			this.cmdOk.Name = "cmdOk";
 			this.cmdOk.Size = new System.Drawing.Size(100, 30);
-			this.cmdOk.TabIndex = 7;
+			this.cmdOk.TabIndex = 8;
 			this.cmdOk.Text = "&OK";
 			this.cmdOk.UseVisualStyleBackColor = true;
 			this.cmdOk.Click += new System.EventHandler(this.CmdOkClick);
@@ -102,7 +102,7 @@ namespace Next_View
 			this.listSearch.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.listSearch.Name = "listSearch";
 			this.listSearch.Size = new System.Drawing.Size(877, 250);
-			this.listSearch.TabIndex = 5;
+			this.listSearch.TabIndex = 6;
 			this.listSearch.UseCompatibleStateImageBehavior = false;
 			this.listSearch.View = System.Windows.Forms.View.Details;
 			this.listSearch.DoubleClick += new System.EventHandler(this.ListSearchDoubleClick);
@@ -198,7 +198,7 @@ namespace Next_View
 			this.cmdUp.Location = new System.Drawing.Point(677, 40);
 			this.cmdUp.Name = "cmdUp";
 			this.cmdUp.Size = new System.Drawing.Size(35, 23);
-			this.cmdUp.TabIndex = 0;
+			this.cmdUp.TabIndex = 5;
 			this.cmdUp.Click += new System.EventHandler(this.CmdUpClick);
 			// 
 			// SearchForm
