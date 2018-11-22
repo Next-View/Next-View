@@ -28,6 +28,18 @@
     <Setting Name="MainY" Type="System.Int32" Scope="User" Roaming="false">
       <Value Profile="(Default)">100</Value>
     </Setting>
+    <Setting Name="MainH2" Type="System.Int32" Scope="User" Roaming="false">
+      <Value Profile="(Default)">400</Value>
+    </Setting>
+    <Setting Name="MainW2" Type="System.Int32" Scope="User" Roaming="false">
+      <Value Profile="(Default)">500</Value>
+    </Setting>
+    <Setting Name="MainX2" Type="System.Int32" Scope="User" Roaming="false">
+      <Value Profile="(Default)">200</Value>
+    </Setting>
+    <Setting Name="MainY2" Type="System.Int32" Scope="User" Roaming="false">
+      <Value Profile="(Default)">200</Value>
+    </Setting>
     <Setting Name="UpgradeRequired" Type="System.Boolean" Scope="User" Roaming="false">
       <Value Profile="(Default)">True</Value>
     </Setting>

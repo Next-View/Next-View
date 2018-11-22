@@ -118,7 +118,55 @@ namespace Next_View.Properties {
 				this["MainY"] = value;
 			}
 		}
+
+		[global::System.Configuration.UserScopedSettingAttribute()]
+		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+		[global::System.Configuration.DefaultSettingValueAttribute("400")]
+		public int MainH2 {
+			get {
+				return ((int)(this["MainH2"]));
+			}
+			set {
+				this["MainH2"] = value;
+			}
+		}
 		
+		[global::System.Configuration.UserScopedSettingAttribute()]
+		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+		[global::System.Configuration.DefaultSettingValueAttribute("500")]
+		public int MainW2 {
+			get {
+				return ((int)(this["MainW2"]));
+			}
+			set {
+				this["MainW2"] = value;
+			}
+		}
+		
+		[global::System.Configuration.UserScopedSettingAttribute()]
+		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+		[global::System.Configuration.DefaultSettingValueAttribute("200")]
+		public int MainX2 {
+			get {
+				return ((int)(this["MainX2"]));
+			}
+			set {
+				this["MainX2"] = value;
+			}
+		}
+		
+		[global::System.Configuration.UserScopedSettingAttribute()]
+		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+		[global::System.Configuration.DefaultSettingValueAttribute("200")]
+		public int MainY2 {
+			get {
+				return ((int)(this["MainY2"]));
+			}
+			set {
+				this["MainY2"] = value;
+			}
+		}
+				
 		[global::System.Configuration.UserScopedSettingAttribute()]
 		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
 		[global::System.Configuration.DefaultSettingValueAttribute("True")]

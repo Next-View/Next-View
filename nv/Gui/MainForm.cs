@@ -171,8 +171,6 @@ namespace Next_View
 				recentsToolStripMenuItem1.AddRecentItem(picPath);
 				m_Image.PicScan(picPath, false);
 				m_Image.PicLoad(picPath, true);
-				Settings.Default.LastImage = picPath;
-				Settings.Default.Save( );
 			}
 			else
 				MessageBox.Show (sender.ToString(), "File does not exist",

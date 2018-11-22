@@ -15,7 +15,7 @@ History:
 
 *	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*/
 
-using	System;
+using	System; 
 using	System.Drawing;	 //	Bitmap
 using	System.Diagnostics;	 //	Debug
 using	System.IO;	 //	directory
@@ -42,7 +42,10 @@ namespace	Next_View
 		string _lastSearchStr = "";
 		Image _myImg;
 		bool loadNextPic = true;
-		WinType _wType;
+
+		WinType _wType;   // normal, full, second
+		public bool _ndRunning {get;set;}
+		string _priorPath = "";
 		
 		public frmImage  m_Image2;
 
@@ -58,14 +61,31 @@ namespace	Next_View
 			// The InitializeComponent() call	is required	for	Windows	Forms	designer support.
 			//
 			InitializeComponent();
-			_mainWidth = mainWidth;
-			_mainHeight = mainHeight;
-			_scHeight = Screen.FromControl(this).Bounds.Height;
-			_scWidth = Screen.FromControl(this).Bounds.Width;
 			_wType = wType;
-			if (_wType != WinType.normal){
-				popClose.Text = "Close";    // not 'Exit'
+
+			if (_wType == WinType.normal){
+				_ndRunning = false;
+				_mainWidth = mainWidth;
+				_mainHeight = mainHeight;	
+				_scWidth = Screen.FromControl(this).Bounds.Width;
+				_scHeight = Screen.FromControl(this).Bounds.Height;
+
 			}
+			
+			if (_wType == WinType.second){
+				popClose.Text = "Close";    // not 'Exit'
+				this.Width = Settings.Default.MainW2;
+				this.Height = Settings.Default.MainH2;
+				this.Left = Settings.Default.MainX2;
+				this.Top = Settings.Default.MainY2;
+								
+				_ndRunning = true;   
+				_mainWidth = picBox.Width;
+				_mainHeight = picBox.Height;
+				_scWidth = this.Width;
+				_scHeight = this.Height;
+			}
+			
 			//Debug.WriteLine("Screen W / H: {0}/{1}", _scWidth, _scHeight);
 
 			//Debug.WriteLine("main W / H: {0}/{1}", mainWidth, mainHeight);
@@ -75,6 +95,11 @@ namespace	Next_View
 
 		// ------------------------------		events form	----------------------------------------------------------
 
+		void FrmImageLoad(object sender, EventArgs e)
+		{
+
+		}
+		
 		void FrmImageShown(object sender, EventArgs e)
 		{
 			int pbHeight = picBox.Height;
@@ -192,6 +217,25 @@ namespace	Next_View
 			loadNextPic = true;
 		}
 
+		void FrmImageFormClosing(object sender, FormClosingEventArgs e)
+		{
+			_ndRunning = false;
+			Debug.WriteLine("Form: closing ");
+		}
+
+		void FrmImageFormClosed(object sender, FormClosedEventArgs e)
+		{
+			if (_wType == WinType.second){
+				Settings.Default.MainX2 = this.Left;
+				Settings.Default.MainY2 = this.Top;
+				Settings.Default.MainW2 = this.Width;
+				Settings.Default.MainH2 = this.Height;
+				Settings.Default.Save( );
+			}
+		}
+		
+		// ------------------------------		key functions	 ----------------------------------------------------------
+
 		void FrmImageKeyDown(object sender, KeyEventArgs e)
 		{
 
@@ -279,7 +323,7 @@ namespace	Next_View
 					break;
 				case 50:    // 2
 					if (ctrl){
-						ndScreen();
+						Start2ndScreen();
 					}
 					break;
 
@@ -302,9 +346,12 @@ namespace	Next_View
 						TempmarkPic();
 					}
 					break;
-					
+
 				case 13:    // enter  full screen
 					ShowFullScreen();
+					break;
+				case 65:    // a  for test 
+					Test();
 					break;
 			}
 			loadNextPic = true;
@@ -387,7 +434,10 @@ namespace	Next_View
 					picBox.BackColor = Color.Black;
 					SetWindowSize(imWidth + _borderWidth, imHeight + _borderHeight );
 				}
-				Settings.Default.LastImage = pPath;
+				if (_wType != WinType.second){
+					Settings.Default.LastImage = pPath;
+				}
+				Show2ndPic(pPath);
 				//Debug.WriteLine("pic end " + pPath);
 				return true;
 			}
@@ -544,7 +594,7 @@ namespace	Next_View
 
 		public void	TempmarkDelete()
 		{
-			if (!_il.MarkDelete(_currentPath)){ 
+			if (!_il.MarkDelete(_currentPath)){
 				MessageBox.Show("This image is not marked", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}
 		}
@@ -552,7 +602,7 @@ namespace	Next_View
 		public void	TempmarkGo()
 		{
 			string markPath = "";
-			if (_il.MarkGo(ref markPath)){ 
+			if (_il.MarkGo(ref markPath)){
 				PicLoad(markPath, true);
 				_currentPath = markPath;
 			}
@@ -563,9 +613,9 @@ namespace	Next_View
 
 		public void	TempmarkPic()
 		{
-			_il.MarkPic(_currentPath); 
+			_il.MarkPic(_currentPath);
 		}
-				
+
 		bool FileRename2(string nameFrom, string nameTo)
 		{
 			try {
@@ -612,65 +662,10 @@ namespace	Next_View
 				string picPath = dialog.FileName;
 				PicScan(picPath, false);
 				PicLoad(picPath, true);
-				Settings.Default.LastImage = picPath;
-				Settings.Default.Save( );
 			}
 		}
 		
-		public void	SearchPic()
-		{
-			SearchForm frm = new SearchForm(_currentPath, _lastSearchStr, _il);
-			frm.ShowDialog();
 
-			_lastSearchStr = frm._lastSearchStr;
-			if (frm._SearchReturn) {
-				string selImg = frm._selImg;
-				int picPos = 0;
-				int picAll = 0;
-				if (selImg != ""){
-					_il.DirPosPath(ref picPos, ref picAll, selImg);
-				}
-				else {
-					_il.DirPicFirst(ref selImg);
-				}
-				_currentPath = selImg;
-				_picSelection = "Search:";
-				PicLoad(_currentPath, true);
-			}
-		}
-
-		public void	ndScreen()
-		{
-			m_Image2  = new frmImage(400, 400, WinType.second);
-			m_Image2.Show();
-
-		}
-
-		public void	ShowFullScreen()
-		{
-			string pPath = "";
-			FullScreen frm = new FullScreen(_il);
-			if (_il.DirPosCurrent(ref pPath)){
-				frm.FPicLoad(pPath, false);
-				var result = frm.ShowDialog();
-				pPath = frm.ReturnPath;
-				PicLoad(pPath, true);
-			}
-			else {
-				SetStatusText("No image loaded");
-			}
-		}
-
-		public void	StartEditor()
-		{
-			string editorPath = Settings.Default.Editor;
-			if ((editorPath == "")||(!File.Exists(editorPath))) {    // extension default editor
-				Util.StartEditor(_currentPath, "");
-			}
-			else {
-				Util.StartEditor(editorPath, _currentPath);
-			}
-		}
 
 		// ------------------------------		pop up 	----------------------------------------------------------
 
@@ -725,11 +720,103 @@ namespace	Next_View
 				this.Close();
 			}
 			if (_wType == WinType.normal){
-				Application.Exit();      
-				Environment.Exit(0);     
-			}			
+				Application.Exit();
+				Environment.Exit(0);
+			}
 		}
 
+		// ------------------------------		other functions 	----------------------------------------------------------
+
+		public void	SearchPic()
+		{
+			SearchForm frm = new SearchForm(_currentPath, _lastSearchStr, _il);
+			frm.ShowDialog();
+
+			_lastSearchStr = frm._lastSearchStr;
+			if (frm._SearchReturn) {
+				string selImg = frm._selImg;
+				int picPos = 0;
+				int picAll = 0;
+				if (selImg != ""){
+					_il.DirPosPath(ref picPos, ref picAll, selImg);
+				}
+				else {
+					_il.DirPicFirst(ref selImg);
+				}
+				_currentPath = selImg;
+				_picSelection = "Search:";
+				PicLoad(_currentPath, true);
+			}
+		}
+		
+		public void	ShowFullScreen()
+		{
+			string pPath = "";
+			FullScreen frm = new FullScreen(_il);
+			if (_il.DirPosCurrent(ref pPath)){
+				frm.FPicLoad(pPath, false);
+				var result = frm.ShowDialog();
+				pPath = frm.ReturnPath;
+				PicLoad(pPath, true);
+			}
+			else {
+				SetStatusText("No image loaded");
+			}
+		}
+
+		public void	StartEditor()
+		{
+			string editorPath = Settings.Default.Editor;
+			if ((editorPath == "")||(!File.Exists(editorPath))) {    // extension default editor
+				Util.StartEditor(_currentPath, "");
+			}
+			else {
+				Util.StartEditor(editorPath, _currentPath);
+			}
+		}
+				
+		public void	Start2ndScreen()
+		{
+			if (_wType == WinType.normal){
+				if (!Is2ndRunning()){
+					m_Image2  = new frmImage(0, 0, WinType.second);
+					m_Image2.Show();
+				}
+			}
+		}
+
+		bool Is2ndRunning()
+		{
+			if (m_Image2 == null){
+				return false;
+			}
+			else {
+				return m_Image2._ndRunning;
+			}
+		}
+
+		public void	Show2ndPic(string pPath)
+		{
+			if (_wType == WinType.normal){
+				if (Is2ndRunning()){			
+					if (_priorPath != ""){
+						m_Image2.PicLoad(_priorPath, false);
+					}
+					_priorPath = pPath;
+				}
+			}
+		}
+
+		public void	Test()
+		{
+			if (m_Image2 != null){
+				Debug.WriteLine("Test: " + m_Image2._ndRunning.ToString());
+			}
+			else {
+				Debug.WriteLine("Test: img2 is null");
+			}
+		}
+				
 		// ------------------------------		delegates 	----------------------------------------------------------
 
 		public void	SetWindowText(string text2)
@@ -782,6 +869,7 @@ namespace	Next_View
 			}
 		}
 
+
 	}	 //	end	frmImage
 
 	public enum WinType
@@ -790,5 +878,5 @@ namespace	Next_View
 		full = 1,
 		second = 2
 	}
-    
+
 }
