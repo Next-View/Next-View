@@ -90,6 +90,7 @@ namespace Next_View
 				this.Height = Settings.Default.MainH;
 				this.Left = Settings.Default.MainX;
 				this.Top = Settings.Default.MainY;
+				Debug.WriteLine("open main y: {0} ", Settings.Default.MainY);
 			}
 			else {
 				string[] args = Environment.GetCommandLineArgs();
@@ -144,12 +145,14 @@ namespace Next_View
 		void FrmMainFormClosed(object sender, FormClosedEventArgs e)
 		{
 		// DockContent has no close event when main form closes
+			m_Image.Close2nd();  
+			Debug.WriteLine("main FormClosed");
 			Settings.Default.MainX = this.Left;
 			Settings.Default.MainY = this.Top;
 			Settings.Default.MainW = this.Width;
 			Settings.Default.MainH = this.Height;
-			Settings.Default.Save( );
-			Debug.WriteLine("main FormClosed");
+			Settings.Default.Save( );                  // last program line for debugger
+
 		}
 
 

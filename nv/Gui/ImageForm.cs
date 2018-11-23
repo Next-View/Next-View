@@ -15,7 +15,7 @@ History:
 
 *	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*/
 
-using	System; 
+using	System;
 using	System.Drawing;	 //	Bitmap
 using	System.Diagnostics;	 //	Debug
 using	System.IO;	 //	directory
@@ -46,10 +46,10 @@ namespace	Next_View
 		WinType _wType;   // normal, full, second
 		public bool _ndRunning {get;set;}
 		string _priorPath = "";
-		
+
 		public frmImage  m_Image2;
 
-		public event HandleStatusMainChange	 StatusChanged;
+		public event HandleStatusMainChange	 StatusChanged; 
 
 		public event HandleWindowMainChange	 WindowChanged;
 
@@ -63,29 +63,9 @@ namespace	Next_View
 			InitializeComponent();
 			_wType = wType;
 
-			if (_wType == WinType.normal){
-				_ndRunning = false;
-				_mainWidth = mainWidth;
-				_mainHeight = mainHeight;	
-				_scWidth = Screen.FromControl(this).Bounds.Width;
-				_scHeight = Screen.FromControl(this).Bounds.Height;
+			_mainWidth = mainWidth;
+			_mainHeight = mainHeight;
 
-			}
-			
-			if (_wType == WinType.second){
-				popClose.Text = "Close";    // not 'Exit'
-				this.Width = Settings.Default.MainW2;
-				this.Height = Settings.Default.MainH2;
-				this.Left = Settings.Default.MainX2;
-				this.Top = Settings.Default.MainY2;
-								
-				_ndRunning = true;   
-				_mainWidth = picBox.Width;
-				_mainHeight = picBox.Height;
-				_scWidth = this.Width;
-				_scHeight = this.Height;
-			}
-			
 			//Debug.WriteLine("Screen W / H: {0}/{1}", _scWidth, _scHeight);
 
 			//Debug.WriteLine("main W / H: {0}/{1}", mainWidth, mainHeight);
@@ -97,9 +77,31 @@ namespace	Next_View
 
 		void FrmImageLoad(object sender, EventArgs e)
 		{
+			if (_wType == WinType.normal){
+				_ndRunning = false;
+				//_mainWidth 
+				//_mainHeight  
+				_scWidth = Screen.FromControl(this).Bounds.Width;
+				_scHeight = Screen.FromControl(this).Bounds.Height;
 
+			}
+
+			if (_wType == WinType.second){
+				popClose.Text = "Close";    // not 'Exit'
+				this.Width = Settings.Default.MainW2;
+				this.Height = Settings.Default.MainH2;
+				this.Left = Settings.Default.MainX2;
+				this.Top = Settings.Default.MainY2;
+				Debug.WriteLine("open 2nd y: {0} ", Settings.Default.MainY2);
+
+				_ndRunning = true;
+				_mainWidth = picBox.Width;
+				_mainHeight = picBox.Height;
+				_scWidth = this.Width;
+				_scHeight = this.Height;
+			}
 		}
-		
+
 		void FrmImageShown(object sender, EventArgs e)
 		{
 			int pbHeight = picBox.Height;
@@ -220,20 +222,28 @@ namespace	Next_View
 		void FrmImageFormClosing(object sender, FormClosingEventArgs e)
 		{
 			_ndRunning = false;
-			Debug.WriteLine("Form: closing ");
-		}
-
-		void FrmImageFormClosed(object sender, FormClosedEventArgs e)
-		{
 			if (_wType == WinType.second){
 				Settings.Default.MainX2 = this.Left;
 				Settings.Default.MainY2 = this.Top;
 				Settings.Default.MainW2 = this.Width;
 				Settings.Default.MainH2 = this.Height;
 				Settings.Default.Save( );
+				Debug.WriteLine("close 2nd y: {0} ", Settings.Default.MainY2);
 			}
 		}
-		
+
+		void FrmImageFormClosed(object sender, FormClosedEventArgs e)
+		{
+
+		}
+
+		void RClose()
+		// remote close
+		{
+			this.Close();
+		}
+				
+				
 		// ------------------------------		key functions	 ----------------------------------------------------------
 
 		void FrmImageKeyDown(object sender, KeyEventArgs e)
@@ -350,7 +360,7 @@ namespace	Next_View
 				case 13:    // enter  full screen
 					ShowFullScreen();
 					break;
-				case 65:    // a  for test 
+				case 65:    // a  for test
 					Test();
 					break;
 			}
@@ -378,6 +388,7 @@ namespace	Next_View
 					SetStatusText(String.Format("History: {0}/{1}", picPos, picAll));
 				}
 				SetWindowText(pPath);
+				_priorPath =_currentPath;
 				_currentPath = pPath;
 
 				if (!File.Exists(pPath)){
@@ -437,7 +448,8 @@ namespace	Next_View
 				if (_wType != WinType.second){
 					Settings.Default.LastImage = pPath;
 				}
-				Show2ndPic(pPath);
+
+				Show2ndPic(_priorPath);
 				//Debug.WriteLine("pic end " + pPath);
 				return true;
 			}
@@ -664,7 +676,7 @@ namespace	Next_View
 				PicLoad(picPath, true);
 			}
 		}
-		
+
 
 
 		// ------------------------------		pop up 	----------------------------------------------------------
@@ -748,7 +760,7 @@ namespace	Next_View
 				PicLoad(_currentPath, true);
 			}
 		}
-		
+
 		public void	ShowFullScreen()
 		{
 			string pPath = "";
@@ -774,38 +786,6 @@ namespace	Next_View
 				Util.StartEditor(editorPath, _currentPath);
 			}
 		}
-				
-		public void	Start2ndScreen()
-		{
-			if (_wType == WinType.normal){
-				if (!Is2ndRunning()){
-					m_Image2  = new frmImage(0, 0, WinType.second);
-					m_Image2.Show();
-				}
-			}
-		}
-
-		bool Is2ndRunning()
-		{
-			if (m_Image2 == null){
-				return false;
-			}
-			else {
-				return m_Image2._ndRunning;
-			}
-		}
-
-		public void	Show2ndPic(string pPath)
-		{
-			if (_wType == WinType.normal){
-				if (Is2ndRunning()){			
-					if (_priorPath != ""){
-						m_Image2.PicLoad(_priorPath, false);
-					}
-					_priorPath = pPath;
-				}
-			}
-		}
 
 		public void	Test()
 		{
@@ -816,7 +796,68 @@ namespace	Next_View
 				Debug.WriteLine("Test: img2 is null");
 			}
 		}
+		
+		// ------------------------------		2nd screen  	----------------------------------------------------------
+		
+		public void	Start2ndScreen() 
+		{
+			string prPath = _priorPath;
+			if (prPath == ""){
+				prPath = _currentPath;
+			}
 				
+			if (CanStart2nd()){
+				m_Image2  = new frmImage(0, 0, WinType.second);
+				m_Image2.PicLoad(prPath, false);
+				m_Image2.Show();
+
+			}
+			else {    // img to foreground
+				if (CanShow2nd()){
+					m_Image2.BringToFront();
+				}
+			}
+		}
+
+		public void	Show2ndPic(string prPath)
+		{
+			if (CanShow2nd()){
+				if (prPath == ""){
+					prPath = _currentPath;
+				}
+				m_Image2.PicLoad(prPath, false);
+			}
+		}
+		
+		bool CanStart2nd()
+		{
+			if (_wType == WinType.second){
+				return false;
+			}
+			if (m_Image2 == null){
+				return true;
+			}
+			return !m_Image2._ndRunning;
+		}
+
+		bool CanShow2nd()
+		{
+			if (_wType == WinType.second){
+				return false;
+			}
+			if (m_Image2 == null){
+				return false;
+			}
+			return m_Image2._ndRunning;
+		}
+
+		public void Close2nd()
+		{
+			if (CanShow2nd()){
+				m_Image2.RClose();
+			}
+		}
+							
 		// ------------------------------		delegates 	----------------------------------------------------------
 
 		public void	SetWindowText(string text2)
