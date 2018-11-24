@@ -49,7 +49,7 @@ namespace	Next_View
 
 		public frmImage  m_Image2;
 
-		public event HandleStatusMainChange	 StatusChanged; 
+		public event HandleStatusMainChange	 StatusChanged;
 
 		public event HandleWindowMainChange	 WindowChanged;
 
@@ -79,8 +79,8 @@ namespace	Next_View
 		{
 			if (_wType == WinType.normal){
 				_ndRunning = false;
-				//_mainWidth 
-				//_mainHeight  
+				//_mainWidth
+				//_mainHeight
 				_scWidth = Screen.FromControl(this).Bounds.Width;
 				_scHeight = Screen.FromControl(this).Bounds.Height;
 
@@ -242,8 +242,8 @@ namespace	Next_View
 		{
 			this.Close();
 		}
-				
-				
+
+
 		// ------------------------------		key functions	 ----------------------------------------------------------
 
 		void FrmImageKeyDown(object sender, KeyEventArgs e)
@@ -659,7 +659,7 @@ namespace	Next_View
 
 		public void	OpenPic()
 		{
-			OpenFileDialog dialog = new OpenFileDialog();
+			var dialog = new OpenFileDialog();
 			string lastPath = Settings.Default.LastImage;
 			if (File.Exists(lastPath)){
 				if (Directory.Exists(Path.GetDirectoryName(lastPath))) {
@@ -764,7 +764,7 @@ namespace	Next_View
 		public void	ShowFullScreen()
 		{
 			string pPath = "";
-			FullScreen frm = new FullScreen(_il);
+			var frm = new FullScreen(_il);
 			if (_il.DirPosCurrent(ref pPath)){
 				frm.FPicLoad(pPath, false);
 				var result = frm.ShowDialog();
@@ -796,16 +796,16 @@ namespace	Next_View
 				Debug.WriteLine("Test: img2 is null");
 			}
 		}
-		
+
 		// ------------------------------		2nd screen  	----------------------------------------------------------
-		
-		public void	Start2ndScreen() 
+
+		public void	Start2ndScreen()
 		{
 			string prPath = _priorPath;
 			if (prPath == ""){
 				prPath = _currentPath;
 			}
-				
+
 			if (CanStart2nd()){
 				m_Image2  = new frmImage(0, 0, WinType.second);
 				m_Image2.PicLoad(prPath, false);
@@ -825,10 +825,12 @@ namespace	Next_View
 				if (prPath == ""){
 					prPath = _currentPath;
 				}
-				m_Image2.PicLoad(prPath, false);
+				if (File.Exists(prPath)){
+					m_Image2.PicLoad(prPath, false);
+				}
 			}
 		}
-		
+
 		bool CanStart2nd()
 		{
 			if (_wType == WinType.second){
@@ -857,7 +859,7 @@ namespace	Next_View
 				m_Image2.RClose();
 			}
 		}
-							
+
 		// ------------------------------		delegates 	----------------------------------------------------------
 
 		public void	SetWindowText(string text2)
