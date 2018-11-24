@@ -15,7 +15,7 @@ History:
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-using System;  
+using System;
 using System.Diagnostics;  // Debug
 using System.IO;   // path
 using System.Runtime.InteropServices;
@@ -86,10 +86,20 @@ namespace Next_View
 					Settings.Default.UpgradeRequired = false;
 					Settings.Default.Save( );
 				}
-				this.Width = Settings.Default.MainW;
-				this.Height = Settings.Default.MainH;
-				this.Left = Settings.Default.MainX;
-				this.Top = Settings.Default.MainY;
+				int wW = Settings.Default.MainW;
+				int wH = Settings.Default.MainH;
+				int wX = Settings.Default.MainX;
+				int wY = Settings.Default.MainY;
+				int sWidth = Screen.FromControl(this).Bounds.Width;
+				int sHeight = Screen.FromControl(this).Bounds.Height;
+
+				this.Width = wW;
+				this.Height = wH;
+				if (wX + wW < 0) this.Left = -50;      // for screen settings change
+				else this.Left = wX;
+				if (wY + wH < 0) this.Top = -50;
+				else this.Top = wY;
+
 				Debug.WriteLine("open main y: {0} ", Settings.Default.MainY);
 			}
 			else {
@@ -145,7 +155,7 @@ namespace Next_View
 		void FrmMainFormClosed(object sender, FormClosedEventArgs e)
 		{
 		// DockContent has no close event when main form closes
-			m_Image.Close2nd();  
+			m_Image.Close2nd();
 			Debug.WriteLine("main FormClosed");
 			Settings.Default.MainX = this.Left;
 			Settings.Default.MainY = this.Top;
@@ -447,7 +457,7 @@ namespace Next_View
 		}
 		void ToolStrip2ItemClicked(object sender, ToolStripItemClickedEventArgs e)
 		{
-	
+
 		}
 
 

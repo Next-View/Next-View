@@ -88,10 +88,21 @@ namespace	Next_View
 
 			if (_wType == WinType.second){
 				popClose.Text = "Close";    // not 'Exit'
-				this.Width = Settings.Default.MainW2;
-				this.Height = Settings.Default.MainH2;
-				this.Left = Settings.Default.MainX2;
-				this.Top = Settings.Default.MainY2;
+
+				int wW = Settings.Default.MainW2;
+				int wH = Settings.Default.MainH2;
+				int wX = Settings.Default.MainX2;
+				int wY = Settings.Default.MainY2;
+				int sWidth = Screen.FromControl(this).Bounds.Width;
+				int sHeight = Screen.FromControl(this).Bounds.Height;
+
+				this.Width = wW;
+				this.Height = wH;
+				if (wX + wW < 0) this.Left = -20;      // for screen settings change
+				else this.Left = wX;
+				if (wY + wH < 0) this.Top = -20;
+				else this.Top = wY;
+
 				Debug.WriteLine("open 2nd y: {0} ", Settings.Default.MainY2);
 
 				_ndRunning = true;
@@ -566,7 +577,8 @@ namespace	Next_View
 				newPath = frm._ReturnPath;
 				_il.RenameListLog(_currentPath, newPath);
 				_currentPath = newPath;
-				PicLoad(_currentPath, true);
+				SetWindowText(_currentPath);
+				//PicLoad(_currentPath, true);
 			}
 		}
 
@@ -578,7 +590,8 @@ namespace	Next_View
 			if (FileRename2(_currentPath, newPath)) {
 				_il.RenameListLog(_currentPath, newPath);
 				_currentPath = newPath;
-				PicLoad(_currentPath, true);
+				SetWindowText(_currentPath);
+				//PicLoad(_currentPath, true);
 			}
 			else {
 				Debug.WriteLine("no rename");
@@ -596,7 +609,8 @@ namespace	Next_View
 				if (FileRename2(_currentPath, newPath)) {
 					_il.RenameListLog(_currentPath, newPath);
 					_currentPath = newPath;
-					PicLoad(_currentPath, true);
+					SetWindowText(_currentPath);
+					//PicLoad(_currentPath, true);
 				}
 				else {
 					Debug.WriteLine("no rename");
