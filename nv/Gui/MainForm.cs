@@ -79,7 +79,7 @@ namespace Next_View
 
 			bool created ;
 			s_event = new EventWaitHandle (false, EventResetMode.ManualReset, "Next-View", out created);   //  instead of mutex
-    		if (created){
+    		if (created){         // 1st instance
 				if (Properties.Settings.Default.UpgradeRequired)
 				{
 					Settings.Default.Upgrade();
@@ -96,13 +96,15 @@ namespace Next_View
 				this.Width = wW;
 				this.Height = wH;
 				if (wX + wW < 0) this.Left = -50;      // for screen settings change
+				else if (wX > sWidth) this.Left = sWidth - 100;
 				else this.Left = wX;
+				
 				if (wY + wH < 0) this.Top = -50;
 				else this.Top = wY;
 
 				Debug.WriteLine("open main y: {0} ", Settings.Default.MainY);
 			}
-			else {
+			else {              // 2nd instance, give image path to 1st instance and end this 2nd 
 				string[] args = Environment.GetCommandLineArgs();
 				string commandLine = "S";
 				if (args.Length > 1){
@@ -155,7 +157,9 @@ namespace Next_View
 		void FrmMainFormClosed(object sender, FormClosedEventArgs e)
 		{
 		// DockContent has no close event when main form closes
-			m_Image.Close2nd();
+			if (m_Image != null){
+				m_Image.Close2nd();
+			}
 			Debug.WriteLine("main FormClosed");
 			Settings.Default.MainX = this.Left;
 			Settings.Default.MainY = this.Top;
@@ -366,8 +370,6 @@ namespace Next_View
 		//--------------------------  functions  ---------------------------//
 
 
-
-
 		void ExitApp()
 		{
 			this.Close();
@@ -460,10 +462,8 @@ namespace Next_View
 
 		}
 
-
-
-
-	}
+	}  // end main
+	
 	//--------------------------------------------------------------//
 
 	class NativeMethods {
@@ -475,6 +475,8 @@ namespace Next_View
 		public static extern int RegisterWindowMessage(string message);
 	}
 
+	// ------------------------------		delegates 	----------------------------------------------------------
+		
 	public delegate void HandleStatusMainChange(object sender, SetStatusMainEventArgs e);
 
 	public delegate void HandleWindowMainChange(object sender, SetStatusMainEventArgs e);

@@ -481,6 +481,7 @@ namespace	Next_View
 		void DarkPic()
 		{
 			picBox.Image = null;
+			Dark2nd();
 		}
 
 		public void	NextPic()
@@ -867,6 +868,13 @@ namespace	Next_View
 			return m_Image2._ndRunning;
 		}
 
+		public void Dark2nd()
+		{
+			if (CanShow2nd()){
+				m_Image2.picBox.Image = null;
+			}
+		}
+		
 		public void Close2nd()
 		{
 			if (CanShow2nd()){
