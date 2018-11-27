@@ -1,34 +1,34 @@
 ﻿/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-File name:		 imageform.cs
-Description:	 image form
-Copyright:		 Copyright (c) Martin	A. Schnell,	2012
-Licence:		 GNU General Public	License
-				 This	program	is free	software;	you	can	redistribute it	and/or
-				 modify	it under the terms of	the	GNU	General	Public License
-				 as	published	by the Free	Software Foundation.
+File name:     imageform.cs
+Description:   image form
+Copyright:     Copyright (c) Martin A. Schnell, 2012
+Licence:       GNU General Public License
+               This program is free software; you can redistribute it and/or
+               modify it under the terms of the GNU General Public License
+               as published by the Free Software Foundation.
 
-				 This	program	is free	software:	you	can	redistribute it	and/or modify
-				 it	under	the	terms	of the GNU General Public	License	as published by
-				 the Free	Software Foundation, either	version	3	of the License,	or
-				 (at your	option)	any	later	version.
+               This program is free software: you can redistribute it and/or modify
+               it under the terms of the GNU General Public License as published by
+               the Free Software Foundation, either version 3 of the License, or
+               (at your option) any later version.
 History:
 
-*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*/
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-using	System;
-using	System.Drawing;	 //	Bitmap
-using	System.Diagnostics;	 //	Debug
-using	System.IO;	 //	directory
-using	System.Windows.Forms;
-using	Next_View.Properties;
-using	WeifenLuo.WinFormsUI.Docking;
+using System;  
+using System.Drawing;  // Bitmap
+using System.Diagnostics;  // Debug
+using System.IO;   // directory
+using System.Windows.Forms;
+using Next_View.Properties;
+using WeifenLuo.WinFormsUI.Docking;
 
-namespace	Next_View
+namespace Next_View
 {
-	///	<summary>
-	///	Description	of StatsForm.
-	///	</summary>
-	public partial class frmImage	:	DockContent
+	/// <summary>
+	/// Description of StatsForm.
+	/// </summary>
+	public partial class frmImage : DockContent
 	{
 		ImgList _il = new ImgList();
 		int _scHeight = 0;
@@ -49,16 +49,18 @@ namespace	Next_View
 
 		public frmImage  m_Image2;
 
-		public event HandleStatusMainChange	 StatusChanged;
+		public event HandleStatusMainChange  StatusChanged;
 
-		public event HandleWindowMainChange	 WindowChanged;
+		public event HandleWindowMainChange  WindowChanged;
 
 		public event HandleWindowSize WindowSize;
 
+		public event HandleFilenameChange  FilenameChanged;
+		
 		public frmImage(int mainWidth, int mainHeight, WinType wType)
 		{
 			//
-			// The InitializeComponent() call	is required	for	Windows	Forms	designer support.
+			// The InitializeComponent() call is required for Windows Forms designer support.
 			//
 			InitializeComponent();
 			_wType = wType;
@@ -73,7 +75,7 @@ namespace	Next_View
 		}
 
 
-		// ------------------------------		events form	----------------------------------------------------------
+		// ------------------------------   events form ----------------------------------------------------------
 
 		void FrmImageLoad(object sender, EventArgs e)
 		{
@@ -140,14 +142,14 @@ namespace	Next_View
 
 				string loadFile = "";
 				_il.DirClear();
-				foreach	(string	dropFile in	files)
+				foreach (string dropFile in files)
 				{
 					string dropDir = "";
 					if (File.Exists(dropFile)) {
 						if (_il.FileIsValid(dropFile)){
 							picCount++;
 							_il.DirPicAdd(dropFile);
-							dropDir	= Path.GetDirectoryName(dropFile);
+							dropDir = Path.GetDirectoryName(dropFile);
 							loadFile = dropFile;
 						}
 						else{
@@ -155,13 +157,13 @@ namespace	Next_View
 							MessageBox.Show("File type " + ext  + " not supported", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 						}
 					}
-					else if	(Directory.Exists(dropFile)){	// is	dir
+					else if (Directory.Exists(dropFile)){ // is dir
 						dirCount++;
-						dropDir	= dropFile;
+						dropDir = dropFile;
 						loadFile = dropFile;
 						Debug.WriteLine("drop dir" + dropDir);
 					}
-					else if (dropDir	== ""){
+					else if (dropDir  == ""){
 						MessageBox.Show("No drop dir", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 					}
 				}  // end for
@@ -185,6 +187,7 @@ namespace	Next_View
 
 				if (loadFile != ""){
 					PicLoad(loadFile, true);
+					SetFilename(loadFile);
 				}
 				else {
 					picBox.Image = null;
@@ -197,7 +200,7 @@ namespace	Next_View
 			}
 		}
 
-		void FrmImageDragEnter(object	sender,	DragEventArgs	e)
+		void FrmImageDragEnter(object sender, DragEventArgs e)
 		{
 			if (e.Data.GetDataPresent(DataFormats.FileDrop))
 				e.Effect = DragDropEffects.Copy;
@@ -205,8 +208,8 @@ namespace	Next_View
 
 		void FrmImageDragOver(object sender, DragEventArgs e)
 		{
-			if (ModifierKeys.HasFlag(Keys.Control))	{
-				// control is	pressed. Copy.
+			if (ModifierKeys.HasFlag(Keys.Control)) {
+				// control is pressed. Copy.
 				e.Effect = DragDropEffects.Copy;
 			}
 			else {
@@ -214,9 +217,9 @@ namespace	Next_View
 			}
 		}
 
-		void FrmImageHelpRequested(object	sender,	HelpEventArgs	hlpevent)
+		void FrmImageHelpRequested(object sender, HelpEventArgs hlpevent)
 		{
-			//Help.ShowHelp(this,	"Next-View.chm", "Fieldlist.htm");
+			//Help.ShowHelp(this, "Next-View.chm", "Fieldlist.htm");
 			MessageBox.Show("Help not yet done", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 		}
 
@@ -255,13 +258,13 @@ namespace	Next_View
 		}
 
 
-		// ------------------------------		key functions	 ----------------------------------------------------------
+		// ------------------------------   key functions  ----------------------------------------------------------
 
 		void FrmImageKeyDown(object sender, KeyEventArgs e)
 		{
 
 			//Debug.WriteLine(" ");
-			//Debug.WriteLine("key:	" + e.KeyValue.ToString());   // KeyCode?
+			//Debug.WriteLine("key: " + e.KeyValue.ToString());   // KeyCode?
 
 			bool alt = false;
 			if (e.Modifiers == Keys.Alt){
@@ -380,10 +383,10 @@ namespace	Next_View
 			//  ctrl 17
 		}
 
-		// ------------------------------		pic functions	 ----------------------------------------------------------
+		// ------------------------------   pic functions  ----------------------------------------------------------
 
 
-		public bool PicLoad(string	pPath, bool log)
+		public bool PicLoad(string  pPath, bool log)
 		{
 			try
 			{
@@ -415,13 +418,13 @@ namespace	Next_View
 					stream.Close();
 				}
 				GC.Collect();
- 				Application.DoEvents();
+				Application.DoEvents();
 
 				//using (Image bmpTemp = new Bitmap(pPath))      // abort for invalid jpg
 				//{
-				//	_myImg = new Bitmap(bmpTemp);
-				//	if(bmpTemp != null)
-				//		((IDisposable)bmpTemp).Dispose();
+				//  _myImg = new Bitmap(bmpTemp);
+				//  if(bmpTemp != null)
+				//    ((IDisposable)bmpTemp).Dispose();
 				//}
 				//GC.Collect();
 
@@ -473,7 +476,7 @@ namespace	Next_View
 		}
 
 
-		public void PicScan(string	pPath, bool allDirs)
+		public void PicScan(string  pPath, bool allDirs)
 		{
 			_il.DirScan(pPath, allDirs);
 		}
@@ -484,7 +487,7 @@ namespace	Next_View
 			Dark2nd();
 		}
 
-		public void	NextPic()
+		public void NextPic()
 		{
 			string pPath = "";
 			if (_il.DirPicNext(ref pPath)){
@@ -495,7 +498,7 @@ namespace	Next_View
 			}
 		}
 
-		public void	NextPicDir()
+		public void NextPicDir()
 		{
 			PicScan(_currentPath, false);
 			int picPos = 0;
@@ -504,7 +507,7 @@ namespace	Next_View
 			NextPic();
 		}
 
-		public void	PriorPic()
+		public void PriorPic()
 		{
 			string pPath = "";
 			if (_il.DirPicPrior(ref pPath)){
@@ -515,7 +518,7 @@ namespace	Next_View
 			}
 		}
 
-		public void	PriorPicDir()
+		public void PriorPicDir()
 		{
 			PicScan(_currentPath, false);
 			int picPos = 0;
@@ -524,7 +527,7 @@ namespace	Next_View
 			PriorPic();
 		}
 
-		public void	FirstPic()
+		public void FirstPic()
 		{
 			string pPath = "";
 			if (_il.DirPicFirst(ref pPath)){
@@ -535,7 +538,7 @@ namespace	Next_View
 			}
 		}
 
-		public void	LastPic()
+		public void LastPic()
 		{
 			string pPath = "";
 			if (_il.DirPicLast(ref pPath)){
@@ -546,7 +549,7 @@ namespace	Next_View
 			}
 		}
 
-		public void	BackPic()
+		public void BackPic()
 		{
 			string pPath = "";
 			if (_il.LogBack(ref pPath)){
@@ -554,7 +557,7 @@ namespace	Next_View
 			}
 		}
 
-		public void	ForwardPic()
+		public void ForwardPic()
 		{
 			string pPath = "";
 			if (_il.LogForward(ref pPath)){
@@ -562,14 +565,14 @@ namespace	Next_View
 			}
 		}
 
-		public void	RefreshDir()
+		public void RefreshDir()
 		{
 			_il.DirClear();
 			PicScan(_currentPath, false);
 			PicLoad(_currentPath, true);
 		}
 
-		public void	RenamePic()
+		public void RenamePic()
 		{
 			string newPath = "";
 			frmRename frm = new frmRename(_currentPath);
@@ -583,7 +586,7 @@ namespace	Next_View
 			}
 		}
 
-		public void	RenamePicPlus()
+		public void RenamePicPlus()
 		{
 			string fname = Path.GetFileNameWithoutExtension(_currentPath);
 			string fext = Path.GetExtension(_currentPath);
@@ -599,7 +602,7 @@ namespace	Next_View
 			}
 		}
 
-		public void	RemovePicPlus()
+		public void RemovePicPlus()
 		{
 			string fname = Path.GetFileNameWithoutExtension(_currentPath);
 			string fext = Path.GetExtension(_currentPath);
@@ -619,14 +622,14 @@ namespace	Next_View
 			}
 		}
 
-		public void	TempmarkDelete()
+		public void TempmarkDelete()
 		{
 			if (!_il.MarkDelete(_currentPath)){
 				MessageBox.Show("This image is not marked", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}
 		}
 
-		public void	TempmarkGo()
+		public void TempmarkGo()
 		{
 			string markPath = "";
 			if (_il.MarkGo(ref markPath)){
@@ -638,7 +641,7 @@ namespace	Next_View
 			}
 		}
 
-		public void	TempmarkPic()
+		public void TempmarkPic()
 		{
 			_il.MarkPic(_currentPath);
 		}
@@ -654,7 +657,7 @@ namespace	Next_View
 			}
 		}
 
-		public void	DelPic()
+		public void DelPic()
 		{
 			if (DelFile.MoveToRecycleBin(_currentPath)){
 				string nextPath = "";
@@ -672,13 +675,13 @@ namespace	Next_View
 			}
 		}
 
-		public void	OpenPic()
+		public void OpenPic()
 		{
 			var dialog = new OpenFileDialog();
 			string lastPath = Settings.Default.LastImage;
 			if (File.Exists(lastPath)){
 				if (Directory.Exists(Path.GetDirectoryName(lastPath))) {
-				  dialog.InitialDirectory = Path.GetDirectoryName(lastPath);
+					dialog.InitialDirectory = Path.GetDirectoryName(lastPath);
 				}
 			}
 			dialog.Filter = "All images |*.jpg;*.jpeg;*.png;*.gif;*.bmp;*.ico;*.tif;*.wmf;*.emf|JPEG files |*.jpg;*.jpeg|PNG files |*.png|GIF files |*.gif|Bitmap files |*.bmp|Icon files |*.ico|TIF files |*.tif|WMF files |*.wmf|EMF files |*.emf";
@@ -689,12 +692,13 @@ namespace	Next_View
 				string picPath = dialog.FileName;
 				PicScan(picPath, false);
 				PicLoad(picPath, true);
+				SetFilename(picPath);
 			}
 		}
 
 
 
-		// ------------------------------		pop up 	----------------------------------------------------------
+		// ------------------------------   pop up  ----------------------------------------------------------
 
 		void PopOpenClick(object sender, EventArgs e)
 		{
@@ -752,9 +756,9 @@ namespace	Next_View
 			}
 		}
 
-		// ------------------------------		other functions 	----------------------------------------------------------
+		// ------------------------------   other functions   ----------------------------------------------------------
 
-		public void	SearchPic()
+		public void SearchPic()
 		{
 			SearchForm frm = new SearchForm(_currentPath, _lastSearchStr, _il);
 			frm.ShowDialog();
@@ -776,7 +780,7 @@ namespace	Next_View
 			}
 		}
 
-		public void	ShowFullScreen()
+		public void ShowFullScreen()
 		{
 			string pPath = "";
 			var frm = new FullScreen(_il);
@@ -791,7 +795,7 @@ namespace	Next_View
 			}
 		}
 
-		public void	StartEditor()
+		public void StartEditor()
 		{
 			string editorPath = Settings.Default.Editor;
 			if ((editorPath == "")||(!File.Exists(editorPath))) {    // extension default editor
@@ -802,7 +806,7 @@ namespace	Next_View
 			}
 		}
 
-		public void	Test()
+		public void Test()
 		{
 			if (m_Image2 != null){
 				Debug.WriteLine("Test: " + m_Image2._ndRunning.ToString());
@@ -812,9 +816,9 @@ namespace	Next_View
 			}
 		}
 
-		// ------------------------------		2nd screen  	----------------------------------------------------------
+		// ------------------------------   2nd screen    ----------------------------------------------------------
 
-		public void	Start2ndScreen()
+		public void Start2ndScreen()
 		{
 			string prPath = _priorPath;
 			if (prPath == ""){
@@ -834,7 +838,7 @@ namespace	Next_View
 			}
 		}
 
-		public void	Show2ndPic(string prPath)
+		public void Show2ndPic(string prPath)
 		{
 			if (CanShow2nd()){
 				if (prPath == ""){
@@ -882,60 +886,76 @@ namespace	Next_View
 			}
 		}
 
-		// ------------------------------		delegates 	----------------------------------------------------------
+		// ------------------------------   delegates   ----------------------------------------------------------
 
-		public void	SetWindowText(string text2)
+		public void SetWindowText(string text2)
 		{
-			// called	by: PicLoad
+			// called by: PicLoad
 			// output: main.HandleWindow
 			this.Text = text2 + "  -  Next-View";
 
-			OnWindowChanged(new	SetStatusMainEventArgs(text2));
+			OnWindowChanged(new SetStatusMainEventArgs(text2));
 			Application.DoEvents();
 		}
 
-		protected	virtual	void OnWindowChanged(SetStatusMainEventArgs	e)
+		protected virtual void OnWindowChanged(SetStatusMainEventArgs e)
 		{
-			if(this.WindowChanged	!= null)		 //	nothing	subscribed to	this event
+			if(this.WindowChanged != null)     // nothing subscribed to this event
 			{
 				this.WindowChanged(this, e);
 			}
 		}
 
-		public void	SetWindowSize(int w, int h)
+		public void SetWindowSize(int w, int h)
 		{
-			// called	by: PicLoad
+			// called by: PicLoad
 			// output: main.SetWindowSize
 			OnWindowSize(new SetSizeEventArgs(w, h));
 			Application.DoEvents();
 		}
 
-		protected	virtual	void OnWindowSize(SetSizeEventArgs	e)
+		protected virtual void OnWindowSize(SetSizeEventArgs  e)
 		{
-			if(this.WindowSize != null)		 //	nothing	subscribed to	this event
+			if(this.WindowSize != null)    // nothing subscribed to this event
 			{
 				this.WindowSize(this, e);
 			}
-		}
+		}  
 
-		public void	SetStatusText(string text1)
+		public void SetStatusText(string text1)
 		{
-			// called	by: PicLoad, 'no img loaded'
+			// called by: PicLoad, 'no img loaded'
 			// output: main.HandleStatus
-			OnStatusChanged(new	SetStatusMainEventArgs(text1));
+			OnStatusChanged(new SetStatusMainEventArgs(text1));
 			Application.DoEvents();
 		}
 
-		protected	virtual	void OnStatusChanged(SetStatusMainEventArgs	e)
+		protected virtual void OnStatusChanged(SetStatusMainEventArgs e)
 		{
-			if(this.StatusChanged	!= null)		 //	nothing	subscribed to	this event
+			if(this.StatusChanged != null)     // nothing subscribed to this event
 			{
 				this.StatusChanged(this, e);
 			}
 		}
 
+		public void SetFilename(string text1)
+		{
+			// called by:  
+			// output: main.HandleStatus
+			OnFilenameChanged(new SetFilenameEventArgs(text1));
+			Application.DoEvents();
+		}
 
-	}	 //	end	frmImage
+		protected virtual void OnFilenameChanged(SetFilenameEventArgs e)
+		{
+			if(this.FilenameChanged != null)     
+			{
+				this.FilenameChanged(this, e);
+			}
+		}
+		
+
+	}  // end frmImage
 
 	public enum WinType
 	{

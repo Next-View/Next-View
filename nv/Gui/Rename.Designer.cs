@@ -51,9 +51,11 @@ namespace Next_View
 			// 
 			// cmdRenameOk
 			// 
-			this.cmdRenameOk.Location = new System.Drawing.Point(341, 97);
+			this.cmdRenameOk.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.cmdRenameOk.Location = new System.Drawing.Point(387, 119);
+			this.cmdRenameOk.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
 			this.cmdRenameOk.Name = "cmdRenameOk";
-			this.cmdRenameOk.Size = new System.Drawing.Size(75, 23);
+			this.cmdRenameOk.Size = new System.Drawing.Size(80, 27);
 			this.cmdRenameOk.TabIndex = 3;
 			this.cmdRenameOk.Text = "&Ok";
 			this.cmdRenameOk.UseVisualStyleBackColor = true;
@@ -62,9 +64,11 @@ namespace Next_View
 			// cmdRenameCancel
 			// 
 			this.cmdRenameCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.cmdRenameCancel.Location = new System.Drawing.Point(26, 97);
+			this.cmdRenameCancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.cmdRenameCancel.Location = new System.Drawing.Point(34, 119);
+			this.cmdRenameCancel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
 			this.cmdRenameCancel.Name = "cmdRenameCancel";
-			this.cmdRenameCancel.Size = new System.Drawing.Size(75, 23);
+			this.cmdRenameCancel.Size = new System.Drawing.Size(95, 27);
 			this.cmdRenameCancel.TabIndex = 2;
 			this.cmdRenameCancel.Text = "&Cancel";
 			this.cmdRenameCancel.UseVisualStyleBackColor = true;
@@ -72,40 +76,48 @@ namespace Next_View
 			// 
 			// label1
 			// 
-			this.label1.Location = new System.Drawing.Point(26, 18);
+			this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label1.Location = new System.Drawing.Point(34, 26);
+			this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(100, 23);
+			this.label1.Size = new System.Drawing.Size(178, 28);
 			this.label1.TabIndex = 2;
 			this.label1.Text = "New name:";
 			// 
 			// edFilename
 			// 
-			this.edFilename.Location = new System.Drawing.Point(26, 54);
+			this.edFilename.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.edFilename.Location = new System.Drawing.Point(34, 66);
+			this.edFilename.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
 			this.edFilename.Name = "edFilename";
-			this.edFilename.Size = new System.Drawing.Size(288, 20);
+			this.edFilename.Size = new System.Drawing.Size(307, 24);
 			this.edFilename.TabIndex = 1;
 			// 
 			// edExt
 			// 
-			this.edExt.Location = new System.Drawing.Point(341, 54);
+			this.edExt.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.edExt.Location = new System.Drawing.Point(370, 66);
+			this.edExt.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
 			this.edExt.Name = "edExt";
 			this.edExt.ReadOnly = true;
-			this.edExt.Size = new System.Drawing.Size(75, 20);
+			this.edExt.Size = new System.Drawing.Size(98, 24);
 			this.edExt.TabIndex = 0;
 			this.edExt.TabStop = false;
 			// 
 			// frmRename
 			// 
 			this.AcceptButton = this.cmdRenameOk;
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(469, 140);
+			this.ClientSize = new System.Drawing.Size(506, 172);
 			this.Controls.Add(this.edExt);
 			this.Controls.Add(this.edFilename);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.cmdRenameCancel);
 			this.Controls.Add(this.cmdRenameOk);
+			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+			this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
 			this.Name = "frmRename";
 			this.Text = "Rename";
 			this.Shown += new System.EventHandler(this.FrmRenameShown);

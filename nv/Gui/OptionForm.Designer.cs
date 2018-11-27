@@ -93,7 +93,7 @@ namespace Next_View
 			this.tabGeneral.Controls.Add(this.edEditor);
 			this.tabGeneral.Location = new System.Drawing.Point(4, 22);
 			this.tabGeneral.Name = "tabGeneral";
-			this.tabGeneral.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+			this.tabGeneral.Padding = new System.Windows.Forms.Padding(3);
 			this.tabGeneral.Size = new System.Drawing.Size(557, 266);
 			this.tabGeneral.TabIndex = 0;
 			this.tabGeneral.Text = "General";
@@ -139,9 +139,9 @@ namespace Next_View
 			this.tabExtensions.Controls.Add(this.label6);
 			this.tabExtensions.Controls.Add(this.listExtensions);
 			this.tabExtensions.Location = new System.Drawing.Point(4, 22);
-			this.tabExtensions.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.tabExtensions.Margin = new System.Windows.Forms.Padding(2);
 			this.tabExtensions.Name = "tabExtensions";
-			this.tabExtensions.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.tabExtensions.Padding = new System.Windows.Forms.Padding(2);
 			this.tabExtensions.Size = new System.Drawing.Size(557, 266);
 			this.tabExtensions.TabIndex = 2;
 			this.tabExtensions.Text = "Extensions";
@@ -149,8 +149,9 @@ namespace Next_View
 			// 
 			// cmdExtAssign
 			// 
+			this.cmdExtAssign.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.cmdExtAssign.Location = new System.Drawing.Point(9, 213);
-			this.cmdExtAssign.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.cmdExtAssign.Margin = new System.Windows.Forms.Padding(2);
 			this.cmdExtAssign.Name = "cmdExtAssign";
 			this.cmdExtAssign.Size = new System.Drawing.Size(110, 28);
 			this.cmdExtAssign.TabIndex = 7;
@@ -184,7 +185,7 @@ namespace Next_View
 			listViewItem2,
 			listViewItem3});
 			this.listExtensions.Location = new System.Drawing.Point(2, 2);
-			this.listExtensions.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.listExtensions.Margin = new System.Windows.Forms.Padding(2);
 			this.listExtensions.Name = "listExtensions";
 			this.listExtensions.Size = new System.Drawing.Size(553, 156);
 			this.listExtensions.TabIndex = 5;
@@ -208,9 +209,10 @@ namespace Next_View
 			// 
 			// cmdOk
 			// 
+			this.cmdOk.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.cmdOk.Location = new System.Drawing.Point(480, 329);
 			this.cmdOk.Name = "cmdOk";
-			this.cmdOk.Size = new System.Drawing.Size(75, 23);
+			this.cmdOk.Size = new System.Drawing.Size(75, 29);
 			this.cmdOk.TabIndex = 1;
 			this.cmdOk.Text = "&OK";
 			this.cmdOk.UseVisualStyleBackColor = true;
@@ -218,9 +220,10 @@ namespace Next_View
 			// 
 			// cmdCancel
 			// 
+			this.cmdCancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.cmdCancel.Location = new System.Drawing.Point(10, 329);
 			this.cmdCancel.Name = "cmdCancel";
-			this.cmdCancel.Size = new System.Drawing.Size(75, 23);
+			this.cmdCancel.Size = new System.Drawing.Size(75, 29);
 			this.cmdCancel.TabIndex = 2;
 			this.cmdCancel.Text = "&Cancel";
 			this.cmdCancel.UseVisualStyleBackColor = true;

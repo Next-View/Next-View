@@ -1,38 +1,38 @@
 ﻿/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-File name:		 imglist.cs
-Description:	 list	of images	to view
-Copyright:		 Copyright (c) Martin	A. Schnell,	2018
-Licence:		 GNU General Public	License
-				 This	program	is free	software;	you	can	redistribute it	and/or
-				 modify	it under the terms of	the	GNU	General	Public License
-				 as	published	by the Free	Software Foundation.
+File name:     imglist.cs
+Description:   list of images to view
+Copyright:     Copyright (c) Martin A. Schnell, 2018
+Licence:       GNU General Public License
+               This program is free software; you can redistribute it and/or
+               modify it under the terms of the GNU General Public License
+               as published by the Free Software Foundation.
 
-				This program	is free	software:	you	can	redistribute it	and/or modify
-				 it	under	the	terms	of the GNU General Public	License	as published by
-				 the Free	Software Foundation, either	version	3	of the License,	or
-				 (at your	option)	any	later	version.
+               This program is free software: you can redistribute it and/or modify
+               it under the terms of the GNU General Public License as published by
+               the Free Software Foundation, either version 3 of the License, or
+               (at your option) any later version.
 History:
 
-*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*/
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-using	System;
-using	System.Collections.Generic;		// List
-using	System.Diagnostics;	 //	Debug
-using	System.IO;	 //	path
-using	System.Linq;	 //	order	by
+using System;
+using System.Collections.Generic;   // List
+using System.Diagnostics;  // Debug
+using System.IO;   // path
+using System.Linq;   // order by
 using System.Runtime.InteropServices;
 
-namespace	Next_View
+namespace Next_View
 {
-	///	<summary>
+	/// <summary>
 	///
-	///	</summary>
+	/// </summary>
 	public class ImgList
 	{
 		public List<string> _imList = new List<string>();
 		int _picPos = 1;
 		string _picDir = "";
-		readonly string[]	_validExtensions	=	new	[] {".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tif", ".ico", ".wmf", ".emf"};
+		readonly string[] _validExtensions  = new [] {".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tif", ".ico", ".wmf", ".emf"};
 		// no .lnk files
 
 		List<string> _logList = new List<string>();
@@ -54,40 +54,40 @@ namespace	Next_View
 			return _validExtensions.Contains(ext);
 		}
 
-		public void	DirClear()
+		public void DirClear()
 		{
 			_imList.Clear();
 			_picDir = "";
 		}
 
-		public void	DirPicAdd(string picPath)
+		public void DirPicAdd(string picPath)
 		{
 			_imList.Add(picPath);
 		}
 
-		public void	DirScan(string picPath, bool allDirs)
+		public void DirScan(string picPath, bool allDirs)
 		{
 			string picDir = "";
 			if (File.Exists(picPath)) {
 				picDir = Path.GetDirectoryName(picPath);
 			}
-			else if	(Directory.Exists(picPath)){
+			else if (Directory.Exists(picPath)){
 				picDir = picPath;
 			}
 			else if (Directory.Exists(Path.GetDirectoryName(picPath))){
 				picDir = Path.GetDirectoryName(picPath);
 			}
-			if (_picDir !=	picDir)	{
+			if (_picDir !=  picDir) {
 				_picDir = picDir;
 
 				if (allDirs){
-					_imList	=	Directory.GetFiles(picDir, "*.*", SearchOption.AllDirectories)
-										.Where(file	=> _validExtensions.Any(file.ToLower().EndsWith))
+					_imList = Directory.GetFiles(picDir, "*.*", SearchOption.AllDirectories)
+										.Where(file => _validExtensions.Any(file.ToLower().EndsWith))
 										.ToList();
 				}
 				else {
-					_imList	=	Directory.GetFiles(picDir)
-										.Where(file	=> _validExtensions.Any(file.ToLower().EndsWith))
+					_imList = Directory.GetFiles(picDir)
+										.Where(file => _validExtensions.Any(file.ToLower().EndsWith))
 										.ToList();
 				}
 				FilenameComparer fc = new FilenameComparer();
@@ -98,7 +98,7 @@ namespace	Next_View
 			}
 		}
 
-		public void	DirPosPath(ref int picPos, ref int picAll, string pPath)
+		public void DirPosPath(ref int picPos, ref int picAll, string pPath)
 		{
 			// position of image in imageList 
 			_picPos = _imList.IndexOf(pPath);
@@ -107,7 +107,7 @@ namespace	Next_View
 			picAll = _imList.Count;
 		}
 
-		public bool	DirPicNext(ref string pPath)
+		public bool DirPicNext(ref string pPath)
 		{
 			if (_imList.Count < 1) {
 				return false;
@@ -121,7 +121,7 @@ namespace	Next_View
 			return true;
 		}
 
-		public bool	DirPicPrior(ref string pPath)
+		public bool DirPicPrior(ref string pPath)
 		{
 			if (_imList.Count < 1) {
 				return false;
@@ -135,7 +135,7 @@ namespace	Next_View
 			return true;
 		}
 
-		public bool	DirPicFirst(ref string pPath)
+		public bool DirPicFirst(ref string pPath)
 		{
 			if (_imList.Count < 1) {
 				return false;
@@ -145,7 +145,7 @@ namespace	Next_View
 			return true;
 		}
 
-		public bool	DirPicLast(ref string pPath)
+		public bool DirPicLast(ref string pPath)
 		{
 			if (_imList.Count < 1) {
 				return false;
@@ -155,7 +155,7 @@ namespace	Next_View
 			return true;
 		}
 
-		public bool	DirPosCurrent(ref string pPath)
+		public bool DirPosCurrent(ref string pPath)
 		{
 			if (_imList.Count < 1) {
 				return false;
@@ -164,7 +164,7 @@ namespace	Next_View
 			return true;
 		}
 
-		public bool	DirRefresh(ref string pPath)
+		public bool DirRefresh(ref string pPath)
 		{
 			if (_imList.Count < 1) {
 				return false;
@@ -175,9 +175,9 @@ namespace	Next_View
 
 		//--------------------------  log  ------------------------------------//
 
-		public void	LogPic(string pPath)
+		public void LogPic(string pPath)
 		{
-			if (_lastPic !=	pPath)	{
+			if (_lastPic != pPath)  {
 				_lastPic = pPath;
 				_logList.Add(pPath);
 				_logPos++;
@@ -185,7 +185,7 @@ namespace	Next_View
 			}
 		}
 
-		public bool	LogBack(ref string pPath)
+		public bool LogBack(ref string pPath)
 		{
 			if (_logPos > 0 )
 			{
@@ -196,7 +196,7 @@ namespace	Next_View
 			else return false;
 		}
 
-		public bool	LogForward(ref string pPath)
+		public bool LogForward(ref string pPath)
 		{
 			if (_logPos < _logList.Count - 1)
 			{
@@ -207,13 +207,13 @@ namespace	Next_View
 			else return false;
 		}
 
-		public void	LogPos(ref int picPos, ref int picAll)
+		public void LogPos(ref int picPos, ref int picAll)
 		{
 			picPos = _logPos + 1;
 			picAll = _logMax + 1;
 		}
 
-		public void	RenameListLog(string nameFrom, string nameTo)
+		public void RenameListLog(string nameFrom, string nameTo)
 		{
 			int pPos = _imList.IndexOf(nameFrom);
 			if (pPos > -1){
@@ -226,7 +226,7 @@ namespace	Next_View
 			RenameMarkList(nameFrom, nameTo);
 		}
 
-		public bool	DeleteListLog(string nameDel, ref string nameNext)
+		public bool DeleteListLog(string nameDel, ref string nameNext)
 		{
 			_picPos = _imList.IndexOf(nameDel);
 			if(_picPos > -1) {
@@ -257,19 +257,19 @@ namespace	Next_View
 
 		//--------------------------  temp mark  ------------------------------------//
 
-		public bool	MarkDelete(string pPath)
+		public bool MarkDelete(string pPath)
 		{
 			int rPos = _markList.IndexOf(pPath);
 			if(rPos > -1) {
 				_markList.RemoveAt(rPos);
 				return true;
-			}				
+			}       
 			else {
 				return false;
 			}
 		}
 		
-		public bool	MarkGo(ref string pPath)
+		public bool MarkGo(ref string pPath)
 		{
 			if (_markList.Count == 0){
 				return false;
@@ -279,11 +279,11 @@ namespace	Next_View
 				_markPos = 0;
 			}
 			
- 			pPath = _markList[_markPos];
- 			return true;
+			pPath = _markList[_markPos];
+			return true;
 		}
 				
-		public void	MarkPic(string pPath)
+		public void MarkPic(string pPath)
 		{
 			if (_markList.IndexOf(pPath) == -1){   // no dups
 				_markList.Add(pPath);
@@ -296,7 +296,7 @@ namespace	Next_View
 			if (pPos > -1){
 				 _markList[pPos] = nameTo;
 			}
-		}		
+		}   
 
 	}  // end ImgList
 
@@ -306,10 +306,10 @@ namespace	Next_View
 		[DllImport("shlwapi.dll", CharSet = CharSet.Unicode)]
 		static extern Int32 StrCmpLogical(String x, String y);
 	
-	  	public int Compare(string x, string y)
-	 	{
-	  		return StrCmpLogical(x, y);
-	  	}
+		public int Compare(string x, string y)
+		{
+			return StrCmpLogical(x, y);
+		}
 	}
 	
 }

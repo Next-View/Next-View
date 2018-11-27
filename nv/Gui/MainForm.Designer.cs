@@ -41,12 +41,12 @@ namespace Next_View
 			this.menuMain = new System.Windows.Forms.MenuStrip();
 			this.mnuFile = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuOpenImage = new System.Windows.Forms.ToolStripMenuItem();
-			this.recentsToolStripMenuItem1 = new RecentsToolStripMenuItem();
 			this.N1 = new System.Windows.Forms.ToolStripSeparator();
 			this.mnuRename = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuDelete = new System.Windows.Forms.ToolStripMenuItem();
 			this.N2 = new System.Windows.Forms.ToolStripSeparator();
 			this.mnuExit = new System.Windows.Forms.ToolStripMenuItem();
+			this.recentItem1 = new Next_View.RecentItem();
 			this.mnuEdit = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuOptions = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuStartEditor = new System.Windows.Forms.ToolStripMenuItem();
@@ -102,9 +102,8 @@ namespace Next_View
 			this.dockPanel1.DockTopPortion = 0.15D;
 			this.dockPanel1.DocumentStyle = WeifenLuo.WinFormsUI.Docking.DocumentStyle.DockingSdi;
 			this.dockPanel1.Location = new System.Drawing.Point(0, 0);
-			this.dockPanel1.Margin = new System.Windows.Forms.Padding(4);
 			this.dockPanel1.Name = "dockPanel1";
-			this.dockPanel1.Size = new System.Drawing.Size(1179, 612);
+			this.dockPanel1.Size = new System.Drawing.Size(884, 482);
 			this.dockPanel1.TabIndex = 0;
 			// 
 			// menuMain
@@ -118,7 +117,7 @@ namespace Next_View
 			this.mnuHelp});
 			this.menuMain.Location = new System.Drawing.Point(0, 27);
 			this.menuMain.Name = "menuMain";
-			this.menuMain.Size = new System.Drawing.Size(1179, 28);
+			this.menuMain.Size = new System.Drawing.Size(884, 28);
 			this.menuMain.TabIndex = 0;
 			this.menuMain.Text = "menuMain";
 			// 
@@ -126,7 +125,7 @@ namespace Next_View
 			// 
 			this.mnuFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
 			this.mnuOpenImage,
-			this.recentsToolStripMenuItem1,
+			this.recentItem1,
 			this.N1,
 			this.mnuRename,
 			this.mnuDelete,
@@ -145,13 +144,6 @@ namespace Next_View
 			this.mnuOpenImage.Size = new System.Drawing.Size(223, 26);
 			this.mnuOpenImage.Text = "&Open...";
 			this.mnuOpenImage.Click += new System.EventHandler(this.MnuOpenImageClick);
-			// 
-			// recentsToolStripMenuItem1
-			// 
-			this.recentsToolStripMenuItem1.Enabled = false;
-			this.recentsToolStripMenuItem1.Name = "recentsToolStripMenuItem1";
-			this.recentsToolStripMenuItem1.Size = new System.Drawing.Size(223, 26);
-			this.recentsToolStripMenuItem1.Text = "&Recent images";
 			// 
 			// N1
 			// 
@@ -186,6 +178,13 @@ namespace Next_View
 			this.mnuExit.Size = new System.Drawing.Size(223, 26);
 			this.mnuExit.Text = "&Exit";
 			this.mnuExit.Click += new System.EventHandler(this.MnuExitClick);
+			// 
+			// recentItem1
+			// 
+			this.recentItem1.Enabled = false;
+			this.recentItem1.Name = "recentItem1";
+			this.recentItem1.Size = new System.Drawing.Size(223, 26);
+			this.recentItem1.Text = "&Recent images";
 			// 
 			// mnuEdit
 			// 
@@ -382,7 +381,7 @@ namespace Next_View
 			this.statusLabel1});
 			this.statusMain.Location = new System.Drawing.Point(0, 0);
 			this.statusMain.Name = "statusMain";
-			this.statusMain.Size = new System.Drawing.Size(1179, 25);
+			this.statusMain.Size = new System.Drawing.Size(884, 25);
 			this.statusMain.TabIndex = 3;
 			this.statusMain.Text = "bla3";
 			// 
@@ -408,13 +407,11 @@ namespace Next_View
 			// 
 			this.toolStripContainer1.ContentPanel.AutoScroll = true;
 			this.toolStripContainer1.ContentPanel.Controls.Add(this.dockPanel1);
-			this.toolStripContainer1.ContentPanel.Margin = new System.Windows.Forms.Padding(4);
-			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(1179, 612);
+			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(884, 482);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
-			this.toolStripContainer1.Margin = new System.Windows.Forms.Padding(4);
 			this.toolStripContainer1.Name = "toolStripContainer1";
-			this.toolStripContainer1.Size = new System.Drawing.Size(1179, 692);
+			this.toolStripContainer1.Size = new System.Drawing.Size(884, 562);
 			this.toolStripContainer1.TabIndex = 4;
 			this.toolStripContainer1.Text = "toolStripContainer1";
 			// 
@@ -439,9 +436,8 @@ namespace Next_View
 			this.bnHelp});
 			this.toolStrip2.Location = new System.Drawing.Point(3, 0);
 			this.toolStrip2.Name = "toolStrip2";
-			this.toolStrip2.Size = new System.Drawing.Size(231, 27);
+			this.toolStrip2.Size = new System.Drawing.Size(192, 27);
 			this.toolStrip2.TabIndex = 1;
-			this.toolStrip2.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.ToolStrip2ItemClicked);
 			// 
 			// bnOpen
 			// 
@@ -525,14 +521,13 @@ namespace Next_View
 			// 
 			// frmMain
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1179, 692);
+			this.ClientSize = new System.Drawing.Size(884, 562);
 			this.Controls.Add(this.toolStripContainer1);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MainMenuStrip = this.menuMain;
-			this.Margin = new System.Windows.Forms.Padding(4);
-			this.MinimumSize = new System.Drawing.Size(498, 191);
+			this.MinimumSize = new System.Drawing.Size(378, 164);
 			this.Name = "frmMain";
 			this.Text = "Next-View";
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmMainFormClosed);
@@ -556,7 +551,6 @@ namespace Next_View
 		}
 		private System.Windows.Forms.ToolStripMenuItem mnuNextImage;
 		private System.Windows.Forms.ToolStripSeparator N2;
-		private RecentsToolStripMenuItem recentsToolStripMenuItem1;
 		private System.Windows.Forms.ToolStripMenuItem mnuView;
 		private System.Windows.Forms.ToolStripMenuItem mnuPriorImage;
 		private System.Windows.Forms.ToolStripMenuItem mnuHelp1;
@@ -600,5 +594,6 @@ namespace Next_View
 		private System.Windows.Forms.ToolStripMenuItem mnuStartEditor;
 		private System.Windows.Forms.ToolStripMenuItem mnuSearch;
 		private System.Windows.Forms.ToolStripMenuItem mnuGithub;
+		private Next_View.RecentItem recentItem1;
 	}
 }

@@ -80,7 +80,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="3rdParty\RecentsToolStripMenuItem.cs" />
     <Compile Include="Class\StatusMainEvent.cs" />
     <Compile Include="Diff\Netutl.cs" />
     <Compile Include="Diff\Util.cs" />
@@ -110,6 +109,7 @@
     <Compile Include="Gui\ImageForm.Designer.cs">
       <DependentUpon>ImageForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\RecentItem.cs" />
     <Compile Include="Gui\Rename.cs" />
     <Compile Include="Gui\Rename.Designer.cs">
       <DependentUpon>Rename.cs</DependentUpon>

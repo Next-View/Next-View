@@ -20,7 +20,10 @@ using System.Collections.Generic;		// List
 using System.Diagnostics;  // Debug
 using System.IO;	 //	directory
 using System.Linq;	 //	Where
+using System.Text.RegularExpressions;  // Regex
 using System.Windows.Forms;
+using Microsoft.VisualBasic;
+
 
 namespace Next_View
 {
@@ -147,7 +150,7 @@ namespace Next_View
 		
 		public void	DoSearch(string startDir, string sFor, bool subDirs, ref int findCount)
 		{
-			List<string> searchList1 = new List<string>();
+			var searchList1 = new List<string>();
 			string[]	validExtensions	=	new	[] {".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tif", ".ico", ".wmf", ".emf"};
 			if (subDirs){
 				searchList1 = Directory.GetFiles(startDir, "*.*", SearchOption.AllDirectories)
@@ -159,13 +162,16 @@ namespace Next_View
 									.Where(file	=> validExtensions.Any(file.ToLower().EndsWith))
 									.ToList();
 			}
-			FilenameComparer fc = new FilenameComparer();
+			var fc = new FilenameComparer();
 			searchList1.Sort(fc);
-						
+			
+			string sForReg = WildcardToRegex(sFor);			
 			foreach (string picPath in searchList1)
 			{
-				int strPos = Path.GetFileName(picPath).IndexOf(sFor);
-				if (strPos > -1){
+				string fName = Path.GetFileName(picPath);
+				if (Regex.IsMatch(fName, sForReg, RegexOptions.IgnoreCase)){
+				//int strPos = Path.GetFileName(picPath).IndexOf(sFor);
+				//if (strPos > -1){
 					ListViewItem item = this.listSearch.Items.Add(picPath);
 					item.ImageIndex = 0;
 					_searchList2.Add(picPath);
@@ -174,6 +180,19 @@ namespace Next_View
 			findCount = _searchList2.Count;
 		}
 
+		public string WildcardToRegex(string pattern)
+		{
+			string regReturn;
+			if (this.chkStartWith.Checked){
+				regReturn = "^" + Regex.Escape(pattern)   
+					.Replace(@"\*", ".*");
+			}
+			else {
+				regReturn = Regex.Escape(pattern)   
+					.Replace(@"\*", ".*");				
+			}
+			return regReturn;
+		}
 
 	}
 }

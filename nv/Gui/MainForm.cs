@@ -44,11 +44,7 @@ namespace Next_View
 			// The InitializeComponent() call is required for Windows Forms designer support.
 			//
 			InitializeComponent();
-			this.recentsToolStripMenuItem1.UpdateList();
-			this.recentsToolStripMenuItem1.MaxItems = 5;
-			this.recentsToolStripMenuItem1.ItemClick += new System.EventHandler(recentItem_Click);
-			this.recentsToolStripMenuItem1.UpdateList();
-
+			
 			_deserializeDockContent = new DeserializeDockContent(GetContentFromPersistString);
 		}
 
@@ -57,7 +53,7 @@ namespace Next_View
 				ShowMe();
 			}
 			base.WndProc(ref m);
-    }
+ 		}
 
 		void ShowMe()
 		{
@@ -85,6 +81,7 @@ namespace Next_View
 					Settings.Default.Upgrade();
 					Settings.Default.UpgradeRequired = false;
 					Settings.Default.Save( );
+					Debug.WriteLine("settings upgrade done: ");
 				}
 				int wW = Settings.Default.MainW;
 				int wH = Settings.Default.MainH;
@@ -98,10 +95,16 @@ namespace Next_View
 				if (wX + wW < 0) this.Left = -50;      // for screen settings change
 				else if (wX > sWidth) this.Left = sWidth - 100;
 				else this.Left = wX;
-				
 				if (wY + wH < 0) this.Top = -50;
 				else this.Top = wY;
-
+				
+				string recentPath = Settings.Default.RecentImgs;
+				this.recentItem1.LoadList(recentPath);
+				this.recentItem1.UpdateList();
+				this.recentItem1.MaxItems = 5;
+				this.recentItem1.ItemClick += new System.EventHandler(recentItem_Click);
+				this.recentItem1.UpdateList();
+			
 				Debug.WriteLine("open main y: {0} ", Settings.Default.MainY);
 			}
 			else {              // 2nd instance, give image path to 1st instance and end this 2nd 
@@ -125,7 +128,8 @@ namespace Next_View
 			m_Image.StatusChanged += new HandleStatusMainChange(HandleStatus);
 			m_Image.WindowChanged += new HandleWindowMainChange(HandleWindow);
 			m_Image.WindowSize += new HandleWindowSize(HandleSize);
-
+			m_Image.FilenameChanged += new HandleFilenameChange(HandleFilename);
+			
 			m_Image.Show(dockPanel1, DockState.Document);      // sequence of tabs
 			//m_Image.Show(dockPanel1, DockState.Document);     // set active
 
@@ -149,6 +153,7 @@ namespace Next_View
 				}
 				Debug.WriteLine("pic path : " + userImagePath);
 				firstImage = Directory.GetCurrentDirectory() + @"\Next-View-0.2.png";
+				recentItem1.AddRecentItem(firstImage);
 				m_Image.PicLoad(firstImage, true);
 			}
 		}
@@ -165,6 +170,9 @@ namespace Next_View
 			Settings.Default.MainY = this.Top;
 			Settings.Default.MainW = this.Width;
 			Settings.Default.MainH = this.Height;
+			string recentPath = "";
+			recentItem1.StringList(ref recentPath);
+			Settings.Default.RecentImgs = recentPath;	
 			Settings.Default.Save( );                  // last program line for debugger
 
 		}
@@ -177,7 +185,7 @@ namespace Next_View
 		void MnuOpenImageClick(object sender, EventArgs e)
 		{
 			m_Image.OpenPic();
-			recentsToolStripMenuItem1.AddRecentItem(Settings.Default.LastImage);
+			//recentItem1.AddRecentItem(Settings.Default.LastImage);
 		}
 
 		private void recentItem_Click(object sender, EventArgs e)
@@ -185,7 +193,7 @@ namespace Next_View
 			string picPath = sender.ToString();
 			if (File.Exists(picPath))
 			{
-				recentsToolStripMenuItem1.AddRecentItem(picPath);
+				recentItem1.AddRecentItem(picPath);
 				m_Image.PicScan(picPath, false);
 				m_Image.PicLoad(picPath, true);
 			}
@@ -444,7 +452,7 @@ namespace Next_View
 			string pPath = e.NewValue;
 			this.Text = pPath + "  -  Next-View";
 			// this.Text = Path.GetFileName(pPath)	+	"  -  Next-View";
-			recentsToolStripMenuItem1.AddRecentItem(pPath);
+			//recentItem1.AddRecentItem(pPath);
 		}
 
 
@@ -457,11 +465,15 @@ namespace Next_View
 			this.Height = h;
 			// Debug.WriteLine("set size W / H: {0}/{1}", w, h);
 		}
-		void ToolStrip2ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+
+		private void HandleFilename(object sender, SetFilenameEventArgs e)
+		// called by: SetFilename: openPic, FrmImageDragDrop 
 		{
-
+			string pPath = e.NewValue;
+			recentItem1.AddRecentItem(pPath);
+			Debug.WriteLine("filename: {0}", pPath);
 		}
-
+		
 	}  // end main
 	
 	//--------------------------------------------------------------//
@@ -483,4 +495,5 @@ namespace Next_View
 
 	public delegate void HandleWindowSize(object sender, SetSizeEventArgs e);
 
+	public delegate void HandleFilenameChange(object sender, SetFilenameEventArgs e);
 }

@@ -166,7 +166,19 @@ namespace Next_View.Properties {
 				this["MainY2"] = value;
 			}
 		}
-				
+
+		[global::System.Configuration.UserScopedSettingAttribute()]
+		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+		[global::System.Configuration.DefaultSettingValueAttribute("")]
+		public string RecentImgs {
+			get {
+				return ((string)(this["RecentImgs"]));
+			}
+			set {
+				this["RecentImgs"] = value;
+			}
+		}
+						
 		[global::System.Configuration.UserScopedSettingAttribute()]
 		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
 		[global::System.Configuration.DefaultSettingValueAttribute("True")]

@@ -40,6 +40,9 @@
     <Setting Name="MainY2" Type="System.Int32" Scope="User" Roaming="false">
       <Value Profile="(Default)">200</Value>
     </Setting>
+    <Setting Name="RecentImgs" Type="System.String" Scope="User" Roaming="false">
+      <Value Profile="(Default)"></Value>
+    </Setting>
     <Setting Name="UpgradeRequired" Type="System.Boolean" Scope="User" Roaming="false">
       <Value Profile="(Default)">True</Value>
     </Setting>

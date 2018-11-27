@@ -43,5 +43,15 @@ namespace Next_View
 			this.nHeight = h;
 		}
 	}
-	
+
+	public class SetFilenameEventArgs : EventArgs
+	{
+		public string NewValue;
+		public SetFilenameEventArgs(string value)
+			: base()
+		{
+			this.NewValue = value;
+		}
+	}
+		
 }
