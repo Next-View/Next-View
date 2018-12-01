@@ -41,12 +41,12 @@ namespace Next_View
 			this.menuMain = new System.Windows.Forms.MenuStrip();
 			this.mnuFile = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuOpenImage = new System.Windows.Forms.ToolStripMenuItem();
+			this.recentItem1 = new Next_View.RecentItem();
 			this.N1 = new System.Windows.Forms.ToolStripSeparator();
 			this.mnuRename = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuDelete = new System.Windows.Forms.ToolStripMenuItem();
 			this.N2 = new System.Windows.Forms.ToolStripSeparator();
 			this.mnuExit = new System.Windows.Forms.ToolStripMenuItem();
-			this.recentItem1 = new Next_View.RecentItem();
 			this.mnuEdit = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuOptions = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuStartEditor = new System.Windows.Forms.ToolStripMenuItem();
@@ -145,6 +145,13 @@ namespace Next_View
 			this.mnuOpenImage.Text = "&Open...";
 			this.mnuOpenImage.Click += new System.EventHandler(this.MnuOpenImageClick);
 			// 
+			// recentItem1
+			// 
+			this.recentItem1.Enabled = false;
+			this.recentItem1.Name = "recentItem1";
+			this.recentItem1.Size = new System.Drawing.Size(223, 26);
+			this.recentItem1.Text = "&Recent images";
+			// 
 			// N1
 			// 
 			this.N1.Name = "N1";
@@ -178,13 +185,6 @@ namespace Next_View
 			this.mnuExit.Size = new System.Drawing.Size(223, 26);
 			this.mnuExit.Text = "&Exit";
 			this.mnuExit.Click += new System.EventHandler(this.MnuExitClick);
-			// 
-			// recentItem1
-			// 
-			this.recentItem1.Enabled = false;
-			this.recentItem1.Name = "recentItem1";
-			this.recentItem1.Size = new System.Drawing.Size(223, 26);
-			this.recentItem1.Text = "&Recent images";
 			// 
 			// mnuEdit
 			// 
@@ -521,6 +521,7 @@ namespace Next_View
 			// 
 			// frmMain
 			// 
+			this.AllowDrop = true;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(884, 562);
@@ -533,6 +534,9 @@ namespace Next_View
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmMainFormClosed);
 			this.Load += new System.EventHandler(this.FrmMainLoad);
 			this.Shown += new System.EventHandler(this.FrmMainShown);
+			this.DragDrop += new System.Windows.Forms.DragEventHandler(this.FrmMainDragDrop);
+			this.DragEnter += new System.Windows.Forms.DragEventHandler(this.FrmMainDragEnter);
+			this.DragOver += new System.Windows.Forms.DragEventHandler(this.FrmMainDragOver);
 			this.menuMain.ResumeLayout(false);
 			this.menuMain.PerformLayout();
 			this.statusMain.ResumeLayout(false);

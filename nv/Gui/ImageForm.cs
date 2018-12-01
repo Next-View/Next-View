@@ -125,98 +125,6 @@ namespace Next_View
 
 		}
 
-		void FrmImageDragDrop(object sender, DragEventArgs e)
-		{
-			int picCount = 0;
-			int dirCount = 0;
-			bool allDirs = false;
-			if ((e.KeyState & 8) == 8){
-				Debug.WriteLine("ctrl");
-				allDirs = true;
-			}
-
-			if (e.Data.GetDataPresent(DataFormats.FileDrop)) {
-				e.Effect = DragDropEffects.Copy;
-				string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-				Array.Sort(files);
-
-				string loadFile = "";
-				_il.DirClear();
-				foreach (string dropFile in files)
-				{
-					string dropDir = "";
-					if (File.Exists(dropFile)) {
-						if (_il.FileIsValid(dropFile)){
-							picCount++;
-							_il.DirPicAdd(dropFile);
-							dropDir = Path.GetDirectoryName(dropFile);
-							loadFile = dropFile;
-						}
-						else{
-							string ext = Path.GetExtension(dropFile).ToLower();
-							MessageBox.Show("File type " + ext  + " not supported", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-						}
-					}
-					else if (Directory.Exists(dropFile)){ // is dir
-						dirCount++;
-						dropDir = dropFile;
-						loadFile = dropFile;
-						Debug.WriteLine("drop dir" + dropDir);
-					}
-					else if (dropDir  == ""){
-						MessageBox.Show("No drop dir", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-					}
-				}  // end for
-
-				if (picCount == 1) {
-					_picSelection = "Directory:";
-					PicScan(loadFile, allDirs);
-				}
-				else if (picCount > 0){
-					_picSelection = "Selection:";
-					// pic list already loaded
-				}
-				else if (dirCount > 0){
-					_picSelection = "Directory:";
-					PicScan(loadFile, allDirs);
-					_il.DirPicFirst(ref loadFile);
-				}
-				else {
-					//MessageBox.Show("No drop selection", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-				}
-
-				if (loadFile != ""){
-					PicLoad(loadFile, true);
-					SetFilename(loadFile);
-				}
-				else {
-					picBox.Image = null;
-					SetStatusText("No image loaded");
-				}
-
-			}
-			else {
-				e.Effect = DragDropEffects.None;
-			}
-		}
-
-		void FrmImageDragEnter(object sender, DragEventArgs e)
-		{
-			if (e.Data.GetDataPresent(DataFormats.FileDrop))
-				e.Effect = DragDropEffects.Copy;
-		}
-
-		void FrmImageDragOver(object sender, DragEventArgs e)
-		{
-			if (ModifierKeys.HasFlag(Keys.Control)) {
-				// control is pressed. Copy.
-				e.Effect = DragDropEffects.Copy;
-			}
-			else {
-				e.Effect = DragDropEffects.Move;
-			}
-		}
-
 		void FrmImageHelpRequested(object sender, HelpEventArgs hlpevent)
 		{
 			//Help.ShowHelp(this, "Next-View.chm", "Fieldlist.htm");
@@ -256,8 +164,104 @@ namespace Next_View
 		{
 			this.Close();
 		}
+		// ------------------------------   drop  ----------------------------------------------------------
 
+		void FrmImageDragDrop(object sender, DragEventArgs e)
+		{
+			bool allDirs = false;
+			if ((e.KeyState & 8) == 8){
+				Debug.WriteLine("ctrl");
+				allDirs = true;
+			}
 
+			if (e.Data.GetDataPresent(DataFormats.FileDrop)) {
+				e.Effect = DragDropEffects.Copy;
+				ProcessDrop((string[])e.Data.GetData(DataFormats.FileDrop), allDirs);
+
+			}
+			else {
+				e.Effect = DragDropEffects.None;
+			}
+		}
+				
+		public void ProcessDrop(string[] files, bool allDirs)
+		{
+			int picCount = 0;
+			int dirCount = 0;
+			Array.Sort(files);
+
+			string loadFile = "";
+			_il.DirClear();
+			foreach (string dropFile in files)
+			{
+				string dropDir = "";
+				if (File.Exists(dropFile)) {
+					if (_il.FileIsValid(dropFile)){
+						picCount++;
+						_il.DirPicAdd(dropFile);
+						dropDir = Path.GetDirectoryName(dropFile);
+						loadFile = dropFile;
+					}
+					else{
+						string ext = Path.GetExtension(dropFile).ToLower();
+						MessageBox.Show("File type " + ext  + " not supported", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					}
+				}
+				else if (Directory.Exists(dropFile)){ // is dir
+					dirCount++;
+					dropDir = dropFile;
+					loadFile = dropFile;
+					//Debug.WriteLine("drop dir " + dropDir);
+				}
+				else if (dropDir  == ""){
+					MessageBox.Show("No drop dir", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				}
+			}  // end for
+
+			if (picCount == 1) {
+				_picSelection = "Directory:";
+				PicScan(loadFile, allDirs);
+			}
+			else if (picCount > 0){
+				_picSelection = "Selection:";
+				// pic list already loaded
+			}
+			else if (dirCount > 0){
+				_picSelection = "Directory:";
+				PicScan(loadFile, allDirs);
+				_il.DirPicFirst(ref loadFile);
+			}
+			else {
+				//MessageBox.Show("No drop selection", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+			}
+
+			if (loadFile != ""){
+				PicLoad(loadFile, true);
+				SetFilename(loadFile);
+			}
+			else {
+				picBox.Image = null;
+				SetStatusText("No image loaded");
+			}		
+		}		
+
+		void FrmImageDragEnter(object sender, DragEventArgs e)
+		{
+			if (e.Data.GetDataPresent(DataFormats.FileDrop))
+				e.Effect = DragDropEffects.Copy;
+		}
+
+		void FrmImageDragOver(object sender, DragEventArgs e)
+		{
+			if (ModifierKeys.HasFlag(Keys.Control)) {
+				// control is pressed. Copy.
+				e.Effect = DragDropEffects.Copy;    // + sign for sub-dirs
+			}
+			else {
+				e.Effect = DragDropEffects.Move;
+			}
+		}
+		
 		// ------------------------------   key functions  ----------------------------------------------------------
 
 		void FrmImageKeyDown(object sender, KeyEventArgs e)

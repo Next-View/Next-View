@@ -105,7 +105,7 @@ namespace Next_View
 				this.recentItem1.ItemClick += new System.EventHandler(recentItem_Click);
 				this.recentItem1.UpdateList();
 			
-				Debug.WriteLine("open main y: {0} ", Settings.Default.MainY);
+				//Debug.WriteLine("open main y: {0} ", Settings.Default.MainY);
 			}
 			else {              // 2nd instance, give image path to 1st instance and end this 2nd 
 				string[] args = Environment.GetCommandLineArgs();
@@ -177,6 +177,42 @@ namespace Next_View
 
 		}
 
+		//--------------------------  drop  ---------------------------
+		
+		void FrmMainDragDrop(object sender, DragEventArgs e)
+		{
+			bool allDirs = false;
+			if ((e.KeyState & 8) == 8){
+				Debug.WriteLine("ctrl");
+				allDirs = true;
+			}
+
+			if (e.Data.GetDataPresent(DataFormats.FileDrop)) {
+				e.Effect = DragDropEffects.Copy;
+				m_Image.ProcessDrop((string[])e.Data.GetData(DataFormats.FileDrop), allDirs);
+
+			}
+			else {
+				e.Effect = DragDropEffects.None;
+			}	
+		}
+		
+		void FrmMainDragEnter(object sender, DragEventArgs e)
+		{
+			if (e.Data.GetDataPresent(DataFormats.FileDrop))
+				e.Effect = DragDropEffects.Copy;	
+		}
+		
+		void FrmMainDragOver(object sender, DragEventArgs e)
+		{
+			if (ModifierKeys.HasFlag(Keys.Control)) {
+				e.Effect = DragDropEffects.Copy;
+			}
+			else {
+				e.Effect = DragDropEffects.Move;
+			}	
+		}
+		
 
 		//--------------------------  menu  ---------------------------//
 		//--------------------------  menu file ---------------------------//
@@ -471,7 +507,6 @@ namespace Next_View
 		{
 			string pPath = e.NewValue;
 			recentItem1.AddRecentItem(pPath);
-			Debug.WriteLine("filename: {0}", pPath);
 		}
 		
 	}  // end main
