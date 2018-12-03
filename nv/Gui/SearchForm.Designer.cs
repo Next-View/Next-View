@@ -77,7 +77,7 @@ namespace Next_View
 			this.cmdCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.cmdCancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.cmdCancel.Location = new System.Drawing.Point(19, 395);
-			this.cmdCancel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.cmdCancel.Margin = new System.Windows.Forms.Padding(2);
 			this.cmdCancel.Name = "cmdCancel";
 			this.cmdCancel.Size = new System.Drawing.Size(93, 30);
 			this.cmdCancel.TabIndex = 7;
@@ -90,7 +90,7 @@ namespace Next_View
 			this.cmdOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.cmdOk.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.cmdOk.Location = new System.Drawing.Point(679, 395);
-			this.cmdOk.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.cmdOk.Margin = new System.Windows.Forms.Padding(4);
 			this.cmdOk.Name = "cmdOk";
 			this.cmdOk.Size = new System.Drawing.Size(100, 30);
 			this.cmdOk.TabIndex = 8;
@@ -105,7 +105,7 @@ namespace Next_View
 			this.listSearch.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
 			this.colFilename});
 			this.listSearch.Location = new System.Drawing.Point(12, 78);
-			this.listSearch.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.listSearch.Margin = new System.Windows.Forms.Padding(2);
 			this.listSearch.Name = "listSearch";
 			this.listSearch.Size = new System.Drawing.Size(784, 298);
 			this.listSearch.TabIndex = 6;
@@ -122,9 +122,9 @@ namespace Next_View
 			// 
 			this.edSearchFor.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.edSearchFor.Location = new System.Drawing.Point(117, 12);
-			this.edSearchFor.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.edSearchFor.Margin = new System.Windows.Forms.Padding(2);
 			this.edSearchFor.Name = "edSearchFor";
-			this.edSearchFor.Size = new System.Drawing.Size(278, 24);
+			this.edSearchFor.Size = new System.Drawing.Size(278, 21);
 			this.edSearchFor.TabIndex = 1;
 			this.edSearchFor.Enter += new System.EventHandler(this.EdSearchForEnter);
 			// 
@@ -142,7 +142,7 @@ namespace Next_View
 			// 
 			this.cmdSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.cmdSearch.Location = new System.Drawing.Point(349, 395);
-			this.cmdSearch.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.cmdSearch.Margin = new System.Windows.Forms.Padding(4);
 			this.cmdSearch.Name = "cmdSearch";
 			this.cmdSearch.Size = new System.Drawing.Size(132, 30);
 			this.cmdSearch.TabIndex = 2;
@@ -155,7 +155,7 @@ namespace Next_View
 			this.chkSubdir.Checked = true;
 			this.chkSubdir.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.chkSubdir.Location = new System.Drawing.Point(592, 8);
-			this.chkSubdir.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.chkSubdir.Margin = new System.Windows.Forms.Padding(2);
 			this.chkSubdir.Name = "chkSubdir";
 			this.chkSubdir.Size = new System.Drawing.Size(218, 26);
 			this.chkSubdir.TabIndex = 3;
@@ -199,9 +199,9 @@ namespace Next_View
 			// 
 			this.edSearchIn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.edSearchIn.Location = new System.Drawing.Point(117, 40);
-			this.edSearchIn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.edSearchIn.Margin = new System.Windows.Forms.Padding(2);
 			this.edSearchIn.Name = "edSearchIn";
-			this.edSearchIn.Size = new System.Drawing.Size(458, 24);
+			this.edSearchIn.Size = new System.Drawing.Size(458, 21);
 			this.edSearchIn.TabIndex = 4;
 			this.edSearchIn.Enter += new System.EventHandler(this.EdSearchInEnter);
 			// 
@@ -209,7 +209,7 @@ namespace Next_View
 			// 
 			this.cmdUp.Image = ((System.Drawing.Image)(resources.GetObject("cmdUp.Image")));
 			this.cmdUp.Location = new System.Drawing.Point(590, 38);
-			this.cmdUp.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.cmdUp.Margin = new System.Windows.Forms.Padding(2);
 			this.cmdUp.Name = "cmdUp";
 			this.cmdUp.Size = new System.Drawing.Size(34, 23);
 			this.cmdUp.TabIndex = 5;
@@ -227,7 +227,7 @@ namespace Next_View
 			// chkStartWith
 			// 
 			this.chkStartWith.Location = new System.Drawing.Point(431, 8);
-			this.chkStartWith.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.chkStartWith.Margin = new System.Windows.Forms.Padding(2);
 			this.chkStartWith.Name = "chkStartWith";
 			this.chkStartWith.Size = new System.Drawing.Size(143, 26);
 			this.chkStartWith.TabIndex = 11;
@@ -237,7 +237,7 @@ namespace Next_View
 			// SearchForm
 			// 
 			this.AcceptButton = this.cmdSearch;
-			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(813, 468);
 			this.Controls.Add(this.chkStartWith);
@@ -255,7 +255,7 @@ namespace Next_View
 			this.Controls.Add(this.cmdCancel);
 			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-			this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.Margin = new System.Windows.Forms.Padding(2);
 			this.Name = "SearchForm";
 			this.Text = "SearchForm";
 			this.Shown += new System.EventHandler(this.SearchFormShown);
