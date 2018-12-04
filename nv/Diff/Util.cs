@@ -58,7 +58,7 @@ namespace Next_View
 				return true;
 			}
 			catch (Exception e){
-				MessageBox.Show(e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				MessageBox.Show(e.Message, T._("Error"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				return false;
 			}			
 		}

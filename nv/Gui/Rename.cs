@@ -41,6 +41,11 @@ namespace Next_View
 			_ReturnPath = "";
 		}
 
+		void FrmRenameLoad(object sender, EventArgs e)
+		{
+			TranslateRenameForm( );
+		}
+		
 		void FrmRenameShown(object sender, EventArgs e)
 		{
 			edFilename.Text = Path.GetFileNameWithoutExtension(_pPath);
@@ -52,21 +57,21 @@ namespace Next_View
 			// dialog result must be 'none' to stay open in case of error
 			string newName = edFilename.Text;
 			if (newName.IndexOfAny(_invalidChars) > -1) {
-				MessageBox.Show("Invalid letter in filename" + Environment.NewLine
-				+ newName + Environment.NewLine + "Invalid letters are: * / \\ [ ] : ; | = , \" ",
-				"Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				MessageBox.Show(T._("Invalid letter in filename") + Environment.NewLine
+				+ newName + Environment.NewLine + T._("Invalid letters are") + ": * / \\ [ ] : ; | = , \" ",
+				T._("Error"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}
 			else {
 				string newPath = Path.GetDirectoryName(_pPath) + @"\" + edFilename.Text + edExt.Text;
 				string eMessage = "";
 				if (!FileRename(_pPath, newPath, ref eMessage)) {
-					MessageBox.Show("Can't rename the file" + Environment.NewLine
+					MessageBox.Show(T._("Can't rename the file") + Environment.NewLine
 					+ newName + Environment.NewLine + eMessage,
-					"Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					T._("Error"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				}
 				else {
 					this._ReturnPath = newPath;
-					this.Close();
+					this.Close(); 
 				}
 			}
 		}
@@ -88,6 +93,15 @@ namespace Next_View
 			this._ReturnPath = "";
 			this.Close();
 		}
+		
+		public void TranslateRenameForm( )
+		{
+			Text = T._("Rename");
+			cmdRenameOk.Text = T._("&OK");
+			cmdRenameCancel.Text = T._("&Cancel"); 
+			label1.Text = T._("New name:");
+		}
+
 
 	}
 }

@@ -55,7 +55,7 @@ namespace Next_View
 			| System.Windows.Forms.AnchorStyles.Left) 
 			| System.Windows.Forms.AnchorStyles.Right)));
 			this.webBrowser1.Location = new System.Drawing.Point(0, 0);
-			this.webBrowser1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.webBrowser1.Margin = new System.Windows.Forms.Padding(4);
 			this.webBrowser1.MinimumSize = new System.Drawing.Size(26, 25);
 			this.webBrowser1.Name = "webBrowser1";
 			this.webBrowser1.Size = new System.Drawing.Size(399, 334);
@@ -66,7 +66,7 @@ namespace Next_View
 			// cmdOk
 			// 
 			this.cmdOk.Location = new System.Drawing.Point(282, 370);
-			this.cmdOk.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.cmdOk.Margin = new System.Windows.Forms.Padding(4);
 			this.cmdOk.Name = "cmdOk";
 			this.cmdOk.Size = new System.Drawing.Size(100, 28);
 			this.cmdOk.TabIndex = 1;
@@ -83,11 +83,12 @@ namespace Next_View
 			this.Controls.Add(this.webBrowser1);
 			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-			this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.Margin = new System.Windows.Forms.Padding(4);
 			this.Name = "frmAbout";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "About";
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmAboutFormClosed);
+			this.Load += new System.EventHandler(this.FrmAboutLoad);
 			this.Shown += new System.EventHandler(this.frmAboutShown);
 			this.ResumeLayout(false);
 

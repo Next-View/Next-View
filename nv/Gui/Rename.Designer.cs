@@ -53,7 +53,7 @@ namespace Next_View
 			// 
 			this.cmdRenameOk.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.cmdRenameOk.Location = new System.Drawing.Point(387, 119);
-			this.cmdRenameOk.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.cmdRenameOk.Margin = new System.Windows.Forms.Padding(4);
 			this.cmdRenameOk.Name = "cmdRenameOk";
 			this.cmdRenameOk.Size = new System.Drawing.Size(80, 27);
 			this.cmdRenameOk.TabIndex = 3;
@@ -66,7 +66,7 @@ namespace Next_View
 			this.cmdRenameCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
 			this.cmdRenameCancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.cmdRenameCancel.Location = new System.Drawing.Point(34, 119);
-			this.cmdRenameCancel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.cmdRenameCancel.Margin = new System.Windows.Forms.Padding(4);
 			this.cmdRenameCancel.Name = "cmdRenameCancel";
 			this.cmdRenameCancel.Size = new System.Drawing.Size(95, 27);
 			this.cmdRenameCancel.TabIndex = 2;
@@ -88,7 +88,7 @@ namespace Next_View
 			// 
 			this.edFilename.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.edFilename.Location = new System.Drawing.Point(34, 66);
-			this.edFilename.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.edFilename.Margin = new System.Windows.Forms.Padding(4);
 			this.edFilename.Name = "edFilename";
 			this.edFilename.Size = new System.Drawing.Size(307, 24);
 			this.edFilename.TabIndex = 1;
@@ -97,7 +97,7 @@ namespace Next_View
 			// 
 			this.edExt.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.edExt.Location = new System.Drawing.Point(370, 66);
-			this.edExt.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.edExt.Margin = new System.Windows.Forms.Padding(4);
 			this.edExt.Name = "edExt";
 			this.edExt.ReadOnly = true;
 			this.edExt.Size = new System.Drawing.Size(98, 24);
@@ -117,9 +117,10 @@ namespace Next_View
 			this.Controls.Add(this.cmdRenameOk);
 			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-			this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.Margin = new System.Windows.Forms.Padding(4);
 			this.Name = "frmRename";
 			this.Text = "Rename";
+			this.Load += new System.EventHandler(this.FrmRenameLoad);
 			this.Shown += new System.EventHandler(this.FrmRenameShown);
 			this.ResumeLayout(false);
 			this.PerformLayout();

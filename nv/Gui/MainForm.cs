@@ -44,7 +44,7 @@ namespace Next_View
 			// The InitializeComponent() call is required for Windows Forms designer support.
 			//
 			InitializeComponent();
-
+			
 			_deserializeDockContent = new DeserializeDockContent(GetContentFromPersistString);
 		}
 
@@ -97,17 +97,17 @@ namespace Next_View
 				else this.Left = wX;
 				if (wY + wH < 0) this.Top = -50;
 				else this.Top = wY;
-
+				
 				string recentPath = Settings.Default.RecentImgs;
 				this.recentItem1.LoadList(recentPath);
 				this.recentItem1.UpdateList();
 				this.recentItem1.MaxItems = 5;
 				this.recentItem1.ItemClick += new System.EventHandler(recentItem_Click);
 				this.recentItem1.UpdateList();
-
+			
 				//Debug.WriteLine("open main y: {0} ", Settings.Default.MainY);
 			}
-			else {              // 2nd instance, give image path to 1st instance and end this 2nd
+			else {              // 2nd instance, give image path to 1st instance and end this 2nd 
 				string[] args = Environment.GetCommandLineArgs();
 				string commandLine = "S";
 				if (args.Length > 1){
@@ -129,7 +129,7 @@ namespace Next_View
 			m_Image.WindowChanged += new HandleWindowMainChange(HandleWindow);
 			m_Image.WindowSize += new HandleWindowSize(HandleSize);
 			m_Image.FilenameChanged += new HandleFilenameChange(HandleFilename);
-
+			
 			m_Image.Show(dockPanel1, DockState.Document);      // sequence of tabs
 			//m_Image.Show(dockPanel1, DockState.Document);     // set active
 
@@ -152,7 +152,7 @@ namespace Next_View
 					m_Image.PicScan(userImagePath, true);
 				}
 				Debug.WriteLine("pic path : " + userImagePath);
-				firstImage = Directory.GetCurrentDirectory() + @"\Next-View-0.3.png";
+				firstImage = Directory.GetCurrentDirectory() + @"\Next-View-0.4.png";
 				recentItem1.AddRecentItem(firstImage);
 				m_Image.PicLoad(firstImage, true);
 			}
@@ -172,13 +172,13 @@ namespace Next_View
 			Settings.Default.MainH = this.Height;
 			string recentPath = "";
 			recentItem1.StringList(ref recentPath);
-			Settings.Default.RecentImgs = recentPath;
+			Settings.Default.RecentImgs = recentPath;	
 			Settings.Default.Save( );                  // last program line for debugger
 
 		}
 
 		//--------------------------  drop  ---------------------------
-
+		
 		void FrmMainDragDrop(object sender, DragEventArgs e)
 		{
 			bool allDirs = false;
@@ -194,15 +194,15 @@ namespace Next_View
 			}
 			else {
 				e.Effect = DragDropEffects.None;
-			}
+			}	
 		}
-
+		
 		void FrmMainDragEnter(object sender, DragEventArgs e)
 		{
 			if (e.Data.GetDataPresent(DataFormats.FileDrop))
-				e.Effect = DragDropEffects.Copy;
+				e.Effect = DragDropEffects.Copy;	
 		}
-
+		
 		void FrmMainDragOver(object sender, DragEventArgs e)
 		{
 			if (ModifierKeys.HasFlag(Keys.Control)) {
@@ -210,9 +210,9 @@ namespace Next_View
 			}
 			else {
 				e.Effect = DragDropEffects.Move;
-			}
+			}	
 		}
-
+		
 
 		//--------------------------  menu  ---------------------------//
 		//--------------------------  menu file ---------------------------//
@@ -391,6 +391,11 @@ namespace Next_View
 			this.mnuNextImage.PerformClick();
 		}
 
+		void BnSearchClick(object sender, EventArgs e)
+		{
+			this.mnuSearch.PerformClick();
+		}
+		
 		void BnFullscreenClick(object sender, EventArgs e)
 		{
 			this.mnuFullScreen.PerformClick();
@@ -503,14 +508,15 @@ namespace Next_View
 		}
 
 		private void HandleFilename(object sender, SetFilenameEventArgs e)
-		// called by: SetFilename: openPic, FrmImageDragDrop
+		// called by: SetFilename: openPic, FrmImageDragDrop 
 		{
 			string pPath = e.NewValue;
 			recentItem1.AddRecentItem(pPath);
 		}
 
+		
 	}  // end main
-
+	
 	//--------------------------------------------------------------//
 
 	class NativeMethods {
@@ -523,7 +529,7 @@ namespace Next_View
 	}
 
 	// ------------------------------		delegates 	----------------------------------------------------------
-
+		
 	public delegate void HandleStatusMainChange(object sender, SetStatusMainEventArgs e);
 
 	public delegate void HandleWindowMainChange(object sender, SetStatusMainEventArgs e);

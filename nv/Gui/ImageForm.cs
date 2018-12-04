@@ -37,7 +37,7 @@ namespace Next_View
 		int _mainHeight = 0;
 		int _borderHeight = 0;
 		int _borderWidth = 0;
-		string _picSelection = "Directory:";
+		string _picSelection = "";  
 		string _currentPath = "";
 		string _lastSearchStr = "";
 		Image _myImg;
@@ -89,7 +89,7 @@ namespace Next_View
 			}
 
 			if (_wType == WinType.second){
-				popClose.Text = "Close";    // not 'Exit'
+				popClose.Text = T._("Close");    // not 'Exit'
 
 				int wW = Settings.Default.MainW2;
 				int wH = Settings.Default.MainH2;
@@ -112,6 +112,10 @@ namespace Next_View
 				_mainHeight = picBox.Height;
 				_scWidth = this.Width;
 				_scHeight = this.Height;
+				string moPath = @"C:\Project\Next-View\nv\bin\Debug\language2\Transl1.mo"; 
+				T.SetCatalog(moPath);
+		
+				TranslateImageForm();
 			}
 		}
 
@@ -164,6 +168,7 @@ namespace Next_View
 		{
 			this.Close();
 		}
+		
 		// ------------------------------   drop  ----------------------------------------------------------
 
 		void FrmImageDragDrop(object sender, DragEventArgs e)
@@ -204,7 +209,7 @@ namespace Next_View
 					}
 					else{
 						string ext = Path.GetExtension(dropFile).ToLower();
-						MessageBox.Show("File type " + ext  + " not supported", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+						MessageBox.Show(String.Format(T._("File type {0} not supported"), ext), T._("Error"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 					}
 				}
 				else if (Directory.Exists(dropFile)){ // is dir
@@ -214,20 +219,20 @@ namespace Next_View
 					//Debug.WriteLine("drop dir " + dropDir);
 				}
 				else if (dropDir  == ""){
-					MessageBox.Show("No drop dir", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					MessageBox.Show(T._("No drop dir"), T._("Error"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				}
 			}  // end for
 
 			if (picCount == 1) {
-				_picSelection = "Directory:";
+				_picSelection = T._("Directory:");
 				PicScan(loadFile, allDirs);
 			}
 			else if (picCount > 0){
-				_picSelection = "Selection:";
+				_picSelection = T._("Selection:");
 				// pic list already loaded
 			}
 			else if (dirCount > 0){
-				_picSelection = "Directory:";
+				_picSelection = T._("Directory:");
 				PicScan(loadFile, allDirs);
 				_il.DirPicFirst(ref loadFile);
 			}
@@ -241,7 +246,7 @@ namespace Next_View
 			}
 			else {
 				picBox.Image = null;
-				SetStatusText("No image loaded");
+				SetStatusText(T._("No image loaded"));
 			}		
 		}		
 
@@ -403,7 +408,7 @@ namespace Next_View
 				}
 				else {
 					_il.LogPos(ref picPos, ref picAll);
-					SetStatusText(String.Format("History: {0}/{1}", picPos, picAll));
+					SetStatusText(String.Format(T._("History: {0}/{1}"), picPos, picAll));
 				}
 				SetWindowText(pPath);
 				_priorPath =_currentPath;
@@ -474,7 +479,7 @@ namespace Next_View
 			catch (Exception e)
 			{
 				picBox.Image = null;
-				MessageBox.Show("File is invalid \n" + pPath + "\n " + e.Message, "Invalid file", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				MessageBox.Show(T._("File is invalid") + "\n "  + pPath + "\n " + e.Message, T._("Invalid file"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				return false;
 			}
 		}
@@ -498,7 +503,7 @@ namespace Next_View
 				PicLoad(pPath, true);
 			}
 			else {
-				SetStatusText("No image loaded");
+				SetStatusText(T._("No image loaded"));
 			}
 		}
 
@@ -518,7 +523,7 @@ namespace Next_View
 				PicLoad(pPath, true);
 			}
 			else {
-				SetStatusText("No image loaded");
+				SetStatusText(T._("No image loaded"));
 			}
 		}
 
@@ -538,7 +543,7 @@ namespace Next_View
 				PicLoad(pPath, true);
 			}
 			else {
-				SetStatusText("No image loaded");
+				SetStatusText(T._("No image loaded"));
 			}
 		}
 
@@ -549,7 +554,7 @@ namespace Next_View
 				PicLoad(pPath, true);
 			}
 			else {
-				SetStatusText("No image loaded");
+				SetStatusText(T._("No image loaded"));
 			}
 		}
 
@@ -629,7 +634,7 @@ namespace Next_View
 		public void TempmarkDelete()
 		{
 			if (!_il.MarkDelete(_currentPath)){
-				MessageBox.Show("This image is not marked", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				MessageBox.Show(T._("This image is not marked"), T._("Error"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}
 		}
 
@@ -641,7 +646,7 @@ namespace Next_View
 				_currentPath = markPath;
 			}
 			else {
-				MessageBox.Show("No image is marked yet", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				MessageBox.Show(T._("No image is marked yet"), T._("Error"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}
 		}
 
@@ -654,7 +659,7 @@ namespace Next_View
 		{
 			try {
 				File.Move(nameFrom, nameTo);
-				return true;
+				return true; 
 			}
 			catch {
 				return false;
@@ -671,7 +676,7 @@ namespace Next_View
 				}
 				else {  // last img in selection deleted
 					picBox.Image = null;
-					SetStatusText("No image loaded");
+					SetStatusText(T._("No image loaded"));
 				}
 			}
 			else {
@@ -689,7 +694,7 @@ namespace Next_View
 				}
 			}
 			dialog.Filter = "All images |*.jpg;*.jpeg;*.png;*.gif;*.bmp;*.ico;*.tif;*.wmf;*.emf|JPEG files |*.jpg;*.jpeg|PNG files |*.png|GIF files |*.gif|Bitmap files |*.bmp|Icon files |*.ico|TIF files |*.tif|WMF files |*.wmf|EMF files |*.emf";
-			dialog.Title = "Select image";
+			dialog.Title = T._("Select image");
 
 			if(dialog.ShowDialog() == DialogResult.OK)
 			{
@@ -779,7 +784,7 @@ namespace Next_View
 					_il.DirPicFirst(ref selImg);
 				}
 				_currentPath = selImg;
-				_picSelection = "Search:";
+				_picSelection = T._("Search:");
 				PicLoad(_currentPath, true);
 			}
 		}
@@ -795,7 +800,7 @@ namespace Next_View
 				PicLoad(pPath, true);
 			}
 			else {
-				SetStatusText("No image loaded");
+				SetStatusText(T._("No image loaded"));
 			}
 		}
 
@@ -820,6 +825,13 @@ namespace Next_View
 			}
 		}
 
+		public void TranslateImageForm( )
+		{
+			Text = T._("Rename");
+		  _picSelection = T._("Directory:");
+
+		}
+		
 		// ------------------------------   2nd screen    ----------------------------------------------------------
 
 		public void Start2ndScreen()

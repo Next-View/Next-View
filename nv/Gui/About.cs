@@ -41,6 +41,11 @@ namespace Next_View
 			//
 		}
 
+		void FrmAboutLoad(object sender, EventArgs e)
+		{
+			TranslateAboutForm();
+		}
+		
 		void frmAboutShown(object sender, EventArgs e)
 		{
 			Version v = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
@@ -53,7 +58,7 @@ namespace Next_View
 				webBrowser1.Url = new Uri("file:///" + aboutPath);
 			}
 			else {
-				webBrowser1.DocumentText = aboutPath + " file is missing";
+				webBrowser1.DocumentText = aboutPath + T._(" file is missing");
 			}
 		}
 
@@ -81,6 +86,12 @@ namespace Next_View
 		void FrmAboutFormClosed(object sender, FormClosedEventArgs e)
 		{
 			webBrowser1.Dispose();
+		}
+
+		public void TranslateAboutForm( )
+		{
+			Text = T._("About");
+			cmdOk.Text = "&OK"; 
 		}
 
 

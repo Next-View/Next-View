@@ -83,6 +83,8 @@ namespace Next_View
 			this.bnFullscreen = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.bnHelp = new System.Windows.Forms.ToolStripButton();
+			this.bnSearch = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.menuMain.SuspendLayout();
 			this.statusMain.SuspendLayout();
 			this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
@@ -431,12 +433,14 @@ namespace Next_View
 			this.toolStripSeparator,
 			this.bnPrior,
 			this.bnNext,
+			this.toolStripSeparator4,
 			this.bnFullscreen,
 			this.toolStripSeparator3,
+			this.bnSearch,
 			this.bnHelp});
 			this.toolStrip2.Location = new System.Drawing.Point(3, 0);
 			this.toolStrip2.Name = "toolStrip2";
-			this.toolStrip2.Size = new System.Drawing.Size(192, 27);
+			this.toolStrip2.Size = new System.Drawing.Size(261, 27);
 			this.toolStrip2.TabIndex = 1;
 			// 
 			// bnOpen
@@ -519,6 +523,21 @@ namespace Next_View
 			this.bnHelp.Text = "Help";
 			this.bnHelp.Click += new System.EventHandler(this.BnHelpClick);
 			// 
+			// bnSearch
+			// 
+			this.bnSearch.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.bnSearch.Image = ((System.Drawing.Image)(resources.GetObject("bnSearch.Image")));
+			this.bnSearch.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.bnSearch.Name = "bnSearch";
+			this.bnSearch.Size = new System.Drawing.Size(24, 24);
+			this.bnSearch.Text = "Search";
+			this.bnSearch.Click += new System.EventHandler(this.BnSearchClick);
+			// 
+			// toolStripSeparator4
+			// 
+			this.toolStripSeparator4.Name = "toolStripSeparator4";
+			this.toolStripSeparator4.Size = new System.Drawing.Size(6, 27);
+			// 
 			// frmMain
 			// 
 			this.AllowDrop = true;
@@ -599,5 +618,7 @@ namespace Next_View
 		private System.Windows.Forms.ToolStripMenuItem mnuSearch;
 		private System.Windows.Forms.ToolStripMenuItem mnuGithub;
 		private Next_View.RecentItem recentItem1;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+		private System.Windows.Forms.ToolStripButton bnSearch;
 	}
 }
