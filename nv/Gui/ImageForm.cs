@@ -112,8 +112,6 @@ namespace Next_View
 				_mainHeight = picBox.Height;
 				_scWidth = this.Width;
 				_scHeight = this.Height;
-				string moPath = @"C:\Project\Next-View\nv\bin\Debug\language2\Transl1.mo"; 
-				T.SetCatalog(moPath);
 		
 				TranslateImageForm();
 			}
@@ -827,8 +825,17 @@ namespace Next_View
 
 		public void TranslateImageForm( )
 		{
-			Text = T._("Rename");
 		  _picSelection = T._("Directory:");
+		  popOpen.Text = T._("Open...");
+		  popRename.Text = T._("Rename...");
+		  popDelete.Text = T._("Delete");
+		  popSearch.Text = T._("Search...");
+		  popStartEditor.Text = T._("Start editor...");
+		  popNext.Text = T._("Next image");
+		  popPrior.Text = T._("Prior image");
+		  popRefresh.Text = T._("Refresh");
+		  popFullscreen.Text = T._("Full screen");
+		  popClose.Text = T._("Exit ");
 
 		}
 		

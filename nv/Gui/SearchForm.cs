@@ -58,7 +58,12 @@ namespace Next_View
 		}
 
 		// ------------------------------		events form	----------------------------------------------------------
-		
+
+		void SearchFormLoad(object sender, EventArgs e)
+		{
+			TranslateSearchForm( );
+		}
+				
 		void SearchFormShown(object sender, EventArgs e)
 		{
 			edSearchIn.Text = _pDir;
@@ -111,15 +116,15 @@ namespace Next_View
 			string sFor = edSearchFor.Text;
 			_pDir = edSearchIn.Text;
 			if (sFor == ""){
-				MessageBox.Show ("Search for something" , "Search error",
+				MessageBox.Show (T._("Search for something") , T._("Error"),
 						MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}
 			else if (_pDir == ""){
-				MessageBox.Show ("Search directory must not be empty" , "Search error",
+				MessageBox.Show (T._("Search directory must not be empty") , T._("Error"),
 						MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}
 			else if (!Directory.Exists(_pDir)) { 
-				MessageBox.Show ("Search does not exist" , "Search error",
+				MessageBox.Show (T._("Search directory does not exist") , T._("Error"),
 						MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}
 			else {		
@@ -131,7 +136,7 @@ namespace Next_View
 				if (fCount > 0){
 					AcceptButton = cmdOk;
 				}
-				statusLabel2.Text = "Files found: " + fCount.ToString();
+				statusLabel2.Text = T._("Files found") + ": " + fCount.ToString();
 			}
 		}
 
@@ -194,5 +199,20 @@ namespace Next_View
 			return regReturn;
 		}
 
+		public void TranslateSearchForm( )
+		{
+			Text = T._("Search files");
+			cmdOk.Text = T._("&OK");
+			cmdCancel.Text = T._("&Cancel"); 
+			colFilename.Text = T._("Filename");
+			label1.Text = T._("Search for:");
+			cmdSearch.Text = T._("&Start search");
+			chkSubdir.Text = T._("Search subdirectories");
+			label2.Text = T._("Search in:");
+			label3.Text = T._("One dir up");
+			chkStartWith.Text = T._("Start with");
+		}
+
+		
 	}
 }

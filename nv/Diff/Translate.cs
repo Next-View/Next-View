@@ -31,14 +31,15 @@ namespace Next_View
 		static ICatalog catalog;
 		static bool _catExist = false;
 
-		public static void SetCatalog(string moPath)
+		public static void SetCatalog(string moPath, string cultureStr)
 		{
-			if (File.Exists(moPath)){
-				moFileStream = File.OpenRead(moPath); 
-				catalog = new Catalog(moFileStream, new CultureInfo("de-de"));
-			}
-			else {
-				_catExist = false;
+			string lang = cultureStr.Substring(0, 2);              // e.g. de-de,   first 2 char
+			string moFile = moPath + lang + "-messages.mo";
+			
+			if (File.Exists(moFile)){
+				moFileStream = File.OpenRead(moFile); 
+				catalog = new Catalog(moFileStream, new CultureInfo(cultureStr));   
+				_catExist = true;
 			}
 		}
 				

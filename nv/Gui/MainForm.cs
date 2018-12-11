@@ -17,6 +17,7 @@ History:
 
 using System;
 using System.Diagnostics;  // Debug
+using System.Globalization;   // CultureInfo
 using System.IO;   // path
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
@@ -72,7 +73,7 @@ namespace Next_View
 			listener = new XDListener();
 			listener.MessageReceived += new XDListener.XDMessageHandler(listener_MessageReceived);
 			listener.RegisterChannel("NVMessage");
-
+			
 			bool created ;
 			s_event = new EventWaitHandle (false, EventResetMode.ManualReset, "Next-View", out created);   //  instead of mutex
     		if (created){         // 1st instance
@@ -97,7 +98,18 @@ namespace Next_View
 				else this.Left = wX;
 				if (wY + wH < 0) this.Top = -50;
 				else this.Top = wY;
-				
+
+				string curDir = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+				string moPath = curDir + @"\language\"; 
+				string cultureStr = Settings.Default.Language;
+				if (cultureStr == ""){
+					cultureStr = CultureInfo.InstalledUICulture.ToString();
+					Settings.Default.Language = cultureStr;
+					Debug.WriteLine(cultureStr);
+				}
+				T.SetCatalog(moPath, cultureStr);
+				TranslateMainForm();
+							
 				string recentPath = Settings.Default.RecentImgs;
 				this.recentItem1.LoadList(recentPath);
 				this.recentItem1.UpdateList();
@@ -234,7 +246,7 @@ namespace Next_View
 				m_Image.PicLoad(picPath, true);
 			}
 			else
-				MessageBox.Show (sender.ToString(), "File does not exist",
+				MessageBox.Show (sender.ToString(), T._("File does not exist"),
 				      MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 		}
 
@@ -476,6 +488,56 @@ namespace Next_View
      		}
 		}
 
+		//--------------------------  language  ---------------------------//
+		
+		void LangEnglishClick(object sender, EventArgs e)
+		{
+			Settings.Default.Language = "en-en";
+		}
+		
+		void LangGermanClick(object sender, EventArgs e)
+		{
+			Settings.Default.Language = "de-de";
+		}
+		
+		public void TranslateMainForm( )
+		{
+			mnuFile.Text = "&File";
+			mnuOpenImage.Text = "&Open...";
+			recentItem1.Text = "&Recent images";
+			mnuRename.Text = "&Rename...             ";
+			mnuDelete.Text = "&Delete";
+			mnuExit.Text = "&Exit";
+			mnuEdit.Text = "&Edit";
+			mnuOptions.Text = "&Options...";
+			mnuStartEditor.Text = "&Start editor...";
+			mnuSearch.Text = "&Search...";
+			mnuView.Text = "&View";
+			mnuNextImage.Text = "&Next Image                    ";
+			mnuPriorImage.Text = "&Prior Image";
+			mnuFirstImage.Text = "&First Image";
+			mnuLastImage.Text = "&Last Image";
+			mnuBack.Text = "&Back";
+			mnuForward.Text = "&Forward";
+			mnuRefresh.Text = "&Refresh";
+			mnuFullScreen.Text = "&Full screen";
+			mnuHelp.Text = "&Help";
+			mnuHelp1.Text = "&Help";
+			mnuWeb.Text = "&Homepage...";
+			mnuGithub.Text = "&Github";
+			mnuAbout.Text = "&About...";
+			
+			bnOpen.Text = "Open";
+			bnStartEditor.Text = "Start editor";
+			bnDelete.Text = "Delete image";
+			bnPrior.Text = "Prior image";
+			bnNext.Text = "Next image";
+			bnFullscreen.Text = "Fullscreen";
+			bnHelp.Text = "Help";
+			bnSearch.Text = "Search";
+
+		}
+		
 
 		//--------------------------  events  ------------------------------------//
 
@@ -513,6 +575,7 @@ namespace Next_View
 			string pPath = e.NewValue;
 			recentItem1.AddRecentItem(pPath);
 		}
+
 
 		
 	}  // end main
