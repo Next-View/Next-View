@@ -91,7 +91,7 @@ namespace Next_View
 		public void TranslateAboutForm( )
 		{
 			Text = T._("About");
-			cmdOk.Text = "&OK"; 
+			cmdOk.Text = T._("&OK"); 
 		}
 
 

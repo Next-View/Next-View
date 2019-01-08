@@ -45,7 +45,7 @@ namespace Next_View
 			// The InitializeComponent() call is required for Windows Forms designer support.
 			//
 			InitializeComponent();
-			
+
 			_deserializeDockContent = new DeserializeDockContent(GetContentFromPersistString);
 		}
 
@@ -58,12 +58,12 @@ namespace Next_View
 
 		void ShowMe()
 		{
-			if(WindowState == FormWindowState.Minimized) {
-				WindowState = FormWindowState.Normal;
-			}
-			bool top = TopMost;
-			TopMost = true;
-			TopMost = top;
+			WindowState = FormWindowState.Minimized;
+			WindowState = FormWindowState.Normal;
+			this.BringToFront();
+			this.TopMost = true;
+			this.TopMost = false;
+			this.Activate();
     	}
 
 		//--------------------------  form  ---------------------------//
@@ -73,12 +73,11 @@ namespace Next_View
 			listener = new XDListener();
 			listener.MessageReceived += new XDListener.XDMessageHandler(listener_MessageReceived);
 			listener.RegisterChannel("NVMessage");
-			
+
 			bool created ;
 			s_event = new EventWaitHandle (false, EventResetMode.ManualReset, "Next-View", out created);   //  instead of mutex
-    		if (created){         // 1st instance
-				if (Properties.Settings.Default.UpgradeRequired)
-				{
+   		if (created){         // 1st instance
+				if (Properties.Settings.Default.UpgradeRequired) {
 					Settings.Default.Upgrade();
 					Settings.Default.UpgradeRequired = false;
 					Settings.Default.Save( );
@@ -100,33 +99,33 @@ namespace Next_View
 				else this.Top = wY;
 
 				string curDir = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
-				string moPath = curDir + @"\language\"; 
+				string moPath = curDir + @"\language\";
 				string cultureStr = Settings.Default.Language;
 				if (cultureStr == ""){
 					cultureStr = CultureInfo.InstalledUICulture.ToString();
 					Settings.Default.Language = cultureStr;
-					Debug.WriteLine(cultureStr);
 				}
+				Debug.WriteLine("Culture: " + cultureStr);
 				T.SetCatalog(moPath, cultureStr);
 				TranslateMainForm();
-							
+
 				string recentPath = Settings.Default.RecentImgs;
 				this.recentItem1.LoadList(recentPath);
 				this.recentItem1.UpdateList();
 				this.recentItem1.MaxItems = 5;
 				this.recentItem1.ItemClick += new System.EventHandler(recentItem_Click);
 				this.recentItem1.UpdateList();
-			
+
 				//Debug.WriteLine("open main y: {0} ", Settings.Default.MainY);
 			}
-			else {              // 2nd instance, give image path to 1st instance and end this 2nd 
+			else {              // 2nd instance, give image path to 1st instance and end this 2nd
 				string[] args = Environment.GetCommandLineArgs();
 				string commandLine = "S";
 				if (args.Length > 1){
 					commandLine = args[1];
 				}
 				XDBroadcast.SendToChannel("NVMessage", commandLine);   // receive: listener_MessageReceived
-				// NvSendMsg();  does not work work strings,
+				// NvSendMsg();  does not work for strings,
 				ExitApp();
 			}
 		}
@@ -141,7 +140,7 @@ namespace Next_View
 			m_Image.WindowChanged += new HandleWindowMainChange(HandleWindow);
 			m_Image.WindowSize += new HandleWindowSize(HandleSize);
 			m_Image.FilenameChanged += new HandleFilenameChange(HandleFilename);
-			
+
 			m_Image.Show(dockPanel1, DockState.Document);      // sequence of tabs
 			//m_Image.Show(dockPanel1, DockState.Document);     // set active
 
@@ -184,13 +183,13 @@ namespace Next_View
 			Settings.Default.MainH = this.Height;
 			string recentPath = "";
 			recentItem1.StringList(ref recentPath);
-			Settings.Default.RecentImgs = recentPath;	
+			Settings.Default.RecentImgs = recentPath;
 			Settings.Default.Save( );                  // last program line for debugger
 
 		}
 
 		//--------------------------  drop  ---------------------------
-		
+
 		void FrmMainDragDrop(object sender, DragEventArgs e)
 		{
 			bool allDirs = false;
@@ -206,15 +205,15 @@ namespace Next_View
 			}
 			else {
 				e.Effect = DragDropEffects.None;
-			}	
+			}
 		}
-		
+
 		void FrmMainDragEnter(object sender, DragEventArgs e)
 		{
 			if (e.Data.GetDataPresent(DataFormats.FileDrop))
-				e.Effect = DragDropEffects.Copy;	
+				e.Effect = DragDropEffects.Copy;
 		}
-		
+
 		void FrmMainDragOver(object sender, DragEventArgs e)
 		{
 			if (ModifierKeys.HasFlag(Keys.Control)) {
@@ -222,9 +221,9 @@ namespace Next_View
 			}
 			else {
 				e.Effect = DragDropEffects.Move;
-			}	
+			}
 		}
-		
+
 
 		//--------------------------  menu  ---------------------------//
 		//--------------------------  menu file ---------------------------//
@@ -407,7 +406,7 @@ namespace Next_View
 		{
 			this.mnuSearch.PerformClick();
 		}
-		
+
 		void BnFullscreenClick(object sender, EventArgs e)
 		{
 			this.mnuFullScreen.PerformClick();
@@ -489,55 +488,58 @@ namespace Next_View
 		}
 
 		//--------------------------  language  ---------------------------//
-		
+
 		void LangEnglishClick(object sender, EventArgs e)
 		{
 			Settings.Default.Language = "en-en";
 		}
-		
+
 		void LangGermanClick(object sender, EventArgs e)
 		{
 			Settings.Default.Language = "de-de";
 		}
-		
+
 		public void TranslateMainForm( )
 		{
-			mnuFile.Text = "&File";
-			mnuOpenImage.Text = "&Open...";
-			recentItem1.Text = "&Recent images";
-			mnuRename.Text = "&Rename...             ";
-			mnuDelete.Text = "&Delete";
-			mnuExit.Text = "&Exit";
-			mnuEdit.Text = "&Edit";
-			mnuOptions.Text = "&Options...";
-			mnuStartEditor.Text = "&Start editor...";
-			mnuSearch.Text = "&Search...";
-			mnuView.Text = "&View";
-			mnuNextImage.Text = "&Next Image                    ";
-			mnuPriorImage.Text = "&Prior Image";
-			mnuFirstImage.Text = "&First Image";
-			mnuLastImage.Text = "&Last Image";
-			mnuBack.Text = "&Back";
-			mnuForward.Text = "&Forward";
-			mnuRefresh.Text = "&Refresh";
-			mnuFullScreen.Text = "&Full screen";
-			mnuHelp.Text = "&Help";
-			mnuHelp1.Text = "&Help";
-			mnuWeb.Text = "&Homepage...";
-			mnuGithub.Text = "&Github";
-			mnuAbout.Text = "&About...";
-			
-			bnOpen.Text = "Open";
-			bnStartEditor.Text = "Start editor";
-			bnDelete.Text = "Delete image";
-			bnPrior.Text = "Prior image";
-			bnNext.Text = "Next image";
-			bnFullscreen.Text = "Fullscreen";
-			bnHelp.Text = "Help";
-			bnSearch.Text = "Search";
+			mnuFile.Text = T._("File");
+			mnuOpenImage.Text = T._("Open...");
+			recentItem1.Text = T._("Recent images") + "               ";
+			mnuRename.Text = T._("Rename...");
+			mnuDelete.Text = T._("Delete");
+			mnuExit.Text = T._("Exit");
+			mnuEdit.Text = T._("Edit");
+			mnuOptions.Text = T._("Options...");
+			mnuStartEditor.Text = T._("Start editor...");
+			mnuSearch.Text = T._("Search...");
+			mnuLanguage.Text = T._("Language");
+			langEnglish.Text = T._("English");
+			langGerman.Text = T._("German");
+			mnuView.Text = T._("View");
+			mnuNextImage.Text = T._("Next Image") + "               ";
+			mnuPriorImage.Text = T._("Prior Image");
+			mnuFirstImage.Text = T._("First Image");
+			mnuLastImage.Text = T._("Last Image");
+			mnuBack.Text = T._("Back");
+			mnuForward.Text = T._("Forward");
+			mnuRefresh.Text = T._("Refresh");
+			mnuFullScreen.Text = T._("Full screen");
+			mnuHelp.Text = T._("Help");
+			mnuHelp1.Text = T._("Help");
+			mnuWeb.Text = T._("Homepage...");
+			mnuGithub.Text = T._("Github");
+			mnuAbout.Text = T._("About...");
+
+			bnOpen.Text = T._("Open");
+			bnStartEditor.Text = T._("Start editor");
+			bnDelete.Text = T._("Delete image");
+			bnPrior.Text = T._("Prior image");
+			bnNext.Text = T._("Next image");
+			bnFullscreen.Text = T._("Fullscreen");
+			bnHelp.Text = T._("Help");
+			bnSearch.Text = T._("Search");
 
 		}
-		
+
 
 		//--------------------------  events  ------------------------------------//
 
@@ -570,16 +572,16 @@ namespace Next_View
 		}
 
 		private void HandleFilename(object sender, SetFilenameEventArgs e)
-		// called by: SetFilename: openPic, FrmImageDragDrop 
+		// called by: SetFilename: openPic, FrmImageDragDrop
 		{
 			string pPath = e.NewValue;
 			recentItem1.AddRecentItem(pPath);
 		}
 
 
-		
+
 	}  // end main
-	
+
 	//--------------------------------------------------------------//
 
 	class NativeMethods {
@@ -592,7 +594,7 @@ namespace Next_View
 	}
 
 	// ------------------------------		delegates 	----------------------------------------------------------
-		
+
 	public delegate void HandleStatusMainChange(object sender, SetStatusMainEventArgs e);
 
 	public delegate void HandleWindowMainChange(object sender, SetStatusMainEventArgs e);

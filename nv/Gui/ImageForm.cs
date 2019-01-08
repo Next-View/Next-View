@@ -88,6 +88,8 @@ namespace Next_View
 
 			}
 
+			TranslateImageForm();
+				
 			if (_wType == WinType.second){
 				popClose.Text = T._("Close");    // not 'Exit'
 
@@ -112,8 +114,6 @@ namespace Next_View
 				_mainHeight = picBox.Height;
 				_scWidth = this.Width;
 				_scHeight = this.Height;
-		
-				TranslateImageForm();
 			}
 		}
 
@@ -330,6 +330,7 @@ namespace Next_View
 					BackPic();
 					break;
 
+				case 66:    // b   boss
 				case 68:    // d   dark
 					DarkPic();
 					break;
@@ -835,7 +836,7 @@ namespace Next_View
 		  popPrior.Text = T._("Prior image");
 		  popRefresh.Text = T._("Refresh");
 		  popFullscreen.Text = T._("Full screen");
-		  popClose.Text = T._("Exit ");
+		  popClose.Text = T._("Exit");
 
 		}
 		

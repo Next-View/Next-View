@@ -45,8 +45,8 @@ namespace Next_View
 
 		public void OptionTranslate()
 		{
-			cmdOk.Text = "&OK";
-			cmdCancel.Text = "&Cancel";
+			cmdOk.Text = T._("&OK");
+			cmdCancel.Text = T._("&Cancel");
 		}
 
 		//--------------------------  events  ------------------------------------//
@@ -73,6 +73,7 @@ namespace Next_View
 
 		void frmOptionLoad(object sender, EventArgs e)
 		{
+			OptionTranslate();
 			this.edEditor.Text = Settings.Default.Editor;
 			this.chkImageEditor.Checked = Settings.Default.UseMediaDefault;
 		}
