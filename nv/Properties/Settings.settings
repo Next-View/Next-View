@@ -40,6 +40,18 @@
     <Setting Name="MainY2" Type="System.Int32" Scope="User" Roaming="false">
       <Value Profile="(Default)">200</Value>
     </Setting>
+    <Setting Name="ExifH" Type="System.Int32" Scope="User" Roaming="false">
+      <Value Profile="(Default)">500</Value>
+    </Setting>
+    <Setting Name="ExifW" Type="System.Int32" Scope="User" Roaming="false">
+      <Value Profile="(Default)">300</Value>
+    </Setting>
+    <Setting Name="ExifX" Type="System.Int32" Scope="User" Roaming="false">
+      <Value Profile="(Default)">400</Value>
+    </Setting>
+    <Setting Name="ExifY" Type="System.Int32" Scope="User" Roaming="false">
+      <Value Profile="(Default)">50</Value>
+    </Setting>
     <Setting Name="RecentImgs" Type="System.String" Scope="User" Roaming="false">
       <Value Profile="(Default)"></Value>
     </Setting>

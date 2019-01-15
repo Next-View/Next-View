@@ -15,10 +15,11 @@ History:
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-using System;  
+using System;
 using System.Drawing;  // Bitmap
 using System.Diagnostics;  // Debug
 using System.IO;   // directory
+using System.Linq;	 //	OfType
 using System.Windows.Forms;
 using Next_View.Properties;
 using WeifenLuo.WinFormsUI.Docking;
@@ -37,7 +38,7 @@ namespace Next_View
 		int _mainHeight = 0;
 		int _borderHeight = 0;
 		int _borderWidth = 0;
-		string _picSelection = "";  
+		string _picSelection = "";
 		string _currentPath = "";
 		string _lastSearchStr = "";
 		Image _myImg;
@@ -47,6 +48,8 @@ namespace Next_View
 		public bool _ndRunning {get;set;}
 		string _priorPath = "";
 
+		ExifForm m_Exif;
+				
 		public frmImage  m_Image2;
 
 		public event HandleStatusMainChange  StatusChanged;
@@ -56,7 +59,7 @@ namespace Next_View
 		public event HandleWindowSize WindowSize;
 
 		public event HandleFilenameChange  FilenameChanged;
-		
+
 		public frmImage(int mainWidth, int mainHeight, WinType wType)
 		{
 			//
@@ -89,7 +92,7 @@ namespace Next_View
 			}
 
 			TranslateImageForm();
-				
+
 			if (_wType == WinType.second){
 				popClose.Text = T._("Close");    // not 'Exit'
 
@@ -166,7 +169,7 @@ namespace Next_View
 		{
 			this.Close();
 		}
-		
+
 		// ------------------------------   drop  ----------------------------------------------------------
 
 		void FrmImageDragDrop(object sender, DragEventArgs e)
@@ -186,7 +189,7 @@ namespace Next_View
 				e.Effect = DragDropEffects.None;
 			}
 		}
-				
+
 		public void ProcessDrop(string[] files, bool allDirs)
 		{
 			int picCount = 0;
@@ -245,8 +248,8 @@ namespace Next_View
 			else {
 				picBox.Image = null;
 				SetStatusText(T._("No image loaded"));
-			}		
-		}		
+			}
+		}
 
 		void FrmImageDragEnter(object sender, DragEventArgs e)
 		{
@@ -264,7 +267,7 @@ namespace Next_View
 				e.Effect = DragDropEffects.Move;
 			}
 		}
-		
+
 		// ------------------------------   key functions  ----------------------------------------------------------
 
 		void FrmImageKeyDown(object sender, KeyEventArgs e)
@@ -330,8 +333,8 @@ namespace Next_View
 					BackPic();
 					break;
 
-				case 66:    // b   boss
-				case 68:    // d   dark
+				case 66:    // 'b'   boss
+				case 68:    // 'd'   dark
 					DarkPic();
 					break;
 				case 113:    // F2
@@ -343,17 +346,17 @@ namespace Next_View
 				case 46:    // del
 					DelPic();
 					break;
-				case 79:    // O
+				case 79:    // 'o'
 					if (ctrl){
 						OpenPic();
 					}
 					break;
-				case 70:    // ctrl F
+				case 70:    // ctrl 'f'
 					if (ctrl){
 						SearchPic();
 					}
 					break;
-				case 50:    // 2
+				case 50:    // '2'
 					if (ctrl){
 						Start2ndScreen();
 					}
@@ -367,7 +370,7 @@ namespace Next_View
 				case 189:    // -
 					RemovePicPlus();
 					break;
-				case 84:    // T
+				case 84:    // 't'
 					if (alt){
 						TempmarkDelete();
 					}
@@ -382,8 +385,16 @@ namespace Next_View
 				case 13:    // enter  full screen
 					ShowFullScreen();
 					break;
-				case 65:    // a  for test
+				case 65:    // 'a'  for test
 					Test();
+					break;
+				case 69:    // 'e'  for exif
+					if (ctrl){
+						ShowExif0();
+					}
+					else {
+						StartExif();
+					}
 					break;
 			}
 			loadNextPic = true;
@@ -419,6 +430,7 @@ namespace Next_View
 					return false;
 				}
 
+				ShowExif();
 				//Image myImg;
 				using (FileStream stream = new FileStream(pPath, FileMode.Open, FileAccess.Read))
 				{
@@ -630,6 +642,7 @@ namespace Next_View
 			}
 		}
 
+		// ------------------------------   Tempmark functions  ----------------------------------------------------------
 		public void TempmarkDelete()
 		{
 			if (!_il.MarkDelete(_currentPath)){
@@ -658,7 +671,7 @@ namespace Next_View
 		{
 			try {
 				File.Move(nameFrom, nameTo);
-				return true; 
+				return true;
 			}
 			catch {
 				return false;
@@ -703,8 +716,6 @@ namespace Next_View
 				SetFilename(picPath);
 			}
 		}
-
-
 
 		// ------------------------------   pop up  ----------------------------------------------------------
 
@@ -816,12 +827,7 @@ namespace Next_View
 
 		public void Test()
 		{
-			if (m_Image2 != null){
-				Debug.WriteLine("Test: " + m_Image2._ndRunning.ToString());
-			}
-			else {
-				Debug.WriteLine("Test: img2 is null");
-			}
+			m_Exif.Close();
 		}
 
 		public void TranslateImageForm( )
@@ -839,7 +845,7 @@ namespace Next_View
 		  popClose.Text = T._("Exit");
 
 		}
-		
+
 		// ------------------------------   2nd screen    ----------------------------------------------------------
 
 		public void Start2ndScreen()
@@ -863,6 +869,7 @@ namespace Next_View
 		}
 
 		public void Show2ndPic(string prPath)
+		// called by: PicLoad
 		{
 			if (CanShow2nd()){
 				if (prPath == ""){
@@ -902,13 +909,65 @@ namespace Next_View
 				m_Image2.picBox.Image = null;
 			}
 		}
-		
+
 		public void Close2nd()
 		{
 			if (CanShow2nd()){
 				m_Image2.RClose();
 			}
+			if (CanShowExif()){
+					m_Exif.Close();
+			}
 		}
+		
+		// ------------------------------   Exif screen    ----------------------------------------------------------
+
+		public void ShowExif0()
+		{
+			ExifForm0 frmExif0 = new ExifForm0();
+			frmExif0.CheckFile0(_currentPath);
+			frmExif0.ShowDialog();
+		}
+
+		
+		public void StartExif()   //  with 'e'
+		{
+			if (CanStartExif()){
+				m_Exif = new ExifForm();
+				m_Exif.CheckFile(_currentPath);
+				m_Exif.Show();
+			}
+			else {    // img to foreground
+				if (CanShowExif()){
+					m_Exif.Show();
+					m_Exif.BringToFront();
+				}
+			}
+		}
+
+		public void ShowExif()
+		{
+			if (CanShowExif()){
+				m_Exif.CheckFile(_currentPath);
+			}
+		}
+
+		bool CanStartExif()
+		{
+			if (m_Exif == null){
+				return true;
+			}
+			return false;
+		}
+
+		bool CanShowExif()
+		{
+			if (m_Exif == null){
+				return false;
+			}
+			return true;
+		}
+		
 
 		// ------------------------------   delegates   ----------------------------------------------------------
 
@@ -944,7 +1003,7 @@ namespace Next_View
 			{
 				this.WindowSize(this, e);
 			}
-		}  
+		}
 
 		public void SetStatusText(string text1)
 		{
@@ -964,7 +1023,7 @@ namespace Next_View
 
 		public void SetFilename(string text1)
 		{
-			// called by:  
+			// called by:
 			// output: main.HandleStatus
 			OnFilenameChanged(new SetFilenameEventArgs(text1));
 			Application.DoEvents();
@@ -972,12 +1031,12 @@ namespace Next_View
 
 		protected virtual void OnFilenameChanged(SetFilenameEventArgs e)
 		{
-			if(this.FilenameChanged != null)     
+			if(this.FilenameChanged != null)
 			{
 				this.FilenameChanged(this, e);
 			}
 		}
-		
+
 
 	}  // end frmImage
 

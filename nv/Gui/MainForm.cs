@@ -39,6 +39,8 @@ namespace Next_View
 		static EventWaitHandle s_event ;
 		private XDListener listener;
 
+		string _currentPath = "";
+				
 		public frmMain()
 		{
 			//
@@ -143,6 +145,7 @@ namespace Next_View
 
 			m_Image.Show(dockPanel1, DockState.Document);      // sequence of tabs
 			//m_Image.Show(dockPanel1, DockState.Document);     // set active
+
 
 			string firstImage = "";
 			string[] args = Environment.GetCommandLineArgs();
@@ -423,7 +426,6 @@ namespace Next_View
 
 		void MnuTestClick(object sender, EventArgs e)
 		{
-			TestScreen();
 
 		}
 
@@ -552,12 +554,10 @@ namespace Next_View
 		}
 
 		private void HandleWindow(object sender, SetStatusMainEventArgs e)
-		// called by: SetWindowText
+		// called by: SetWindowText: picLoad, Rename, Remove
 		{
-			string pPath = e.NewValue;
-			this.Text = pPath + "  -  Next-View";
-			// this.Text = Path.GetFileName(pPath)	+	"  -  Next-View";
-			//recentItem1.AddRecentItem(pPath);
+			_currentPath = e.NewValue;
+			this.Text = _currentPath + "  -  Next-View";
 		}
 
 
@@ -573,6 +573,7 @@ namespace Next_View
 
 		private void HandleFilename(object sender, SetFilenameEventArgs e)
 		// called by: SetFilename: openPic, FrmImageDragDrop
+		// for recoent file name only 
 		{
 			string pPath = e.NewValue;
 			recentItem1.AddRecentItem(pPath);

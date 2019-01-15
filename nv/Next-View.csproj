@@ -52,6 +52,9 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
+    <Reference Include="MetadataExtractor">
+      <HintPath>bin\Debug\MetadataExtractor.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
@@ -81,6 +84,9 @@
     <Reference Include="XDMessaging">
       <HintPath>3rdParty\XDMessaging.dll</HintPath>
     </Reference>
+    <Reference Include="XmpCore">
+      <HintPath>bin\Debug\XmpCore.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class\StatusMainEvent.cs" />
@@ -92,6 +98,14 @@
     <Compile Include="Gui\About.cs" />
     <Compile Include="Gui\About.Designer.cs">
       <DependentUpon>About.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\ExifForm.cs" />
+    <Compile Include="Gui\ExifForm.Designer.cs">
+      <DependentUpon>ExifForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\ExifForm0.cs" />
+    <Compile Include="Gui\ExifForm0.Designer.cs">
+      <DependentUpon>ExifForm0.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\FullScreen.cs" />
     <Compile Include="Gui\FullScreen.Designer.cs">
@@ -130,6 +144,12 @@
     <Compile Include="Settings.cs" />
     <EmbeddedResource Include="Gui\About.resx">
       <DependentUpon>About.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\ExifForm.resx">
+      <DependentUpon>ExifForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\ExifForm0.resx">
+      <DependentUpon>ExifForm0.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\FullScreen.resx">
       <DependentUpon>FullScreen.cs</DependentUpon>

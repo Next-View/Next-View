@@ -209,14 +209,14 @@ namespace Next_View
 			this.mnuOptions.Image = ((System.Drawing.Image)(resources.GetObject("mnuOptions.Image")));
 			this.mnuOptions.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
 			this.mnuOptions.Name = "mnuOptions";
-			this.mnuOptions.Size = new System.Drawing.Size(152, 22);
+			this.mnuOptions.Size = new System.Drawing.Size(141, 22);
 			this.mnuOptions.Text = "Options...";
 			this.mnuOptions.Click += new System.EventHandler(this.MnuOptionsClick);
 			// 
 			// mnuStartEditor
 			// 
 			this.mnuStartEditor.Name = "mnuStartEditor";
-			this.mnuStartEditor.Size = new System.Drawing.Size(152, 22);
+			this.mnuStartEditor.Size = new System.Drawing.Size(141, 22);
 			this.mnuStartEditor.Text = "Start editor...";
 			this.mnuStartEditor.Click += new System.EventHandler(this.MnuStartEditorClick);
 			// 
@@ -225,7 +225,7 @@ namespace Next_View
 			this.mnuSearch.Image = ((System.Drawing.Image)(resources.GetObject("mnuSearch.Image")));
 			this.mnuSearch.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
 			this.mnuSearch.Name = "mnuSearch";
-			this.mnuSearch.Size = new System.Drawing.Size(152, 22);
+			this.mnuSearch.Size = new System.Drawing.Size(141, 22);
 			this.mnuSearch.Text = "Search...";
 			this.mnuSearch.Click += new System.EventHandler(this.MnuSearchClick);
 			// 
@@ -235,7 +235,7 @@ namespace Next_View
 			this.langEnglish,
 			this.langGerman});
 			this.mnuLanguage.Name = "mnuLanguage";
-			this.mnuLanguage.Size = new System.Drawing.Size(152, 22);
+			this.mnuLanguage.Size = new System.Drawing.Size(141, 22);
 			this.mnuLanguage.Text = "Language";
 			// 
 			// langEnglish
@@ -243,7 +243,7 @@ namespace Next_View
 			this.langEnglish.Image = ((System.Drawing.Image)(resources.GetObject("langEnglish.Image")));
 			this.langEnglish.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
 			this.langEnglish.Name = "langEnglish";
-			this.langEnglish.Size = new System.Drawing.Size(152, 22);
+			this.langEnglish.Size = new System.Drawing.Size(116, 22);
 			this.langEnglish.Text = "English";
 			this.langEnglish.Click += new System.EventHandler(this.LangEnglishClick);
 			// 
@@ -252,7 +252,7 @@ namespace Next_View
 			this.langGerman.Image = ((System.Drawing.Image)(resources.GetObject("langGerman.Image")));
 			this.langGerman.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
 			this.langGerman.Name = "langGerman";
-			this.langGerman.Size = new System.Drawing.Size(152, 22);
+			this.langGerman.Size = new System.Drawing.Size(116, 22);
 			this.langGerman.Text = "German";
 			this.langGerman.Click += new System.EventHandler(this.LangGermanClick);
 			// 
@@ -412,7 +412,6 @@ namespace Next_View
 			this.mnuTest.Name = "mnuTest";
 			this.mnuTest.Size = new System.Drawing.Size(152, 22);
 			this.mnuTest.Text = "Test";
-			this.mnuTest.Visible = false;
 			this.mnuTest.Click += new System.EventHandler(this.MnuTestClick);
 			// 
 			// statusMain

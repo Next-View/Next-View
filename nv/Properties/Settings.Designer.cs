@@ -169,6 +169,54 @@ namespace Next_View.Properties {
 
 		[global::System.Configuration.UserScopedSettingAttribute()]
 		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+		[global::System.Configuration.DefaultSettingValueAttribute("500")]
+		public int ExifH {
+			get {
+				return ((int)(this["ExifH"]));
+			}
+			set {
+				this["ExifH"] = value;
+			}
+		}
+		
+		[global::System.Configuration.UserScopedSettingAttribute()]
+		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+		[global::System.Configuration.DefaultSettingValueAttribute("300")]
+		public int ExifW {
+			get {
+				return ((int)(this["ExifW"]));
+			}
+			set {
+				this["ExifW"] = value;
+			}
+		}
+		
+		[global::System.Configuration.UserScopedSettingAttribute()]
+		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+		[global::System.Configuration.DefaultSettingValueAttribute("400")]
+		public int ExifX {
+			get {
+				return ((int)(this["ExifX"]));
+			}
+			set {
+				this["ExifX"] = value;
+			}
+		}
+		
+		[global::System.Configuration.UserScopedSettingAttribute()]
+		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+		[global::System.Configuration.DefaultSettingValueAttribute("50")]
+		public int ExifY {
+			get {
+				return ((int)(this["ExifY"]));
+			}
+			set {
+				this["ExifY"] = value;
+			}
+		}
+		
+		[global::System.Configuration.UserScopedSettingAttribute()]
+		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
 		[global::System.Configuration.DefaultSettingValueAttribute("")]
 		public string RecentImgs {
 			get {
