@@ -98,10 +98,10 @@ namespace Next_View
 					AddListItem("Digitized date", dtDigitized);
 
 					string iWidth = subIfdDirectory.GetDescription(ExifDirectoryBase.TagExifImageWidth);
-					AddListItem("Image Width", iWidth);
+					AddListItem("Exif Image Width", iWidth);
 
 					string iHeight = subIfdDirectory.GetDescription(ExifDirectoryBase.TagExifImageHeight);
-					AddListItem("Image Height", iHeight);
+					AddListItem("Exif Image Height", iHeight);
 					
 					string exposure = subIfdDirectory.GetDescription(ExifDirectoryBase.TagExposureTime);
 					if (!AddListItem("Exposure Time", exposure)){
@@ -126,9 +126,12 @@ namespace Next_View
 
 					string expo = subIfdDirectory.GetDescription(ExifDirectoryBase.TagExposureProgram);
 					AddListItem("Exposure", expo);
-					
+
 					string lensmodel = subIfdDirectory.GetDescription(ExifDirectoryBase.TagLensModel);
-					AddListItem("Lens Model", lensmodel);			
+					AddListItem("Lens Model", lensmodel);	
+										
+					string scene = subIfdDirectory.GetDescription(ExifDirectoryBase.TagSceneCaptureType);
+					AddListItem("Scene", scene);			
 				}
 
 
@@ -151,7 +154,19 @@ namespace Next_View
 					string pictureMode = fujiDirectory.GetDescription(FujifilmMakernoteDirectory.TagPictureMode);
 					AddListItem("Picture Mode", pictureMode);
 				}
-																
+
+				var canonDirectory = directories.OfType<CanonMakernoteDirectory>().FirstOrDefault();
+				if (canonDirectory != null){
+					string lensType = canonDirectory.GetDescription(CanonMakernoteDirectory.CameraSettings.TagLensType);
+					AddListItem("Lens Typee", lensType);
+				}
+
+				var sonyDirectory = directories.OfType<SonyType1MakernoteDirectory>().FirstOrDefault();
+				if (sonyDirectory != null){
+					string afMode = sonyDirectory.GetDescription(SonyType1MakernoteDirectory.TagAfMode);
+					AddListItem("AF Mode", afMode);
+				}
+																								
 				return true;
 			}
 			catch (Exception e)

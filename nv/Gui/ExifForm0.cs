@@ -32,7 +32,7 @@ namespace Next_View
 		}
 		void CmdClipClick(object sender, EventArgs e)
 		{
-
+			Clipboard.SetText(textExif0.Text);
 		}
 
 		public bool CheckFile0(string fName)

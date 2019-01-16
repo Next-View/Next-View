@@ -52,12 +52,13 @@ namespace Next_View
 			this.textExif0.Multiline = true;
 			this.textExif0.Name = "textExif0";
 			this.textExif0.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.textExif0.Size = new System.Drawing.Size(895, 410);
+			this.textExif0.Size = new System.Drawing.Size(895, 414);
 			this.textExif0.TabIndex = 1;
 			// 
 			// cmdClip
 			// 
-			this.cmdClip.Location = new System.Drawing.Point(16, 423);
+			this.cmdClip.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.cmdClip.Location = new System.Drawing.Point(13, 423);
 			this.cmdClip.Margin = new System.Windows.Forms.Padding(4);
 			this.cmdClip.Name = "cmdClip";
 			this.cmdClip.Size = new System.Drawing.Size(100, 28);
@@ -70,7 +71,7 @@ namespace Next_View
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(900, 466);
+			this.ClientSize = new System.Drawing.Size(900, 464);
 			this.Controls.Add(this.cmdClip);
 			this.Controls.Add(this.textExif0);
 			this.Margin = new System.Windows.Forms.Padding(4);
