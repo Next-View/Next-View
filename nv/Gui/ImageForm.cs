@@ -49,7 +49,7 @@ namespace Next_View
 		string _priorPath = "";
 
 		ExifForm m_Exif;
-				
+
 		public frmImage  m_Image2;
 
 		public event HandleStatusMainChange  StatusChanged;
@@ -394,6 +394,7 @@ namespace Next_View
 					}
 					else {
 						StartExif();
+						//StartExif2();
 					}
 					break;
 			}
@@ -435,6 +436,7 @@ namespace Next_View
 				using (FileStream stream = new FileStream(pPath, FileMode.Open, FileAccess.Read))
 				{
 					_myImg = Image.FromStream(stream);  // abort for gif
+					_myImg.RotateFlip(RotateFlipType.Rotate90FlipNone);
 					stream.Close();
 				}
 				GC.Collect();
@@ -919,7 +921,7 @@ namespace Next_View
 					m_Exif.Close();
 			}
 		}
-		
+
 		// ------------------------------   Exif screen    ----------------------------------------------------------
 
 		public void ShowExif0()
@@ -929,19 +931,41 @@ namespace Next_View
 			frmExif0.ShowDialog();
 		}
 
-		
-		public void StartExif()   //  with 'e'
+		public void StartExif2()
 		{
-			if (CanStartExif()){
-				m_Exif = new ExifForm();
-				m_Exif.CheckFile(_currentPath);
-				m_Exif.Show();
-			}
-			else {    // img to foreground
-				if (CanShowExif()){
+			ExifForm frmExif = new ExifForm();
+			frmExif.CheckFile(_currentPath);
+			frmExif.BringToFront();
+			frmExif.ShowDialog();
+		}
+
+
+		public bool StartExif()   //  with 'e'
+		{
+			try
+			{
+				if (CanStartExif()){
+					m_Exif = new ExifForm();
+					Debug.WriteLine("Exif: CheckFile");
+					m_Exif.CheckFile(_currentPath);
+					Debug.WriteLine("Exif: show");
 					m_Exif.Show();
-					m_Exif.BringToFront();
+					Debug.WriteLine("Exif ok:");
 				}
+				else {    // img to foreground
+					Debug.WriteLine("Exif: no start");
+					if (CanShowExif()){
+						m_Exif.Show();
+						m_Exif.BringToFront();
+					}
+				}
+				Debug.WriteLine("Exif end:");
+				return true;
+			}
+			catch (Exception e)
+			{
+				MessageBox.Show(e.Message, "Exif", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				return false;
 			}
 		}
 
@@ -967,7 +991,7 @@ namespace Next_View
 			}
 			return true;
 		}
-		
+
 
 		// ------------------------------   delegates   ----------------------------------------------------------
 

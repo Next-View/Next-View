@@ -17,6 +17,7 @@ namespace Next_View
 		private System.Windows.Forms.ListView listExif;
 		private System.Windows.Forms.ColumnHeader colTag;
 		private System.Windows.Forms.ColumnHeader colValue;
+		private System.Windows.Forms.Button button1;
 
 		/// <summary>
 		/// Disposes resources used by the form.
@@ -42,18 +43,20 @@ namespace Next_View
 			this.listExif = new System.Windows.Forms.ListView();
 			this.colTag = new System.Windows.Forms.ColumnHeader();
 			this.colValue = new System.Windows.Forms.ColumnHeader();
+			this.button1 = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// listExif
 			// 
+			this.listExif.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+			| System.Windows.Forms.AnchorStyles.Left) 
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.listExif.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
 			this.colTag,
 			this.colValue});
-			this.listExif.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.listExif.Location = new System.Drawing.Point(0, 0);
-			this.listExif.Margin = new System.Windows.Forms.Padding(4);
 			this.listExif.Name = "listExif";
-			this.listExif.Size = new System.Drawing.Size(337, 453);
+			this.listExif.Size = new System.Drawing.Size(254, 349);
 			this.listExif.TabIndex = 0;
 			this.listExif.UseCompatibleStateImageBehavior = false;
 			this.listExif.View = System.Windows.Forms.View.Details;
@@ -68,13 +71,24 @@ namespace Next_View
 			this.colValue.Text = "Value";
 			this.colValue.Width = 200;
 			// 
+			// button1
+			// 
+			this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.button1.Location = new System.Drawing.Point(0, 351);
+			this.button1.Name = "button1";
+			this.button1.Size = new System.Drawing.Size(75, 23);
+			this.button1.TabIndex = 1;
+			this.button1.Text = "gps";
+			this.button1.UseVisualStyleBackColor = true;
+			this.button1.Click += new System.EventHandler(this.Button1Click);
+			// 
 			// ExifForm
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(337, 453);
+			this.ClientSize = new System.Drawing.Size(253, 376);
+			this.Controls.Add(this.button1);
 			this.Controls.Add(this.listExif);
-			this.Margin = new System.Windows.Forms.Padding(4);
 			this.Name = "ExifForm";
 			this.Text = "ExifForm";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ExifFormFormClosing);
