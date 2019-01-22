@@ -127,6 +127,10 @@
     <Compile Include="Gui\ImageForm.Designer.cs">
       <DependentUpon>ImageForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\ExifDash.cs" />
+    <Compile Include="Gui\ExifDash.Designer.cs">
+      <DependentUpon>ExifDash.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\RecentItem.cs" />
     <Compile Include="Gui\Rename.cs" />
     <Compile Include="Gui\Rename.Designer.cs">
@@ -164,6 +168,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ImageForm.resx">
       <DependentUpon>ImageForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\ExifDash.resx">
+      <DependentUpon>ExifDash.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\Rename.resx">
       <DependentUpon>Rename.Designer.cs</DependentUpon>

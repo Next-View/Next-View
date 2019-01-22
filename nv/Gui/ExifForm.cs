@@ -65,10 +65,11 @@ namespace Next_View
 		}
 
 
-		public bool CheckFile(string fName)
+		public bool CheckFile(ref string orientation, string fName)
 		{
 			listExif.Items.Clear();
 			_gps2 = "";
+			orientation = "";
 
 			try
 			{
@@ -92,7 +93,7 @@ namespace Next_View
 
 				var jpgComDirectory = directories.OfType<JpegCommentDirectory>().FirstOrDefault();
 				if (jpgComDirectory != null){
-					string jComm = jpgDirectory.GetDescription(JpegCommentDirectory.TagComment);
+					string jComm = jpgComDirectory.GetDescription(JpegCommentDirectory.TagComment);
 					AddListItem("Comment", jComm);
 				}
 
@@ -158,6 +159,10 @@ namespace Next_View
 
 					string ih = ifd0Directory.GetDescription(ExifDirectoryBase.TagImageHeight);
 					AddListItem("Image Height", ih);
+
+					string or = ifd0Directory.GetDescription(ExifDirectoryBase.TagOrientation);
+					if (or != null) orientation = or.ToLower();
+					AddListItem("Orientation", orientation);
 
 					string make = ifd0Directory.GetDescription(ExifDirectoryBase.TagMake);
 					AddListItem("Make", make);
@@ -280,7 +285,7 @@ namespace Next_View
 			catch (Exception e)
 			{
 				Debug.WriteLine(e.Message);
-				MessageBox.Show("File is invalid" + "\n " + e.Message, "Invalid file", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				MessageBox.Show("Exif, file is invalid" + "\n " + e.Message, "Invalid file", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				return false;
 			}
 		}

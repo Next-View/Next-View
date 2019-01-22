@@ -90,7 +90,7 @@ namespace Next_View
 			this.cmdOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.cmdOk.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.cmdOk.Location = new System.Drawing.Point(905, 486);
-			this.cmdOk.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+			this.cmdOk.Margin = new System.Windows.Forms.Padding(5);
 			this.cmdOk.Name = "cmdOk";
 			this.cmdOk.Size = new System.Drawing.Size(133, 37);
 			this.cmdOk.TabIndex = 8;
@@ -104,6 +104,7 @@ namespace Next_View
 			| System.Windows.Forms.AnchorStyles.Left)));
 			this.listSearch.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
 			this.colFilename});
+			this.listSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.listSearch.Location = new System.Drawing.Point(16, 96);
 			this.listSearch.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.listSearch.Name = "listSearch";
@@ -124,7 +125,7 @@ namespace Next_View
 			this.edSearchFor.Location = new System.Drawing.Point(156, 15);
 			this.edSearchFor.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.edSearchFor.Name = "edSearchFor";
-			this.edSearchFor.Size = new System.Drawing.Size(369, 24);
+			this.edSearchFor.Size = new System.Drawing.Size(369, 21);
 			this.edSearchFor.TabIndex = 1;
 			this.edSearchFor.Enter += new System.EventHandler(this.EdSearchForEnter);
 			// 
@@ -141,7 +142,7 @@ namespace Next_View
 			// 
 			this.cmdSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.cmdSearch.Location = new System.Drawing.Point(465, 486);
-			this.cmdSearch.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+			this.cmdSearch.Margin = new System.Windows.Forms.Padding(5);
 			this.cmdSearch.Name = "cmdSearch";
 			this.cmdSearch.Size = new System.Drawing.Size(176, 37);
 			this.cmdSearch.TabIndex = 2;
@@ -199,7 +200,7 @@ namespace Next_View
 			this.edSearchIn.Location = new System.Drawing.Point(156, 49);
 			this.edSearchIn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.edSearchIn.Name = "edSearchIn";
-			this.edSearchIn.Size = new System.Drawing.Size(609, 24);
+			this.edSearchIn.Size = new System.Drawing.Size(609, 21);
 			this.edSearchIn.TabIndex = 4;
 			this.edSearchIn.Enter += new System.EventHandler(this.EdSearchInEnter);
 			// 
@@ -223,6 +224,7 @@ namespace Next_View
 			// 
 			// chkStartWith
 			// 
+			this.chkStartWith.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.chkStartWith.Location = new System.Drawing.Point(575, 10);
 			this.chkStartWith.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.chkStartWith.Name = "chkStartWith";
@@ -234,7 +236,7 @@ namespace Next_View
 			// SearchForm
 			// 
 			this.AcceptButton = this.cmdSearch;
-			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1084, 576);
 			this.Controls.Add(this.chkStartWith);

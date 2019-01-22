@@ -58,11 +58,11 @@ namespace Next_View
 			catch (Exception e)
 			{
 				Debug.WriteLine(e.Message);
-				MessageBox.Show("File is invalid" + "\n " + e.Message, "Invalid file", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				MessageBox.Show("Exif. This file is invalid" + "\n " + e.Message, "Invalid file", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				return false;
 			}
 		}
-		
+
 		void ExifForm0FormClosing(object sender, FormClosingEventArgs e)
 		{
 			this.Close();

@@ -40,6 +40,7 @@ namespace Next_View
 		int _borderWidth = 0;
 		string _picSelection = "";
 		string _currentPath = "";
+		string _orientation = "";
 		string _lastSearchStr = "";
 		Image _myImg;
 		bool loadNextPic = true;
@@ -94,7 +95,7 @@ namespace Next_View
 			TranslateImageForm();
 
 			if (_wType == WinType.second){
-				popClose.Text = T._("Close");    // not 'Exit'
+				popClose.Text = T._("Close");    // not Exit
 
 				int wW = Settings.Default.MainW2;
 				int wH = Settings.Default.MainH2;
@@ -389,12 +390,14 @@ namespace Next_View
 					Test();
 					break;
 				case 69:    // 'e'  for exif
-					if (ctrl){
+					if (alt){
+						ShowExifDash();
+					}
+					else if (ctrl){
 						ShowExif0();
 					}
 					else {
 						StartExif();
-						//StartExif2();
 					}
 					break;
 			}
@@ -431,12 +434,31 @@ namespace Next_View
 					return false;
 				}
 
-				ShowExif();
+				Stopwatch sw1 = new Stopwatch();
+				sw1.Start();
+				bool showOk = ShowExif();
+				sw1.Stop();
+				if (!showOk){
+					Util.ExifOrient(ref _orientation, _currentPath);
+				}
+				//Debug.WriteLine("Ticks: " + sw1.Elapsed.Ticks.ToString());
+				var t = new DateTime(sw1.Elapsed.Ticks);
+				//Debug.WriteLine("Exif time: {0:D2}s:{1:D5}ms", t.Second, t.Millisecond);
+
 				//Image myImg;
 				using (FileStream stream = new FileStream(pPath, FileMode.Open, FileAccess.Read))
 				{
 					_myImg = Image.FromStream(stream);  // abort for gif
-					_myImg.RotateFlip(RotateFlipType.Rotate90FlipNone);
+					if (_orientation.Equals("right side, top (rotate 90 cw)")){
+						_myImg.RotateFlip(RotateFlipType.Rotate90FlipNone);
+					}
+					else if (_orientation.Equals("bottom, right side (rotate 180)")){
+						_myImg.RotateFlip(RotateFlipType.Rotate180FlipNone);
+					}
+					else if (_orientation.Equals("left side, bottom (rotate 270 cw)")){
+						_myImg.RotateFlip(RotateFlipType.Rotate270FlipNone);
+					}
+
 					stream.Close();
 				}
 				GC.Collect();
@@ -924,19 +946,19 @@ namespace Next_View
 
 		// ------------------------------   Exif screen    ----------------------------------------------------------
 
+
+		public void ShowExifDash()
+		{
+			ExifDash fProject = new ExifDash();
+			fProject.SetPath(_currentPath);
+			fProject.ShowDialog();
+		}
+
 		public void ShowExif0()
 		{
 			ExifForm0 frmExif0 = new ExifForm0();
 			frmExif0.CheckFile0(_currentPath);
 			frmExif0.ShowDialog();
-		}
-
-		public void StartExif2()
-		{
-			ExifForm frmExif = new ExifForm();
-			frmExif.CheckFile(_currentPath);
-			frmExif.BringToFront();
-			frmExif.ShowDialog();
 		}
 
 
@@ -946,20 +968,15 @@ namespace Next_View
 			{
 				if (CanStartExif()){
 					m_Exif = new ExifForm();
-					Debug.WriteLine("Exif: CheckFile");
-					m_Exif.CheckFile(_currentPath);
-					Debug.WriteLine("Exif: show");
+					m_Exif.CheckFile(ref _orientation, _currentPath);
 					m_Exif.Show();
-					Debug.WriteLine("Exif ok:");
 				}
 				else {    // img to foreground
-					Debug.WriteLine("Exif: no start");
 					if (CanShowExif()){
 						m_Exif.Show();
 						m_Exif.BringToFront();
 					}
 				}
-				Debug.WriteLine("Exif end:");
 				return true;
 			}
 			catch (Exception e)
@@ -969,11 +986,14 @@ namespace Next_View
 			}
 		}
 
-		public void ShowExif()
+		public bool ShowExif()
+		// for each pic
 		{
-			if (CanShowExif()){
-				m_Exif.CheckFile(_currentPath);
+			bool showRet = CanShowExif();
+			if (showRet){
+				m_Exif.CheckFile(ref _orientation, _currentPath);
 			}
+			return showRet;
 		}
 
 		bool CanStartExif()
