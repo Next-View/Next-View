@@ -33,18 +33,27 @@ namespace Next_View
 	/// </summary>
 	public partial class ExifDash : DockContent
 	{
-
+		ImgList _il;
 		bool _stop = false;
 		string _imgDir = "";
+		public string _exifImg {get;set;}
+		public bool _ExifReturn {get;set;}
 
 		Stopwatch _sw1 = new Stopwatch();
 
+		List<Exif> exList = new List<Exif>();
+
+		Dictionary<int, int> dicExift = new Dictionary<int, int>();
+		Dictionary<int, int> dicToD = new Dictionary<int, int>();
 		Dictionary<string, int> dicModel = new Dictionary<string, int>();
+		Dictionary<string, int> dicExpot = new Dictionary<string, int>();
 		Dictionary<string, int> dicFNum = new Dictionary<string, int>();
 		Dictionary<string, int> dicFlash = new Dictionary<string, int>();
-		Dictionary<string, int> dicExpo = new Dictionary<string, int>();
+		Dictionary<string, int> dicExposi = new Dictionary<string, int>();
 		Dictionary<string, int> dicLens = new Dictionary<string, int>();
+		Dictionary<string, int> dicScene = new Dictionary<string, int>();
 		Dictionary<bool, int> dicGps = new Dictionary<bool, int>();
+		List<string> exifImgList = new List<string>();
 
 		public event HandleStatusMainChange  StatusChanged;
 
@@ -55,6 +64,7 @@ namespace Next_View
 			//
 			InitializeComponent();
 
+			_ExifReturn = false;
 			//
 			// TODO: Add constructor code after the InitializeComponent() call.
 			//
@@ -62,15 +72,33 @@ namespace Next_View
 
     // ------------------------------   functions  ----------------------------------------------------------
 
-		public void SetPath(string fPath)
+		public void SetPath(string fPath, ImgList il)
 		// from imageForm
 		{
+			_il = il;
 			edImgPath.Text = Path.GetDirectoryName(fPath);
 		}
 
-		public void ProjectClear()
+		public void FormClear()
 		{
-			listProject.Items.Clear();
+			exList.Clear();
+			exifImgList.Clear();
+			listImg.Items.Clear();
+			listExift.Items.Clear();
+			listModel.Items.Clear();
+			listLens.Items.Clear();
+			listExpo.Items.Clear();
+			listScene.Items.Clear();
+			dicExift.Clear();
+			dicToD.Clear();
+			dicModel.Clear();
+			dicExpot.Clear();
+			dicFNum.Clear();
+			dicFlash.Clear();
+			dicExposi.Clear();
+			dicLens.Clear();
+			dicScene.Clear();
+			dicGps.Clear();
 		}
 
 		public void ProjectPathClear()
@@ -83,7 +111,7 @@ namespace Next_View
 		// called by: main.ProjectLoad, ListSourceDirClick, BackgroundWorker1RunWorkerCompleted
 		{
 			//Debug.WriteLine("form p1: " + this.Width.ToString());
-			listProject.Items.Clear();
+			listImg.Items.Clear();
 
 			int pCount = 0;
 			string[] items = { " ", " ", " ", " ", " " };   // for product column with 5 lines
@@ -101,29 +129,38 @@ namespace Next_View
 
     // ------------------------------   events form ----------------------------------------------------------
 
-		void frmProjectEnter(object sender, EventArgs e)
+		void ExifDashEnter(object sender, EventArgs e)
 		{
 			Settings.Default.LastTab = 2;
 		}
 
-		void frmProjectFormClosing(object sender, FormClosingEventArgs e)
+		void ExifDashFormClosing(object sender, FormClosingEventArgs e)
 		{
 			//e.Cancel = true;
 			//this.Hide();
 			this.Close();
 		}
 
-
-
-
-		void frmProjectLoad(object sender, EventArgs e)
+		void ExifDashDragEnter(object sender, DragEventArgs e)
 		{
-
+			if (e.Data.GetDataPresent(DataFormats.FileDrop))
+				e.Effect = DragDropEffects.Copy;
 		}
 
-		void FrmProjectHelpRequested(object sender, HelpEventArgs hlpevent)
+		void ExifDashDragDrop(object sender, DragEventArgs e)
 		{
-			Help.ShowHelp(this, "NextRelease.chm", "Fieldlist.htm");
+			if (e.Data.GetDataPresent(DataFormats.FileDrop)) {
+				string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+				string dropFile = files[0];
+				string dropDir = "";
+				if (File.Exists(dropFile)) {
+					dropDir = Path.GetDirectoryName(dropFile);
+				}
+				else if (Directory.Exists(dropFile)){
+						dropDir = dropFile;
+				}
+				edImgPath.Text = dropDir;
+			}
 		}
 
 
@@ -154,7 +191,7 @@ namespace Next_View
 			}
 
 			_imgDir = imgDir;
-			ProjectClear();
+			FormClear();
 			StartScan();
 			return true;
 		}
@@ -172,7 +209,6 @@ namespace Next_View
 				_stop = true;
 				cmdStart.Text = "&Stop";
 				Debug.WriteLine("bw: start: ");
-
 				if (backgroundWorker1.IsBusy != true)
 				{
 					Debug.WriteLine("bw: run: ");
@@ -201,34 +237,46 @@ namespace Next_View
 		// called by: BackgroundWorker1DoWork
 		{
 			string[] imgList = Directory.GetFiles(_imgDir, "*.jpg", SearchOption.AllDirectories);
+			int exType;
 			string orientation;
 			string model;
+			int timeOfD;
+			string expotime;
 			string fnumber;
 			string flash;
-			string expo;
+			string exposi;
 			string lens;
+			string scene;
 			bool gps;
 
 			foreach (string picPath in imgList)
 			{
 				//Debug.WriteLine("path: " + picPath);
-				Util.CheckExif(out orientation, out model, out fnumber, out flash, out expo, out lens, out gps, picPath);
-				if (dicModel.ContainsKey(model)){
-					dicModel[model] +=1;
-				}
-				else {
-					dicModel[model] =1;
-				}
+				Util.CheckExif(out exType, out orientation, out model, out timeOfD, out expotime, out fnumber, out flash, out exposi, out lens, out scene,
+				               out gps, picPath);
+				exList.Add(new Exif(exType, model, exposi, lens, scene,
+					gps, picPath));
 
+				if (dicExift.ContainsKey(exType)) dicExift[exType] +=1;
+				else dicExift[exType] =1;
+				if (dicModel.ContainsKey(model)) dicModel[model] +=1;
+				else dicModel[model] =1;
+				if (dicToD.ContainsKey(timeOfD)) dicToD[timeOfD] +=1;
+				else dicToD[timeOfD] =1;
+
+				if (dicExpot.ContainsKey(expotime)) dicExpot[expotime] +=1;
+				else dicExpot[expotime] =1;
 				if (dicFNum.ContainsKey(fnumber)) dicFNum[fnumber] +=1;
 				else dicFNum[fnumber] =1;
 				if (dicFlash.ContainsKey(flash)) dicFlash[flash] +=1;
 				else dicFlash[flash] =1;
-				if (dicExpo.ContainsKey(expo)) dicExpo[expo] +=1;
-				else dicExpo[expo] =1;
+				if (dicExposi.ContainsKey(exposi)) dicExposi[exposi] +=1;
+				else dicExposi[exposi] =1;
 
 				if (dicLens.ContainsKey(lens)) dicLens[lens] +=1;
 				else dicLens[lens] =1;
+				if (dicScene.ContainsKey(scene)) dicScene[scene] +=1;
+				else dicScene[scene] =1;
 				if (dicGps.ContainsKey(gps)) dicGps[gps] +=1;
 				else dicGps[gps] =1;
 
@@ -242,10 +290,6 @@ namespace Next_View
 			foreach (KeyValuePair<string, int> dfl in dicFlash)
 			{
 				Debug.WriteLine("Flash: " + dfl.Key + " " + dfl.Value);
-			}
-			foreach (KeyValuePair<string, int> dex in dicExpo)
-			{
-				Debug.WriteLine("Expo: " + dex.Key + " " + dex.Value);
 			}
 
 			foreach (KeyValuePair<bool, int> dg in dicGps)
@@ -276,6 +320,7 @@ namespace Next_View
 		}
 
 		void BackgroundWorker1DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+		// started with RunWorkerAsync
 		{
 			BackgroundWorker worker = sender as BackgroundWorker;
 			if (worker.CancellationPending == true)
@@ -288,10 +333,7 @@ namespace Next_View
 				//Debug.WriteLine("bw2: start scan");
 				// init progress bar
 
-
 				worker.ReportProgress(1, "Start");
-
-
 				ScanImages(sender as BackgroundWorker);
 
 			}
@@ -352,6 +394,46 @@ namespace Next_View
 
 		void ImgListShow()
 		{
+			foreach (KeyValuePair<int, int> det in dicExift)
+			{
+				string exift;
+				switch(det.Key)
+				{
+					case 1: exift = "Reduced Exif";
+					break;
+					case 2: exift = "Full Exif";
+					break;
+					default: exift = "No Exif";
+					break;
+				}
+				ListViewItem item = this.listExift.Items.Add(exift);
+				item.ImageIndex = 0;
+				item.SubItems.Add(det.Value.ToString());
+			}
+
+			foreach (KeyValuePair<int, int> dtd in dicToD)
+			{
+				string tod;
+				switch(dtd.Key)
+				{
+					case 0: tod = "Night";
+					break;
+					case 1: tod = "Morning";
+					break;
+					case 2: tod = "Noon";
+					break;
+					case 3: tod = "Afternoon";
+					break;
+					case 4: tod = "Evening";
+					break;
+					default: tod = "No time";
+					break;
+				}
+				ListViewItem item = this.listToD.Items.Add(tod);
+				item.ImageIndex = 0;
+				item.SubItems.Add(dtd.Value.ToString());
+			}
+
 			foreach (KeyValuePair<string, int> dm in dicModel)
 			{
 				string mo = dm.Key;
@@ -369,7 +451,87 @@ namespace Next_View
 				item.ImageIndex = 0;
 				item.SubItems.Add(dl.Value.ToString());
 			}
+
+			foreach (KeyValuePair<string, int> dex in dicExposi)
+			{
+				string exp = dex.Key;
+				if (string.IsNullOrEmpty(exp)) exp = "<no exposition>";
+				ListViewItem item = this.listExpo.Items.Add(exp);
+				item.ImageIndex = 0;
+				item.SubItems.Add(dex.Value.ToString());
+			}
+
+			foreach (KeyValuePair<string, int> ds in dicScene)
+			{
+				string sc = ds.Key;
+				if (string.IsNullOrEmpty(sc)) sc = "<no scene>";
+				ListViewItem item = this.listScene.Items.Add(sc);
+				item.ImageIndex = 0;
+				item.SubItems.Add(ds.Value.ToString());
+			}
+
 		}
+
+
+
+		void ListExiftDoubleClick(object sender, EventArgs e)
+		{
+
+		}
+
+		void ListModelDoubleClick(object sender, EventArgs e)
+		{
+
+		}
+
+		void ListLensDoubleClick(object sender, EventArgs e)
+		{
+
+		}
+
+		void ListExpoDoubleClick(object sender, EventArgs e)
+		{
+
+		}
+
+		void ListSceneDoubleClick(object sender, EventArgs e)
+		{
+			string selScene = listScene.SelectedItems[0].Text;
+			SearchExif(5, selScene );
+		}
+
+		void SearchExif(int sCol, string searchStr)
+		{
+			switch(sCol)
+			{
+				case 5:
+					foreach (Exif exi in exList) {
+						if (string.Compare(exi.eScene, searchStr) == 0){
+							ListViewItem item = this.listImg.Items.Add(exi.eFname);
+							exifImgList.Add(exi.eFname);
+						}
+					}
+					break;
+			}
+		}
+
+		void CmdShowClick(object sender, EventArgs e)
+		{
+			if (exifImgList.Count > 0){
+					_il.DirClear();
+					_il._imList = exifImgList;
+					if (listImg.SelectedItems.Count > 0){
+						_exifImg = listImg.SelectedItems[0].Text;
+					}
+					else {
+						_exifImg = "";
+					}
+					_ExifReturn = true;
+			}
+			this.Close();
+		}
+
+
 
 
 	}  // end frmProject

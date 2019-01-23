@@ -949,9 +949,25 @@ namespace Next_View
 
 		public void ShowExifDash()
 		{
-			ExifDash fProject = new ExifDash();
-			fProject.SetPath(_currentPath);
-			fProject.ShowDialog();
+			ExifDash frmDash = new ExifDash();
+			frmDash.SetPath(_currentPath, _il);
+			frmDash.ShowDialog();
+			
+			if (frmDash._ExifReturn) {
+					string selImg = frmDash._exifImg;
+					int picPos = 0;
+					int picAll = 0;
+					if (selImg != ""){
+						_il.DirPosPath(ref picPos, ref picAll, selImg);
+					}
+					else {
+						_il.DirPicFirst(ref selImg);
+					}
+					_currentPath = selImg;
+					_picSelection = T._("Exif Search:");
+					PicLoad(_currentPath, true);
+				}
+			
 		}
 
 		public void ShowExif0()

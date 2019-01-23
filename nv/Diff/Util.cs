@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;	 //	OfType
+using System.Globalization;   // CultureInfo
 using System.Windows.Forms;  // MessageBox
 using MetadataExtractor;
 using MetadataExtractor.Formats.Exif;
@@ -97,19 +98,24 @@ namespace Next_View
 			}
 		}
 
-		public static bool CheckExif(out string orientation, out string model, 
-		                             out string fNumber, out string flash, out string expo, out string lensmodel,
-		                             out bool gps,  
+		public static bool CheckExif(out int exType, out string orientation, out string model, out int timeOfD,
+		                             out string expotime, out string fNumber, out string flash, out string exposi, out string lensmodel, out string scene,
+		                             out bool gps,
 		                             string fName)
 		{
+			exType = 0;
 			orientation = "";
 			model = "";
+			expotime = "";
 			fNumber = "";
 			flash = "";
-			expo = "";
+			exposi = "";
 			lensmodel = "";
+			scene = "";
 			gps = false;
-			
+
+			int exCount = 0;
+			timeOfD = -1;
 			try
 			{
 
@@ -119,7 +125,7 @@ namespace Next_View
 
 				var ifd0Directory = directories.OfType<ExifIfd0Directory>().FirstOrDefault();
 				if (ifd0Directory != null){
-
+					exCount += ifd0Directory.TagCount;
 					string orientation1 = ifd0Directory.GetDescription(ExifDirectoryBase.TagOrientation);
 					if (orientation1 != null) orientation = orientation1.ToLower();
 
@@ -130,32 +136,51 @@ namespace Next_View
 					string software = ifd0Directory.GetDescription(ExifDirectoryBase.TagSoftware);
 				}
 
+
 				var subIfdDirectory = directories.OfType<ExifSubIfdDirectory>().FirstOrDefault();
 				if (subIfdDirectory != null){
+					exCount += subIfdDirectory.TagCount;
 					string dtOriginal = subIfdDirectory.GetDescription(ExifDirectoryBase.TagDateTimeOriginal);
 
-					string exposure = subIfdDirectory.GetDescription(ExifDirectoryBase.TagExposureTime);
+					DateTime dtOr;
+					if (DateTime.TryParseExact(dtOriginal, "yyyy:MM:dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out dtOr)){
+						DateTime myTime = default(DateTime).Add(dtOr.TimeOfDay);
+						TimeSpan orTime = dtOr.TimeOfDay;
+						int orHours = (int)orTime.Hours;
+						if (orHours < 6) timeOfD = 0;
+						else if (orHours >= 6 && orHours < 12) timeOfD = 1;
+						else if (orHours >= 12 && orHours < 15) timeOfD = 2;
+						else if (orHours >= 15 && orHours < 18) timeOfD = 3;
+						else if (orHours >= 18 && orHours < 22) timeOfD = 4;
+						else if (orHours >= 20) timeOfD = 0;
+						//Debug.WriteLine("date " + dtOriginal + " " + orHours.ToString() + " " + timeOfD.ToString());
+					}
+
+					string expotime1 = subIfdDirectory.GetDescription(ExifDirectoryBase.TagExposureTime);
+					if (expotime1 != null) expotime = expotime1;
 
 					string fNumber1 = subIfdDirectory.GetDescription(ExifDirectoryBase.TagFNumber);
 					if (fNumber1 != null) fNumber = fNumber1;
-					
+
 					string isoSpeed = subIfdDirectory.GetDescription(ExifDirectoryBase.TagIsoEquivalent);
 
 					string fLength = subIfdDirectory.GetDescription(ExifDirectoryBase.TagFocalLength);
 
 					string flash1 = subIfdDirectory.GetDescription(ExifDirectoryBase.TagFlash);
 					if (flash1 != null) flash = flash1;
-					
-					string expo1 = subIfdDirectory.GetDescription(ExifDirectoryBase.TagExposureProgram);
-					if (expo1 != null) expo = expo1;
-					
+
+					string exposi1 = subIfdDirectory.GetDescription(ExifDirectoryBase.TagExposureProgram);
+					if (exposi1 != null) exposi = exposi1;
+
 					string lensmodel1 = subIfdDirectory.GetDescription(ExifDirectoryBase.TagLensModel);
 					if (lensmodel1 != null) lensmodel = lensmodel1;
-					
-					string scene = subIfdDirectory.GetDescription(ExifDirectoryBase.TagSceneCaptureType);
+
+					string scene1 = subIfdDirectory.GetDescription(ExifDirectoryBase.TagSceneCaptureType);
+					if (scene1 != null) scene = scene1;
 				}
 
-
+				if (exCount > 5) exType = 1;
+				if (exCount > 15) exType = 2;
 				// ------------------------------   makernotes   ----------------------------------------------------------
 
 				var olympusCameraDirectory = directories.OfType<OlympusCameraSettingsMakernoteDirectory>().FirstOrDefault();
@@ -168,7 +193,7 @@ namespace Next_View
 					string lensModel2 = olympusEquipmentDirectory.GetDescription(OlympusEquipmentMakernoteDirectory.TagLensModel);
 					if (string.IsNullOrEmpty(lensmodel))  {
 						if (lensModel2 != null) lensmodel = lensModel2;
-					} 
+					}
 				}
 
 				var fujiDirectory = directories.OfType<FujifilmMakernoteDirectory>().FirstOrDefault();
@@ -204,7 +229,7 @@ namespace Next_View
 				return false;
 			}
 		}
-		
+
 
 	}
 }

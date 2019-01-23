@@ -89,6 +89,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Class\CExif.cs" />
     <Compile Include="Class\StatusMainEvent.cs" />
     <Compile Include="Diff\Netutl.cs" />
     <Compile Include="Diff\Translate.cs" />
