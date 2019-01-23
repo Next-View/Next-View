@@ -98,24 +98,26 @@ namespace Next_View
 			}
 		}
 
-		public static bool CheckExif(out int exType, out string orientation, out string model, out int timeOfD,
-		                             out string expotime, out string fNumber, out string flash, out string exposi, out string lensmodel, out string scene,
-		                             out bool gps,
-		                             string fName)
+		public static bool CheckExif(out int exType, out string orientation, out string model, out DateTime dtOriginal, out int timeOfD,
+		                             out string expotime, out string fNumber, out string fLength, out bool flash, out string exposi, out string lensmodel, out string scene,
+		                             out bool gps, string fName)
 		{
 			exType = 0;
 			orientation = "";
 			model = "";
+			timeOfD = -1;
+			dtOriginal = default(DateTime);
 			expotime = "";
 			fNumber = "";
-			flash = "";
+			fLength = "";
+			flash = false;
 			exposi = "";
 			lensmodel = "";
 			scene = "";
 			gps = false;
 
 			int exCount = 0;
-			timeOfD = -1;
+
 			try
 			{
 
@@ -140,12 +142,11 @@ namespace Next_View
 				var subIfdDirectory = directories.OfType<ExifSubIfdDirectory>().FirstOrDefault();
 				if (subIfdDirectory != null){
 					exCount += subIfdDirectory.TagCount;
-					string dtOriginal = subIfdDirectory.GetDescription(ExifDirectoryBase.TagDateTimeOriginal);
+					string dtOriginalS = subIfdDirectory.GetDescription(ExifDirectoryBase.TagDateTimeOriginal);
 
-					DateTime dtOr;
-					if (DateTime.TryParseExact(dtOriginal, "yyyy:MM:dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out dtOr)){
-						DateTime myTime = default(DateTime).Add(dtOr.TimeOfDay);
-						TimeSpan orTime = dtOr.TimeOfDay;
+					if (DateTime.TryParseExact(dtOriginalS, "yyyy:MM:dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out dtOriginal)){
+						DateTime myTime = default(DateTime).Add(dtOriginal.TimeOfDay);
+						TimeSpan orTime = dtOriginal.TimeOfDay;
 						int orHours = (int)orTime.Hours;
 						if (orHours < 6) timeOfD = 0;
 						else if (orHours >= 6 && orHours < 12) timeOfD = 1;
@@ -164,10 +165,13 @@ namespace Next_View
 
 					string isoSpeed = subIfdDirectory.GetDescription(ExifDirectoryBase.TagIsoEquivalent);
 
-					string fLength = subIfdDirectory.GetDescription(ExifDirectoryBase.TagFocalLength);
+					string fLength1 = subIfdDirectory.GetDescription(ExifDirectoryBase.TagFocalLength);
+					if (fLength1 != null) fLength = fLength1;
 
 					string flash1 = subIfdDirectory.GetDescription(ExifDirectoryBase.TagFlash);
-					if (flash1 != null) flash = flash1;
+					if (flash1 != null){
+						if(flash1.IndexOf("not") == -1) flash = true;
+					}
 
 					string exposi1 = subIfdDirectory.GetDescription(ExifDirectoryBase.TagExposureProgram);
 					if (exposi1 != null) exposi = exposi1;

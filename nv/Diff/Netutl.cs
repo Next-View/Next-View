@@ -20,8 +20,6 @@ using System.Diagnostics;
 using System.Text;
 using System.Net;
 using System.IO;
-using MetadataExtractor;
-using MetadataExtractor.Formats.Exif;
 using Next_View.Properties;
 
 namespace Next_View

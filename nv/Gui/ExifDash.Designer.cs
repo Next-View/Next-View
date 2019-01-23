@@ -73,6 +73,12 @@ namespace Next_View
 			this.listToD = new System.Windows.Forms.ListView();
 			this.columnHeader11 = new System.Windows.Forms.ColumnHeader();
 			this.columnHeader12 = new System.Windows.Forms.ColumnHeader();
+			this.lblGps = new System.Windows.Forms.Label();
+			this.lblFlash = new System.Windows.Forms.Label();
+			this.listFLen = new System.Windows.Forms.ListView();
+			this.columnHeader13 = new System.Windows.Forms.ColumnHeader();
+			this.columnHeader14 = new System.Windows.Forms.ColumnHeader();
+			this.lblInfo = new System.Windows.Forms.Label();
 			this.popPath.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -81,10 +87,10 @@ namespace Next_View
 			this.cmdStart.FlatAppearance.BorderSize = 4;
 			this.cmdStart.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.cmdStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.cmdStart.Location = new System.Drawing.Point(729, 7);
+			this.cmdStart.Location = new System.Drawing.Point(547, 5);
 			this.cmdStart.Margin = new System.Windows.Forms.Padding(2);
 			this.cmdStart.Name = "cmdStart";
-			this.cmdStart.Size = new System.Drawing.Size(93, 30);
+			this.cmdStart.Size = new System.Drawing.Size(70, 23);
 			this.cmdStart.TabIndex = 43;
 			this.cmdStart.Text = "&Start";
 			this.cmdStart.UseVisualStyleBackColor = true;
@@ -93,10 +99,10 @@ namespace Next_View
 			// label1
 			// 
 			this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label1.Location = new System.Drawing.Point(17, 15);
+			this.label1.Location = new System.Drawing.Point(13, 11);
 			this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(92, 22);
+			this.label1.Size = new System.Drawing.Size(69, 17);
 			this.label1.TabIndex = 47;
 			this.label1.Text = "Project";
 			// 
@@ -109,10 +115,10 @@ namespace Next_View
 			this.listImg.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.listImg.FullRowSelect = true;
 			this.listImg.GridLines = true;
-			this.listImg.Location = new System.Drawing.Point(0, 516);
+			this.listImg.Location = new System.Drawing.Point(0, 515);
 			this.listImg.Margin = new System.Windows.Forms.Padding(2);
 			this.listImg.Name = "listImg";
-			this.listImg.Size = new System.Drawing.Size(986, 143);
+			this.listImg.Size = new System.Drawing.Size(740, 139);
 			this.listImg.TabIndex = 50;
 			this.listImg.UseCompatibleStateImageBehavior = false;
 			this.listImg.View = System.Windows.Forms.View.Details;
@@ -149,10 +155,10 @@ namespace Next_View
 			// edImgPath
 			// 
 			this.edImgPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.edImgPath.Location = new System.Drawing.Point(99, 15);
+			this.edImgPath.Location = new System.Drawing.Point(74, 11);
 			this.edImgPath.Margin = new System.Windows.Forms.Padding(2);
 			this.edImgPath.Name = "edImgPath";
-			this.edImgPath.Size = new System.Drawing.Size(601, 21);
+			this.edImgPath.Size = new System.Drawing.Size(452, 21);
 			this.edImgPath.TabIndex = 57;
 			// 
 			// listModel
@@ -161,9 +167,10 @@ namespace Next_View
 			this.columnHeader1,
 			this.columnHeader2});
 			this.listModel.FullRowSelect = true;
-			this.listModel.Location = new System.Drawing.Point(17, 208);
+			this.listModel.Location = new System.Drawing.Point(11, 210);
+			this.listModel.Margin = new System.Windows.Forms.Padding(2);
 			this.listModel.Name = "listModel";
-			this.listModel.Size = new System.Drawing.Size(187, 137);
+			this.listModel.Size = new System.Drawing.Size(196, 108);
 			this.listModel.TabIndex = 58;
 			this.listModel.UseCompatibleStateImageBehavior = false;
 			this.listModel.View = System.Windows.Forms.View.Details;
@@ -172,11 +179,12 @@ namespace Next_View
 			// columnHeader1
 			// 
 			this.columnHeader1.Text = "Model";
-			this.columnHeader1.Width = 120;
+			this.columnHeader1.Width = 150;
 			// 
 			// columnHeader2
 			// 
-			this.columnHeader2.Text = "Count";
+			this.columnHeader2.Text = "C";
+			this.columnHeader2.Width = 40;
 			// 
 			// listLens
 			// 
@@ -184,9 +192,10 @@ namespace Next_View
 			this.columnHeader3,
 			this.columnHeader4});
 			this.listLens.FullRowSelect = true;
-			this.listLens.Location = new System.Drawing.Point(17, 369);
+			this.listLens.Location = new System.Drawing.Point(11, 333);
+			this.listLens.Margin = new System.Windows.Forms.Padding(2);
 			this.listLens.Name = "listLens";
-			this.listLens.Size = new System.Drawing.Size(187, 137);
+			this.listLens.Size = new System.Drawing.Size(196, 108);
 			this.listLens.TabIndex = 59;
 			this.listLens.UseCompatibleStateImageBehavior = false;
 			this.listLens.View = System.Windows.Forms.View.Details;
@@ -195,11 +204,12 @@ namespace Next_View
 			// columnHeader3
 			// 
 			this.columnHeader3.Text = "Lens";
-			this.columnHeader3.Width = 120;
+			this.columnHeader3.Width = 150;
 			// 
 			// columnHeader4
 			// 
-			this.columnHeader4.Text = "Count";
+			this.columnHeader4.Text = "C";
+			this.columnHeader4.Width = 40;
 			// 
 			// listScene
 			// 
@@ -207,9 +217,10 @@ namespace Next_View
 			this.columnHeader5,
 			this.columnHeader6});
 			this.listScene.FullRowSelect = true;
-			this.listScene.Location = new System.Drawing.Point(244, 369);
+			this.listScene.Location = new System.Drawing.Point(220, 333);
+			this.listScene.Margin = new System.Windows.Forms.Padding(2);
 			this.listScene.Name = "listScene";
-			this.listScene.Size = new System.Drawing.Size(187, 137);
+			this.listScene.Size = new System.Drawing.Size(196, 108);
 			this.listScene.TabIndex = 60;
 			this.listScene.UseCompatibleStateImageBehavior = false;
 			this.listScene.View = System.Windows.Forms.View.Details;
@@ -218,11 +229,12 @@ namespace Next_View
 			// columnHeader5
 			// 
 			this.columnHeader5.Text = "Scene";
-			this.columnHeader5.Width = 120;
+			this.columnHeader5.Width = 150;
 			// 
 			// columnHeader6
 			// 
-			this.columnHeader6.Text = "Count";
+			this.columnHeader6.Text = "C";
+			this.columnHeader6.Width = 40;
 			// 
 			// listExpo
 			// 
@@ -230,9 +242,10 @@ namespace Next_View
 			this.columnHeader7,
 			this.columnHeader8});
 			this.listExpo.FullRowSelect = true;
-			this.listExpo.Location = new System.Drawing.Point(244, 208);
+			this.listExpo.Location = new System.Drawing.Point(220, 210);
+			this.listExpo.Margin = new System.Windows.Forms.Padding(2);
 			this.listExpo.Name = "listExpo";
-			this.listExpo.Size = new System.Drawing.Size(187, 137);
+			this.listExpo.Size = new System.Drawing.Size(196, 108);
 			this.listExpo.TabIndex = 61;
 			this.listExpo.UseCompatibleStateImageBehavior = false;
 			this.listExpo.View = System.Windows.Forms.View.Details;
@@ -241,11 +254,12 @@ namespace Next_View
 			// columnHeader7
 			// 
 			this.columnHeader7.Text = "Exposition";
-			this.columnHeader7.Width = 120;
+			this.columnHeader7.Width = 150;
 			// 
 			// columnHeader8
 			// 
-			this.columnHeader8.Text = "Count";
+			this.columnHeader8.Text = "C";
+			this.columnHeader8.Width = 40;
 			// 
 			// listExift
 			// 
@@ -253,9 +267,10 @@ namespace Next_View
 			this.columnHeader9,
 			this.columnHeader10});
 			this.listExift.FullRowSelect = true;
-			this.listExift.Location = new System.Drawing.Point(17, 51);
+			this.listExift.Location = new System.Drawing.Point(11, 90);
+			this.listExift.Margin = new System.Windows.Forms.Padding(2);
 			this.listExift.Name = "listExift";
-			this.listExift.Size = new System.Drawing.Size(187, 137);
+			this.listExift.Size = new System.Drawing.Size(196, 108);
 			this.listExift.TabIndex = 62;
 			this.listExift.UseCompatibleStateImageBehavior = false;
 			this.listExift.View = System.Windows.Forms.View.Details;
@@ -264,21 +279,22 @@ namespace Next_View
 			// columnHeader9
 			// 
 			this.columnHeader9.Text = "Exif";
-			this.columnHeader9.Width = 120;
+			this.columnHeader9.Width = 150;
 			// 
 			// columnHeader10
 			// 
-			this.columnHeader10.Text = "Count";
+			this.columnHeader10.Text = "C";
+			this.columnHeader10.Width = 40;
 			// 
 			// cmdShow
 			// 
 			this.cmdShow.FlatAppearance.BorderSize = 4;
 			this.cmdShow.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.cmdShow.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.cmdShow.Location = new System.Drawing.Point(729, 464);
+			this.cmdShow.Location = new System.Drawing.Point(640, 410);
 			this.cmdShow.Margin = new System.Windows.Forms.Padding(2);
 			this.cmdShow.Name = "cmdShow";
-			this.cmdShow.Size = new System.Drawing.Size(93, 30);
+			this.cmdShow.Size = new System.Drawing.Size(70, 23);
 			this.cmdShow.TabIndex = 63;
 			this.cmdShow.Text = "&Show";
 			this.cmdShow.UseVisualStyleBackColor = true;
@@ -290,9 +306,10 @@ namespace Next_View
 			this.columnHeader11,
 			this.columnHeader12});
 			this.listToD.FullRowSelect = true;
-			this.listToD.Location = new System.Drawing.Point(474, 92);
+			this.listToD.Location = new System.Drawing.Point(431, 90);
+			this.listToD.Margin = new System.Windows.Forms.Padding(2);
 			this.listToD.Name = "listToD";
-			this.listToD.Size = new System.Drawing.Size(187, 137);
+			this.listToD.Size = new System.Drawing.Size(196, 108);
 			this.listToD.TabIndex = 64;
 			this.listToD.UseCompatibleStateImageBehavior = false;
 			this.listToD.View = System.Windows.Forms.View.Details;
@@ -300,11 +317,78 @@ namespace Next_View
 			// columnHeader11
 			// 
 			this.columnHeader11.Text = "Time";
-			this.columnHeader11.Width = 120;
+			this.columnHeader11.Width = 150;
 			// 
 			// columnHeader12
 			// 
-			this.columnHeader12.Text = "Count";
+			this.columnHeader12.Text = "C";
+			this.columnHeader12.Width = 40;
+			// 
+			// lblGps
+			// 
+			this.lblGps.BackColor = System.Drawing.SystemColors.Window;
+			this.lblGps.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.lblGps.Location = new System.Drawing.Point(431, 236);
+			this.lblGps.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+			this.lblGps.Name = "lblGps";
+			this.lblGps.Padding = new System.Windows.Forms.Padding(3, 0, 0, 0);
+			this.lblGps.Size = new System.Drawing.Size(166, 21);
+			this.lblGps.TabIndex = 67;
+			this.lblGps.Text = "GPS:";
+			this.lblGps.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.lblGps.DoubleClick += new System.EventHandler(this.LblGpsDoubleClick);
+			// 
+			// lblFlash
+			// 
+			this.lblFlash.BackColor = System.Drawing.SystemColors.Window;
+			this.lblFlash.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.lblFlash.Location = new System.Drawing.Point(431, 296);
+			this.lblFlash.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+			this.lblFlash.Name = "lblFlash";
+			this.lblFlash.Padding = new System.Windows.Forms.Padding(3, 0, 0, 0);
+			this.lblFlash.Size = new System.Drawing.Size(166, 21);
+			this.lblFlash.TabIndex = 68;
+			this.lblFlash.Text = "Flash:";
+			this.lblFlash.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.lblFlash.DoubleClick += new System.EventHandler(this.LblFlashDoubleClick);
+			// 
+			// listFLen
+			// 
+			this.listFLen.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+			this.columnHeader13,
+			this.columnHeader14});
+			this.listFLen.FullRowSelect = true;
+			this.listFLen.Location = new System.Drawing.Point(431, 333);
+			this.listFLen.Margin = new System.Windows.Forms.Padding(2);
+			this.listFLen.Name = "listFLen";
+			this.listFLen.Size = new System.Drawing.Size(196, 108);
+			this.listFLen.TabIndex = 69;
+			this.listFLen.UseCompatibleStateImageBehavior = false;
+			this.listFLen.View = System.Windows.Forms.View.Details;
+			this.listFLen.DoubleClick += new System.EventHandler(this.ListFLenDoubleClick);
+			// 
+			// columnHeader13
+			// 
+			this.columnHeader13.Text = "Focus Length";
+			this.columnHeader13.Width = 150;
+			// 
+			// columnHeader14
+			// 
+			this.columnHeader14.Text = "C";
+			this.columnHeader14.Width = 40;
+			// 
+			// lblInfo
+			// 
+			this.lblInfo.BackColor = System.Drawing.SystemColors.ActiveCaption;
+			this.lblInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.lblInfo.Location = new System.Drawing.Point(13, 44);
+			this.lblInfo.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+			this.lblInfo.Name = "lblInfo";
+			this.lblInfo.Padding = new System.Windows.Forms.Padding(3, 0, 0, 0);
+			this.lblInfo.Size = new System.Drawing.Size(766, 21);
+			this.lblInfo.TabIndex = 70;
+			this.lblInfo.Text = "Info:";
+			this.lblInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
 			// ExifDash
 			// 
@@ -313,7 +397,11 @@ namespace Next_View
 			this.AllowEndUserDocking = false;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(993, 658);
+			this.ClientSize = new System.Drawing.Size(790, 627);
+			this.Controls.Add(this.lblInfo);
+			this.Controls.Add(this.listFLen);
+			this.Controls.Add(this.lblFlash);
+			this.Controls.Add(this.lblGps);
 			this.Controls.Add(this.listToD);
 			this.Controls.Add(this.cmdShow);
 			this.Controls.Add(this.listExift);
@@ -334,6 +422,7 @@ namespace Next_View
 			this.Name = "ExifDash";
 			this.Text = "Project";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ExifDashFormClosing);
+			this.Load += new System.EventHandler(this.ExifDashLoad);
 			this.DragDrop += new System.Windows.Forms.DragEventHandler(this.ExifDashDragDrop);
 			this.DragEnter += new System.Windows.Forms.DragEventHandler(this.ExifDashDragEnter);
 			this.Enter += new System.EventHandler(this.ExifDashEnter);
@@ -369,5 +458,11 @@ namespace Next_View
 		private System.Windows.Forms.ListView listToD;
 		private System.Windows.Forms.ColumnHeader columnHeader11;
 		private System.Windows.Forms.ColumnHeader columnHeader12;
+		private System.Windows.Forms.Label lblGps;
+		private System.Windows.Forms.Label lblFlash;
+		private System.Windows.Forms.ListView listFLen;
+		private System.Windows.Forms.ColumnHeader columnHeader13;
+		private System.Windows.Forms.ColumnHeader columnHeader14;
+		private System.Windows.Forms.Label lblInfo;
 	}
 }

@@ -20,34 +20,49 @@ using System;
 namespace Next_View
 {
 	/// <summary>
-	/// exif data for one image 
+	/// exif data for one image
 	/// </summary>
-	public class Exif 
+	public class Exif
 	{
-		public int eType; 
-		public string eModel; 
+		public int eType;
+		public string eModel;
+		public DateTime eDtOriginal;
+		public int eTimeOfD;
+
+		public string eExpotime;
+		public string eFNumber;
+		public string eFLength;
+		public bool eFlash;
 		public string eExposi;
 		public string eLensmodel;
 		public string eScene;
-		
+
 		public bool eGps;
 		public string eFname;
-																
-		public Exif() 
-		{} 
-		
-		public Exif(int type, string model, string exposi, string lensmodel, string scene, 
+
+		public Exif()
+		{}
+
+		public Exif(int type, string model, DateTime dtOriginal, int timeOfD,
+		      string expotime, string fNumber, string fLength, bool flash, string exposi, string lensmodel, string scene,
 					bool gps, string fname)
 		{
-			this.eType = type; 
-			this.eModel = model; 
-			this.eExposi = exposi; 
+			this.eType = type;
+			this.eModel = model;
+			this.eDtOriginal = dtOriginal;
+			this.eTimeOfD = timeOfD;
+
+			this.eExpotime = expotime;
+			this.eFNumber = fNumber;
+			this.eFLength = fLength;
+			this.eFlash = flash;
+			this.eExposi = exposi;
 			this.eLensmodel = lensmodel;
 			this.eScene = scene;
-			
-			this.eGps = gps;  
+
+			this.eGps = gps;
 			this.eFname = fname;
-		} 
+		}
 
 	}
 }
