@@ -1,7 +1,7 @@
 ﻿/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 File name:     cexif.cs
 Description:   class exif data
-Copyright:     Copyright (c) Martin A. Schnell, 2018
+Copyright:     Copyright (c) Martin A. Schnell, 2019
 Licence:       GNU General Public License
                This program is free software; you can redistribute it and/or
                modify it under the terms of the GNU General Public License

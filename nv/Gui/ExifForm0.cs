@@ -1,11 +1,20 @@
-﻿/*
- * Created by SharpDevelop.
- * User: martin
- * Date: 13.01.2019
- * Time: 20:53
- *
- * To change this template use Tools | Options | Coding | Edit Standard Headers.
- */
+﻿/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+File name:     exifform0.cs
+Description:   exifform0 form, all exif tags
+Copyright:     Copyright (c) Martin A. Schnell, 2019
+Licence:       GNU General Public License
+               This program is free software; you can redistribute it and/or
+               modify it under the terms of the GNU General Public License
+               as published by the Free Software Foundation.
+
+               This program is free software: you can redistribute it and/or modify
+               it under the terms of the GNU General Public License as published by
+               the Free Software Foundation, either version 3 of the License, or
+               (at your option) any later version.
+History:
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;  // Debug

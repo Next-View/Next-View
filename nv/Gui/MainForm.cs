@@ -165,7 +165,7 @@ namespace Next_View
 				if (Directory.Exists(userImagePath)) {
 					m_Image.PicScan(userImagePath, true);
 				}
-				Debug.WriteLine("pic path : " + userImagePath);
+				//Debug.WriteLine("pic path: " + userImagePath);
 				firstImage = Directory.GetCurrentDirectory() + @"\Next-View-0.4.png";
 				recentItem1.AddRecentItem(firstImage);
 				m_Image.PicLoad(firstImage, true);
@@ -494,11 +494,13 @@ namespace Next_View
 		void LangEnglishClick(object sender, EventArgs e)
 		{
 			Settings.Default.Language = "en-en";
+				MessageBox.Show(T._("The language is changed with the next program start"), T._("Change to English"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 		}
 
 		void LangGermanClick(object sender, EventArgs e)
 		{
 			Settings.Default.Language = "de-de";
+				MessageBox.Show(T._("The language is changed with the next program start"), T._("Change to German"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 		}
 
 		public void TranslateMainForm( )

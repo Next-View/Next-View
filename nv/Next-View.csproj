@@ -82,7 +82,7 @@
       <HintPath>3rdParty\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
     <Reference Include="XDMessaging">
-      <HintPath>3rdParty\XDMessaging.dll</HintPath>
+      <HintPath>bin\Debug\XDMessaging.dll</HintPath>
     </Reference>
     <Reference Include="XmpCore">
       <HintPath>bin\Debug\XmpCore.dll</HintPath>
