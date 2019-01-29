@@ -36,11 +36,13 @@ namespace Next_View
 	{
 		public int nWidth;
 		public int nHeight;
-		public SetSizeEventArgs(int w, int h)
+		public int exifType;
+		public SetSizeEventArgs(int w, int h, int eType)
 			: base()
 		{
 			this.nWidth = w;
 			this.nHeight = h;
+			this.exifType = eType;
 		}
 	}
 
@@ -53,5 +55,19 @@ namespace Next_View
 			this.NewValue = value;
 		}
 	}
-		
+
+	public class SetKeyEventArgs : EventArgs
+	{
+		public int kValue;
+		public bool alt;
+		public bool ctrl;
+		public SetKeyEventArgs(int keyVal, bool kAlt, bool kCtrl)
+			: base()
+		{
+			this.kValue = keyVal;
+			this.alt = kAlt;
+			this.ctrl = kCtrl;
+		}
+	}
+			
 }

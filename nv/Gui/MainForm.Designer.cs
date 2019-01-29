@@ -36,6 +36,7 @@ namespace Next_View
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
 			this.dockPanel1 = new WeifenLuo.WinFormsUI.Docking.DockPanel();
 			this.menuMain = new System.Windows.Forms.MenuStrip();
@@ -85,9 +86,11 @@ namespace Next_View
 			this.bnNext = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.bnFullscreen = new System.Windows.Forms.ToolStripButton();
+			this.bnExif = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.bnSearch = new System.Windows.Forms.ToolStripButton();
 			this.bnHelp = new System.Windows.Forms.ToolStripButton();
+			this.imageList1 = new System.Windows.Forms.ImageList(this.components);
 			this.menuMain.SuspendLayout();
 			this.statusMain.SuspendLayout();
 			this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
@@ -107,9 +110,9 @@ namespace Next_View
 			this.dockPanel1.DockTopPortion = 0.15D;
 			this.dockPanel1.DocumentStyle = WeifenLuo.WinFormsUI.Docking.DocumentStyle.DockingSdi;
 			this.dockPanel1.Location = new System.Drawing.Point(0, 0);
-			this.dockPanel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.dockPanel1.Margin = new System.Windows.Forms.Padding(4);
 			this.dockPanel1.Name = "dockPanel1";
-			this.dockPanel1.Size = new System.Drawing.Size(1179, 612);
+			this.dockPanel1.Size = new System.Drawing.Size(1179, 608);
 			this.dockPanel1.TabIndex = 0;
 			// 
 			// menuMain
@@ -121,7 +124,7 @@ namespace Next_View
 			this.mnuEdit,
 			this.mnuView,
 			this.mnuHelp});
-			this.menuMain.Location = new System.Drawing.Point(0, 27);
+			this.menuMain.Location = new System.Drawing.Point(0, 31);
 			this.menuMain.Name = "menuMain";
 			this.menuMain.Size = new System.Drawing.Size(1179, 28);
 			this.menuMain.TabIndex = 0;
@@ -382,14 +385,14 @@ namespace Next_View
 			this.mnuHelp1.Image = ((System.Drawing.Image)(resources.GetObject("mnuHelp1.Image")));
 			this.mnuHelp1.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
 			this.mnuHelp1.Name = "mnuHelp1";
-			this.mnuHelp1.Size = new System.Drawing.Size(181, 26);
+			this.mnuHelp1.Size = new System.Drawing.Size(168, 26);
 			this.mnuHelp1.Text = "Help";
 			this.mnuHelp1.Click += new System.EventHandler(this.MnuHelp1Click);
 			// 
 			// mnuWeb
 			// 
 			this.mnuWeb.Name = "mnuWeb";
-			this.mnuWeb.Size = new System.Drawing.Size(181, 26);
+			this.mnuWeb.Size = new System.Drawing.Size(168, 26);
 			this.mnuWeb.Text = "Homepage...";
 			this.mnuWeb.Click += new System.EventHandler(this.MnuWebClick);
 			// 
@@ -397,23 +400,22 @@ namespace Next_View
 			// 
 			this.mnuGithub.CheckOnClick = true;
 			this.mnuGithub.Name = "mnuGithub";
-			this.mnuGithub.Size = new System.Drawing.Size(181, 26);
+			this.mnuGithub.Size = new System.Drawing.Size(168, 26);
 			this.mnuGithub.Text = "Github";
 			this.mnuGithub.Click += new System.EventHandler(this.MnuGithubClick);
 			// 
 			// mnuAbout
 			// 
 			this.mnuAbout.Name = "mnuAbout";
-			this.mnuAbout.Size = new System.Drawing.Size(181, 26);
+			this.mnuAbout.Size = new System.Drawing.Size(168, 26);
 			this.mnuAbout.Text = "About...";
 			this.mnuAbout.Click += new System.EventHandler(this.MnuAboutClick);
 			// 
 			// mnuTest
 			// 
 			this.mnuTest.Name = "mnuTest";
-			this.mnuTest.Size = new System.Drawing.Size(181, 26);
+			this.mnuTest.Size = new System.Drawing.Size(168, 26);
 			this.mnuTest.Text = "Test";
-			this.mnuTest.Visible = false;
 			this.mnuTest.Click += new System.EventHandler(this.MnuTestClick);
 			// 
 			// statusMain
@@ -450,11 +452,11 @@ namespace Next_View
 			// 
 			this.toolStripContainer1.ContentPanel.AutoScroll = true;
 			this.toolStripContainer1.ContentPanel.Controls.Add(this.dockPanel1);
-			this.toolStripContainer1.ContentPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(1179, 612);
+			this.toolStripContainer1.ContentPanel.Margin = new System.Windows.Forms.Padding(4);
+			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(1179, 608);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
-			this.toolStripContainer1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.toolStripContainer1.Margin = new System.Windows.Forms.Padding(4);
 			this.toolStripContainer1.Name = "toolStripContainer1";
 			this.toolStripContainer1.Size = new System.Drawing.Size(1179, 692);
 			this.toolStripContainer1.TabIndex = 4;
@@ -478,12 +480,13 @@ namespace Next_View
 			this.bnNext,
 			this.toolStripSeparator4,
 			this.bnFullscreen,
+			this.bnExif,
 			this.toolStripSeparator3,
 			this.bnSearch,
 			this.bnHelp});
 			this.toolStrip2.Location = new System.Drawing.Point(3, 0);
 			this.toolStrip2.Name = "toolStrip2";
-			this.toolStrip2.Size = new System.Drawing.Size(222, 27);
+			this.toolStrip2.Size = new System.Drawing.Size(295, 31);
 			this.toolStrip2.TabIndex = 1;
 			// 
 			// bnOpen
@@ -492,7 +495,7 @@ namespace Next_View
 			this.bnOpen.Image = ((System.Drawing.Image)(resources.GetObject("bnOpen.Image")));
 			this.bnOpen.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.bnOpen.Name = "bnOpen";
-			this.bnOpen.Size = new System.Drawing.Size(24, 24);
+			this.bnOpen.Size = new System.Drawing.Size(24, 28);
 			this.bnOpen.Text = "Open";
 			this.bnOpen.Click += new System.EventHandler(this.BnOpenClick);
 			// 
@@ -502,7 +505,7 @@ namespace Next_View
 			this.bnStartEditor.Image = ((System.Drawing.Image)(resources.GetObject("bnStartEditor.Image")));
 			this.bnStartEditor.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.bnStartEditor.Name = "bnStartEditor";
-			this.bnStartEditor.Size = new System.Drawing.Size(24, 24);
+			this.bnStartEditor.Size = new System.Drawing.Size(24, 28);
 			this.bnStartEditor.Text = "Start editor";
 			this.bnStartEditor.Click += new System.EventHandler(this.BnStartEditorClick);
 			// 
@@ -512,22 +515,23 @@ namespace Next_View
 			this.bnDelete.Image = ((System.Drawing.Image)(resources.GetObject("bnDelete.Image")));
 			this.bnDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.bnDelete.Name = "bnDelete";
-			this.bnDelete.Size = new System.Drawing.Size(24, 24);
+			this.bnDelete.Size = new System.Drawing.Size(24, 28);
 			this.bnDelete.Text = "Delete image";
 			this.bnDelete.Click += new System.EventHandler(this.BnDeleteClick);
 			// 
 			// toolStripSeparator
 			// 
 			this.toolStripSeparator.Name = "toolStripSeparator";
-			this.toolStripSeparator.Size = new System.Drawing.Size(6, 27);
+			this.toolStripSeparator.Size = new System.Drawing.Size(6, 31);
 			// 
 			// bnPrior
 			// 
 			this.bnPrior.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
 			this.bnPrior.Image = ((System.Drawing.Image)(resources.GetObject("bnPrior.Image")));
+			this.bnPrior.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
 			this.bnPrior.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.bnPrior.Name = "bnPrior";
-			this.bnPrior.Size = new System.Drawing.Size(24, 24);
+			this.bnPrior.Size = new System.Drawing.Size(28, 28);
 			this.bnPrior.Text = "Prior image";
 			this.bnPrior.Click += new System.EventHandler(this.BnPriorClick);
 			// 
@@ -535,16 +539,17 @@ namespace Next_View
 			// 
 			this.bnNext.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
 			this.bnNext.Image = ((System.Drawing.Image)(resources.GetObject("bnNext.Image")));
+			this.bnNext.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
 			this.bnNext.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.bnNext.Name = "bnNext";
-			this.bnNext.Size = new System.Drawing.Size(24, 24);
+			this.bnNext.Size = new System.Drawing.Size(28, 28);
 			this.bnNext.Text = "Next image";
 			this.bnNext.Click += new System.EventHandler(this.BnNextClick);
 			// 
 			// toolStripSeparator4
 			// 
 			this.toolStripSeparator4.Name = "toolStripSeparator4";
-			this.toolStripSeparator4.Size = new System.Drawing.Size(6, 27);
+			this.toolStripSeparator4.Size = new System.Drawing.Size(6, 31);
 			// 
 			// bnFullscreen
 			// 
@@ -552,14 +557,25 @@ namespace Next_View
 			this.bnFullscreen.Image = ((System.Drawing.Image)(resources.GetObject("bnFullscreen.Image")));
 			this.bnFullscreen.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.bnFullscreen.Name = "bnFullscreen";
-			this.bnFullscreen.Size = new System.Drawing.Size(24, 24);
+			this.bnFullscreen.Size = new System.Drawing.Size(24, 28);
 			this.bnFullscreen.Text = "Fullscreen";
 			this.bnFullscreen.Click += new System.EventHandler(this.BnFullscreenClick);
+			// 
+			// bnExif
+			// 
+			this.bnExif.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.bnExif.Image = ((System.Drawing.Image)(resources.GetObject("bnExif.Image")));
+			this.bnExif.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+			this.bnExif.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.bnExif.Name = "bnExif";
+			this.bnExif.Size = new System.Drawing.Size(26, 28);
+			this.bnExif.Text = "toolStripButton1";
+			this.bnExif.Click += new System.EventHandler(this.BnExifClick);
 			// 
 			// toolStripSeparator3
 			// 
 			this.toolStripSeparator3.Name = "toolStripSeparator3";
-			this.toolStripSeparator3.Size = new System.Drawing.Size(6, 27);
+			this.toolStripSeparator3.Size = new System.Drawing.Size(6, 31);
 			// 
 			// bnSearch
 			// 
@@ -567,7 +583,7 @@ namespace Next_View
 			this.bnSearch.Image = ((System.Drawing.Image)(resources.GetObject("bnSearch.Image")));
 			this.bnSearch.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.bnSearch.Name = "bnSearch";
-			this.bnSearch.Size = new System.Drawing.Size(24, 24);
+			this.bnSearch.Size = new System.Drawing.Size(24, 28);
 			this.bnSearch.Text = "Search";
 			this.bnSearch.Click += new System.EventHandler(this.BnSearchClick);
 			// 
@@ -577,9 +593,18 @@ namespace Next_View
 			this.bnHelp.Image = ((System.Drawing.Image)(resources.GetObject("bnHelp.Image")));
 			this.bnHelp.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.bnHelp.Name = "bnHelp";
-			this.bnHelp.Size = new System.Drawing.Size(24, 24);
+			this.bnHelp.Size = new System.Drawing.Size(24, 28);
 			this.bnHelp.Text = "Help";
 			this.bnHelp.Click += new System.EventHandler(this.BnHelpClick);
+			// 
+			// imageList1
+			// 
+			this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+			this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+			this.imageList1.Images.SetKeyName(0, "exif-1.png");
+			this.imageList1.Images.SetKeyName(1, "exif-2.png");
+			this.imageList1.Images.SetKeyName(2, "exif-3.png");
+			this.imageList1.Images.SetKeyName(3, "exif-4.png");
 			// 
 			// frmMain
 			// 
@@ -590,7 +615,7 @@ namespace Next_View
 			this.Controls.Add(this.toolStripContainer1);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MainMenuStrip = this.menuMain;
-			this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.Margin = new System.Windows.Forms.Padding(4);
 			this.MinimumSize = new System.Drawing.Size(498, 190);
 			this.Name = "frmMain";
 			this.Text = "Next-View";
@@ -667,5 +692,7 @@ namespace Next_View
 		private System.Windows.Forms.ToolStripMenuItem mnuLanguage;
 		private System.Windows.Forms.ToolStripMenuItem langEnglish;
 		private System.Windows.Forms.ToolStripMenuItem langGerman;
+		private System.Windows.Forms.ToolStripButton bnExif;
+		private System.Windows.Forms.ImageList imageList1;
 	}
 }

@@ -69,10 +69,13 @@ namespace Next_View
 			}
 		}
 
-		public static bool ExifOrient(ref string orientation, string fName)
+		public static bool ExifOrient(ref int exifType, ref string orientation, string fName)
+		// called by: image.PicLoad
 		{
 			try
 			{
+				int exCount = 0;
+				exifType = 0;     
 				orientation = "";
 				string ext = System.IO.Path.GetExtension(fName).ToLower();
 				if (ext == ".wmf" || ext == ".emf"){         // invalid for MetadataExtractor
@@ -84,10 +87,26 @@ namespace Next_View
 
 				var ifd0Directory = directories.OfType<ExifIfd0Directory>().FirstOrDefault();
 				if (ifd0Directory != null){
+					exCount = ifd0Directory.TagCount;
 					string or = ifd0Directory.GetDescription(ExifDirectoryBase.TagOrientation);
 					if (or != null) orientation = or.ToLower();
 				}
+				
+				var subIfdDirectory = directories.OfType<ExifSubIfdDirectory>().FirstOrDefault();
+				if (subIfdDirectory != null){
+					exCount += subIfdDirectory.TagCount;
+				}
+				
+				if (exCount > 5) exifType = 1;
+				if (exCount > 15) exifType = 2;
 
+				// ------------------------------   gps    --------------
+				var gpsDirectory = directories.OfType<GpsDirectory>().FirstOrDefault();
+				if (gpsDirectory != null){
+					string latitude = gpsDirectory.GetDescription(GpsDirectory.TagLatitude);
+					if (latitude != null) exifType = 3;
+				}
+						
 				return true;
 			}
 			catch (Exception e)
@@ -101,6 +120,7 @@ namespace Next_View
 		public static bool CheckExif(out int exType, out string orientation, out string model, out DateTime dtOriginal, out int timeOfD,
 		                             out string expotime, out string fNumber, out string fLength, out bool flash, out string exposi, out string lensmodel, out string scene,
 		                             out bool gps, string fName)
+		// called by: exifDash.ScanImages
 		{
 			exType = 0;
 			orientation = "";
@@ -127,7 +147,7 @@ namespace Next_View
 
 				var ifd0Directory = directories.OfType<ExifIfd0Directory>().FirstOrDefault();
 				if (ifd0Directory != null){
-					exCount += ifd0Directory.TagCount;
+					exCount = ifd0Directory.TagCount;
 					string orientation1 = ifd0Directory.GetDescription(ExifDirectoryBase.TagOrientation);
 					if (orientation1 != null) orientation = orientation1.ToLower();
 

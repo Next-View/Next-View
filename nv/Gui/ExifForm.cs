@@ -40,7 +40,10 @@ namespace Next_View
 	{
 
 		string _gps2 = "";
-
+		
+		public event HandleKeyChange  KeyChanged;
+				
+				
 		public ExifForm()
 		{
 			//
@@ -53,6 +56,27 @@ namespace Next_View
 			//
 		}
 
+		// ------------------------------   events form ----------------------------------------------------------
+		
+		void ExifFormKeyDown(object sender, KeyEventArgs e)
+		{
+			bool alt = false;
+			if (e.Modifiers == Keys.Alt){
+				alt = true;
+			}
+			bool ctrl = false;
+			if (e.Modifiers == Keys.Control){
+				ctrl = true;
+			}
+			
+			SetKeyChange(e.KeyValue, alt, ctrl);
+		}
+		
+		void ExifFormPreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+		{
+			e.IsInputKey = true;
+		}
+			
 		void ExifFormFormClosing(object sender, FormClosingEventArgs e)
 		{
 			Settings.Default.ExifX = this.Left;
@@ -73,13 +97,24 @@ namespace Next_View
 			Debug.WriteLine("Exif pos: X: {0}  Y: {1}  W: {2}  H: {3} ", Left, Top, Width, Height);
 		}
 
+		void Button1Click(object sender, EventArgs e)
+		{
+			Clipboard.SetText(_gps2);
+		}
+		
+		// ------------------------------   functions  ----------------------------------------------------------
 
-		public bool CheckFile(ref string orientation, string fName)
+		public bool CheckFile(ref int exifType, ref string orientation, string fName)
+		// called by: image.StartExif, image.ShowExif
 		{
 			listExif.Items.Clear();
 			_gps2 = "";
+			int exCount = 0;
+			exifType = 0;          // default, no exif
 			orientation = "";
-
+			int iWidthVal = 0;
+			int exifWidthVal = 0;
+			
 			try
 			{
 				string ext = System.IO.Path.GetExtension(fName).ToLower();
@@ -95,7 +130,11 @@ namespace Next_View
 				if (jpgDirectory != null){
 					AddListItem("Jpeg:", "+");
 					string iWidth = jpgDirectory.GetDescription(JpegDirectory.TagImageWidth);
-					AddListItem("Image Width", iWidth);
+					if (iWidth != null){
+						string iWidthDigits = new string(iWidth.TakeWhile(c => Char.IsDigit(c)).ToArray());
+						Int32.TryParse(iWidthDigits, out iWidthVal);
+						AddListItem("Image Width", iWidth);
+					}
 					string iHeight = jpgDirectory.GetDescription(JpegDirectory.TagImageHeight);
 					AddListItem("Image Height", iHeight);
 				}
@@ -155,6 +194,7 @@ namespace Next_View
 
 				var ifd0Directory = directories.OfType<ExifIfd0Directory>().FirstOrDefault();
 				if (ifd0Directory != null){
+					exCount = ifd0Directory.TagCount;
 					AddListItem(" ", "+");
 					AddListItem("EXIF:", "+");
 					string idescription = ifd0Directory.GetDescription(ExifDirectoryBase.TagImageDescription);
@@ -191,6 +231,7 @@ namespace Next_View
 
 				var subIfdDirectory = directories.OfType<ExifSubIfdDirectory>().FirstOrDefault();
 				if (subIfdDirectory != null){
+					exCount += subIfdDirectory.TagCount;
 					string dtOriginal = subIfdDirectory.GetDescription(ExifDirectoryBase.TagDateTimeOriginal);
 					AddListItem("Original date", dtOriginal);
 
@@ -198,11 +239,20 @@ namespace Next_View
 					AddListItem("Digitized date", dtDigitized);
 
 					string iWidth = subIfdDirectory.GetDescription(ExifDirectoryBase.TagExifImageWidth);
-					AddListItem("Exif Image Width", iWidth);
-
+					if (iWidth != null){
+						string iWidthDigits = new string(iWidth.TakeWhile(c => Char.IsDigit(c)).ToArray());
+						Int32.TryParse(iWidthDigits, out exifWidthVal);
+						AddListItem("Exif Image Width", iWidth);
+					}
+					
 					string iHeight = subIfdDirectory.GetDescription(ExifDirectoryBase.TagExifImageHeight);
 					AddListItem("Exif Image Height", iHeight);
 
+					if (exifWidthVal != iWidthVal && exifWidthVal != 0){
+						float changedSizePerc = (float) iWidthVal * 100 / exifWidthVal;
+						AddListItem("!  Image reduced to", changedSizePerc.ToString("0") + "%");
+					}
+				
 					string exposure = subIfdDirectory.GetDescription(ExifDirectoryBase.TagExposureTime);
 					if (!AddListItem("Exposure Time", exposure)){
 						string shutterSpeed = subIfdDirectory.GetDescription(ExifDirectoryBase.TagShutterSpeed);
@@ -233,8 +283,10 @@ namespace Next_View
 					string scene = subIfdDirectory.GetDescription(ExifDirectoryBase.TagSceneCaptureType);
 					AddListItem("Scene", scene);
 				}
-
-
+				
+				if (exCount > 5) exifType = 1;
+				if (exCount > 15) exifType = 2;
+				
 				// ------------------------------   makernotes   ----------------------------------------------------------
 
 				var olympusCameraDirectory = directories.OfType<OlympusCameraSettingsMakernoteDirectory>().FirstOrDefault();
@@ -278,6 +330,7 @@ namespace Next_View
 					AddListItem("GPS:", "+");
 					string laRef = gpsDirectory.GetDescription(GpsDirectory.TagLatitudeRef);
 					string latitude = gpsDirectory.GetDescription(GpsDirectory.TagLatitude);
+					if (latitude != null) exifType = 3;
 					AddListItem("Latitude", laRef + latitude);
 					string loRef = gpsDirectory.GetDescription(GpsDirectory.TagLongitudeRef);
 					string longitude = gpsDirectory.GetDescription(GpsDirectory.TagLongitude);
@@ -335,11 +388,25 @@ namespace Next_View
 			}
 			return true;
 		}
-		void Button1Click(object sender, EventArgs e)
+
+		// ------------------------------   delegates   ----------------------------------------------------------
+		
+		public void SetKeyChange(int kVal, bool alt, bool ctrl)
 		{
-			Clipboard.SetText(_gps2);
+			// called by: PicLoad, 'no img loaded'
+			// output: imageForm.HandleKey
+			OnKeyChanged(new SetKeyEventArgs(kVal, alt, ctrl));
+			Application.DoEvents();
 		}
 
+		protected virtual void OnKeyChanged(SetKeyEventArgs e)
+		{
+			if(this.KeyChanged != null)     // nothing subscribed to this event
+			{
+				this.KeyChanged(this, e);
+			}
+		}
+		
 
 	}
 }

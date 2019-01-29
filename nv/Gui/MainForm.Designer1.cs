@@ -73,6 +73,16 @@ namespace Next_View.Gui {
 		/// <summary>
 		///   Looks up a localized resource of type System.Drawing.Bitmap.
 		/// </summary>
+		internal static System.Drawing.Bitmap bnExif_Image {
+			get {
+				object obj = ResourceManager.GetObject("bnExif.Image", resourceCulture);
+				return ((System.Drawing.Bitmap)(obj));
+			}
+		}
+		
+		/// <summary>
+		///   Looks up a localized resource of type System.Drawing.Bitmap.
+		/// </summary>
 		internal static System.Drawing.Bitmap bnFullscreen_Image {
 			get {
 				object obj = ResourceManager.GetObject("bnFullscreen.Image", resourceCulture);
@@ -137,6 +147,16 @@ namespace Next_View.Gui {
 			get {
 				object obj = ResourceManager.GetObject("bnStartEditor.Image", resourceCulture);
 				return ((System.Drawing.Bitmap)(obj));
+			}
+		}
+		
+		/// <summary>
+		///   Looks up a localized resource of type System.Windows.Forms.ImageListStreamer.
+		/// </summary>
+		internal static System.Windows.Forms.ImageListStreamer imageList1_ImageStream {
+			get {
+				object obj = ResourceManager.GetObject("imageList1.ImageStream", resourceCulture);
+				return ((System.Windows.Forms.ImageListStreamer)(obj));
 			}
 		}
 		

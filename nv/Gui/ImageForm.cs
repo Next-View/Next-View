@@ -41,9 +41,10 @@ namespace Next_View
 		string _picSelection = "";
 		string _currentPath = "";
 		string _orientation = "";
+		int _exifType = 0;
 		string _lastSearchStr = "";
 		Image _myImg;
-		bool loadNextPic = true;
+		bool _loadNextPic = true;
 
 		WinType _wType;   // normal, full, second
 		public bool _ndRunning {get;set;}
@@ -81,6 +82,19 @@ namespace Next_View
 
 		// ------------------------------   events form ----------------------------------------------------------
 
+		private void HandleKey(object sender, SetKeyEventArgs e)
+		// called by:  
+		{
+			int kVal = e.kValue;
+			bool alt = e.alt;
+			bool ctrl = e.ctrl;
+
+			if (_loadNextPic){
+				_loadNextPic = false;           // eat up keys
+				KDown(kVal, ctrl, alt);
+			}
+		}
+		
 		void FrmImageLoad(object sender, EventArgs e)
 		{
 			if (_wType == WinType.normal){
@@ -144,7 +158,7 @@ namespace Next_View
 
 		void FrmImageKeyUp(object sender, KeyEventArgs e)
 		{
-			loadNextPic = true;
+			_loadNextPic = true;
 		}
 
 		void FrmImageFormClosing(object sender, FormClosingEventArgs e)
@@ -285,8 +299,8 @@ namespace Next_View
 			if (e.Modifiers == Keys.Control){
 				ctrl = true;
 			}
-			if (loadNextPic){
-				loadNextPic = false;           // eat up keys
+			if (_loadNextPic){
+				_loadNextPic = false;           // eat up keys
 				KDown(e.KeyValue, ctrl, alt);
 			}
 		}
@@ -401,7 +415,7 @@ namespace Next_View
 					}
 					break;
 			}
-			loadNextPic = true;
+			_loadNextPic = true;
 			return true;
 			//  ctrl 17
 		}
@@ -439,8 +453,9 @@ namespace Next_View
 				bool showOk = ShowExif();
 				sw1.Stop();
 				if (!showOk){
-					Util.ExifOrient(ref _orientation, _currentPath);
+					Util.ExifOrient(ref _exifType, ref _orientation, _currentPath);
 				}
+				
 				//Debug.WriteLine("Ticks: " + sw1.Elapsed.Ticks.ToString());
 				var t = new DateTime(sw1.Elapsed.Ticks);
 				//Debug.WriteLine("Exif time: {0:D2}s:{1:D5}ms", t.Second, t.Millisecond);
@@ -491,17 +506,17 @@ namespace Next_View
 					float imFactor = (float) imWidth / imHeight;
 					if (imFactor > scFactor){   // wide img
 						int ih = (imHeight * (_scWidth - _borderWidth) / imWidth);
-						SetWindowSize(_scWidth, ih + _borderHeight);
+						SetWindowSize(_scWidth, ih + _borderHeight, _exifType);
 					}
 					else {    // high img
 						int iw = (imWidth * (_scHeight - _borderHeight) / imHeight);// + _borderWidth;
-						SetWindowSize(iw + _borderWidth, _scHeight);
+						SetWindowSize(iw + _borderWidth, _scHeight, _exifType);
 					}
 				}
 				else {  // small img
 					picBox.SizeMode = PictureBoxSizeMode.CenterImage;
 					picBox.BackColor = Color.Black;
-					SetWindowSize(imWidth + _borderWidth, imHeight + _borderHeight );
+					SetWindowSize(imWidth + _borderWidth, imHeight + _borderHeight, _exifType);
 				}
 				if (_wType != WinType.second){
 					Settings.Default.LastImage = pPath;
@@ -984,7 +999,8 @@ namespace Next_View
 			{
 				if (CanStartExif()){
 					m_Exif = new ExifForm();
-					m_Exif.CheckFile(ref _orientation, _currentPath);
+					m_Exif.KeyChanged += new HandleKeyChange(HandleKey);
+					m_Exif.CheckFile(ref _exifType, ref _orientation, _currentPath);
 					m_Exif.Show();
 				}
 				else {    // img to foreground
@@ -1007,7 +1023,7 @@ namespace Next_View
 		{
 			bool showRet = CanShowExif();
 			if (showRet){
-				m_Exif.CheckFile(ref _orientation, _currentPath);
+				m_Exif.CheckFile(ref _exifType, ref _orientation, _currentPath);
 			}
 			return showRet;
 		}
@@ -1033,7 +1049,7 @@ namespace Next_View
 
 		public void SetWindowText(string text2)
 		{
-			// called by: PicLoad
+			// called by: PicLoad, RenamePic, RenamePicPlus, RemovePicPlus
 			// output: main.HandleWindow
 			this.Text = text2 + "  -  Next-View";
 
@@ -1049,11 +1065,11 @@ namespace Next_View
 			}
 		}
 
-		public void SetWindowSize(int w, int h)
+		public void SetWindowSize(int w, int h, int exifType)
 		{
-			// called by: PicLoad
+			// called by: PicLoad 3*
 			// output: main.SetWindowSize
-			OnWindowSize(new SetSizeEventArgs(w, h));
+			OnWindowSize(new SetSizeEventArgs(w, h, exifType));
 			Application.DoEvents();
 		}
 
@@ -1067,7 +1083,7 @@ namespace Next_View
 
 		public void SetStatusText(string text1)
 		{
-			// called by: PicLoad, 'no img loaded'
+			// called by: PicLoad, or 5* 'no img loaded'
 			// output: main.HandleStatus
 			OnStatusChanged(new SetStatusMainEventArgs(text1));
 			Application.DoEvents();
@@ -1107,4 +1123,8 @@ namespace Next_View
 		second = 2
 	}
 
+	// ------------------------------		delegates 	----------------------------------------------------------
+
+	public delegate void HandleKeyChange(object sender, SetKeyEventArgs e); 
+	
 }

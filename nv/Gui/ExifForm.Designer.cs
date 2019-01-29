@@ -55,9 +55,12 @@ namespace Next_View
 			this.colTag,
 			this.colValue});
 			this.listExif.Location = new System.Drawing.Point(0, 0);
+			this.listExif.Margin = new System.Windows.Forms.Padding(4);
+			this.listExif.MultiSelect = false;
 			this.listExif.Name = "listExif";
-			this.listExif.Size = new System.Drawing.Size(254, 349);
+			this.listExif.Size = new System.Drawing.Size(337, 429);
 			this.listExif.TabIndex = 0;
+			this.listExif.TabStop = false;
 			this.listExif.UseCompatibleStateImageBehavior = false;
 			this.listExif.View = System.Windows.Forms.View.Details;
 			// 
@@ -74,25 +77,31 @@ namespace Next_View
 			// button1
 			// 
 			this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.button1.Location = new System.Drawing.Point(0, 351);
+			this.button1.Location = new System.Drawing.Point(0, 432);
+			this.button1.Margin = new System.Windows.Forms.Padding(4);
 			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(75, 23);
+			this.button1.Size = new System.Drawing.Size(100, 28);
 			this.button1.TabIndex = 1;
+			this.button1.TabStop = false;
 			this.button1.Text = "gps";
 			this.button1.UseVisualStyleBackColor = true;
 			this.button1.Click += new System.EventHandler(this.Button1Click);
 			// 
 			// ExifForm
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(253, 376);
+			this.ClientSize = new System.Drawing.Size(337, 463);
 			this.Controls.Add(this.button1);
 			this.Controls.Add(this.listExif);
+			this.KeyPreview = true;
+			this.Margin = new System.Windows.Forms.Padding(4);
 			this.Name = "ExifForm";
 			this.Text = "ExifForm";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ExifFormFormClosing);
 			this.Load += new System.EventHandler(this.ExifFormLoad);
+			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ExifFormKeyDown);
+			this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.ExifFormPreviewKeyDown);
 			this.ResumeLayout(false);
 
 		}

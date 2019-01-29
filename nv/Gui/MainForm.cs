@@ -166,7 +166,7 @@ namespace Next_View
 					m_Image.PicScan(userImagePath, true);
 				}
 				//Debug.WriteLine("pic path: " + userImagePath);
-				firstImage = Directory.GetCurrentDirectory() + @"\Next-View-0.4.png";
+				firstImage = Directory.GetCurrentDirectory() + @"\Next-View-0.5.png";
 				recentItem1.AddRecentItem(firstImage);
 				m_Image.PicLoad(firstImage, true);
 			}
@@ -426,7 +426,7 @@ namespace Next_View
 
 		void MnuTestClick(object sender, EventArgs e)
 		{
-
+			TestException();
 		}
 
 		//--------------------------  functions  ---------------------------//
@@ -471,23 +471,13 @@ namespace Next_View
 			}
 		}
 
-		void UnlockDir()
+		void TestException()
 		{
-   			try
-     	 	{
-     			string folderPath = @"C:\temp\Images\6Pic";
-     			string adminUserName = Environment.UserName;// getting your adminUserName
-     			DirectorySecurity ds = Directory.GetAccessControl(folderPath);
-     			FileSystemAccessRule fsa = new FileSystemAccessRule(adminUserName,FileSystemRights.FullControl, AccessControlType.Deny);
-     			ds.RemoveAccessRule(fsa);
-     			Directory.SetAccessControl(folderPath, ds);
-     			MessageBox.Show("UnLocked");
-     		}
-     		catch (Exception ex)
-     		{
-        		MessageBox.Show(ex.Message);
-     		}
+			int a = 0;
+			int b = 100 / a;
+
 		}
+
 
 		//--------------------------  language  ---------------------------//
 
@@ -568,8 +558,10 @@ namespace Next_View
 		{
 			int w = e.nWidth;
 			int h = e.nHeight;
+			int ex = e.exifType;
 			this.Width = w;
 			this.Height = h;
+			bnExif.Image = imageList1.Images[ex];
 			// Debug.WriteLine("set size W / H: {0}/{1}", w, h);
 		}
 
@@ -579,6 +571,10 @@ namespace Next_View
 		{
 			string pPath = e.NewValue;
 			recentItem1.AddRecentItem(pPath);
+		}
+		void BnExifClick(object sender, EventArgs e)
+		{
+	
 		}
 
 
