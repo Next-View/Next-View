@@ -35,12 +35,13 @@ namespace Next_View
 	public partial class frmMain : Form
 	{
 		private DeserializeDockContent _deserializeDockContent;
-		public frmImage  m_Image; //   new frmImage();
+		public frmImage  m_Image;
+		public ExifDash  m_Exif;
 		static EventWaitHandle s_event ;
 		private XDListener listener;
 
 		string _currentPath = "";
-				
+
 		public frmMain()
 		{
 			//
@@ -285,6 +286,17 @@ namespace Next_View
 			m_Image.SearchPic();
 		}
 
+		void MnuExifClick(object sender, EventArgs e)
+		{
+			m_Image.StartExif();
+		}
+
+		void MnuExifDashClick(object sender, EventArgs e)
+		{
+			m_Exif = new ExifDash();
+			m_Exif.Show(dockPanel1, DockState.Document);
+		}
+
 		//--------------------------  menu view ---------------------------//
 
 		void MnuNextImageClick(object sender, EventArgs e)
@@ -405,14 +417,20 @@ namespace Next_View
 			this.mnuNextImage.PerformClick();
 		}
 
-		void BnSearchClick(object sender, EventArgs e)
-		{
-			this.mnuSearch.PerformClick();
-		}
 
 		void BnFullscreenClick(object sender, EventArgs e)
 		{
 			this.mnuFullScreen.PerformClick();
+		}
+
+		void BnExifClick(object sender, EventArgs e)
+		{
+
+		}
+
+		void BnSearchClick(object sender, EventArgs e)
+		{
+			this.mnuSearch.PerformClick();
 		}
 
 
@@ -567,15 +585,12 @@ namespace Next_View
 
 		private void HandleFilename(object sender, SetFilenameEventArgs e)
 		// called by: SetFilename: openPic, FrmImageDragDrop
-		// for recoent file name only 
+		// for recoent file name only
 		{
 			string pPath = e.NewValue;
 			recentItem1.AddRecentItem(pPath);
 		}
-		void BnExifClick(object sender, EventArgs e)
-		{
-	
-		}
+
 
 
 
