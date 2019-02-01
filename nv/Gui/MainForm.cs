@@ -16,6 +16,7 @@ History:
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 using System;
+using System.Collections.Generic;   // List
 using System.Diagnostics;  // Debug
 using System.Globalization;   // CultureInfo
 using System.IO;   // path
@@ -41,6 +42,8 @@ namespace Next_View
 		private XDListener listener;
 
 		string _currentPath = "";
+		private int _step = 0;
+		private int _maxStep = 0;
 
 		public frmMain()
 		{
@@ -142,9 +145,13 @@ namespace Next_View
 			m_Image.StatusChanged += new HandleStatusMainChange(HandleStatus);
 			m_Image.WindowChanged += new HandleWindowMainChange(HandleWindow);
 			m_Image.WindowSize += new HandleWindowSize(HandleSize);
-			m_Image.FilenameChanged += new HandleFilenameChange(HandleFilename);
+			m_Image.CommandChanged += new HandleCommandChange(HandleCommand);
 
 			m_Image.Show(dockPanel1, DockState.Document);      // sequence of tabs
+			m_Exif = new ExifDash();
+			m_Exif.StatusChanged += new HandleStatusMainChange(HandleStatus);
+			m_Exif.WindowSize += new HandleWindowSize(HandleSize);
+			m_Exif.CommandChanged += new HandleCommandChange(HandleCommand);
 			//m_Image.Show(dockPanel1, DockState.Document);     // set active
 
 
@@ -286,17 +293,6 @@ namespace Next_View
 			m_Image.SearchPic();
 		}
 
-		void MnuExifClick(object sender, EventArgs e)
-		{
-			m_Image.StartExif();
-		}
-
-		void MnuExifDashClick(object sender, EventArgs e)
-		{
-			m_Exif = new ExifDash();
-			m_Exif.Show(dockPanel1, DockState.Document);
-		}
-
 		//--------------------------  menu view ---------------------------//
 
 		void MnuNextImageClick(object sender, EventArgs e)
@@ -340,12 +336,21 @@ namespace Next_View
 			m_Image.ShowFullScreen();
 		}
 
-		void MnuShowPanelClick(object sender, EventArgs e)
+		void MnuShowImageClick(object sender, EventArgs e)
 		{
 			m_Image.Show(dockPanel1, DockState.Document);
 		}
 
+		void MnuExifClick(object sender, EventArgs e)
+		{
+			m_Image.StartExif();
+		}
 
+		void MnuExifDashClick(object sender, EventArgs e)
+		{
+			m_Exif.SetPath2(_currentPath);
+			m_Exif.Show(dockPanel1, DockState.Document);
+		}
 
 		//--------------------------  menu help ---------------------------//
 		void MnuAboutClick(object sender, EventArgs e)
@@ -560,7 +565,29 @@ namespace Next_View
 		// called by: SetStatusText
 		{
 			string par1 = e.NewValue;
-			this.statusLabel1.Text = par1;
+			int n;
+			bool isNumeric = int.TryParse(par1, out n);
+			if (isNumeric) {          // 1st message is 'steps'
+				if (n == 999) {
+					this.progress1.Value = 0;
+					_maxStep = 0;
+				}
+				_maxStep = n + 1;
+				this.progress1.Maximum = _maxStep;
+				_step = 0;
+			}
+			else {
+				_step++;
+				Debug.WriteLine(String.Format("Max step {0}, step {1} ", _maxStep, _step));
+				if (_step <= _maxStep){
+					this.progress1.Value = _step;
+				}
+				else {
+					this.progress1.Value = 0;
+				}
+				this.statusLabel1.Text = par1;
+			}
+
 		}
 
 		private void HandleWindow(object sender, SetStatusMainEventArgs e)
@@ -583,16 +610,32 @@ namespace Next_View
 			// Debug.WriteLine("set size W / H: {0}/{1}", w, h);
 		}
 
-		private void HandleFilename(object sender, SetFilenameEventArgs e)
-		// called by: SetFilename: openPic, FrmImageDragDrop
-		// for recoent file name only
+		private void HandleCommand(object sender, SetCommandEventArgs e)
+		// called by: image.KDown, OpenPic, ProcessDrop; exifdash.CmdShowClick
+		// commands for main
 		{
-			string pPath = e.NewValue;
-			recentItem1.AddRecentItem(pPath);
+			char comm = e.Command;
+			string fName = e.Fname;
+			List<string> eList;
+			//Debug.WriteLine("Command: " +  comm);
+			switch(comm)
+			{
+				case 'e':  //  exifdash
+					m_Exif.SetPath2(fName);
+					this.mnuExifDash.PerformClick();
+					break;
+				case 'r':  //  recent
+					recentItem1.AddRecentItem(fName);
+					break;
+				case 'i':  //  exif img
+					m_Exif.GetIl(out eList);
+					Debug.WriteLine("exl: " +  eList.Count.ToString());
+					m_Image.Show(dockPanel1, DockState.Document);
+					m_Image.PicScan(fName, false);
+					m_Image.PicLoad(fName, true);
+					break;
+			}
 		}
-
-
-
 
 	}  // end main
 
@@ -615,5 +658,5 @@ namespace Next_View
 
 	public delegate void HandleWindowSize(object sender, SetSizeEventArgs e);
 
-	public delegate void HandleFilenameChange(object sender, SetFilenameEventArgs e);
+	public delegate void HandleCommandChange(object sender, SetCommandEventArgs e);
 }

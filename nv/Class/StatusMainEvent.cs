@@ -1,6 +1,6 @@
 ﻿/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 File name:     StatusMainEvent.cs
-Description:   event for main status bar 
+Description:   event for main status bar
 Copyright:     Copyright (c) Martin A. Schnell, 2018
 Licence:       GNU General Public License
                This program is free software; you can redistribute it and/or
@@ -31,7 +31,7 @@ namespace Next_View
 			this.NewValue = value;
 		}
 	}
-	
+
 	public class SetSizeEventArgs : EventArgs
 	{
 		public int nWidth;
@@ -46,13 +46,15 @@ namespace Next_View
 		}
 	}
 
-	public class SetFilenameEventArgs : EventArgs
+	public class SetCommandEventArgs : EventArgs
 	{
-		public string NewValue;
-		public SetFilenameEventArgs(string value)
+		public char Command;
+		public string Fname;
+		public SetCommandEventArgs(char comm, string fName)
 			: base()
 		{
-			this.NewValue = value;
+			this.Command = comm;
+			this.Fname = fName;
 		}
 	}
 
@@ -69,5 +71,5 @@ namespace Next_View
 			this.ctrl = kCtrl;
 		}
 	}
-			
+
 }

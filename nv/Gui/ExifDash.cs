@@ -37,11 +37,9 @@ namespace Next_View
 		ImgList _il;
 		bool _stop = false;
 		string _imgDir = "";
-		public string _exifImg {get;set;}
-		public bool _ExifReturn {get;set;}
 
 		Stopwatch _sw1 = new Stopwatch();
-
+		List<string> exifImgList = new List<string>();
 		List<Exif> exList = new List<Exif>();
 
 		Dictionary<int, int> dicExift = new Dictionary<int, int>();
@@ -61,7 +59,10 @@ namespace Next_View
 		DateTime _minDate = DateTime.MaxValue;
 		DateTime _maxDate = DateTime.MinValue;
 
-		List<string> exifImgList = new List<string>();
+
+		public event HandleWindowSize  WindowSize;
+
+		public event HandleCommandChange  CommandChanged;
 
 		public event HandleStatusMainChange  StatusChanged;
 
@@ -72,7 +73,6 @@ namespace Next_View
 			//
 			InitializeComponent();
 
-			_ExifReturn = false;
 			//
 			// TODO: Add constructor code after the InitializeComponent() call.
 			//
@@ -80,11 +80,23 @@ namespace Next_View
 
     // ------------------------------   functions  ----------------------------------------------------------
 
+		public void SetPath2(string fPath)
+		// from imageForm
+		{
+			edImgPath.Text = Path.GetDirectoryName(fPath);
+		}
+
 		public void SetPath(string fPath, ImgList il)
 		// from imageForm
 		{
 			_il = il;
 			edImgPath.Text = Path.GetDirectoryName(fPath);
+		}
+
+		public void GetIl(out List<string> eList)
+		// from main
+		{
+			eList = exifImgList;
 		}
 
 		public void FormClear()
@@ -98,6 +110,7 @@ namespace Next_View
 			listLens.Items.Clear();
 			listExpo.Items.Clear();
 			listScene.Items.Clear();
+			listFLen.Items.Clear();
 			dicExift.Clear();
 			dicToD.Clear();
 			dicModel.Clear();
@@ -121,6 +134,7 @@ namespace Next_View
 		{
 			//Debug.WriteLine("form p1: " + this.Width.ToString());
 			listImg.Items.Clear();
+			exifImgList.Clear();
 
 			int pCount = 0;
 			string[] items = { " ", " ", " ", " ", " " };   // for product column with 5 lines
@@ -190,7 +204,7 @@ namespace Next_View
 				}
 				else if (imgSpan.TotalDays > 1){
 					_rangeType = 3;      // days
-					double days = (int) Math.Ceiling(imgSpan.TotalHours / 24.0); 
+					double days = (int) Math.Ceiling(imgSpan.TotalHours / 24.0);
 					string spanS = days.ToString("0");
 					lblInfo.Text = String.Format("Info: Number of images {0}. Between {1:yyyy-MM-dd} and {2:yyyy-MM-dd}, a span of {3} days", exList.Count, _minDate, _maxDate, spanS );
 				}
@@ -198,15 +212,15 @@ namespace Next_View
 					_rangeType = 4;      // hours
 					int hours = (int) Math.Ceiling(imgSpan.TotalMinutes / 60.0);
 					string spanS = hours.ToString("0");
-					lblInfo.Text = String.Format("Info: Number of images {0}. On {1:yyyy-MM-dd}. Between {2:HH:mm} and {3:HH:mm}, a span of {4} hours", exList.Count, _minDate, _minDate, _maxDate, spanS );					
+					lblInfo.Text = String.Format("Info: Number of images {0}. On {1:yyyy-MM-dd}. Between {2:HH:mm} and {3:HH:mm}, a span of {4} hours", exList.Count, _minDate, _minDate, _maxDate, spanS );
 				}
-				CheckDays( );  
+				CheckDays( );
 			}
 			else {
 				lblInfo.Text = String.Format("Info: Number of images {0} ", exList.Count);
 			}
-			
-			// show listviews										
+
+			// show listviews
 			foreach (KeyValuePair<int, int> det in dicExift.OrderByDescending(key=> key.Key))
 			{
 				string exift;
@@ -225,7 +239,7 @@ namespace Next_View
 			}
 			listExift.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
 			listExift.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
-			
+
 			foreach (KeyValuePair<int, int> dtd in dicToD.OrderBy(key=> key.Key))
 			{
 				string tod;
@@ -250,7 +264,7 @@ namespace Next_View
 			}
 			listToD.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
 			listToD.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
-			
+
 			foreach (KeyValuePair<string, int> dm in dicModel.OrderBy(key=> key.Key))
 			{
 				string mo = dm.Key;
@@ -261,7 +275,7 @@ namespace Next_View
 			}
 			listModel.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
 			listModel.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
-			
+
 			foreach (KeyValuePair<string, int> dl in dicLens.OrderBy(key=> key.Key))
 			{
 				string le = dl.Key;
@@ -272,7 +286,7 @@ namespace Next_View
 			}
 			listLens.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
 			listLens.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
-			
+
 			foreach (KeyValuePair<string, int> dfl in dicFLen.OrderBy(key=> key.Key))
 			{
 				string fl = dfl.Key;
@@ -283,7 +297,7 @@ namespace Next_View
 			}
 			listFLen.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
 			listFLen.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
-			
+
 			foreach (KeyValuePair<string, int> dex in dicExposi.OrderBy(key=> key.Key))
 			{
 				string exp = dex.Key;
@@ -309,19 +323,19 @@ namespace Next_View
 			lblGps.Text = "GPS: " + _gpsCount.ToString();
 			lblFlash.Text = "Flash: " + _flashCount.ToString();
 		}
-		 
+
 		void CheckDays( )
 		{
 			Dictionary<string, int> dicPeriod = new Dictionary<string, int>();
-			//  
+			//
 			//Debug.WriteLine("year start: " + nextYear.ToString());
 			string periodFormat = "";
 			string chartTitle = "";
-			if (_rangeType == 1){  // years 
+			if (_rangeType == 1){  // years
 				DateTime nextYear = new DateTime (_minDate.Year, 1, 1);  // time 0:0:0
 				periodFormat = "{0:yyyy}";
 				chartTitle = "Images per year";
-				do {    // pre fill 
+				do {    // pre fill
 					string year = String.Format(periodFormat , nextYear);
 					dicPeriod.Add(year, 0);
 					nextYear = nextYear.AddYears(1);
@@ -331,34 +345,34 @@ namespace Next_View
 				DateTime nextMonth = new DateTime (_minDate.Year, _minDate.Month, 1);  // time 0:0:0
 				periodFormat = "{0:yyyy-MM}";
 				chartTitle = "Images per month";
-				do {     
+				do {
 					string month = String.Format(periodFormat , nextMonth);
 					dicPeriod.Add(month, 0);
 					nextMonth = nextMonth.AddMonths(1);
-					Debug.WriteLine("period0: " + month);
-				} while (nextMonth <= _maxDate);				
+					//Debug.WriteLine("period0: " + month);
+				} while (nextMonth <= _maxDate);
 			}
 			else if (_rangeType == 3){   // days
-				DateTime nextDay = new DateTime (_minDate.Year, _minDate.Month, _minDate.Day);   
+				DateTime nextDay = new DateTime (_minDate.Year, _minDate.Month, _minDate.Day);
 				periodFormat = "{0:yyyy-MM-dd}";
 				chartTitle = "Images per day";
-				do {     
+				do {
 					string day = String.Format(periodFormat , nextDay);
 					dicPeriod.Add(day, 0);
 					nextDay = nextDay.AddDays(1);
 				} while (nextDay <= _maxDate);
 			}
 			else {   // hours
-				DateTime nextHour = new DateTime(_minDate.Year, _minDate.Month, _minDate.Day, _minDate.Hour, 0, 0);   
+				DateTime nextHour = new DateTime(_minDate.Year, _minDate.Month, _minDate.Day, _minDate.Hour, 0, 0);
 				periodFormat = "{0:yyyy-MM-dd HH}";
 				chartTitle = "Images per hour";
-				do {     
+				do {
 					string hour = String.Format(periodFormat , nextHour);
 					dicPeriod.Add(hour, 0);
 					nextHour = nextHour.AddHours(1);
 				} while (nextHour <= _maxDate);
 			}
-							
+
 			DateTime nullDate = DateTime.MinValue;
 			foreach (Exif exi in exList) {
 				if (exi.eDtOriginal != nullDate){
@@ -367,9 +381,9 @@ namespace Next_View
 					dicPeriod[period] += 1;
 				}
 			}
-			
+
 			chartImg.Palette = ChartColorPalette.Pastel;
-			chartImg.Titles[0].Text = chartTitle;  
+			chartImg.Titles[0].Text = chartTitle;
 			chartImg.Series.Clear( );
 			chartImg.ChartAreas[0].AxisX.Minimum = 0;
 			var sImgCount = new Series();
@@ -408,16 +422,16 @@ namespace Next_View
 					var startHour = new DateTime (_minDate.Year, _minDate.Month,  _minDate.Day, _minDate.Hour - 1, 0, 0);
 					DateTime lDate = startHour.AddHours(i);
 					lbl.Text = string.Format("{0:HH:mm}", lDate);
-				}				
+				}
 			}
 		}
-		
+
 		void SearchExif(string searchStr)
 		{
 			int ext = 0;     // No Exif
 			if (string.Compare("Reduced Exif", searchStr) == 0) ext = 1;
 			else if (string.Compare("Full Exif", searchStr) == 0) ext = 2;
-						
+
 			foreach (Exif exi in exList) {
 				if (exi.eType ==  ext){
 					ListViewItem item = this.listImg.Items.Add(exi.eFname);
@@ -455,7 +469,7 @@ namespace Next_View
 				}
 			}
 		}
-								
+
 		void SearchExifScene(string searchStr)
 		{
 			foreach (Exif exi in exList) {
@@ -482,7 +496,7 @@ namespace Next_View
 				}
 			}
 		}
-		
+
 		void SearchExifFLen(string searchStr)
 		{
 			foreach (Exif exi in exList) {
@@ -518,13 +532,14 @@ namespace Next_View
 		void ExifDashEnter(object sender, EventArgs e)
 		{
 			Settings.Default.LastTab = 2;
+			SetWindowSize(700, 840, 0);
 		}
 
 		void ExifDashFormClosing(object sender, FormClosingEventArgs e)
 		{
-			//e.Cancel = true;
-			//this.Hide();
-			this.Close();
+			e.Cancel = true;
+			this.Hide();
+			//this.Close();
 		}
 
 		void ExifDashDragEnter(object sender, DragEventArgs e)
@@ -556,60 +571,78 @@ namespace Next_View
 		{
 			CheckStart();
 		}
-		
+
 		void ListExiftDoubleClick(object sender, EventArgs e)
 		{
+			listImg.Items.Clear();
+			exifImgList.Clear();
 			string selExif = listExift.SelectedItems[0].Text;
 			SearchExif(selExif);
 		}
 
 		void ListModelDoubleClick(object sender, EventArgs e)
 		{
+			listImg.Items.Clear();
+			exifImgList.Clear();
 			string selList = listModel.SelectedItems[0].Text;
 			SearchExifModel(selList);
 		}
 
 		void ListLensDoubleClick(object sender, EventArgs e)
 		{
+			listImg.Items.Clear();
+			exifImgList.Clear();
 			string selLens = listLens.SelectedItems[0].Text;
 			SearchExifLens(selLens);
 		}
 
 		void ListExpoDoubleClick(object sender, EventArgs e)
 		{
+			listImg.Items.Clear();
+			exifImgList.Clear();
 			string selExpo = listExpo.SelectedItems[0].Text;
 			SearchExifExpo(selExpo);
 		}
 
 		void ListSceneDoubleClick(object sender, EventArgs e)
 		{
+			listImg.Items.Clear();
+			exifImgList.Clear();
 			string selScene = listScene.SelectedItems[0].Text;
 			SearchExifScene(selScene);
 		}
 
 		void ListToDDoubleClick(object sender, EventArgs e)
 		{
+			listImg.Items.Clear();
+			exifImgList.Clear();
 			string selToD = listToD.SelectedItems[0].Text;
-			SearchExifToD(selToD);	
+			SearchExifToD(selToD);
 		}
 
 		void LblGpsDoubleClick(object sender, EventArgs e)
 		{
+			listImg.Items.Clear();
+			exifImgList.Clear();
 			SearchExifGps();
 		}
 
 		void LblFlashDoubleClick(object sender, EventArgs e)
 		{
+			listImg.Items.Clear();
+			exifImgList.Clear();
 			SearchExifFlash();
 		}
 
 		void ListFLenDoubleClick(object sender, EventArgs e)
 		{
+			listImg.Items.Clear();
+			exifImgList.Clear();
 			string selFLen = listFLen.SelectedItems[0].Text;
 			SearchExifFLen(selFLen);
 		}
 
-				
+
 		void PopPathRemoveClick(object sender, EventArgs e)
 		{
 
@@ -618,6 +651,10 @@ namespace Next_View
 
 		void ListProjectDoubleClick(object sender, EventArgs e)
 		{
+			if (listImg.SelectedItems.Count > 0){
+				string eImg = listImg.SelectedItems[0].Text;
+				SetCommand('i', eImg);
+			}
 
 		}
 
@@ -625,17 +662,16 @@ namespace Next_View
 		void CmdShowClick(object sender, EventArgs e)
 		{
 			if (exifImgList.Count > 0){
-					_il.DirClear();
-					_il._imList = exifImgList;
-					if (listImg.SelectedItems.Count > 0){
-						_exifImg = listImg.SelectedItems[0].Text;
-					}
-					else {
-						_exifImg = "";
-					}
-					_ExifReturn = true;
+				string eImg = listImg.Items[0].Text;
+				if (listImg.SelectedItems.Count > 0){
+					eImg = listImg.SelectedItems[0].Text;
+				}
+				SetCommand('i', eImg);
+
+				//_il.DirClear();
+				//_il._imList = exifImgList;
+
 			}
-			this.Close();
 		}
 
     // ------------------------------   BackgroundWorker  ----------------------------------------------------------
@@ -659,8 +695,10 @@ namespace Next_View
 			string scene;
 			bool gps;
 			DateTime nullDate = DateTime.MinValue;
+			int maxTicks = imgList.Count() / 100;
+			bw.ReportProgress(maxTicks, "Start");
 
-
+			int fCount =0;
 			foreach (string picPath in imgList)
 			{
 
@@ -669,6 +707,12 @@ namespace Next_View
 				exList.Add(new Exif(exType, model, dtOriginal, timeOfD,
 				                    expotime, fnumber, fLength, flash,  exposi, lens, scene,
 					                  gps, picPath));
+				fCount++;
+				int mod = fCount % 100;
+				if (mod == 0){
+					bw.ReportProgress(0, "");
+				}
+
 				if (dtOriginal != nullDate){
 					//Debug.WriteLine("path: " + picPath + " " + dtOriginal.ToString());
 					_dateCount++;
@@ -741,8 +785,6 @@ namespace Next_View
 			{
 				//Debug.WriteLine("bw2: start scan");
 				// init progress bar
-
-				worker.ReportProgress(1, "Start");
 				ScanImages(sender as BackgroundWorker);
 
 			}
@@ -756,8 +798,8 @@ namespace Next_View
 				SetText(steps.ToString());
 			}
 			string m1 = (string)e.UserState;
-			//Debug.WriteLine("bw: " + m1 );
 			SetText(m1);
+			Debug.WriteLine("bw1: " + m1 + " " + steps.ToString());
 		}
 
 		void BackgroundWorker1RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
@@ -787,7 +829,7 @@ namespace Next_View
 
 
 				// MessageBox.Show ("Directories in Source Path now sorted by release date", "Wrong sort sequence",
-
+				Debug.WriteLine("bw: end ");
 				SetText("Scan complete - " + edImgPath.Text + "  "  + ptime);
 				SetText("999");  // progress reset
 				DateTime lastScan = DateTime.Now;
@@ -804,6 +846,44 @@ namespace Next_View
 
 
   // end Background
+
+		// ------------------------------   delegates   ----------------------------------------------------------
+
+		public void SetWindowSize(int w, int h, int exifType)
+		{
+			// called by: PicLoad 3*, Enter
+			// output: main.SetWindowSize
+			OnWindowSize(new SetSizeEventArgs(w, h, exifType));
+			Application.DoEvents();
+		}
+
+		protected virtual void OnWindowSize(SetSizeEventArgs  e)
+		{
+			if(this.WindowSize != null)    // nothing subscribed to this event
+			{
+				this.WindowSize(this, e);
+			}
+		}
+
+		public void SetCommand(char comm, string fName)
+		{
+		// called by: close: CmdShow, dblclick
+		// main HandleCommand
+			OnCommandChanged(new SetCommandEventArgs(comm, fName));
+			Application.DoEvents();
+		}
+
+		protected virtual void OnCommandChanged(SetCommandEventArgs e)
+		{
+			if(this.CommandChanged != null)
+			{
+				this.CommandChanged(this, e);
+			}
+		}
+		void ListLensSelectedIndexChanged(object sender, EventArgs e)
+		{
+
+		}
 
 	}  // end exif
 }

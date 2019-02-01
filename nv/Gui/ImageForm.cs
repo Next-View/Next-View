@@ -38,6 +38,8 @@ namespace Next_View
 		int _mainHeight = 0;
 		int _borderHeight = 0;
 		int _borderWidth = 0;
+		int _currentWidth = 0;
+		int _currentHeight = 0;
 		string _picSelection = "";
 		string _currentPath = "";
 		string _orientation = "";
@@ -60,7 +62,7 @@ namespace Next_View
 
 		public event HandleWindowSize WindowSize;
 
-		public event HandleFilenameChange  FilenameChanged;
+		public event HandleCommandChange  CommandChanged;
 
 		public frmImage(int mainWidth, int mainHeight, WinType wType)
 		{
@@ -83,7 +85,7 @@ namespace Next_View
 		// ------------------------------   events form ----------------------------------------------------------
 
 		private void HandleKey(object sender, SetKeyEventArgs e)
-		// called by:  
+		// called by:
 		{
 			int kVal = e.kValue;
 			bool alt = e.alt;
@@ -94,13 +96,11 @@ namespace Next_View
 				KDown(kVal, ctrl, alt);
 			}
 		}
-		
+
 		void FrmImageLoad(object sender, EventArgs e)
 		{
 			if (_wType == WinType.normal){
 				_ndRunning = false;
-				//_mainWidth
-				//_mainHeight
 				_scWidth = Screen.FromControl(this).Bounds.Width;
 				_scHeight = Screen.FromControl(this).Bounds.Height;
 
@@ -145,6 +145,18 @@ namespace Next_View
 
 		}
 
+		void FrmImageEnter(object sender, EventArgs e)
+		{
+			if (_currentWidth > 0){
+				SetWindowSize(_currentWidth, _currentHeight, _exifType);
+			}
+		}
+		
+		void FrmImageLeave(object sender, EventArgs e)
+		{
+			// Debug.WriteLine("img leave");
+		}
+		
 		void FrmImageHelpRequested(object sender, HelpEventArgs hlpevent)
 		{
 			//Help.ShowHelp(this, "Next-View.chm", "Fieldlist.htm");
@@ -172,6 +184,11 @@ namespace Next_View
 				Settings.Default.Save( );
 				Debug.WriteLine("close 2nd y: {0} ", Settings.Default.MainY2);
 			}
+			if (_wType == WinType.normal){
+				e.Cancel = true;
+				this.Hide();
+				Debug.WriteLine("hide img ");
+			}
 		}
 
 		void FrmImageFormClosed(object sender, FormClosedEventArgs e)
@@ -182,6 +199,7 @@ namespace Next_View
 		void RClose()
 		// remote close
 		{
+			//this.Hide();
 			this.Close();
 		}
 
@@ -258,7 +276,7 @@ namespace Next_View
 
 			if (loadFile != ""){
 				PicLoad(loadFile, true);
-				SetFilename(loadFile);
+				SetCommand('r', loadFile);
 			}
 			else {
 				picBox.Image = null;
@@ -405,7 +423,8 @@ namespace Next_View
 					break;
 				case 69:    // 'e'  for exif
 					if (alt){
-						ShowExifDash();
+						SetCommand('e', _currentPath);
+						//ShowExifDash();
 					}
 					else if (ctrl){
 						ShowExif0();
@@ -455,7 +474,7 @@ namespace Next_View
 				if (!showOk){
 					Util.ExifOrient(ref _exifType, ref _orientation, _currentPath);
 				}
-				
+
 				//Debug.WriteLine("Ticks: " + sw1.Elapsed.Ticks.ToString());
 				var t = new DateTime(sw1.Elapsed.Ticks);
 				//Debug.WriteLine("Exif time: {0:D2}s:{1:D5}ms", t.Second, t.Millisecond);
@@ -752,7 +771,7 @@ namespace Next_View
 				string picPath = dialog.FileName;
 				PicScan(picPath, false);
 				PicLoad(picPath, true);
-				SetFilename(picPath);
+				SetCommand('r', picPath);
 			}
 		}
 
@@ -964,32 +983,30 @@ namespace Next_View
 
 		public void ShowExifDash()
 		{
-			ExifDash frmDash = new ExifDash();
-			frmDash.SetPath(_currentPath, _il);
-			frmDash.ShowDialog();
-			
-			if (frmDash._ExifReturn) {
-					string selImg = frmDash._exifImg;
-					int picPos = 0;
-					int picAll = 0;
-					if (selImg != ""){
-						_il.DirPosPath(ref picPos, ref picAll, selImg);
-					}
-					else {
-						_il.DirPicFirst(ref selImg);
-					}
-					_currentPath = selImg;
-					_picSelection = T._("Exif Search:");
-					PicLoad(_currentPath, true);
-				}
-			
+
+//					string selImg = frmDash._exifImg;
+//					int picPos = 0;
+//					int picAll = 0;
+//					if (selImg != ""){
+//						_il.DirPosPath(ref picPos, ref picAll, selImg);
+//					}
+//					else {
+//						_il.DirPicFirst(ref selImg);
+//					}
+//					_currentPath = selImg;
+//					_picSelection = T._("Exif Search:");
+//					PicLoad(_currentPath, true);
+
+
 		}
 
 		public void ShowExif0()
 		{
-			ExifForm0 frmExif0 = new ExifForm0();
-			frmExif0.CheckFile0(_currentPath);
-			frmExif0.ShowDialog();
+			if (File.Exists(_currentPath)) {
+				ExifForm0 frmExif0 = new ExifForm0();
+				frmExif0.CheckFile0(_currentPath);
+				frmExif0.ShowDialog();
+			}
 		}
 
 
@@ -997,6 +1014,9 @@ namespace Next_View
 		{
 			try
 			{
+				if (!File.Exists(_currentPath)) 
+					return false;
+					
 				if (CanStartExif()){
 					m_Exif = new ExifForm();
 					m_Exif.KeyChanged += new HandleKeyChange(HandleKey);
@@ -1065,11 +1085,14 @@ namespace Next_View
 			}
 		}
 
+
 		public void SetWindowSize(int w, int h, int exifType)
 		{
-			// called by: PicLoad 3*
+			// called by: PicLoad 3*, Enter
 			// output: main.SetWindowSize
 			OnWindowSize(new SetSizeEventArgs(w, h, exifType));
+			_currentWidth = w;
+			_currentHeight = h;
 			Application.DoEvents();
 		}
 
@@ -1080,6 +1103,7 @@ namespace Next_View
 				this.WindowSize(this, e);
 			}
 		}
+
 
 		public void SetStatusText(string text1)
 		{
@@ -1097,22 +1121,25 @@ namespace Next_View
 			}
 		}
 
-		public void SetFilename(string text1)
+
+		public void SetCommand(char comm, string fName)
 		{
-			// called by:
-			// output: main.HandleStatus
-			OnFilenameChanged(new SetFilenameEventArgs(text1));
+		// called by: recent: Filename: openPic, FrmImageDragDrop
+		// dash: kdown e
+
+		// main command, HandleFilename
+			OnCommandChanged(new SetCommandEventArgs(comm, fName));
 			Application.DoEvents();
 		}
 
-		protected virtual void OnFilenameChanged(SetFilenameEventArgs e)
+		protected virtual void OnCommandChanged(SetCommandEventArgs e)
 		{
-			if(this.FilenameChanged != null)
+			if(this.CommandChanged != null)
 			{
-				this.FilenameChanged(this, e);
+				this.CommandChanged(this, e);
 			}
 		}
-
+	
 
 	}  // end frmImage
 
@@ -1125,6 +1152,6 @@ namespace Next_View
 
 	// ------------------------------		delegates 	----------------------------------------------------------
 
-	public delegate void HandleKeyChange(object sender, SetKeyEventArgs e); 
-	
+	public delegate void HandleKeyChange(object sender, SetKeyEventArgs e);
+
 }
