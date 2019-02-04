@@ -39,7 +39,7 @@ namespace Next_View
 		string _imgDir = "";
 
 		Stopwatch _sw1 = new Stopwatch();
-		List<string> exifImgList = new List<string>();
+
 		List<Exif> exList = new List<Exif>();
 
 		Dictionary<int, int> dicExift = new Dictionary<int, int>();
@@ -59,6 +59,7 @@ namespace Next_View
 		DateTime _minDate = DateTime.MaxValue;
 		DateTime _maxDate = DateTime.MinValue;
 
+		List<string> exifImgList = new List<string>();
 
 		public event HandleWindowSize  WindowSize;
 
@@ -91,12 +92,6 @@ namespace Next_View
 		{
 			_il = il;
 			edImgPath.Text = Path.GetDirectoryName(fPath);
-		}
-
-		public void GetIl(out List<string> eList)
-		// from main
-		{
-			eList = exifImgList;
 		}
 
 		public void FormClear()
@@ -134,7 +129,6 @@ namespace Next_View
 		{
 			//Debug.WriteLine("form p1: " + this.Width.ToString());
 			listImg.Items.Clear();
-			exifImgList.Clear();
 
 			int pCount = 0;
 			string[] items = { " ", " ", " ", " ", " " };   // for product column with 5 lines
@@ -575,7 +569,6 @@ namespace Next_View
 		void ListExiftDoubleClick(object sender, EventArgs e)
 		{
 			listImg.Items.Clear();
-			exifImgList.Clear();
 			string selExif = listExift.SelectedItems[0].Text;
 			SearchExif(selExif);
 		}
@@ -583,7 +576,6 @@ namespace Next_View
 		void ListModelDoubleClick(object sender, EventArgs e)
 		{
 			listImg.Items.Clear();
-			exifImgList.Clear();
 			string selList = listModel.SelectedItems[0].Text;
 			SearchExifModel(selList);
 		}
@@ -591,7 +583,6 @@ namespace Next_View
 		void ListLensDoubleClick(object sender, EventArgs e)
 		{
 			listImg.Items.Clear();
-			exifImgList.Clear();
 			string selLens = listLens.SelectedItems[0].Text;
 			SearchExifLens(selLens);
 		}
@@ -599,7 +590,6 @@ namespace Next_View
 		void ListExpoDoubleClick(object sender, EventArgs e)
 		{
 			listImg.Items.Clear();
-			exifImgList.Clear();
 			string selExpo = listExpo.SelectedItems[0].Text;
 			SearchExifExpo(selExpo);
 		}
@@ -607,7 +597,6 @@ namespace Next_View
 		void ListSceneDoubleClick(object sender, EventArgs e)
 		{
 			listImg.Items.Clear();
-			exifImgList.Clear();
 			string selScene = listScene.SelectedItems[0].Text;
 			SearchExifScene(selScene);
 		}
@@ -615,7 +604,6 @@ namespace Next_View
 		void ListToDDoubleClick(object sender, EventArgs e)
 		{
 			listImg.Items.Clear();
-			exifImgList.Clear();
 			string selToD = listToD.SelectedItems[0].Text;
 			SearchExifToD(selToD);
 		}
@@ -623,21 +611,18 @@ namespace Next_View
 		void LblGpsDoubleClick(object sender, EventArgs e)
 		{
 			listImg.Items.Clear();
-			exifImgList.Clear();
 			SearchExifGps();
 		}
 
 		void LblFlashDoubleClick(object sender, EventArgs e)
 		{
 			listImg.Items.Clear();
-			exifImgList.Clear();
 			SearchExifFlash();
 		}
 
 		void ListFLenDoubleClick(object sender, EventArgs e)
 		{
 			listImg.Items.Clear();
-			exifImgList.Clear();
 			string selFLen = listFLen.SelectedItems[0].Text;
 			SearchExifFLen(selFLen);
 		}
@@ -696,9 +681,10 @@ namespace Next_View
 			bool gps;
 			DateTime nullDate = DateTime.MinValue;
 			int maxTicks = imgList.Count() / 100;
+			if (maxTicks < 1) maxTicks = 1;
 			bw.ReportProgress(maxTicks, "Start");
-
-			int fCount =0;
+			
+			int fCount =0;	
 			foreach (string picPath in imgList)
 			{
 
@@ -709,10 +695,10 @@ namespace Next_View
 					                  gps, picPath));
 				fCount++;
 				int mod = fCount % 100;
-				if (mod == 0){
-					bw.ReportProgress(0, "");
+				if (mod == 0){	                  
+					bw.ReportProgress(-1, "");
 				}
-
+				
 				if (dtOriginal != nullDate){
 					//Debug.WriteLine("path: " + picPath + " " + dtOriginal.ToString());
 					_dateCount++;
@@ -755,23 +741,6 @@ namespace Next_View
 			return true;
 		}
 
-
-		public void SetText(string text1)
-		{
-		  // called by: BackgroundWorker1RunWorkerCompleted, BackgroundWorker1ProgressChanged
-			// output: main.HandleStatus
-			OnStatusChanged(new SetStatusMainEventArgs(text1));
-			Application.DoEvents();
-		}
-
-		protected virtual void OnStatusChanged(SetStatusMainEventArgs e)
-		{
-			if(this.StatusChanged != null)     // nothing subscribed to this event
-			{
-				this.StatusChanged(this, e);
-			}
-		}
-
 		void BackgroundWorker1DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
 		// started with RunWorkerAsync
 		{
@@ -794,12 +763,7 @@ namespace Next_View
 		// called by: BackgroundWorker1.ReportProgress
 		{
 			int steps = e.ProgressPercentage;
-			if (steps > 0){
-				SetText(steps.ToString());
-			}
-			string m1 = (string)e.UserState;
-			SetText(m1);
-			Debug.WriteLine("bw1: " + m1 + " " + steps.ToString());
+				SetStatusText(steps, "");
 		}
 
 		void BackgroundWorker1RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
@@ -822,16 +786,12 @@ namespace Next_View
 				TimeSpan t = TimeSpan.FromMilliseconds(_sw1.Elapsed.TotalMilliseconds);
 				string ptime = string.Format("{0:D2}h:{1:D2}m:{2:D2}s:{3:D3}ms", t.Hours, t.Minutes, t.Seconds, t.Milliseconds);
 
-				Debug.WriteLine("bw: Scan complete: " + edImgPath.Text + "  "  + ptime);
-
-
 				ExifDataShow( );
 
-
 				// MessageBox.Show ("Directories in Source Path now sorted by release date", "Wrong sort sequence",
-				Debug.WriteLine("bw: end ");
-				SetText("Scan complete - " + edImgPath.Text + "  "  + ptime);
-				SetText("999");  // progress reset
+
+				SetStatusText(-9, "");  // progress reset
+				SetStatusText(0, "Scan complete - " + edImgPath.Text + "  "  + ptime);
 				DateTime lastScan = DateTime.Now;
 
 
@@ -849,6 +809,22 @@ namespace Next_View
 
 		// ------------------------------   delegates   ----------------------------------------------------------
 
+		public void SetStatusText(int sVal, string sText)
+		{
+		  // called by: BackgroundWorker1RunWorkerCompleted, BackgroundWorker1ProgressChanged
+			// output: main.HandleStatus
+			OnStatusChanged(new SetStatusMainEventArgs(sVal, sText));
+			Application.DoEvents();
+		}
+
+		protected virtual void OnStatusChanged(SetStatusMainEventArgs e)
+		{
+			if(this.StatusChanged != null)     // nothing subscribed to this event
+			{
+				this.StatusChanged(this, e);
+			}
+		}
+		
 		public void SetWindowSize(int w, int h, int exifType)
 		{
 			// called by: PicLoad 3*, Enter
@@ -864,7 +840,7 @@ namespace Next_View
 				this.WindowSize(this, e);
 			}
 		}
-
+		
 		public void SetCommand(char comm, string fName)
 		{
 		// called by: close: CmdShow, dblclick
@@ -882,7 +858,7 @@ namespace Next_View
 		}
 		void ListLensSelectedIndexChanged(object sender, EventArgs e)
 		{
-
+	
 		}
 
 	}  // end exif

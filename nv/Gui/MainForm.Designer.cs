@@ -78,6 +78,7 @@ namespace Next_View
 			this.mnuTest = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusMain = new System.Windows.Forms.StatusStrip();
 			this.statusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+			this.progress1 = new System.Windows.Forms.ToolStripProgressBar();
 			this.addCommentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
 			this.toolStrip2 = new System.Windows.Forms.ToolStrip();
@@ -94,7 +95,6 @@ namespace Next_View
 			this.bnSearch = new System.Windows.Forms.ToolStripButton();
 			this.bnHelp = new System.Windows.Forms.ToolStripButton();
 			this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-			this.progress1 = new System.Windows.Forms.ToolStripProgressBar();
 			this.menuMain.SuspendLayout();
 			this.statusMain.SuspendLayout();
 			this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
@@ -445,11 +445,13 @@ namespace Next_View
 			// 
 			// statusMain
 			// 
+			this.statusMain.AutoSize = false;
 			this.statusMain.Dock = System.Windows.Forms.DockStyle.None;
-			this.statusMain.ImageScalingSize = new System.Drawing.Size(20, 20);
+			this.statusMain.ImageScalingSize = new System.Drawing.Size(22, 22);
 			this.statusMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
 			this.statusLabel1,
 			this.progress1});
+			this.statusMain.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
 			this.statusMain.Location = new System.Drawing.Point(0, 0);
 			this.statusMain.Name = "statusMain";
 			this.statusMain.Size = new System.Drawing.Size(1179, 25);
@@ -461,6 +463,12 @@ namespace Next_View
 			this.statusLabel1.Name = "statusLabel1";
 			this.statusLabel1.Size = new System.Drawing.Size(25, 20);
 			this.statusLabel1.Text = "    ";
+			this.statusLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			// 
+			// progress1
+			// 
+			this.progress1.Name = "progress1";
+			this.progress1.Size = new System.Drawing.Size(400, 19);
 			// 
 			// addCommentToolStripMenuItem
 			// 
@@ -632,11 +640,6 @@ namespace Next_View
 			this.imageList1.Images.SetKeyName(2, "exif-3.png");
 			this.imageList1.Images.SetKeyName(3, "exif-4.png");
 			// 
-			// progress1
-			// 
-			this.progress1.Name = "progress1";
-			this.progress1.Size = new System.Drawing.Size(400, 19);
-			// 
 			// frmMain
 			// 
 			this.AllowDrop = true;
@@ -661,7 +664,6 @@ namespace Next_View
 			this.statusMain.ResumeLayout(false);
 			this.statusMain.PerformLayout();
 			this.toolStripContainer1.BottomToolStripPanel.ResumeLayout(false);
-			this.toolStripContainer1.BottomToolStripPanel.PerformLayout();
 			this.toolStripContainer1.ContentPanel.ResumeLayout(false);
 			this.toolStripContainer1.TopToolStripPanel.ResumeLayout(false);
 			this.toolStripContainer1.TopToolStripPanel.PerformLayout();

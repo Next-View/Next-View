@@ -24,14 +24,26 @@ namespace Next_View
 	/// </summary>
 	public class SetStatusMainEventArgs : EventArgs
 	{
+		public int statusVal;
+		public string statusText;
+		public SetStatusMainEventArgs(int sVal, string sText)
+			: base()
+		{
+			this.statusVal = sVal;
+			this.statusText = sText;
+		}
+	}
+
+	public class SetTitleEventArgs : EventArgs
+	{
 		public string NewValue;
-		public SetStatusMainEventArgs(string value)
+		public SetTitleEventArgs(string value)
 			: base()
 		{
 			this.NewValue = value;
 		}
 	}
-
+	
 	public class SetSizeEventArgs : EventArgs
 	{
 		public int nWidth;

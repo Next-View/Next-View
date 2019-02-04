@@ -16,7 +16,6 @@ History:
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 using System;
-using System.Collections.Generic;   // List
 using System.Diagnostics;  // Debug
 using System.Globalization;   // CultureInfo
 using System.IO;   // path
@@ -44,7 +43,7 @@ namespace Next_View
 		string _currentPath = "";
 		private int _step = 0;
 		private int _maxStep = 0;
-
+		
 		public frmMain()
 		{
 			//
@@ -563,34 +562,41 @@ namespace Next_View
 
 		private void HandleStatus(object sender, SetStatusMainEventArgs e)
 		// called by: SetStatusText
-		{
-			string par1 = e.NewValue;
-			int n;
-			bool isNumeric = int.TryParse(par1, out n);
-			if (isNumeric) {          // 1st message is 'steps'
-				if (n == 999) {
-					this.progress1.Value = 0;
-					_maxStep = 0;
-				}
-				_maxStep = n + 1;
-				this.progress1.Maximum = _maxStep;
-				_step = 0;
-			}
-			else {
-				_step++;
-				Debug.WriteLine(String.Format("Max step {0}, step {1} ", _maxStep, _step));
-				if (_step <= _maxStep){
-					this.progress1.Value = _step;
-				}
-				else {
-					this.progress1.Value = 0;
-				}
-				this.statusLabel1.Text = par1;
-			}
+		{		
+			int sVal = e.statusVal;
+			string sText = e.statusText;	
+			//Debug.WriteLine(String.Format("Status msg: {0}, {1} ", sVal, sText));
+			switch(sVal)
+			{
+				case 0:
+					this.statusLabel1.Text = sText;
+					break;	
 
+				case -1:
+					_step++;
+					if (_step <= _maxStep){
+						progress1.Value = _step;
+					}
+					else {
+						progress1.Value = 0;
+					}
+					break;	
+											
+				case -9:
+					progress1.Value = 0;
+					_maxStep = 0;					
+					break;
+				
+				default:  // start progress
+					statusLabel1.Text = "Scan";
+					_maxStep = sVal;
+					progress1.Maximum = _maxStep;
+					_step = 0;
+					break;
+			} 
 		}
 
-		private void HandleWindow(object sender, SetStatusMainEventArgs e)
+		private void HandleWindow(object sender, SetTitleEventArgs e)
 		// called by: SetWindowText: picLoad, Rename, Remove
 		{
 			_currentPath = e.NewValue;
@@ -616,7 +622,6 @@ namespace Next_View
 		{
 			char comm = e.Command;
 			string fName = e.Fname;
-			List<string> eList;
 			//Debug.WriteLine("Command: " +  comm);
 			switch(comm)
 			{
@@ -628,8 +633,6 @@ namespace Next_View
 					recentItem1.AddRecentItem(fName);
 					break;
 				case 'i':  //  exif img
-					m_Exif.GetIl(out eList);
-					Debug.WriteLine("exl: " +  eList.Count.ToString());
 					m_Image.Show(dockPanel1, DockState.Document);
 					m_Image.PicScan(fName, false);
 					m_Image.PicLoad(fName, true);
@@ -654,7 +657,7 @@ namespace Next_View
 
 	public delegate void HandleStatusMainChange(object sender, SetStatusMainEventArgs e);
 
-	public delegate void HandleWindowMainChange(object sender, SetStatusMainEventArgs e);
+	public delegate void HandleWindowMainChange(object sender, SetTitleEventArgs e);
 
 	public delegate void HandleWindowSize(object sender, SetSizeEventArgs e);
 

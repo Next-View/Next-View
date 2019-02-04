@@ -280,7 +280,7 @@ namespace Next_View
 			}
 			else {
 				picBox.Image = null;
-				SetStatusText(T._("No image loaded"));
+				SetStatusText(0, T._("No image loaded"));
 			}
 		}
 
@@ -450,12 +450,12 @@ namespace Next_View
 				int picAll = 0;
 				if (log) {
 					_il.DirPosPath(ref picPos, ref picAll, pPath);
-					SetStatusText(String.Format(_picSelection + " {0}/{1}", picPos, picAll));
+					SetStatusText(0, String.Format(_picSelection + " {0}/{1}", picPos, picAll));
 					_il.LogPic(pPath);
 				}
 				else {
 					_il.LogPos(ref picPos, ref picAll);
-					SetStatusText(String.Format(T._("History: {0}/{1}"), picPos, picAll));
+					SetStatusText(0, String.Format(T._("History: {0}/{1}"), picPos, picAll));
 				}
 				SetWindowText(pPath);
 				_priorPath =_currentPath;
@@ -572,7 +572,7 @@ namespace Next_View
 				PicLoad(pPath, true);
 			}
 			else {
-				SetStatusText(T._("No image loaded"));
+				SetStatusText(0, T._("No image loaded"));
 			}
 		}
 
@@ -592,7 +592,7 @@ namespace Next_View
 				PicLoad(pPath, true);
 			}
 			else {
-				SetStatusText(T._("No image loaded"));
+				SetStatusText(0, T._("No image loaded"));
 			}
 		}
 
@@ -612,7 +612,7 @@ namespace Next_View
 				PicLoad(pPath, true);
 			}
 			else {
-				SetStatusText(T._("No image loaded"));
+				SetStatusText(0, T._("No image loaded"));
 			}
 		}
 
@@ -623,7 +623,7 @@ namespace Next_View
 				PicLoad(pPath, true);
 			}
 			else {
-				SetStatusText(T._("No image loaded"));
+				SetStatusText(0, T._("No image loaded"));
 			}
 		}
 
@@ -746,7 +746,7 @@ namespace Next_View
 				}
 				else {  // last img in selection deleted
 					picBox.Image = null;
-					SetStatusText(T._("No image loaded"));
+					SetStatusText(0, T._("No image loaded"));
 				}
 			}
 			else {
@@ -868,7 +868,7 @@ namespace Next_View
 				PicLoad(pPath, true);
 			}
 			else {
-				SetStatusText(T._("No image loaded"));
+				SetStatusText(0, T._("No image loaded"));
 			}
 		}
 
@@ -1073,11 +1073,11 @@ namespace Next_View
 			// output: main.HandleWindow
 			this.Text = text2 + "  -  Next-View";
 
-			OnWindowChanged(new SetStatusMainEventArgs(text2));
+			OnWindowChanged(new SetTitleEventArgs(text2));
 			Application.DoEvents();
 		}
 
-		protected virtual void OnWindowChanged(SetStatusMainEventArgs e)
+		protected virtual void OnWindowChanged(SetTitleEventArgs e)
 		{
 			if(this.WindowChanged != null)     // nothing subscribed to this event
 			{
@@ -1105,11 +1105,11 @@ namespace Next_View
 		}
 
 
-		public void SetStatusText(string text1)
+		public void SetStatusText(int sVal, string sText)
 		{
 			// called by: PicLoad, or 5* 'no img loaded'
 			// output: main.HandleStatus
-			OnStatusChanged(new SetStatusMainEventArgs(text1));
+			OnStatusChanged(new SetStatusMainEventArgs(sVal, sText));
 			Application.DoEvents();
 		}
 
