@@ -37,7 +37,7 @@ namespace Next_View.Properties {
 			
 		[global::System.Configuration.UserScopedSettingAttribute()]
 		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-		[global::System.Configuration.DefaultSettingValueAttribute("")]
+		[global::System.Configuration.DefaultSettingValueAttribute("en")]
 		public string Language {
 			get {
 				return ((string)(this["Language"]));
@@ -214,7 +214,31 @@ namespace Next_View.Properties {
 				this["ExifY"] = value;
 			}
 		}
+
+		[global::System.Configuration.UserScopedSettingAttribute()]
+		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+		[global::System.Configuration.DefaultSettingValueAttribute("400")]
+		public int Exif2X {
+			get {
+				return ((int)(this["Exif2X"]));
+			}
+			set {
+				this["Exif2X"] = value;
+			}
+		}
 		
+		[global::System.Configuration.UserScopedSettingAttribute()]
+		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+		[global::System.Configuration.DefaultSettingValueAttribute("50")]
+		public int Exif2Y {
+			get {
+				return ((int)(this["Exif2Y"]));
+			}
+			set {
+				this["Exif2Y"] = value;
+			}
+		}
+				
 		[global::System.Configuration.UserScopedSettingAttribute()]
 		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
 		[global::System.Configuration.DefaultSettingValueAttribute("")]

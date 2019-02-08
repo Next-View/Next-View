@@ -98,8 +98,10 @@ namespace Next_View
 			this.Margin = new System.Windows.Forms.Padding(4);
 			this.Name = "ExifForm";
 			this.Text = "ExifForm";
+			this.Activated += new System.EventHandler(this.ExifFormActivated);
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ExifFormFormClosing);
 			this.Load += new System.EventHandler(this.ExifFormLoad);
+			this.Shown += new System.EventHandler(this.ExifFormShown);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ExifFormKeyDown);
 			this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.ExifFormPreviewKeyDown);
 			this.ResumeLayout(false);

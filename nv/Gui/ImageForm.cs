@@ -16,6 +16,7 @@ History:
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 using System;
+using System.Collections.Generic;  // list
 using System.Drawing;  // Bitmap
 using System.Diagnostics;  // Debug
 using System.IO;   // directory
@@ -857,6 +858,18 @@ namespace Next_View
 			}
 		}
 
+		public void ShowExifImages(List<string> exImgList, string selImg)
+		{
+			_il._imList = exImgList;
+			int picPos = 0;
+			int picAll = 0;
+			_il.DirPosPath(ref picPos, ref picAll, selImg);
+
+			_currentPath = selImg;
+			_picSelection = T._("Search:");
+			PicLoad(_currentPath, true);
+		}
+		
 		public void ShowFullScreen()
 		{
 			string pPath = "";

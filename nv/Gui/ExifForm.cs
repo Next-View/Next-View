@@ -40,10 +40,10 @@ namespace Next_View
 	{
 
 		string _gps2 = "";
-		
+
 		public event HandleKeyChange  KeyChanged;
-				
-				
+
+
 		public ExifForm()
 		{
 			//
@@ -57,7 +57,7 @@ namespace Next_View
 		}
 
 		// ------------------------------   events form ----------------------------------------------------------
-		
+
 		void ExifFormKeyDown(object sender, KeyEventArgs e)
 		{
 			bool alt = false;
@@ -68,19 +68,20 @@ namespace Next_View
 			if (e.Modifiers == Keys.Control){
 				ctrl = true;
 			}
-			
+
 			SetKeyChange(e.KeyValue, alt, ctrl);
 		}
-		
+
 		void ExifFormPreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
 		{
 			e.IsInputKey = true;
 		}
-			
+
 		void ExifFormFormClosing(object sender, FormClosingEventArgs e)
 		{
-			Settings.Default.ExifX = this.Left;
-			Settings.Default.ExifY = this.Top;
+			int le = this.Left;
+			int to = this.Top;
+			Multi.ExifSave(le, to);
 			Settings.Default.ExifW = this.Width;
 			Settings.Default.ExifH = this.Height;
 			Settings.Default.Save( );
@@ -90,18 +91,42 @@ namespace Next_View
 
 		void ExifFormLoad(object sender, EventArgs e)
 		{
-			this.Width = Settings.Default.ExifW;
-			this.Height = Settings.Default.ExifH;
-			this.Left = Settings.Default.ExifX;
-			this.Top = Settings.Default.ExifY;
+			int le;
+			int to;
+			int wi = Settings.Default.ExifW;
+			int he = Settings.Default.ExifH;
+			Multi.ExifLoad(out le, out to, wi, he);
+			this.Left = le;
+			this.Top = to;
+			this.Width = wi;
+			this.Height = he;
 			Debug.WriteLine("Exif pos: X: {0}  Y: {1}  W: {2}  H: {3} ", Left, Top, Width, Height);
 		}
 
+		void ExifFormShown(object sender, EventArgs e)
+		{
+
+		}
+
+		void ExifFormActivated(object sender, EventArgs e)
+		{
+			int le = this.Left;
+			int to = this.Top;
+			int wi = this.Width;
+			int he = this.Height;
+			bool visible;
+			Multi.FormShowVisible(out visible, ref le, ref to, wi, he);
+			if (!visible){
+				this.Left = le;
+				this.Top = to;
+			}
+		}
+		
 		void Button1Click(object sender, EventArgs e)
 		{
 			Clipboard.SetText(_gps2);
 		}
-		
+
 		// ------------------------------   functions  ----------------------------------------------------------
 
 		public bool CheckFile(ref int exifType, ref string orientation, string fName)
@@ -114,7 +139,7 @@ namespace Next_View
 			orientation = "";
 			int iWidthVal = 0;
 			int exifWidthVal = 0;
-			
+
 			try
 			{
 				string ext = System.IO.Path.GetExtension(fName).ToLower();
@@ -244,7 +269,7 @@ namespace Next_View
 						Int32.TryParse(iWidthDigits, out exifWidthVal);
 						AddListItem("Exif Image Width", iWidth);
 					}
-					
+
 					string iHeight = subIfdDirectory.GetDescription(ExifDirectoryBase.TagExifImageHeight);
 					AddListItem("Exif Image Height", iHeight);
 
@@ -252,7 +277,7 @@ namespace Next_View
 						float changedSizePerc = (float) iWidthVal * 100 / exifWidthVal;
 						AddListItem("!  Image reduced to", changedSizePerc.ToString("0") + "%");
 					}
-				
+
 					string exposure = subIfdDirectory.GetDescription(ExifDirectoryBase.TagExposureTime);
 					if (!AddListItem("Exposure Time", exposure)){
 						string shutterSpeed = subIfdDirectory.GetDescription(ExifDirectoryBase.TagShutterSpeed);
@@ -283,10 +308,10 @@ namespace Next_View
 					string scene = subIfdDirectory.GetDescription(ExifDirectoryBase.TagSceneCaptureType);
 					AddListItem("Scene", scene);
 				}
-				
+
 				if (exCount > 5) exifType = 1;
 				if (exCount > 15) exifType = 2;
-				
+
 				// ------------------------------   makernotes   ----------------------------------------------------------
 
 				var olympusCameraDirectory = directories.OfType<OlympusCameraSettingsMakernoteDirectory>().FirstOrDefault();
@@ -390,7 +415,7 @@ namespace Next_View
 		}
 
 		// ------------------------------   delegates   ----------------------------------------------------------
-		
+
 		public void SetKeyChange(int kVal, bool alt, bool ctrl)
 		{
 			// called by: PicLoad, 'no img loaded'
@@ -406,7 +431,7 @@ namespace Next_View
 				this.KeyChanged(this, e);
 			}
 		}
-		
+
 
 	}
 }

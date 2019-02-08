@@ -16,6 +16,7 @@ History:
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 using System;
+using System.Collections.Generic;  // list
 using System.Diagnostics;  // Debug
 using System.Globalization;   // CultureInfo
 using System.IO;   // path
@@ -448,7 +449,8 @@ namespace Next_View
 
 		void MnuTestClick(object sender, EventArgs e)
 		{
-			TestException();
+			//TestException();
+			TestScreen();
 		}
 
 		//--------------------------  functions  ---------------------------//
@@ -626,18 +628,27 @@ namespace Next_View
 			switch(comm)
 			{
 				case 'e':  //  exifdash
-					m_Exif.SetPath2(fName);
 					this.mnuExifDash.PerformClick();
 					break;
 				case 'r':  //  recent
 					recentItem1.AddRecentItem(fName);
 					break;
 				case 'i':  //  exif img
+					List<string> exImgList;
+					m_Exif.DashImgList(out exImgList);
+					Debug.WriteLine("imgs: " + exImgList.Count.ToString());	
 					m_Image.Show(dockPanel1, DockState.Document);
-					m_Image.PicScan(fName, false);
-					m_Image.PicLoad(fName, true);
+					m_Image.ShowExifImages(exImgList, fName);
 					break;
+				case 'p':  //  exif path
+					m_Exif.SetPath2(_currentPath);
+					break;
+					
 			}
+		}
+		void FrmMainActivated(object sender, EventArgs e)
+		{
+			Debug.WriteLine("activated main: ");
 		}
 
 	}  // end main

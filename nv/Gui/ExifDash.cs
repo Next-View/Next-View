@@ -16,7 +16,7 @@ History:
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 using System;
-using System.Collections.Generic;
+using System.Collections.Generic;  // list
 using System.ComponentModel;  // BackgroundWorker
 using System.Diagnostics;  // Debug
 using System.IO;	 //	Directory
@@ -34,14 +34,14 @@ namespace Next_View
 	/// </summary>
 	public partial class ExifDash : DockContent
 	{
-		ImgList _il;
 		bool _stop = false;
 		string _imgDir = "";
 
 		Stopwatch _sw1 = new Stopwatch();
 
 		List<Exif> exList = new List<Exif>();
-
+		List<string> exifImgList = new List<string>();
+		
 		Dictionary<int, int> dicExift = new Dictionary<int, int>();
 		Dictionary<int, int> dicToD = new Dictionary<int, int>();
 		Dictionary<string, int> dicModel = new Dictionary<string, int>();
@@ -58,8 +58,6 @@ namespace Next_View
 		int _rangeType = 0;
 		DateTime _minDate = DateTime.MaxValue;
 		DateTime _maxDate = DateTime.MinValue;
-
-		List<string> exifImgList = new List<string>();
 
 		public event HandleWindowSize  WindowSize;
 
@@ -84,13 +82,6 @@ namespace Next_View
 		public void SetPath2(string fPath)
 		// from imageForm
 		{
-			edImgPath.Text = Path.GetDirectoryName(fPath);
-		}
-
-		public void SetPath(string fPath, ImgList il)
-		// from imageForm
-		{
-			_il = il;
 			edImgPath.Text = Path.GetDirectoryName(fPath);
 		}
 
@@ -122,24 +113,6 @@ namespace Next_View
 			_minDate = DateTime.MaxValue;
 			_maxDate = DateTime.MinValue;
 
-		}
-
-		public void ProjectShow(int rNum, int rMax)    // details for max entry only
-		// called by: main.ProjectLoad, ListSourceDirClick, BackgroundWorker1RunWorkerCompleted
-		{
-			//Debug.WriteLine("form p1: " + this.Width.ToString());
-			listImg.Items.Clear();
-
-			int pCount = 0;
-			string[] items = { " ", " ", " ", " ", " " };   // for product column with 5 lines
-			int start = 0;
-			if (pCount > 2){
-				items[0] = pCount.ToString() + " Products";
-				items[1] = "Double click for list";
-				start = 2;
-			}
-
-			int i = start;
 		}
 
 		bool CheckStart()
@@ -180,6 +153,12 @@ namespace Next_View
 			}
 		}
 
+		public void DashImgList(out List<string> exImgList)
+		// return img list
+		{
+			exImgList = exifImgList; 
+		}
+		
 		void ExifDataShow()
 		{
 			if (_dateCount > 0){
@@ -403,7 +382,13 @@ namespace Next_View
 					lbl.Text = string.Format("{0:yyyy}", lDate);
 				}
 				else if (_rangeType == 2){
-					var startMonth = new DateTime (_minDate.Year, _minDate.Month - 1, 01);
+					DateTime startMonth;
+					if (_minDate.Month == 1){
+						startMonth = new DateTime (_minDate.Year - 1, 12, 01);
+					}
+					else {
+						startMonth = new DateTime (_minDate.Year, _minDate.Month - 1, 01);
+					}
 					DateTime lDate = startMonth.AddMonths(i);
 					lbl.Text = string.Format("{0:yyyy-MM}", lDate);
 				}
@@ -527,8 +512,10 @@ namespace Next_View
 		{
 			Settings.Default.LastTab = 2;
 			SetWindowSize(700, 840, 0);
+			SetCommand('p', "");
 		}
 
+		
 		void ExifDashFormClosing(object sender, FormClosingEventArgs e)
 		{
 			e.Cancel = true;
@@ -652,9 +639,6 @@ namespace Next_View
 					eImg = listImg.SelectedItems[0].Text;
 				}
 				SetCommand('i', eImg);
-
-				//_il.DirClear();
-				//_il._imList = exifImgList;
 
 			}
 		}
@@ -860,6 +844,7 @@ namespace Next_View
 		{
 	
 		}
+
 
 	}  // end exif
 }
