@@ -46,8 +46,8 @@ namespace Next_View
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-			System.Windows.Forms.DataVisualization.Charting.Title title2 = new System.Windows.Forms.DataVisualization.Charting.Title();
+			System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+			System.Windows.Forms.DataVisualization.Charting.Title title1 = new System.Windows.Forms.DataVisualization.Charting.Title();
 			this.cmdStart = new System.Windows.Forms.Button();
 			this.label1 = new System.Windows.Forms.Label();
 			this.listImg = new System.Windows.Forms.ListView();
@@ -91,10 +91,10 @@ namespace Next_View
 			this.cmdStart.FlatAppearance.BorderSize = 4;
 			this.cmdStart.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.cmdStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.cmdStart.Location = new System.Drawing.Point(559, 7);
+			this.cmdStart.Location = new System.Drawing.Point(700, 3);
 			this.cmdStart.Margin = new System.Windows.Forms.Padding(2);
 			this.cmdStart.Name = "cmdStart";
-			this.cmdStart.Size = new System.Drawing.Size(65, 21);
+			this.cmdStart.Size = new System.Drawing.Size(78, 24);
 			this.cmdStart.TabIndex = 43;
 			this.cmdStart.Text = "&Start";
 			this.cmdStart.UseVisualStyleBackColor = true;
@@ -118,10 +118,10 @@ namespace Next_View
 			this.listImg.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.listImg.FullRowSelect = true;
 			this.listImg.GridLines = true;
-			this.listImg.Location = new System.Drawing.Point(0, 573);
+			this.listImg.Location = new System.Drawing.Point(0, 597);
 			this.listImg.Margin = new System.Windows.Forms.Padding(2);
 			this.listImg.Name = "listImg";
-			this.listImg.Size = new System.Drawing.Size(624, 128);
+			this.listImg.Size = new System.Drawing.Size(804, 124);
 			this.listImg.TabIndex = 50;
 			this.listImg.UseCompatibleStateImageBehavior = false;
 			this.listImg.View = System.Windows.Forms.View.Details;
@@ -161,7 +161,7 @@ namespace Next_View
 			this.edImgPath.Location = new System.Drawing.Point(88, 6);
 			this.edImgPath.Margin = new System.Windows.Forms.Padding(2);
 			this.edImgPath.Name = "edImgPath";
-			this.edImgPath.Size = new System.Drawing.Size(431, 21);
+			this.edImgPath.Size = new System.Drawing.Size(588, 21);
 			this.edImgPath.TabIndex = 57;
 			// 
 			// listModel
@@ -173,7 +173,7 @@ namespace Next_View
 			this.listModel.Location = new System.Drawing.Point(6, 176);
 			this.listModel.Margin = new System.Windows.Forms.Padding(2);
 			this.listModel.Name = "listModel";
-			this.listModel.Size = new System.Drawing.Size(166, 93);
+			this.listModel.Size = new System.Drawing.Size(220, 100);
 			this.listModel.TabIndex = 58;
 			this.listModel.UseCompatibleStateImageBehavior = false;
 			this.listModel.View = System.Windows.Forms.View.Details;
@@ -182,11 +182,11 @@ namespace Next_View
 			// columnHeader1
 			// 
 			this.columnHeader1.Text = "Model";
-			this.columnHeader1.Width = 210;
+			this.columnHeader1.Width = 150;
 			// 
 			// columnHeader2
 			// 
-			this.columnHeader2.Text = "C";
+			this.columnHeader2.Text = "Count";
 			this.columnHeader2.Width = 40;
 			// 
 			// listLens
@@ -195,10 +195,10 @@ namespace Next_View
 			this.columnHeader3,
 			this.columnHeader4});
 			this.listLens.FullRowSelect = true;
-			this.listLens.Location = new System.Drawing.Point(7, 277);
+			this.listLens.Location = new System.Drawing.Point(6, 282);
 			this.listLens.Margin = new System.Windows.Forms.Padding(2);
 			this.listLens.Name = "listLens";
-			this.listLens.Size = new System.Drawing.Size(166, 93);
+			this.listLens.Size = new System.Drawing.Size(220, 100);
 			this.listLens.TabIndex = 59;
 			this.listLens.UseCompatibleStateImageBehavior = false;
 			this.listLens.View = System.Windows.Forms.View.Details;
@@ -208,11 +208,11 @@ namespace Next_View
 			// columnHeader3
 			// 
 			this.columnHeader3.Text = "Lens";
-			this.columnHeader3.Width = 210;
+			this.columnHeader3.Width = 150;
 			// 
 			// columnHeader4
 			// 
-			this.columnHeader4.Text = "C";
+			this.columnHeader4.Text = "Count";
 			this.columnHeader4.Width = 40;
 			// 
 			// listScene
@@ -221,10 +221,10 @@ namespace Next_View
 			this.columnHeader5,
 			this.columnHeader6});
 			this.listScene.FullRowSelect = true;
-			this.listScene.Location = new System.Drawing.Point(178, 277);
+			this.listScene.Location = new System.Drawing.Point(230, 282);
 			this.listScene.Margin = new System.Windows.Forms.Padding(2);
 			this.listScene.Name = "listScene";
-			this.listScene.Size = new System.Drawing.Size(166, 93);
+			this.listScene.Size = new System.Drawing.Size(220, 100);
 			this.listScene.TabIndex = 60;
 			this.listScene.UseCompatibleStateImageBehavior = false;
 			this.listScene.View = System.Windows.Forms.View.Details;
@@ -237,7 +237,7 @@ namespace Next_View
 			// 
 			// columnHeader6
 			// 
-			this.columnHeader6.Text = "C";
+			this.columnHeader6.Text = "Count";
 			this.columnHeader6.Width = 40;
 			// 
 			// listExpo
@@ -246,10 +246,10 @@ namespace Next_View
 			this.columnHeader7,
 			this.columnHeader8});
 			this.listExpo.FullRowSelect = true;
-			this.listExpo.Location = new System.Drawing.Point(178, 176);
+			this.listExpo.Location = new System.Drawing.Point(230, 176);
 			this.listExpo.Margin = new System.Windows.Forms.Padding(2);
 			this.listExpo.Name = "listExpo";
-			this.listExpo.Size = new System.Drawing.Size(166, 93);
+			this.listExpo.Size = new System.Drawing.Size(220, 100);
 			this.listExpo.TabIndex = 61;
 			this.listExpo.UseCompatibleStateImageBehavior = false;
 			this.listExpo.View = System.Windows.Forms.View.Details;
@@ -262,7 +262,7 @@ namespace Next_View
 			// 
 			// columnHeader8
 			// 
-			this.columnHeader8.Text = "C";
+			this.columnHeader8.Text = "Count";
 			this.columnHeader8.Width = 40;
 			// 
 			// listExift
@@ -274,7 +274,7 @@ namespace Next_View
 			this.listExift.Location = new System.Drawing.Point(6, 73);
 			this.listExift.Margin = new System.Windows.Forms.Padding(2);
 			this.listExift.Name = "listExift";
-			this.listExift.Size = new System.Drawing.Size(166, 93);
+			this.listExift.Size = new System.Drawing.Size(220, 100);
 			this.listExift.TabIndex = 62;
 			this.listExift.UseCompatibleStateImageBehavior = false;
 			this.listExift.View = System.Windows.Forms.View.Details;
@@ -287,18 +287,18 @@ namespace Next_View
 			// 
 			// columnHeader10
 			// 
-			this.columnHeader10.Text = "C";
-			this.columnHeader10.Width = 31;
+			this.columnHeader10.Text = "Count";
+			this.columnHeader10.Width = 40;
 			// 
 			// cmdShow
 			// 
 			this.cmdShow.FlatAppearance.BorderSize = 4;
 			this.cmdShow.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.cmdShow.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.cmdShow.Location = new System.Drawing.Point(559, 63);
+			this.cmdShow.Location = new System.Drawing.Point(700, 73);
 			this.cmdShow.Margin = new System.Windows.Forms.Padding(2);
 			this.cmdShow.Name = "cmdShow";
-			this.cmdShow.Size = new System.Drawing.Size(65, 23);
+			this.cmdShow.Size = new System.Drawing.Size(78, 23);
 			this.cmdShow.TabIndex = 63;
 			this.cmdShow.Text = "&Show";
 			this.cmdShow.UseVisualStyleBackColor = true;
@@ -310,13 +310,14 @@ namespace Next_View
 			this.columnHeader11,
 			this.columnHeader12});
 			this.listToD.FullRowSelect = true;
-			this.listToD.Location = new System.Drawing.Point(352, 73);
+			this.listToD.Location = new System.Drawing.Point(458, 73);
 			this.listToD.Margin = new System.Windows.Forms.Padding(2);
 			this.listToD.Name = "listToD";
-			this.listToD.Size = new System.Drawing.Size(166, 93);
+			this.listToD.Size = new System.Drawing.Size(220, 100);
 			this.listToD.TabIndex = 64;
 			this.listToD.UseCompatibleStateImageBehavior = false;
 			this.listToD.View = System.Windows.Forms.View.Details;
+			this.listToD.SelectedIndexChanged += new System.EventHandler(this.ListToDSelectedIndexChanged);
 			this.listToD.DoubleClick += new System.EventHandler(this.ListToDDoubleClick);
 			// 
 			// columnHeader11
@@ -326,18 +327,18 @@ namespace Next_View
 			// 
 			// columnHeader12
 			// 
-			this.columnHeader12.Text = "C";
+			this.columnHeader12.Text = "Count";
 			this.columnHeader12.Width = 40;
 			// 
 			// lblGps
 			// 
 			this.lblGps.BackColor = System.Drawing.SystemColors.Window;
 			this.lblGps.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.lblGps.Location = new System.Drawing.Point(353, 176);
+			this.lblGps.Location = new System.Drawing.Point(459, 187);
 			this.lblGps.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
 			this.lblGps.Name = "lblGps";
 			this.lblGps.Padding = new System.Windows.Forms.Padding(2, 0, 0, 0);
-			this.lblGps.Size = new System.Drawing.Size(165, 22);
+			this.lblGps.Size = new System.Drawing.Size(220, 20);
 			this.lblGps.TabIndex = 67;
 			this.lblGps.Text = "GPS:";
 			this.lblGps.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -347,11 +348,11 @@ namespace Next_View
 			// 
 			this.lblFlash.BackColor = System.Drawing.SystemColors.Window;
 			this.lblFlash.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.lblFlash.Location = new System.Drawing.Point(353, 249);
+			this.lblFlash.Location = new System.Drawing.Point(459, 246);
 			this.lblFlash.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
 			this.lblFlash.Name = "lblFlash";
 			this.lblFlash.Padding = new System.Windows.Forms.Padding(2, 0, 0, 0);
-			this.lblFlash.Size = new System.Drawing.Size(165, 20);
+			this.lblFlash.Size = new System.Drawing.Size(220, 20);
 			this.lblFlash.TabIndex = 68;
 			this.lblFlash.Text = "Flash:";
 			this.lblFlash.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -363,10 +364,10 @@ namespace Next_View
 			this.columnHeader13,
 			this.columnHeader14});
 			this.listFLen.FullRowSelect = true;
-			this.listFLen.Location = new System.Drawing.Point(353, 277);
+			this.listFLen.Location = new System.Drawing.Point(458, 282);
 			this.listFLen.Margin = new System.Windows.Forms.Padding(2);
 			this.listFLen.Name = "listFLen";
-			this.listFLen.Size = new System.Drawing.Size(166, 93);
+			this.listFLen.Size = new System.Drawing.Size(220, 100);
 			this.listFLen.TabIndex = 69;
 			this.listFLen.UseCompatibleStateImageBehavior = false;
 			this.listFLen.View = System.Windows.Forms.View.Details;
@@ -379,7 +380,7 @@ namespace Next_View
 			// 
 			// columnHeader14
 			// 
-			this.columnHeader14.Text = "C";
+			this.columnHeader14.Text = "Count";
 			this.columnHeader14.Width = 40;
 			// 
 			// lblInfo
@@ -390,7 +391,7 @@ namespace Next_View
 			this.lblInfo.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
 			this.lblInfo.Name = "lblInfo";
 			this.lblInfo.Padding = new System.Windows.Forms.Padding(2, 0, 0, 0);
-			this.lblInfo.Size = new System.Drawing.Size(541, 26);
+			this.lblInfo.Size = new System.Drawing.Size(670, 26);
 			this.lblInfo.TabIndex = 70;
 			this.lblInfo.Text = "Info:";
 			this.lblInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -403,45 +404,45 @@ namespace Next_View
 			this.chartImg.BorderlineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid;
 			this.chartImg.BorderlineWidth = 2;
 			this.chartImg.BorderSkin.SkinStyle = System.Windows.Forms.DataVisualization.Charting.BorderSkinStyle.Emboss;
-			chartArea2.Area3DStyle.Inclination = 15;
-			chartArea2.Area3DStyle.IsRightAngleAxes = false;
-			chartArea2.Area3DStyle.Perspective = 10;
-			chartArea2.Area3DStyle.PointDepth = 200;
-			chartArea2.Area3DStyle.Rotation = 10;
-			chartArea2.Area3DStyle.WallWidth = 0;
-			chartArea2.AxisX.LabelStyle.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Bold);
-			chartArea2.AxisX.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-			chartArea2.AxisX.MajorGrid.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-			chartArea2.AxisX.ScaleView.SizeType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Years;
-			chartArea2.AxisX.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold);
-			chartArea2.AxisY.LabelStyle.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Bold);
-			chartArea2.AxisY.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-			chartArea2.AxisY.MajorGrid.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-			chartArea2.AxisY.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold);
-			chartArea2.AxisY2.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.True;
-			chartArea2.AxisY2.LabelStyle.Enabled = false;
-			chartArea2.AxisY2.MajorGrid.Enabled = false;
-			chartArea2.AxisY2.MajorTickMark.Enabled = false;
-			chartArea2.BackColor = System.Drawing.Color.OldLace;
-			chartArea2.BackSecondaryColor = System.Drawing.Color.White;
-			chartArea2.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-			chartArea2.BorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid;
-			chartArea2.Name = "Default";
-			chartArea2.ShadowColor = System.Drawing.Color.Transparent;
-			this.chartImg.ChartAreas.Add(chartArea2);
-			this.chartImg.Location = new System.Drawing.Point(8, 379);
-			this.chartImg.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			chartArea1.Area3DStyle.Inclination = 15;
+			chartArea1.Area3DStyle.IsRightAngleAxes = false;
+			chartArea1.Area3DStyle.Perspective = 10;
+			chartArea1.Area3DStyle.PointDepth = 200;
+			chartArea1.Area3DStyle.Rotation = 10;
+			chartArea1.Area3DStyle.WallWidth = 0;
+			chartArea1.AxisX.LabelStyle.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Bold);
+			chartArea1.AxisX.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+			chartArea1.AxisX.MajorGrid.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+			chartArea1.AxisX.ScaleView.SizeType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Years;
+			chartArea1.AxisX.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold);
+			chartArea1.AxisY.LabelStyle.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Bold);
+			chartArea1.AxisY.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+			chartArea1.AxisY.MajorGrid.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+			chartArea1.AxisY.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold);
+			chartArea1.AxisY2.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.True;
+			chartArea1.AxisY2.LabelStyle.Enabled = false;
+			chartArea1.AxisY2.MajorGrid.Enabled = false;
+			chartArea1.AxisY2.MajorTickMark.Enabled = false;
+			chartArea1.BackColor = System.Drawing.Color.OldLace;
+			chartArea1.BackSecondaryColor = System.Drawing.Color.White;
+			chartArea1.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+			chartArea1.BorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid;
+			chartArea1.Name = "Default";
+			chartArea1.ShadowColor = System.Drawing.Color.Transparent;
+			this.chartImg.ChartAreas.Add(chartArea1);
+			this.chartImg.Location = new System.Drawing.Point(6, 399);
+			this.chartImg.Margin = new System.Windows.Forms.Padding(2);
 			this.chartImg.Name = "chartImg";
-			this.chartImg.Size = new System.Drawing.Size(616, 194);
+			this.chartImg.Size = new System.Drawing.Size(673, 194);
 			this.chartImg.TabIndex = 71;
 			this.chartImg.TabStop = false;
-			title2.Font = new System.Drawing.Font("Trebuchet MS", 14.25F, System.Drawing.FontStyle.Bold);
-			title2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(59)))), ((int)(((byte)(105)))));
-			title2.Name = "Title1";
-			title2.ShadowColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-			title2.ShadowOffset = 3;
-			title2.Text = "Images per day";
-			this.chartImg.Titles.Add(title2);
+			title1.Font = new System.Drawing.Font("Trebuchet MS", 14.25F, System.Drawing.FontStyle.Bold);
+			title1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(59)))), ((int)(((byte)(105)))));
+			title1.Name = "Title1";
+			title1.ShadowColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+			title1.ShadowOffset = 3;
+			title1.Text = "Images per day";
+			this.chartImg.Titles.Add(title1);
 			this.chartImg.Customize += new System.EventHandler(this.ChartImgCustomize);
 			// 
 			// ExifDash
@@ -452,7 +453,7 @@ namespace Next_View
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.AutoScroll = true;
-			this.ClientSize = new System.Drawing.Size(632, 573);
+			this.ClientSize = new System.Drawing.Size(804, 721);
 			this.Controls.Add(this.chartImg);
 			this.Controls.Add(this.lblInfo);
 			this.Controls.Add(this.listFLen);

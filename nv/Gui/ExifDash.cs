@@ -21,6 +21,7 @@ using System.ComponentModel;  // BackgroundWorker
 using System.Diagnostics;  // Debug
 using System.IO;	 //	Directory
 using System.Linq;	 //	OfType
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;  // chart
 using Next_View.Properties;
@@ -41,7 +42,7 @@ namespace Next_View
 
 		List<Exif> exList = new List<Exif>();
 		List<string> exifImgList = new List<string>();
-		
+
 		Dictionary<int, int> dicExift = new Dictionary<int, int>();
 		Dictionary<int, int> dicToD = new Dictionary<int, int>();
 		Dictionary<string, int> dicModel = new Dictionary<string, int>();
@@ -156,9 +157,9 @@ namespace Next_View
 		public void DashImgList(out List<string> exImgList)
 		// return img list
 		{
-			exImgList = exifImgList; 
+			exImgList = exifImgList;
 		}
-		
+
 		void ExifDataShow()
 		{
 			if (_dateCount > 0){
@@ -260,7 +261,7 @@ namespace Next_View
 			listLens.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
 			listLens.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
 
-			foreach (KeyValuePair<string, int> dfl in dicFLen.OrderBy(key=> key.Key))
+			foreach (KeyValuePair<string, int> dfl in dicFLen.OrderBy(key=> key.Key, new NsComparer()))
 			{
 				string fl = dfl.Key;
 				if (string.IsNullOrEmpty(fl)) fl = "<no data>";
@@ -511,11 +512,11 @@ namespace Next_View
 		void ExifDashEnter(object sender, EventArgs e)
 		{
 			Settings.Default.LastTab = 2;
-			SetWindowSize(700, 840, 0);
+			SetWindowSize(860, 780, 0);
 			SetCommand('p', "");
 		}
 
-		
+
 		void ExifDashFormClosing(object sender, FormClosingEventArgs e)
 		{
 			e.Cancel = true;
@@ -667,8 +668,8 @@ namespace Next_View
 			int maxTicks = imgList.Count() / 100;
 			if (maxTicks < 1) maxTicks = 1;
 			bw.ReportProgress(maxTicks, "Start");
-			
-			int fCount =0;	
+
+			int fCount =0;
 			foreach (string picPath in imgList)
 			{
 
@@ -679,10 +680,10 @@ namespace Next_View
 					                  gps, picPath));
 				fCount++;
 				int mod = fCount % 100;
-				if (mod == 0){	                  
+				if (mod == 0){
 					bw.ReportProgress(-1, "");
 				}
-				
+
 				if (dtOriginal != nullDate){
 					//Debug.WriteLine("path: " + picPath + " " + dtOriginal.ToString());
 					_dateCount++;
@@ -808,7 +809,7 @@ namespace Next_View
 				this.StatusChanged(this, e);
 			}
 		}
-		
+
 		public void SetWindowSize(int w, int h, int exifType)
 		{
 			// called by: PicLoad 3*, Enter
@@ -824,7 +825,7 @@ namespace Next_View
 				this.WindowSize(this, e);
 			}
 		}
-		
+
 		public void SetCommand(char comm, string fName)
 		{
 		// called by: close: CmdShow, dblclick
@@ -842,9 +843,25 @@ namespace Next_View
 		}
 		void ListLensSelectedIndexChanged(object sender, EventArgs e)
 		{
-	
+
+		}
+		void ListToDSelectedIndexChanged(object sender, EventArgs e)
+		{
+
 		}
 
 
-	}  // end exif
+	}  // end ExifDash
+
+	public class NsComparer: IComparer<string>
+	{
+		[DllImport("shlwapi.dll", CharSet = CharSet.Unicode)]
+		static extern Int32 StrCmpLogical(String x, String y);
+
+		public int Compare(string x, string y)
+		{
+			return StrCmpLogical(x, y);
+		}
+	}
+
 }

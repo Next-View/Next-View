@@ -97,8 +97,8 @@ namespace Next_View
 				if (screenFix.Bottom < rectForm.Bottom){
 					top = screenFix.Bottom - rectForm.Height;
 				}
-				Debug.WriteLine("sc: ", screenFix.ToString());
-				Debug.WriteLine("ar: ", rectForm.ToString());			
+				//Debug.WriteLine("sc: ", screenFix.ToString());
+				//Debug.WriteLine("ar: ", rectForm.ToString());
 			}
 			//Debug.WriteLine("visib: {0} ", visPerc);
 		}
