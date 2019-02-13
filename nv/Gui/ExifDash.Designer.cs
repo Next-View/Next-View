@@ -146,12 +146,12 @@ namespace Next_View
 			this.popPath.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
 			this.popPathRemove});
 			this.popPath.Name = "popPath";
-			this.popPath.Size = new System.Drawing.Size(145, 26);
+			this.popPath.Size = new System.Drawing.Size(167, 28);
 			// 
 			// popPathRemove
 			// 
 			this.popPathRemove.Name = "popPathRemove";
-			this.popPathRemove.Size = new System.Drawing.Size(144, 22);
+			this.popPathRemove.Size = new System.Drawing.Size(166, 24);
 			this.popPathRemove.Text = "Remove path";
 			this.popPathRemove.Click += new System.EventHandler(this.PopPathRemoveClick);
 			// 
@@ -161,7 +161,7 @@ namespace Next_View
 			this.edImgPath.Location = new System.Drawing.Point(88, 6);
 			this.edImgPath.Margin = new System.Windows.Forms.Padding(2);
 			this.edImgPath.Name = "edImgPath";
-			this.edImgPath.Size = new System.Drawing.Size(588, 21);
+			this.edImgPath.Size = new System.Drawing.Size(588, 24);
 			this.edImgPath.TabIndex = 57;
 			// 
 			// listModel
@@ -202,7 +202,6 @@ namespace Next_View
 			this.listLens.TabIndex = 59;
 			this.listLens.UseCompatibleStateImageBehavior = false;
 			this.listLens.View = System.Windows.Forms.View.Details;
-			this.listLens.SelectedIndexChanged += new System.EventHandler(this.ListLensSelectedIndexChanged);
 			this.listLens.DoubleClick += new System.EventHandler(this.ListLensDoubleClick);
 			// 
 			// columnHeader3
@@ -317,7 +316,6 @@ namespace Next_View
 			this.listToD.TabIndex = 64;
 			this.listToD.UseCompatibleStateImageBehavior = false;
 			this.listToD.View = System.Windows.Forms.View.Details;
-			this.listToD.SelectedIndexChanged += new System.EventHandler(this.ListToDSelectedIndexChanged);
 			this.listToD.DoubleClick += new System.EventHandler(this.ListToDDoubleClick);
 			// 
 			// columnHeader11
@@ -444,13 +442,14 @@ namespace Next_View
 			title1.Text = "Images per day";
 			this.chartImg.Titles.Add(title1);
 			this.chartImg.Customize += new System.EventHandler(this.ChartImgCustomize);
+			this.chartImg.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ChartImgMouseDoubleClick);
 			// 
 			// ExifDash
 			// 
 			this.AcceptButton = this.cmdStart;
 			this.AllowDrop = true;
 			this.AllowEndUserDocking = false;
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.AutoScroll = true;
 			this.ClientSize = new System.Drawing.Size(804, 721);

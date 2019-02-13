@@ -96,6 +96,7 @@
     <Compile Include="Diff\Translate.cs" />
     <Compile Include="Diff\Util.cs" />
     <Compile Include="File\DelFile.cs" />
+    <Compile Include="File\FileInfo.cs" />
     <Compile Include="File\ImgList.cs" />
     <Compile Include="Gui\About.cs" />
     <Compile Include="Gui\About.Designer.cs">

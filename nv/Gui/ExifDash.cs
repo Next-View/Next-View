@@ -161,6 +161,7 @@ namespace Next_View
 		}
 
 		void ExifDataShow()
+		// called by: bw end
 		{
 			if (_dateCount > 0){
 				TimeSpan imgSpan = _maxDate.Subtract(_minDate);
@@ -188,7 +189,7 @@ namespace Next_View
 					string spanS = hours.ToString("0");
 					lblInfo.Text = String.Format("Info: Number of images {0}. On {1:yyyy-MM-dd}. Between {2:HH:mm} and {3:HH:mm}, a span of {4} hours", exList.Count, _minDate, _minDate, _maxDate, spanS );
 				}
-				CheckDays( );
+				CreateTimelineChart( );
 			}
 			else {
 				lblInfo.Text = String.Format("Info: Number of images {0} ", exList.Count);
@@ -298,7 +299,7 @@ namespace Next_View
 			lblFlash.Text = "Flash: " + _flashCount.ToString();
 		}
 
-		void CheckDays( )
+		void CreateTimelineChart( )
 		{
 			Dictionary<string, int> dicPeriod = new Dictionary<string, int>();
 			//
@@ -373,39 +374,46 @@ namespace Next_View
 
 		void ChartImgCustomize(object sender, EventArgs e)
 		{
-			int i = 0;
+			int lblCount = 0;
+			string lblCap;
 			foreach (CustomLabel lbl in chartImg.ChartAreas[0].AxisX.CustomLabels)
 			{
-				Int32.TryParse(lbl.Text, out i);
-				if (_rangeType == 1){
-					var startYear = new DateTime (_minDate.Year - 1, 01, 01);
-					DateTime lDate = startYear.AddYears(i);
-					lbl.Text = string.Format("{0:yyyy}", lDate);
-				}
-				else if (_rangeType == 2){
-					DateTime startMonth;
-					if (_minDate.Month == 1){
-						startMonth = new DateTime (_minDate.Year - 1, 12, 01);
-					}
-					else {
-						startMonth = new DateTime (_minDate.Year, _minDate.Month - 1, 01);
-					}
-					DateTime lDate = startMonth.AddMonths(i);
-					lbl.Text = string.Format("{0:yyyy-MM}", lDate);
-				}
-				else if (_rangeType == 3){
-					var startDay = new DateTime (_minDate.Year, _minDate.Month,  _minDate.Day);
-					DateTime lDate = startDay.AddDays(i);
-					lbl.Text = string.Format("{0:MM-dd}", lDate);
-				}
-				else {
-					var startHour = new DateTime (_minDate.Year, _minDate.Month,  _minDate.Day, _minDate.Hour - 1, 0, 0);
-					DateTime lDate = startHour.AddHours(i);
-					lbl.Text = string.Format("{0:HH:mm}", lDate);
-				}
+				Int32.TryParse(lbl.Text, out lblCount);
+				ChartXLabel(out lblCap, lblCount);
+				lbl.Text = lblCap;
 			}
 		}
 
+		void ChartXLabel(out string labelCaption, int labelCount)
+		{
+			if (_rangeType == 1){
+				var startYear = new DateTime (_minDate.Year - 1, 01, 01);
+				DateTime lDate = startYear.AddYears(labelCount);
+				labelCaption = string.Format("{0:yyyy}", lDate);
+			}
+			else if (_rangeType == 2){
+				DateTime startMonth;
+				if (_minDate.Month == 1){
+					startMonth = new DateTime (_minDate.Year - 1, 12, 01);
+				}
+				else {
+					startMonth = new DateTime (_minDate.Year, _minDate.Month - 1, 01);
+				}
+				DateTime lDate = startMonth.AddMonths(labelCount);
+				labelCaption = string.Format("{0:yyyy-MM}", lDate);
+			}
+			else if (_rangeType == 3){
+				var startDay = new DateTime (_minDate.Year, _minDate.Month,  _minDate.Day);
+				DateTime lDate = startDay.AddDays(labelCount);
+				labelCaption = string.Format("{0:MM-dd}", lDate);
+			}
+			else {
+				var startHour = new DateTime (_minDate.Year, _minDate.Month,  _minDate.Day, _minDate.Hour - 1, 0, 0);
+				DateTime lDate = startHour.AddHours(labelCount);
+				labelCaption = string.Format("{0:HH:mm}", lDate);
+			}
+		}
+		
 		void SearchExif(string searchStr)
 		{
 			int ext = 0;     // No Exif
@@ -507,6 +515,17 @@ namespace Next_View
 			}
 		}
 
+		void SearchExifDate(string searchStr)
+		{
+			foreach (Exif exi in exList) {
+				string datePart = String.Format("{0:yyyy}", exi.eDtOriginal );  
+				if (string.Compare(datePart, searchStr) == 0){ 
+					ListViewItem item = this.listImg.Items.Add(exi.eFname);
+					exifImgList.Add(exi.eFname);
+				}
+			}
+		}
+		
     // ------------------------------   events form ----------------------------------------------------------
 
 		void ExifDashEnter(object sender, EventArgs e)
@@ -644,6 +663,25 @@ namespace Next_View
 			}
 		}
 
+		void ChartImgMouseDoubleClick(object sender, MouseEventArgs e)
+		{
+			var pos = e.Location;
+			var results = chartImg.HitTest(pos.X, pos.Y, false, ChartElementType.DataPoint);//  .PlottingArea);
+			foreach (var result in results)
+			{
+				if (result.ChartElementType == ChartElementType.DataPoint){
+					var xVal = Math.Round(result.ChartArea.AxisX.PixelPositionToValue(pos.X));
+					string lblCap;
+					int xValInt = (int)xVal;
+					ChartXLabel(out lblCap, xValInt);
+					Debug.WriteLine("chart pos: " + xValInt + " " + lblCap);
+					
+					listImg.Items.Clear();
+					SearchExifDate(lblCap);
+				}
+			}
+		}
+		
     // ------------------------------   BackgroundWorker  ----------------------------------------------------------
 
 		public bool ScanImages(BackgroundWorker bw)
@@ -840,14 +878,6 @@ namespace Next_View
 			{
 				this.CommandChanged(this, e);
 			}
-		}
-		void ListLensSelectedIndexChanged(object sender, EventArgs e)
-		{
-
-		}
-		void ListToDSelectedIndexChanged(object sender, EventArgs e)
-		{
-
 		}
 
 

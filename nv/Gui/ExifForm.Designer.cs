@@ -17,7 +17,8 @@ namespace Next_View
 		private System.Windows.Forms.ListView listExif;
 		private System.Windows.Forms.ColumnHeader colTag;
 		private System.Windows.Forms.ColumnHeader colValue;
-		private System.Windows.Forms.Button button1;
+		private System.Windows.Forms.ContextMenuStrip popExif;
+		private System.Windows.Forms.ToolStripMenuItem popEdit;
 
 		/// <summary>
 		/// Disposes resources used by the form.
@@ -40,25 +41,25 @@ namespace Next_View
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			this.listExif = new System.Windows.Forms.ListView();
 			this.colTag = new System.Windows.Forms.ColumnHeader();
 			this.colValue = new System.Windows.Forms.ColumnHeader();
-			this.button1 = new System.Windows.Forms.Button();
+			this.popExif = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.popEdit = new System.Windows.Forms.ToolStripMenuItem();
+			this.popExif.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// listExif
 			// 
-			this.listExif.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-			| System.Windows.Forms.AnchorStyles.Left) 
-			| System.Windows.Forms.AnchorStyles.Right)));
 			this.listExif.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
 			this.colTag,
 			this.colValue});
+			this.listExif.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.listExif.Location = new System.Drawing.Point(0, 0);
-			this.listExif.Margin = new System.Windows.Forms.Padding(4);
 			this.listExif.MultiSelect = false;
 			this.listExif.Name = "listExif";
-			this.listExif.Size = new System.Drawing.Size(337, 429);
+			this.listExif.Size = new System.Drawing.Size(253, 376);
 			this.listExif.TabIndex = 0;
 			this.listExif.TabStop = false;
 			this.listExif.UseCompatibleStateImageBehavior = false;
@@ -74,28 +75,28 @@ namespace Next_View
 			this.colValue.Text = "Value";
 			this.colValue.Width = 200;
 			// 
-			// button1
+			// popExif
 			// 
-			this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.button1.Location = new System.Drawing.Point(0, 432);
-			this.button1.Margin = new System.Windows.Forms.Padding(4);
-			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(100, 28);
-			this.button1.TabIndex = 1;
-			this.button1.TabStop = false;
-			this.button1.Text = "gps";
-			this.button1.UseVisualStyleBackColor = true;
-			this.button1.Click += new System.EventHandler(this.Button1Click);
+			this.popExif.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.popEdit});
+			this.popExif.Name = "popExif";
+			this.popExif.Size = new System.Drawing.Size(104, 26);
+			// 
+			// popEdit
+			// 
+			this.popEdit.Name = "popEdit";
+			this.popEdit.Size = new System.Drawing.Size(103, 22);
+			this.popEdit.Text = "Edit...";
+			this.popEdit.Click += new System.EventHandler(this.PopEditClick);
 			// 
 			// ExifForm
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(337, 463);
-			this.Controls.Add(this.button1);
+			this.ClientSize = new System.Drawing.Size(253, 376);
+			this.ContextMenuStrip = this.popExif;
 			this.Controls.Add(this.listExif);
 			this.KeyPreview = true;
-			this.Margin = new System.Windows.Forms.Padding(4);
 			this.Name = "ExifForm";
 			this.Text = "ExifForm";
 			this.Activated += new System.EventHandler(this.ExifFormActivated);
@@ -104,6 +105,7 @@ namespace Next_View
 			this.Shown += new System.EventHandler(this.ExifFormShown);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ExifFormKeyDown);
 			this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.ExifFormPreviewKeyDown);
+			this.popExif.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}

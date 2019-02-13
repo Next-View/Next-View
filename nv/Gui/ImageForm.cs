@@ -210,7 +210,7 @@ namespace Next_View
 		{
 			bool allDirs = false;
 			if ((e.KeyState & 8) == 8){
-				Debug.WriteLine("ctrl");
+				//Debug.WriteLine("ctrl");
 				allDirs = true;
 			}
 

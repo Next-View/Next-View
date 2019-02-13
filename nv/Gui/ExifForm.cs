@@ -38,7 +38,7 @@ namespace Next_View
 	/// </summary>
 	public partial class ExifForm : Form
 	{
-
+		string _fPath = "";
 		string _gps2 = "";
 
 		public event HandleKeyChange  KeyChanged;
@@ -121,7 +121,7 @@ namespace Next_View
 				this.Top = to;
 			}
 		}
-		
+
 		void Button1Click(object sender, EventArgs e)
 		{
 			Clipboard.SetText(_gps2);
@@ -129,9 +129,10 @@ namespace Next_View
 
 		// ------------------------------   functions  ----------------------------------------------------------
 
-		public bool CheckFile(ref int exifType, ref string orientation, string fName)
+		public bool CheckFile(ref int exifType, ref string orientation, string fPath)
 		// called by: image.StartExif, image.ShowExif
 		{
+			_fPath = fPath;
 			listExif.Items.Clear();
 			_gps2 = "";
 			int exCount = 0;
@@ -142,12 +143,12 @@ namespace Next_View
 
 			try
 			{
-				string ext = System.IO.Path.GetExtension(fName).ToLower();
+				string ext = System.IO.Path.GetExtension(fPath).ToLower();
 				if (ext == ".wmf" || ext == ".emf"){         // invalid for MetadataExtractor
-					AddFileData(fName);
+					AddFileData(fPath);
 					return true;
 				}
-				IEnumerable<Directory> directories = ImageMetadataReader.ReadMetadata(fName);
+				IEnumerable<Directory> directories = ImageMetadataReader.ReadMetadata(fPath);
 
 				// ------------------------------   jpg, bmp, png, ico, gif   ---------------------------------------------
 
@@ -365,7 +366,7 @@ namespace Next_View
 
 				}
 
-				AddFileData(fName);
+				AddFileData(fPath);
 
 				return true;
 			}
@@ -430,6 +431,11 @@ namespace Next_View
 			{
 				this.KeyChanged(this, e);
 			}
+		}
+
+		void PopEditClick(object sender, EventArgs e)
+		{
+			FileInfo.ShowFileProperties(_fPath);
 		}
 
 
