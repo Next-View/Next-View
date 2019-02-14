@@ -163,6 +163,7 @@ namespace Next_View
 		void ExifDataShow()
 		// called by: bw end
 		{
+			// timespan for info
 			if (_dateCount > 0){
 				TimeSpan imgSpan = _maxDate.Subtract(_minDate);
 				if (imgSpan.TotalDays > 730){
@@ -404,16 +405,18 @@ namespace Next_View
 			}
 			else if (_rangeType == 3){
 				var startDay = new DateTime (_minDate.Year, _minDate.Month,  _minDate.Day);
+				startDay = startDay.AddDays(-1);
 				DateTime lDate = startDay.AddDays(labelCount);
 				labelCaption = string.Format("{0:MM-dd}", lDate);
 			}
 			else {
-				var startHour = new DateTime (_minDate.Year, _minDate.Month,  _minDate.Day, _minDate.Hour - 1, 0, 0);
+				var startHour = new DateTime (_minDate.Year, _minDate.Month,  _minDate.Day, _minDate.Hour, 0, 0);
+				startHour = startHour.AddHours(-1);
 				DateTime lDate = startHour.AddHours(labelCount);
 				labelCaption = string.Format("{0:HH:mm}", lDate);
 			}
 		}
-		
+
 		void SearchExif(string searchStr)
 		{
 			int ext = 0;     // No Exif
@@ -518,14 +521,27 @@ namespace Next_View
 		void SearchExifDate(string searchStr)
 		{
 			foreach (Exif exi in exList) {
-				string datePart = String.Format("{0:yyyy}", exi.eDtOriginal );  
-				if (string.Compare(datePart, searchStr) == 0){ 
+				string datePart = "";
+				if (_rangeType == 1){
+					datePart = String.Format("{0:yyyy}", exi.eDtOriginal );
+				}
+				else if (_rangeType == 2){
+					datePart = String.Format("{0:yyyy-MM}", exi.eDtOriginal );
+				}
+				else if (_rangeType == 3){
+					datePart = String.Format("{0:MM-dd}", exi.eDtOriginal );
+				}
+				else {
+					datePart = String.Format("{0:HH}", exi.eDtOriginal);
+					searchStr = searchStr.Substring(0, 2);
+				}
+				if (string.Compare(datePart, searchStr) == 0){
 					ListViewItem item = this.listImg.Items.Add(exi.eFname);
 					exifImgList.Add(exi.eFname);
 				}
 			}
 		}
-		
+
     // ------------------------------   events form ----------------------------------------------------------
 
 		void ExifDashEnter(object sender, EventArgs e)
@@ -634,10 +650,11 @@ namespace Next_View
 			SearchExifFLen(selFLen);
 		}
 
-
-		void PopPathRemoveClick(object sender, EventArgs e)
+		void PopPropertiesClick(object sender, EventArgs e)
 		{
-
+			if (listImg.SelectedItems.Count > 0){
+				FileInfo.ShowFileProperties(listImg.SelectedItems[0].Text);
+			}
 		}
 
 
@@ -674,14 +691,14 @@ namespace Next_View
 					string lblCap;
 					int xValInt = (int)xVal;
 					ChartXLabel(out lblCap, xValInt);
-					Debug.WriteLine("chart pos: " + xValInt + " " + lblCap);
-					
+					//Debug.WriteLine("chart pos: " + xValInt + " " + lblCap);
+
 					listImg.Items.Clear();
 					SearchExifDate(lblCap);
 				}
 			}
 		}
-		
+
     // ------------------------------   BackgroundWorker  ----------------------------------------------------------
 
 		public bool ScanImages(BackgroundWorker bw)

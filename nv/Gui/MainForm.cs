@@ -44,7 +44,7 @@ namespace Next_View
 		string _currentPath = "";
 		private int _step = 0;
 		private int _maxStep = 0;
-		
+
 		public frmMain()
 		{
 			//
@@ -187,7 +187,7 @@ namespace Next_View
 			if (m_Image != null){
 				m_Image.Close2nd();
 			}
-			Debug.WriteLine("main FormClosed");
+			//Debug.WriteLine("main FormClosed:");
 			Settings.Default.MainX = this.Left;
 			Settings.Default.MainY = this.Top;
 			Settings.Default.MainW = this.Width;
@@ -564,15 +564,15 @@ namespace Next_View
 
 		private void HandleStatus(object sender, SetStatusMainEventArgs e)
 		// called by: SetStatusText
-		{		
+		{
 			int sVal = e.statusVal;
-			string sText = e.statusText;	
+			string sText = e.statusText;
 			//Debug.WriteLine(String.Format("Status msg: {0}, {1} ", sVal, sText));
 			switch(sVal)
 			{
 				case 0:
 					this.statusLabel1.Text = sText;
-					break;	
+					break;
 
 				case -1:
 					_step++;
@@ -582,20 +582,20 @@ namespace Next_View
 					else {
 						progress1.Value = 0;
 					}
-					break;	
-											
+					break;
+
 				case -9:
 					progress1.Value = 0;
-					_maxStep = 0;					
+					_maxStep = 0;
 					break;
-				
+
 				default:  // start progress
 					statusLabel1.Text = "Scan";
 					_maxStep = sVal;
 					progress1.Maximum = _maxStep;
 					_step = 0;
 					break;
-			} 
+			}
 		}
 
 		private void HandleWindow(object sender, SetTitleEventArgs e)
@@ -636,19 +636,19 @@ namespace Next_View
 				case 'i':  //  exif img
 					List<string> exImgList;
 					m_Exif.DashImgList(out exImgList);
-					Debug.WriteLine("imgs: " + exImgList.Count.ToString());	
+					Debug.WriteLine("imgs: " + exImgList.Count.ToString());
 					m_Image.Show(dockPanel1, DockState.Document);
 					m_Image.ShowExifImages(exImgList, fName);
 					break;
 				case 'p':  //  exif path
 					m_Exif.SetPath2(_currentPath);
 					break;
-					
+
 			}
 		}
 		void FrmMainActivated(object sender, EventArgs e)
 		{
-			Debug.WriteLine("activated main: ");
+			//Debug.WriteLine("activated main: ");
 		}
 
 	}  // end main
