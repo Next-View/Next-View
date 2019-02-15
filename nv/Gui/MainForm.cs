@@ -636,7 +636,7 @@ namespace Next_View
 				case 'i':  //  exif img
 					List<string> exImgList;
 					m_Exif.DashImgList(out exImgList);
-					Debug.WriteLine("imgs: " + exImgList.Count.ToString());
+					//Debug.WriteLine("imgs: " + exImgList.Count.ToString());
 					m_Image.Show(dockPanel1, DockState.Document);
 					m_Image.ShowExifImages(exImgList, fName);
 					break;

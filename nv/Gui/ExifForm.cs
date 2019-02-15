@@ -100,7 +100,7 @@ namespace Next_View
 			this.Top = to;
 			this.Width = wi;
 			this.Height = he;
-			Debug.WriteLine("Exif pos: X: {0}  Y: {1}  W: {2}  H: {3} ", Left, Top, Width, Height);
+			//Debug.WriteLine("Exif pos: X: {0}  Y: {1}  W: {2}  H: {3} ", Left, Top, Width, Height);
 		}
 
 		void ExifFormShown(object sender, EventArgs e)

@@ -88,6 +88,7 @@ namespace Next_View
 
 		public void FormClear()
 		{
+			lblInfo.Text = "Info:";
 			exList.Clear();
 			exifImgList.Clear();
 			listImg.Items.Clear();
@@ -104,15 +105,18 @@ namespace Next_View
 			dicExpot.Clear();
 			dicFNum.Clear();
 			dicFLen.Clear();
-			_flashCount = 0;
 			dicExposi.Clear();
 			dicLens.Clear();
 			dicScene.Clear();
 			_gpsCount = 0;
-
+			_flashCount = 0;
+			lblGps.Text = "GPS: ";
+			lblFlash.Text = "Flash: ";
+			
 			_dateCount = 0;
 			_minDate = DateTime.MaxValue;
 			_maxDate = DateTime.MinValue;
+			chartImg.Series.Clear( );
 
 		}
 
@@ -383,6 +387,13 @@ namespace Next_View
 				ChartXLabel(out lblCap, lblCount);
 				lbl.Text = lblCap;
 			}
+
+			foreach (CustomLabel lbl in chartImg.ChartAreas[0].AxisY.CustomLabels)
+			{
+				if (!Int32.TryParse(lbl.Text, out lblCount)){
+					lbl.Text = " ";
+				}
+			}
 		}
 
 		void ChartXLabel(out string labelCaption, int labelCount)
@@ -416,7 +427,7 @@ namespace Next_View
 				labelCaption = string.Format("{0:HH:mm}", lDate);
 			}
 		}
-
+		
 		void SearchExif(string searchStr)
 		{
 			int ext = 0;     // No Exif
@@ -592,6 +603,7 @@ namespace Next_View
 		void ListExiftDoubleClick(object sender, EventArgs e)
 		{
 			listImg.Items.Clear();
+			exifImgList.Clear();
 			string selExif = listExift.SelectedItems[0].Text;
 			SearchExif(selExif);
 		}
@@ -599,6 +611,7 @@ namespace Next_View
 		void ListModelDoubleClick(object sender, EventArgs e)
 		{
 			listImg.Items.Clear();
+			exifImgList.Clear();
 			string selList = listModel.SelectedItems[0].Text;
 			SearchExifModel(selList);
 		}
@@ -606,6 +619,7 @@ namespace Next_View
 		void ListLensDoubleClick(object sender, EventArgs e)
 		{
 			listImg.Items.Clear();
+			exifImgList.Clear();
 			string selLens = listLens.SelectedItems[0].Text;
 			SearchExifLens(selLens);
 		}
@@ -613,6 +627,7 @@ namespace Next_View
 		void ListExpoDoubleClick(object sender, EventArgs e)
 		{
 			listImg.Items.Clear();
+			exifImgList.Clear();
 			string selExpo = listExpo.SelectedItems[0].Text;
 			SearchExifExpo(selExpo);
 		}
@@ -620,6 +635,7 @@ namespace Next_View
 		void ListSceneDoubleClick(object sender, EventArgs e)
 		{
 			listImg.Items.Clear();
+			exifImgList.Clear();
 			string selScene = listScene.SelectedItems[0].Text;
 			SearchExifScene(selScene);
 		}
@@ -627,6 +643,7 @@ namespace Next_View
 		void ListToDDoubleClick(object sender, EventArgs e)
 		{
 			listImg.Items.Clear();
+			exifImgList.Clear();
 			string selToD = listToD.SelectedItems[0].Text;
 			SearchExifToD(selToD);
 		}
@@ -634,18 +651,21 @@ namespace Next_View
 		void LblGpsDoubleClick(object sender, EventArgs e)
 		{
 			listImg.Items.Clear();
+			exifImgList.Clear();
 			SearchExifGps();
 		}
 
 		void LblFlashDoubleClick(object sender, EventArgs e)
 		{
 			listImg.Items.Clear();
+			exifImgList.Clear();
 			SearchExifFlash();
 		}
 
 		void ListFLenDoubleClick(object sender, EventArgs e)
 		{
 			listImg.Items.Clear();
+			exifImgList.Clear();
 			string selFLen = listFLen.SelectedItems[0].Text;
 			SearchExifFLen(selFLen);
 		}
@@ -657,16 +677,13 @@ namespace Next_View
 			}
 		}
 
-
 		void ListProjectDoubleClick(object sender, EventArgs e)
 		{
 			if (listImg.SelectedItems.Count > 0){
 				string eImg = listImg.SelectedItems[0].Text;
 				SetCommand('i', eImg);
 			}
-
 		}
-
 
 		void CmdShowClick(object sender, EventArgs e)
 		{
@@ -676,7 +693,6 @@ namespace Next_View
 					eImg = listImg.SelectedItems[0].Text;
 				}
 				SetCommand('i', eImg);
-
 			}
 		}
 
@@ -694,11 +710,23 @@ namespace Next_View
 					//Debug.WriteLine("chart pos: " + xValInt + " " + lblCap);
 
 					listImg.Items.Clear();
+					exifImgList.Clear();
 					SearchExifDate(lblCap);
 				}
 			}
 		}
 
+		void CmdUpClick(object sender, EventArgs e)
+		{
+			string sDir = edImgPath.Text;
+			if (Directory.Exists(sDir)){
+				var upperDir = Directory.GetParent(sDir);
+				if (upperDir != null) {
+					edImgPath.Text = Directory.GetParent(sDir).FullName;
+				}
+			}	
+		}
+		
     // ------------------------------   BackgroundWorker  ----------------------------------------------------------
 
 		public bool ScanImages(BackgroundWorker bw)

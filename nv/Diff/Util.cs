@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;	 //	OfType
 using System.Globalization;   // CultureInfo
+using System.Text.RegularExpressions;  // Regex
 using System.Windows.Forms;  // MessageBox
 using MetadataExtractor;
 using MetadataExtractor.Formats.Exif;
@@ -150,10 +151,26 @@ namespace Next_View
 					exCount = ifd0Directory.TagCount;
 					string orientation1 = ifd0Directory.GetDescription(ExifDirectoryBase.TagOrientation);
 					if (orientation1 != null) orientation = orientation1.ToLower();
-
+					
+					string make = "";
+					string make1 = ifd0Directory.GetDescription(ExifDirectoryBase.TagMake);
+					if (make1 != null){ 
+						Match match1 = Regex.Match(make1, @"^([\w\-]+)");
+						if (match1.Success){
+							make =  match1.Groups[0].Value;
+							
+						}
+					}
+					
 					string model1 = ifd0Directory.GetDescription(ExifDirectoryBase.TagModel);
 					if (model1 != null) model = model1;
-
+					if (!model.Contains(make)){
+						model = make + " " + model;
+					}
+					if (model.Length > 40){
+						int pos = model.IndexOf(' ', 30);
+						model = model.Substring(0, pos - 1);
+					}
 
 					string software = ifd0Directory.GetDescription(ExifDirectoryBase.TagSoftware);
 				}

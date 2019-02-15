@@ -48,13 +48,15 @@ namespace Next_View
 			this.components = new System.ComponentModel.Container();
 			System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
 			System.Windows.Forms.DataVisualization.Charting.Title title1 = new System.Windows.Forms.DataVisualization.Charting.Title();
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExifDash));
 			this.cmdStart = new System.Windows.Forms.Button();
 			this.label1 = new System.Windows.Forms.Label();
 			this.listImg = new System.Windows.Forms.ListView();
 			this.colFiles = new System.Windows.Forms.ColumnHeader();
+			this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
 			this.popImgList = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.popProperties = new System.Windows.Forms.ToolStripMenuItem();
-			this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+			this.popPathRemove = new System.Windows.Forms.ToolStripMenuItem();
 			this.edImgPath = new System.Windows.Forms.TextBox();
 			this.listModel = new System.Windows.Forms.ListView();
 			this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
@@ -82,6 +84,7 @@ namespace Next_View
 			this.columnHeader14 = new System.Windows.Forms.ColumnHeader();
 			this.lblInfo = new System.Windows.Forms.Label();
 			this.chartImg = new System.Windows.Forms.DataVisualization.Charting.Chart();
+			this.cmdUp = new System.Windows.Forms.Button();
 			this.popImgList.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.chartImg)).BeginInit();
 			this.SuspendLayout();
@@ -91,10 +94,10 @@ namespace Next_View
 			this.cmdStart.FlatAppearance.BorderSize = 4;
 			this.cmdStart.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.cmdStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.cmdStart.Location = new System.Drawing.Point(525, 2);
+			this.cmdStart.Location = new System.Drawing.Point(696, 6);
 			this.cmdStart.Margin = new System.Windows.Forms.Padding(2);
 			this.cmdStart.Name = "cmdStart";
-			this.cmdStart.Size = new System.Drawing.Size(58, 18);
+			this.cmdStart.Size = new System.Drawing.Size(58, 29);
 			this.cmdStart.TabIndex = 43;
 			this.cmdStart.Text = "&Start";
 			this.cmdStart.UseVisualStyleBackColor = true;
@@ -114,15 +117,14 @@ namespace Next_View
 			// 
 			this.listImg.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
 			this.colFiles});
-			this.listImg.ContextMenuStrip = this.popImgList;
 			this.listImg.Dock = System.Windows.Forms.DockStyle.Bottom;
 			this.listImg.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.listImg.FullRowSelect = true;
 			this.listImg.GridLines = true;
-			this.listImg.Location = new System.Drawing.Point(0, 455);
+			this.listImg.Location = new System.Drawing.Point(0, 580);
 			this.listImg.Margin = new System.Windows.Forms.Padding(2);
 			this.listImg.Name = "listImg";
-			this.listImg.Size = new System.Drawing.Size(603, 96);
+			this.listImg.Size = new System.Drawing.Size(775, 96);
 			this.listImg.TabIndex = 50;
 			this.listImg.UseCompatibleStateImageBehavior = false;
 			this.listImg.View = System.Windows.Forms.View.Details;
@@ -133,21 +135,6 @@ namespace Next_View
 			this.colFiles.Text = "Filename";
 			this.colFiles.Width = 620;
 			// 
-			// popImgList
-			// 
-			this.popImgList.ImageScalingSize = new System.Drawing.Size(20, 20);
-			this.popImgList.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.popProperties});
-			this.popImgList.Name = "popPath";
-			this.popImgList.Size = new System.Drawing.Size(153, 48);
-			// 
-			// popProperties
-			// 
-			this.popProperties.Name = "popProperties";
-			this.popProperties.Size = new System.Drawing.Size(152, 22);
-			this.popProperties.Text = "Properties...";
-			this.popProperties.Click += new System.EventHandler(this.PopPropertiesClick);
-			// 
 			// backgroundWorker1
 			// 
 			this.backgroundWorker1.WorkerReportsProgress = true;
@@ -156,13 +143,32 @@ namespace Next_View
 			this.backgroundWorker1.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.BackgroundWorker1ProgressChanged);
 			this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BackgroundWorker1RunWorkerCompleted);
 			// 
+			// popImgList
+			// 
+			this.popImgList.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.popProperties});
+			this.popImgList.Name = "popPath";
+			this.popImgList.Size = new System.Drawing.Size(137, 26);
+			// 
+			// popProperties
+			// 
+			this.popProperties.Name = "popProperties";
+			this.popProperties.Size = new System.Drawing.Size(136, 22);
+			this.popProperties.Text = "Properties...";
+			this.popProperties.Click += new System.EventHandler(this.PopPropertiesClick);
+			// 
+			// popPathRemove
+			// 
+			this.popPathRemove.Name = "popPathRemove";
+			this.popPathRemove.Size = new System.Drawing.Size(32, 19);
+			// 
 			// edImgPath
 			// 
 			this.edImgPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.edImgPath.Location = new System.Drawing.Point(66, 5);
 			this.edImgPath.Margin = new System.Windows.Forms.Padding(2);
 			this.edImgPath.Name = "edImgPath";
-			this.edImgPath.Size = new System.Drawing.Size(442, 21);
+			this.edImgPath.Size = new System.Drawing.Size(606, 21);
 			this.edImgPath.TabIndex = 57;
 			// 
 			// listModel
@@ -171,10 +177,10 @@ namespace Next_View
 			this.columnHeader1,
 			this.columnHeader2});
 			this.listModel.FullRowSelect = true;
-			this.listModel.Location = new System.Drawing.Point(4, 135);
+			this.listModel.Location = new System.Drawing.Point(4, 55);
 			this.listModel.Margin = new System.Windows.Forms.Padding(2);
 			this.listModel.Name = "listModel";
-			this.listModel.Size = new System.Drawing.Size(166, 77);
+			this.listModel.Size = new System.Drawing.Size(271, 100);
 			this.listModel.TabIndex = 58;
 			this.listModel.UseCompatibleStateImageBehavior = false;
 			this.listModel.View = System.Windows.Forms.View.Details;
@@ -196,10 +202,10 @@ namespace Next_View
 			this.columnHeader3,
 			this.columnHeader4});
 			this.listLens.FullRowSelect = true;
-			this.listLens.Location = new System.Drawing.Point(4, 216);
+			this.listLens.Location = new System.Drawing.Point(228, 264);
 			this.listLens.Margin = new System.Windows.Forms.Padding(2);
 			this.listLens.Name = "listLens";
-			this.listLens.Size = new System.Drawing.Size(166, 77);
+			this.listLens.Size = new System.Drawing.Size(220, 100);
 			this.listLens.TabIndex = 59;
 			this.listLens.UseCompatibleStateImageBehavior = false;
 			this.listLens.View = System.Windows.Forms.View.Details;
@@ -221,10 +227,10 @@ namespace Next_View
 			this.columnHeader5,
 			this.columnHeader6});
 			this.listScene.FullRowSelect = true;
-			this.listScene.Location = new System.Drawing.Point(172, 216);
+			this.listScene.Location = new System.Drawing.Point(6, 264);
 			this.listScene.Margin = new System.Windows.Forms.Padding(2);
 			this.listScene.Name = "listScene";
-			this.listScene.Size = new System.Drawing.Size(166, 77);
+			this.listScene.Size = new System.Drawing.Size(220, 100);
 			this.listScene.TabIndex = 60;
 			this.listScene.UseCompatibleStateImageBehavior = false;
 			this.listScene.View = System.Windows.Forms.View.Details;
@@ -246,10 +252,10 @@ namespace Next_View
 			this.columnHeader7,
 			this.columnHeader8});
 			this.listExpo.FullRowSelect = true;
-			this.listExpo.Location = new System.Drawing.Point(172, 135);
+			this.listExpo.Location = new System.Drawing.Point(228, 160);
 			this.listExpo.Margin = new System.Windows.Forms.Padding(2);
 			this.listExpo.Name = "listExpo";
-			this.listExpo.Size = new System.Drawing.Size(166, 77);
+			this.listExpo.Size = new System.Drawing.Size(220, 100);
 			this.listExpo.TabIndex = 61;
 			this.listExpo.UseCompatibleStateImageBehavior = false;
 			this.listExpo.View = System.Windows.Forms.View.Details;
@@ -271,10 +277,10 @@ namespace Next_View
 			this.columnHeader9,
 			this.columnHeader10});
 			this.listExift.FullRowSelect = true;
-			this.listExift.Location = new System.Drawing.Point(4, 56);
+			this.listExift.Location = new System.Drawing.Point(452, 55);
 			this.listExift.Margin = new System.Windows.Forms.Padding(2);
 			this.listExift.Name = "listExift";
-			this.listExift.Size = new System.Drawing.Size(166, 77);
+			this.listExift.Size = new System.Drawing.Size(220, 100);
 			this.listExift.TabIndex = 62;
 			this.listExift.UseCompatibleStateImageBehavior = false;
 			this.listExift.View = System.Windows.Forms.View.Details;
@@ -295,10 +301,10 @@ namespace Next_View
 			this.cmdShow.FlatAppearance.BorderSize = 4;
 			this.cmdShow.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.cmdShow.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.cmdShow.Location = new System.Drawing.Point(525, 56);
+			this.cmdShow.Location = new System.Drawing.Point(696, 96);
 			this.cmdShow.Margin = new System.Windows.Forms.Padding(2);
 			this.cmdShow.Name = "cmdShow";
-			this.cmdShow.Size = new System.Drawing.Size(58, 18);
+			this.cmdShow.Size = new System.Drawing.Size(58, 25);
 			this.cmdShow.TabIndex = 63;
 			this.cmdShow.Text = "&Show";
 			this.cmdShow.UseVisualStyleBackColor = true;
@@ -310,10 +316,10 @@ namespace Next_View
 			this.columnHeader11,
 			this.columnHeader12});
 			this.listToD.FullRowSelect = true;
-			this.listToD.Location = new System.Drawing.Point(344, 56);
+			this.listToD.Location = new System.Drawing.Point(4, 160);
 			this.listToD.Margin = new System.Windows.Forms.Padding(2);
 			this.listToD.Name = "listToD";
-			this.listToD.Size = new System.Drawing.Size(166, 77);
+			this.listToD.Size = new System.Drawing.Size(220, 100);
 			this.listToD.TabIndex = 64;
 			this.listToD.UseCompatibleStateImageBehavior = false;
 			this.listToD.View = System.Windows.Forms.View.Details;
@@ -333,11 +339,11 @@ namespace Next_View
 			// 
 			this.lblGps.BackColor = System.Drawing.SystemColors.Window;
 			this.lblGps.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.lblGps.Location = new System.Drawing.Point(344, 143);
+			this.lblGps.Location = new System.Drawing.Point(452, 170);
 			this.lblGps.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
 			this.lblGps.Name = "lblGps";
 			this.lblGps.Padding = new System.Windows.Forms.Padding(2, 0, 0, 0);
-			this.lblGps.Size = new System.Drawing.Size(166, 16);
+			this.lblGps.Size = new System.Drawing.Size(220, 20);
 			this.lblGps.TabIndex = 67;
 			this.lblGps.Text = "GPS:";
 			this.lblGps.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -347,11 +353,11 @@ namespace Next_View
 			// 
 			this.lblFlash.BackColor = System.Drawing.SystemColors.Window;
 			this.lblFlash.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.lblFlash.Location = new System.Drawing.Point(344, 188);
+			this.lblFlash.Location = new System.Drawing.Point(452, 228);
 			this.lblFlash.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
 			this.lblFlash.Name = "lblFlash";
 			this.lblFlash.Padding = new System.Windows.Forms.Padding(2, 0, 0, 0);
-			this.lblFlash.Size = new System.Drawing.Size(166, 16);
+			this.lblFlash.Size = new System.Drawing.Size(220, 20);
 			this.lblFlash.TabIndex = 68;
 			this.lblFlash.Text = "Flash:";
 			this.lblFlash.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -363,10 +369,10 @@ namespace Next_View
 			this.columnHeader13,
 			this.columnHeader14});
 			this.listFLen.FullRowSelect = true;
-			this.listFLen.Location = new System.Drawing.Point(344, 216);
+			this.listFLen.Location = new System.Drawing.Point(452, 264);
 			this.listFLen.Margin = new System.Windows.Forms.Padding(2);
 			this.listFLen.Name = "listFLen";
-			this.listFLen.Size = new System.Drawing.Size(166, 77);
+			this.listFLen.Size = new System.Drawing.Size(220, 100);
 			this.listFLen.TabIndex = 69;
 			this.listFLen.UseCompatibleStateImageBehavior = false;
 			this.listFLen.View = System.Windows.Forms.View.Details;
@@ -390,7 +396,7 @@ namespace Next_View
 			this.lblInfo.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
 			this.lblInfo.Name = "lblInfo";
 			this.lblInfo.Padding = new System.Windows.Forms.Padding(2, 0, 0, 0);
-			this.lblInfo.Size = new System.Drawing.Size(503, 20);
+			this.lblInfo.Size = new System.Drawing.Size(668, 20);
 			this.lblInfo.TabIndex = 70;
 			this.lblInfo.Text = "Info:";
 			this.lblInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -429,10 +435,11 @@ namespace Next_View
 			chartArea1.Name = "Default";
 			chartArea1.ShadowColor = System.Drawing.Color.Transparent;
 			this.chartImg.ChartAreas.Add(chartArea1);
-			this.chartImg.Location = new System.Drawing.Point(4, 305);
+			this.chartImg.ContextMenuStrip = this.popImgList;
+			this.chartImg.Location = new System.Drawing.Point(4, 368);
 			this.chartImg.Margin = new System.Windows.Forms.Padding(2);
 			this.chartImg.Name = "chartImg";
-			this.chartImg.Size = new System.Drawing.Size(505, 148);
+			this.chartImg.Size = new System.Drawing.Size(668, 187);
 			this.chartImg.TabIndex = 71;
 			this.chartImg.TabStop = false;
 			title1.Font = new System.Drawing.Font("Trebuchet MS", 14.25F, System.Drawing.FontStyle.Bold);
@@ -445,6 +452,16 @@ namespace Next_View
 			this.chartImg.Customize += new System.EventHandler(this.ChartImgCustomize);
 			this.chartImg.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ChartImgMouseDoubleClick);
 			// 
+			// cmdUp
+			// 
+			this.cmdUp.Image = ((System.Drawing.Image)(resources.GetObject("cmdUp.Image")));
+			this.cmdUp.Location = new System.Drawing.Point(696, 55);
+			this.cmdUp.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+			this.cmdUp.Name = "cmdUp";
+			this.cmdUp.Size = new System.Drawing.Size(45, 28);
+			this.cmdUp.TabIndex = 72;
+			this.cmdUp.Click += new System.EventHandler(this.CmdUpClick);
+			// 
 			// ExifDash
 			// 
 			this.AcceptButton = this.cmdStart;
@@ -453,7 +470,8 @@ namespace Next_View
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.AutoScroll = true;
-			this.ClientSize = new System.Drawing.Size(603, 551);
+			this.ClientSize = new System.Drawing.Size(775, 676);
+			this.Controls.Add(this.cmdUp);
 			this.Controls.Add(this.chartImg);
 			this.Controls.Add(this.lblInfo);
 			this.Controls.Add(this.listFLen);
@@ -496,7 +514,7 @@ namespace Next_View
 		private System.Windows.Forms.ColumnHeader colFiles;
 		private System.ComponentModel.BackgroundWorker backgroundWorker1;
 		private System.Windows.Forms.ContextMenuStrip popImgList;
-		private System.Windows.Forms.ToolStripMenuItem popProperties;
+		private System.Windows.Forms.ToolStripMenuItem popPathRemove;
 		private System.Windows.Forms.TextBox edImgPath;
 		private System.Windows.Forms.ListView listModel;
 		private System.Windows.Forms.ColumnHeader columnHeader1;
@@ -524,5 +542,7 @@ namespace Next_View
 		private System.Windows.Forms.ColumnHeader columnHeader14;
 		private System.Windows.Forms.Label lblInfo;
 		private System.Windows.Forms.DataVisualization.Charting.Chart chartImg;
+		private System.Windows.Forms.Button cmdUp;
+		private System.Windows.Forms.ToolStripMenuItem popProperties;
 	}
 }
