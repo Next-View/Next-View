@@ -114,9 +114,8 @@ namespace Next_View
 			this.dockPanel1.DockTopPortion = 0.15D;
 			this.dockPanel1.DocumentStyle = WeifenLuo.WinFormsUI.Docking.DocumentStyle.DockingSdi;
 			this.dockPanel1.Location = new System.Drawing.Point(0, 0);
-			this.dockPanel1.Margin = new System.Windows.Forms.Padding(4);
 			this.dockPanel1.Name = "dockPanel1";
-			this.dockPanel1.Size = new System.Drawing.Size(1179, 612);
+			this.dockPanel1.Size = new System.Drawing.Size(884, 482);
 			this.dockPanel1.TabIndex = 0;
 			// 
 			// menuMain
@@ -130,7 +129,7 @@ namespace Next_View
 			this.mnuHelp});
 			this.menuMain.Location = new System.Drawing.Point(0, 31);
 			this.menuMain.Name = "menuMain";
-			this.menuMain.Size = new System.Drawing.Size(1179, 24);
+			this.menuMain.Size = new System.Drawing.Size(884, 24);
 			this.menuMain.TabIndex = 0;
 			this.menuMain.Text = "menuMain";
 			// 
@@ -454,7 +453,7 @@ namespace Next_View
 			this.statusMain.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
 			this.statusMain.Location = new System.Drawing.Point(0, 0);
 			this.statusMain.Name = "statusMain";
-			this.statusMain.Size = new System.Drawing.Size(1179, 25);
+			this.statusMain.Size = new System.Drawing.Size(884, 25);
 			this.statusMain.TabIndex = 3;
 			this.statusMain.Text = " ";
 			// 
@@ -486,13 +485,11 @@ namespace Next_View
 			// 
 			this.toolStripContainer1.ContentPanel.AutoScroll = true;
 			this.toolStripContainer1.ContentPanel.Controls.Add(this.dockPanel1);
-			this.toolStripContainer1.ContentPanel.Margin = new System.Windows.Forms.Padding(4);
-			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(1179, 612);
+			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(884, 482);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
-			this.toolStripContainer1.Margin = new System.Windows.Forms.Padding(4);
 			this.toolStripContainer1.Name = "toolStripContainer1";
-			this.toolStripContainer1.Size = new System.Drawing.Size(1179, 692);
+			this.toolStripContainer1.Size = new System.Drawing.Size(884, 562);
 			this.toolStripContainer1.TabIndex = 4;
 			this.toolStripContainer1.Text = "toolStripContainer1";
 			// 
@@ -643,14 +640,13 @@ namespace Next_View
 			// frmMain
 			// 
 			this.AllowDrop = true;
-			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1179, 692);
+			this.ClientSize = new System.Drawing.Size(884, 562);
 			this.Controls.Add(this.toolStripContainer1);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MainMenuStrip = this.menuMain;
-			this.Margin = new System.Windows.Forms.Padding(4);
-			this.MinimumSize = new System.Drawing.Size(498, 187);
+			this.MinimumSize = new System.Drawing.Size(378, 159);
 			this.Name = "frmMain";
 			this.Text = "Next-View";
 			this.Activated += new System.EventHandler(this.FrmMainActivated);
@@ -660,6 +656,7 @@ namespace Next_View
 			this.DragDrop += new System.Windows.Forms.DragEventHandler(this.FrmMainDragDrop);
 			this.DragEnter += new System.Windows.Forms.DragEventHandler(this.FrmMainDragEnter);
 			this.DragOver += new System.Windows.Forms.DragEventHandler(this.FrmMainDragOver);
+			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FrmMainKeyDown);
 			this.menuMain.ResumeLayout(false);
 			this.menuMain.PerformLayout();
 			this.statusMain.ResumeLayout(false);

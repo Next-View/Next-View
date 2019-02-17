@@ -29,6 +29,42 @@ namespace Next_View
 	public static class Multi
 	{
 
+		public static void MainLoad(out int left, out int top)
+		{
+			if(Screen.AllScreens.Length == 1){
+				left = Settings.Default.MainX;
+				top = Settings.Default.MainY;
+			}
+			else {
+				left = Settings.Default.Main2X;
+				top = Settings.Default.Main2Y;
+			}
+		}
+		
+		public static void MainSave(int left, int top)
+		{
+			if(Screen.AllScreens.Length == 1){
+				Settings.Default.MainX = left;
+				Settings.Default.MainY = top;
+			}
+			else {
+				Settings.Default.Main2X = left;
+				Settings.Default.Main2Y = top;
+			}
+		}
+		
+		public static void ExifLoad(out int left, out int top)
+		{
+			if(Screen.AllScreens.Length == 1){
+				left = Settings.Default.ExifX;
+				top = Settings.Default.ExifY;
+			}
+			else {
+				left = Settings.Default.Exif2X;
+				top = Settings.Default.Exif2Y;
+			}
+		}
+		
 		public static void ExifSave(int left, int top)
 		{
 			if(Screen.AllScreens.Length == 1){
@@ -41,18 +77,30 @@ namespace Next_View
 			}
 		}
 
-		public static void ExifLoad(out int left, out int top, int width, int height)
+		public static void SecondLoad(out int left, out int top)
 		{
 			if(Screen.AllScreens.Length == 1){
-				left = Settings.Default.ExifX;
-				top = Settings.Default.ExifY;
+				left = Settings.Default.SecondX;
+				top = Settings.Default.SecondY;
 			}
 			else {
-				left = Settings.Default.Exif2X;
-				top = Settings.Default.Exif2Y;
+				left = Settings.Default.Second2X;
+				top = Settings.Default.Second2Y;
 			}
 		}
 
+		public static void SecondSave(int left, int top)
+		{
+			if(Screen.AllScreens.Length == 1){
+				Settings.Default.SecondX = left;
+				Settings.Default.SecondY = top;
+			}
+			else {
+				Settings.Default.Second2X = left;
+				Settings.Default.Second2Y = top;
+			}
+		}
+		
 		public static void FormShowVisible(out bool visible, ref int left, ref int top, int width, int height)
 		{
 			visible = false;
@@ -60,7 +108,7 @@ namespace Next_View
 			int areaVisible = 0;
 			int areaScreenVisibleMax = 0;
 			var rectItersect = new Rectangle();
-			var screenFix = new Rectangle();
+			var screenFix = new Rectangle();        // screen with largest share of form
 			var rectForm = new Rectangle(left, top, width, height);
 			foreach (var screen in Screen.AllScreens)
 			{
@@ -102,6 +150,6 @@ namespace Next_View
 			}
 			//Debug.WriteLine("visib: {0} ", visPerc);
 		}
-
+		
 	}
 }

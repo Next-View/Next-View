@@ -28,16 +28,28 @@
     <Setting Name="MainY" Type="System.Int32" Scope="User" Roaming="false">
       <Value Profile="(Default)">100</Value>
     </Setting>
-    <Setting Name="MainH2" Type="System.Int32" Scope="User" Roaming="false">
+    <Setting Name="Main2X" Type="System.Int32" Scope="User" Roaming="false">
+      <Value Profile="(Default)">100</Value>
+    </Setting>
+    <Setting Name="Main2Y" Type="System.Int32" Scope="User" Roaming="false">
+      <Value Profile="(Default)">100</Value>
+    </Setting>
+    <Setting Name="SecondH" Type="System.Int32" Scope="User" Roaming="false">
       <Value Profile="(Default)">400</Value>
     </Setting>
-    <Setting Name="MainW2" Type="System.Int32" Scope="User" Roaming="false">
+    <Setting Name="SecondW" Type="System.Int32" Scope="User" Roaming="false">
       <Value Profile="(Default)">500</Value>
     </Setting>
-    <Setting Name="MainX2" Type="System.Int32" Scope="User" Roaming="false">
+    <Setting Name="SecondX" Type="System.Int32" Scope="User" Roaming="false">
       <Value Profile="(Default)">200</Value>
     </Setting>
-    <Setting Name="MainY2" Type="System.Int32" Scope="User" Roaming="false">
+    <Setting Name="SecondY" Type="System.Int32" Scope="User" Roaming="false">
+      <Value Profile="(Default)">200</Value>
+    </Setting>
+    <Setting Name="Second2X" Type="System.Int32" Scope="User" Roaming="false">
+      <Value Profile="(Default)">200</Value>
+    </Setting>
+    <Setting Name="Second2Y" Type="System.Int32" Scope="User" Roaming="false">
       <Value Profile="(Default)">200</Value>
     </Setting>
     <Setting Name="ExifH" Type="System.Int32" Scope="User" Roaming="false">

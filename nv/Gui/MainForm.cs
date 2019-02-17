@@ -18,6 +18,7 @@ History:
 using System;
 using System.Collections.Generic;  // list
 using System.Diagnostics;  // Debug
+using System.Drawing;  // rectangle
 using System.Globalization;   // CultureInfo
 using System.IO;   // path
 using System.Runtime.InteropServices;
@@ -76,6 +77,7 @@ namespace Next_View
 
 		void FrmMainLoad(object sender, EventArgs e)
 		{
+			Debug.WriteLine("Main start: ");
 			listener = new XDListener();
 			listener.MessageReceived += new XDListener.XDMessageHandler(listener_MessageReceived);
 			listener.RegisterChannel("NVMessage");
@@ -89,20 +91,29 @@ namespace Next_View
 					Settings.Default.Save( );
 					Debug.WriteLine("settings upgrade done: ");
 				}
+				int wX;
+				int wY;
 				int wW = Settings.Default.MainW;
 				int wH = Settings.Default.MainH;
-				int wX = Settings.Default.MainX;
-				int wY = Settings.Default.MainY;
-				int sWidth = Screen.FromControl(this).Bounds.Width;
-				int sHeight = Screen.FromControl(this).Bounds.Height;
 
+				Multi.MainLoad(out wX, out wY);
+
+				bool visible;
+				// menu bar visible
+				Rectangle screenRectangle = RectangleToScreen(this.ClientRectangle);
+				int titleHeight = screenRectangle.Top - this.Top;
+				Multi.FormShowVisible(out visible, ref wX, ref wY, wW, titleHeight);
+				if (!visible){
+					this.Left = wX;
+					this.Top = wY;
+				}
+				else {
+					Multi.FormShowVisible(out visible, ref wX, ref wY, wW, wH);
+					this.Left = wX;
+					this.Top = wY;
+				}
 				this.Width = wW;
 				this.Height = wH;
-				if (wX + wW < 0) this.Left = -50;      // for screen settings change
-				else if (wX > sWidth) this.Left = sWidth - 100;
-				else this.Left = wX;
-				if (wY + wH < 0) this.Top = -50;
-				else this.Top = wY;
 
 				string curDir = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
 				string moPath = curDir + @"\language\";
@@ -154,6 +165,11 @@ namespace Next_View
 			m_Exif.CommandChanged += new HandleCommandChange(HandleCommand);
 			//m_Image.Show(dockPanel1, DockState.Document);     // set active
 
+			bool doShow = true;
+			if (Control.ModifierKeys == Keys.Control){
+				doShow = false;
+				Debug.WriteLine(" key control ");
+			}
 
 			string firstImage = "";
 			string[] args = Environment.GetCommandLineArgs();
@@ -162,11 +178,11 @@ namespace Next_View
 			}
 			if (File.Exists(firstImage)) {
 				m_Image.PicScan(firstImage, false);
-				m_Image.PicLoad(firstImage, true);
+				if (doShow) m_Image.PicLoad(firstImage, true);
 			}
 			else if (File.Exists(Settings.Default.LastImage)) {
 				m_Image.PicScan(Settings.Default.LastImage, false);
-				m_Image.PicLoad(Settings.Default.LastImage, true);
+				if (doShow) m_Image.PicLoad(Settings.Default.LastImage, true);
 			}
 			else {
 				string userImagePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\Pictures";
@@ -176,7 +192,7 @@ namespace Next_View
 				//Debug.WriteLine("pic path: " + userImagePath);
 				firstImage = Directory.GetCurrentDirectory() + @"\Next-View-0.5.png";
 				recentItem1.AddRecentItem(firstImage);
-				m_Image.PicLoad(firstImage, true);
+				if (doShow) m_Image.PicLoad(firstImage, true);
 			}
 		}
 
@@ -188,8 +204,9 @@ namespace Next_View
 				m_Image.Close2nd();
 			}
 			//Debug.WriteLine("main FormClosed:");
-			Settings.Default.MainX = this.Left;
-			Settings.Default.MainY = this.Top;
+			int le = this.Left;
+			int to = this.Top;
+			Multi.MainSave(le, to);
 			Settings.Default.MainW = this.Width;
 			Settings.Default.MainH = this.Height;
 			string recentPath = "";
@@ -648,7 +665,12 @@ namespace Next_View
 		}
 		void FrmMainActivated(object sender, EventArgs e)
 		{
-			//Debug.WriteLine("activated main: ");
+			Debug.WriteLine("activated main: ");
+		}
+
+		void FrmMainKeyDown(object sender, KeyEventArgs e)
+		{
+			Debug.WriteLine("main key: " + e.KeyValue.ToString());
 		}
 
 	}  // end main

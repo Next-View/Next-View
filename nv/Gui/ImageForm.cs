@@ -112,21 +112,30 @@ namespace Next_View
 			if (_wType == WinType.second){
 				popClose.Text = T._("Close");    // not Exit
 
-				int wW = Settings.Default.MainW2;
-				int wH = Settings.Default.MainH2;
-				int wX = Settings.Default.MainX2;
-				int wY = Settings.Default.MainY2;
-				int sWidth = Screen.FromControl(this).Bounds.Width;
-				int sHeight = Screen.FromControl(this).Bounds.Height;
+				int wX;
+				int wY;
+				int wW = Settings.Default.SecondW;
+				int wH = Settings.Default.SecondH;
+				Multi.SecondLoad(out wX, out wY);
 
+				bool visible;
+				// menu bar visible
+				Rectangle screenRectangle = RectangleToScreen(this.ClientRectangle);
+				int titleHeight = screenRectangle.Top - this.Top;
+				Multi.FormShowVisible(out visible, ref wX, ref wY, wW, titleHeight);
+				if (!visible){
+					this.Left = wX;
+					this.Top = wY;
+				}
+				else {
+					Multi.FormShowVisible(out visible, ref wX, ref wY, wW, wH);
+					this.Left = wX;
+					this.Top = wY;
+				}
 				this.Width = wW;
 				this.Height = wH;
-				if (wX + wW < 0) this.Left = -20;      // for screen settings change
-				else this.Left = wX;
-				if (wY + wH < 0) this.Top = -20;
-				else this.Top = wY;
 
-				Debug.WriteLine("open 2nd y: {0} ", Settings.Default.MainY2);
+				Debug.WriteLine("open 2nd y: {0} ", Settings.Default.SecondY);
 
 				_ndRunning = true;
 				_mainWidth = picBox.Width;
@@ -152,12 +161,12 @@ namespace Next_View
 				SetWindowSize(_currentWidth, _currentHeight, _exifType);
 			}
 		}
-		
+
 		void FrmImageLeave(object sender, EventArgs e)
 		{
 			// Debug.WriteLine("img leave");
 		}
-		
+
 		void FrmImageHelpRequested(object sender, HelpEventArgs hlpevent)
 		{
 			//Help.ShowHelp(this, "Next-View.chm", "Fieldlist.htm");
@@ -178,12 +187,13 @@ namespace Next_View
 		{
 			_ndRunning = false;
 			if (_wType == WinType.second){
-				Settings.Default.MainX2 = this.Left;
-				Settings.Default.MainY2 = this.Top;
-				Settings.Default.MainW2 = this.Width;
-				Settings.Default.MainH2 = this.Height;
+				int wX = this.Left;
+				int wY = this.Top;
+				Multi.SecondSave(wX, wY);
+				Settings.Default.SecondW = this.Width;
+				Settings.Default.SecondH = this.Height;
 				Settings.Default.Save( );
-				Debug.WriteLine("close 2nd y: {0} ", Settings.Default.MainY2);
+				Debug.WriteLine("close 2nd y: {0} ", Settings.Default.SecondY);
 			}
 			if (_wType == WinType.normal){
 				e.Cancel = true;
@@ -308,7 +318,7 @@ namespace Next_View
 		{
 
 			//Debug.WriteLine(" ");
-			//Debug.WriteLine("key: " + e.KeyValue.ToString());   // KeyCode?
+			Debug.WriteLine("key: " + e.KeyValue.ToString());
 
 			bool alt = false;
 			if (e.Modifiers == Keys.Alt){
@@ -869,7 +879,7 @@ namespace Next_View
 			_picSelection = T._("Search:");
 			PicLoad(_currentPath, true);
 		}
-		
+
 		public void ShowFullScreen()
 		{
 			string pPath = "";
@@ -1027,9 +1037,9 @@ namespace Next_View
 		{
 			try
 			{
-				if (!File.Exists(_currentPath)) 
+				if (!File.Exists(_currentPath))
 					return false;
-					
+
 				if (CanStartExif()){
 					m_Exif = new ExifForm();
 					m_Exif.KeyChanged += new HandleKeyChange(HandleKey);
@@ -1152,7 +1162,7 @@ namespace Next_View
 				this.CommandChanged(this, e);
 			}
 		}
-	
+
 
 	}  // end frmImage
 

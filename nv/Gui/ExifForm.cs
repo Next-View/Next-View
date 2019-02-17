@@ -18,6 +18,7 @@ History:
 using System;
 using System.Collections.Generic;  // IEnumerable
 using System.Diagnostics;  //   debug
+using System.Drawing;  // rectangle
 using System.Linq;	 //	OfType
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
@@ -95,7 +96,7 @@ namespace Next_View
 			int to;
 			int wi = Settings.Default.ExifW;
 			int he = Settings.Default.ExifH;
-			Multi.ExifLoad(out le, out to, wi, he);
+			Multi.ExifLoad(out le, out to);
 			this.Left = le;
 			this.Top = to;
 			this.Width = wi;
@@ -110,15 +111,24 @@ namespace Next_View
 
 		void ExifFormActivated(object sender, EventArgs e)
 		{
-			int le = this.Left;
-			int to = this.Top;
-			int wi = this.Width;
-			int he = this.Height;
+			int wX = this.Left;
+			int wY = this.Top;
+			int wW = this.Width;
+			int wH = this.Height;
 			bool visible;
-			Multi.FormShowVisible(out visible, ref le, ref to, wi, he);
+			Rectangle screenRectangle = RectangleToScreen(this.ClientRectangle);
+			int titleHeight = screenRectangle.Top - this.Top;
+			Multi.FormShowVisible(out visible, ref wX, ref wY, wW, titleHeight);		
 			if (!visible){
-				this.Left = le;
-				this.Top = to;
+				this.Left = wX;
+				this.Top = wY;
+			}
+			else { 
+				Multi.FormShowVisible(out visible, ref wX, ref wY, wW, wH);
+				if (!visible){
+					this.Left = wX;
+					this.Top = wY;
+				}
 			}
 		}
 

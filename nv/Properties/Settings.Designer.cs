@@ -121,52 +121,100 @@ namespace Next_View.Properties {
 
 		[global::System.Configuration.UserScopedSettingAttribute()]
 		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-		[global::System.Configuration.DefaultSettingValueAttribute("400")]
-		public int MainH2 {
+		[global::System.Configuration.DefaultSettingValueAttribute("100")]
+		public int Main2X {
 			get {
-				return ((int)(this["MainH2"]));
+				return ((int)(this["Main2X"]));
 			}
 			set {
-				this["MainH2"] = value;
+				this["Main2X"] = value;
+			}
+		}
+		
+		[global::System.Configuration.UserScopedSettingAttribute()]
+		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+		[global::System.Configuration.DefaultSettingValueAttribute("100")]
+		public int Main2Y {
+			get {
+				return ((int)(this["Main2Y"]));
+			}
+			set {
+				this["Main2Y"] = value;
+			}
+		}
+		
+		[global::System.Configuration.UserScopedSettingAttribute()]
+		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+		[global::System.Configuration.DefaultSettingValueAttribute("400")]
+		public int SecondH {
+			get {
+				return ((int)(this["SecondH"]));
+			}
+			set {
+				this["SecondH"] = value;
 			}
 		}
 		
 		[global::System.Configuration.UserScopedSettingAttribute()]
 		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
 		[global::System.Configuration.DefaultSettingValueAttribute("500")]
-		public int MainW2 {
+		public int SecondW {
 			get {
-				return ((int)(this["MainW2"]));
+				return ((int)(this["SecondW"]));
 			}
 			set {
-				this["MainW2"] = value;
+				this["SecondW"] = value;
 			}
 		}
 		
 		[global::System.Configuration.UserScopedSettingAttribute()]
 		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
 		[global::System.Configuration.DefaultSettingValueAttribute("200")]
-		public int MainX2 {
+		public int SecondX {
 			get {
-				return ((int)(this["MainX2"]));
+				return ((int)(this["SecondX"]));
 			}
 			set {
-				this["MainX2"] = value;
+				this["SecondX"] = value;
 			}
 		}
 		
 		[global::System.Configuration.UserScopedSettingAttribute()]
 		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
 		[global::System.Configuration.DefaultSettingValueAttribute("200")]
-		public int MainY2 {
+		public int SecondY {
 			get {
-				return ((int)(this["MainY2"]));
+				return ((int)(this["SecondY"]));
 			}
 			set {
-				this["MainY2"] = value;
+				this["SecondY"] = value;
 			}
 		}
 
+		[global::System.Configuration.UserScopedSettingAttribute()]
+		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+		[global::System.Configuration.DefaultSettingValueAttribute("200")]
+		public int Second2X {
+			get {
+				return ((int)(this["Second2X"]));
+			}
+			set {
+				this["Second2X"] = value;
+			}
+		}
+		
+		[global::System.Configuration.UserScopedSettingAttribute()]
+		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+		[global::System.Configuration.DefaultSettingValueAttribute("200")]
+		public int Second2Y {
+			get {
+				return ((int)(this["Second2Y"]));
+			}
+			set {
+				this["Second2Y"] = value;
+			}
+		}
+		
 		[global::System.Configuration.UserScopedSettingAttribute()]
 		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
 		[global::System.Configuration.DefaultSettingValueAttribute("500")]
