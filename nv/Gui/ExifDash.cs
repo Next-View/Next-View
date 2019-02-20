@@ -54,6 +54,7 @@ namespace Next_View
 		Dictionary<string, int> dicLens = new Dictionary<string, int>();
 		Dictionary<string, int> dicScene = new Dictionary<string, int>();
 		int _gpsCount = 0;
+		int _faceCount = 0;
 
 		int _dateCount = 0;
 		int _rangeType = 0;
@@ -109,10 +110,11 @@ namespace Next_View
 			dicLens.Clear();
 			dicScene.Clear();
 			_gpsCount = 0;
+			_faceCount = 0;
 			_flashCount = 0;
 			lblGps.Text = "GPS: ";
 			lblFlash.Text = "Flash: ";
-			
+
 			_dateCount = 0;
 			_minDate = DateTime.MaxValue;
 			_maxDate = DateTime.MinValue;
@@ -301,12 +303,13 @@ namespace Next_View
 			listScene.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
 
 			lblGps.Text = "GPS: " + _gpsCount.ToString();
+			lblFace.Text = "Face: " + _faceCount.ToString();
 			lblFlash.Text = "Flash: " + _flashCount.ToString();
 		}
 
 		void CreateTimelineChart( )
 		{
-			Dictionary<string, int> dicPeriod = new Dictionary<string, int>();
+			var dicPeriod = new Dictionary<string, int>();
 			//
 			//Debug.WriteLine("year start: " + nextYear.ToString());
 			string periodFormat = "";
@@ -322,7 +325,7 @@ namespace Next_View
 				} while (nextYear <= _maxDate);
 			}
 			else if (_rangeType == 2){
-				DateTime nextMonth = new DateTime (_minDate.Year, _minDate.Month, 1);  // time 0:0:0
+				var nextMonth = new DateTime (_minDate.Year, _minDate.Month, 1);  // time 0:0:0
 				periodFormat = "{0:yyyy-MM}";
 				chartTitle = "Images per month";
 				do {
@@ -333,7 +336,7 @@ namespace Next_View
 				} while (nextMonth <= _maxDate);
 			}
 			else if (_rangeType == 3){   // days
-				DateTime nextDay = new DateTime (_minDate.Year, _minDate.Month, _minDate.Day);
+				var nextDay = new DateTime (_minDate.Year, _minDate.Month, _minDate.Day);
 				periodFormat = "{0:yyyy-MM-dd}";
 				chartTitle = "Images per day";
 				do {
@@ -343,7 +346,7 @@ namespace Next_View
 				} while (nextDay <= _maxDate);
 			}
 			else {   // hours
-				DateTime nextHour = new DateTime(_minDate.Year, _minDate.Month, _minDate.Day, _minDate.Hour, 0, 0);
+				var nextHour = new DateTime(_minDate.Year, _minDate.Month, _minDate.Day, _minDate.Hour, 0, 0);
 				periodFormat = "{0:yyyy-MM-dd HH}";
 				chartTitle = "Images per hour";
 				do {
@@ -427,12 +430,12 @@ namespace Next_View
 				labelCaption = string.Format("{0:HH:mm}", lDate);
 			}
 		}
-		
+
 		void SearchExif(string searchStr)
 		{
 			int ext = 0;     // No Exif
-			if (string.Compare("Reduced Exif", searchStr) == 0) ext = 1;
-			else if (string.Compare("Full Exif", searchStr) == 0) ext = 2;
+			if (string.Compare("Reduced Exif", searchStr, StringComparison.InvariantCulture) == 0) ext = 1;
+			else if (string.Compare("Full Exif", searchStr, StringComparison.InvariantCulture) == 0) ext = 2;
 
 			foreach (Exif exi in exList) {
 				if (exi.eType ==  ext){
@@ -445,7 +448,7 @@ namespace Next_View
 		void SearchExifModel(string searchStr)
 		{
 			foreach (Exif exi in exList) {
-				if (string.Compare(exi.eModel, searchStr) == 0){
+				if (string.Compare(exi.eModel, searchStr, StringComparison.InvariantCulture) == 0){
 					ListViewItem item = this.listImg.Items.Add(exi.eFname);
 					exifImgList.Add(exi.eFname);
 				}
@@ -455,7 +458,7 @@ namespace Next_View
 		void SearchExifLens(string searchStr)
 		{
 			foreach (Exif exi in exList) {
-				if (string.Compare(exi.eLensmodel, searchStr) == 0){
+				if (string.Compare(exi.eLensmodel, searchStr, StringComparison.InvariantCulture) == 0){
 					ListViewItem item = this.listImg.Items.Add(exi.eFname);
 					exifImgList.Add(exi.eFname);
 				}
@@ -465,7 +468,7 @@ namespace Next_View
 		void SearchExifExpo(string searchStr)
 		{
 			foreach (Exif exi in exList) {
-				if (string.Compare(exi.eExposi, searchStr) == 0){
+				if (string.Compare(exi.eExposi, searchStr, StringComparison.InvariantCulture) == 0){
 					ListViewItem item = this.listImg.Items.Add(exi.eFname);
 					exifImgList.Add(exi.eFname);
 				}
@@ -475,7 +478,7 @@ namespace Next_View
 		void SearchExifScene(string searchStr)
 		{
 			foreach (Exif exi in exList) {
-				if (string.Compare(exi.eScene, searchStr) == 0){
+				if (string.Compare(exi.eScene, searchStr, StringComparison.InvariantCulture) == 0){
 					ListViewItem item = this.listImg.Items.Add(exi.eFname);
 					exifImgList.Add(exi.eFname);
 				}
@@ -485,11 +488,11 @@ namespace Next_View
 		void SearchExifToD(string searchStr)
 		{
 			int tod = -1;
-			if (string.Compare("Night", searchStr) == 0) tod = 0;
-			else if (string.Compare("Morning", searchStr) == 0) tod = 1;
-			else if (string.Compare("Noon", searchStr) == 0) tod = 2;
-			else if (string.Compare("Afternoon", searchStr) == 0) tod = 3;
-			else if (string.Compare("Evening", searchStr) == 0) tod = 4;
+			if (string.Compare("Night", searchStr, StringComparison.InvariantCulture) == 0) tod = 0;
+			else if (string.Compare("Morning", searchStr, StringComparison.InvariantCulture) == 0) tod = 1;
+			else if (string.Compare("Noon", searchStr, StringComparison.InvariantCulture) == 0) tod = 2;
+			else if (string.Compare("Afternoon", searchStr, StringComparison.InvariantCulture) == 0) tod = 3;
+			else if (string.Compare("Evening", searchStr, StringComparison.InvariantCulture) == 0) tod = 4;
 
 			foreach (Exif exi in exList) {
 				if (exi.eTimeOfD ==  tod){
@@ -502,7 +505,7 @@ namespace Next_View
 		void SearchExifFLen(string searchStr)
 		{
 			foreach (Exif exi in exList) {
-				if (string.Compare(exi.eFLength, searchStr) == 0){
+				if (string.Compare(exi.eFLength, searchStr, StringComparison.InvariantCulture) == 0){
 					ListViewItem item = this.listImg.Items.Add(exi.eFname);
 					exifImgList.Add(exi.eFname);
 				}
@@ -513,6 +516,16 @@ namespace Next_View
 		{
 			foreach (Exif exi in exList) {
 				if (exi.eGps == true){
+					ListViewItem item = this.listImg.Items.Add(exi.eFname);
+					exifImgList.Add(exi.eFname);
+				}
+			}
+		}
+
+		void SearchExifFace()
+		{
+			foreach (Exif exi in exList) {
+				if (exi.eFace == true){
 					ListViewItem item = this.listImg.Items.Add(exi.eFname);
 					exifImgList.Add(exi.eFname);
 				}
@@ -546,7 +559,7 @@ namespace Next_View
 					datePart = String.Format("{0:HH}", exi.eDtOriginal);
 					searchStr = searchStr.Substring(0, 2);
 				}
-				if (string.Compare(datePart, searchStr) == 0){
+				if (string.Compare(datePart, searchStr, StringComparison.InvariantCulture) == 0){
 					ListViewItem item = this.listImg.Items.Add(exi.eFname);
 					exifImgList.Add(exi.eFname);
 				}
@@ -655,6 +668,13 @@ namespace Next_View
 			SearchExifGps();
 		}
 
+		void LblFaceDoubleClick(object sender, EventArgs e)
+		{
+			listImg.Items.Clear();
+			exifImgList.Clear();
+			SearchExifFace();
+		}
+
 		void LblFlashDoubleClick(object sender, EventArgs e)
 		{
 			listImg.Items.Clear();
@@ -724,9 +744,9 @@ namespace Next_View
 				if (upperDir != null) {
 					edImgPath.Text = Directory.GetParent(sDir).FullName;
 				}
-			}	
+			}
 		}
-		
+
     // ------------------------------   BackgroundWorker  ----------------------------------------------------------
 
 		public bool ScanImages(BackgroundWorker bw)
@@ -747,6 +767,7 @@ namespace Next_View
 			string lens;
 			string scene;
 			bool gps;
+			bool face;
 			DateTime nullDate = DateTime.MinValue;
 			int maxTicks = imgList.Count() / 100;
 			if (maxTicks < 1) maxTicks = 1;
@@ -757,10 +778,10 @@ namespace Next_View
 			{
 
 				Util.CheckExif(out exType, out orientation, out model, out dtOriginal, out timeOfD, out expotime, out fnumber, out fLength, out flash, out exposi, out lens, out scene,
-				               out gps, picPath);
+				               out gps, out face, picPath);
 				exList.Add(new Exif(exType, model, dtOriginal, timeOfD,
-				                    expotime, fnumber, fLength, flash,  exposi, lens, scene,
-					                  gps, picPath));
+				                  expotime, fnumber, fLength, flash,  exposi, lens, scene,
+					                gps, face, picPath));
 				fCount++;
 				int mod = fCount % 100;
 				if (mod == 0){
@@ -798,6 +819,7 @@ namespace Next_View
 				else dicScene[scene] =1;
 
 				if (gps) ++_gpsCount;
+				if (face) ++_faceCount;
 
 			}
 
@@ -827,14 +849,14 @@ namespace Next_View
 			}
 		}
 
-		void BackgroundWorker1ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
+		void BackgroundWorker1ProgressChanged(object sender, ProgressChangedEventArgs e)
 		// called by: BackgroundWorker1.ReportProgress
 		{
 			int steps = e.ProgressPercentage;
 				SetStatusText(steps, "");
 		}
 
-		void BackgroundWorker1RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+		void BackgroundWorker1RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
 			_stop = false;
 			cmdStart.Text = "&Start";

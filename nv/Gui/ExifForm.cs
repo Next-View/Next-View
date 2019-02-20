@@ -21,7 +21,6 @@ using System.Diagnostics;  //   debug
 using System.Drawing;  // rectangle
 using System.Linq;	 //	OfType
 using System.Windows.Forms;
-using WeifenLuo.WinFormsUI.Docking;
 using MetadataExtractor;
 using MetadataExtractor.Formats.Exif;
 using MetadataExtractor.Formats.Exif.Makernotes;
@@ -325,6 +324,20 @@ namespace Next_View
 
 				// ------------------------------   makernotes   ----------------------------------------------------------
 
+				var canonDirectory = directories.OfType<CanonMakernoteDirectory>().FirstOrDefault();
+				if (canonDirectory != null){
+					AddListItem("Makernote:", "+");
+					string lensType = canonDirectory.GetDescription(CanonMakernoteDirectory.CameraSettings.TagLensType);
+					AddListItem("Lens Type", lensType);
+				}
+
+				var fujiDirectory = directories.OfType<FujifilmMakernoteDirectory>().FirstOrDefault();
+				if (fujiDirectory != null){
+					AddListItem("Makernote:", "+");
+					string pictureMode = fujiDirectory.GetDescription(FujifilmMakernoteDirectory.TagPictureMode);
+					AddListItem("Picture Mode", pictureMode);
+				}
+								
 				var olympusCameraDirectory = directories.OfType<OlympusCameraSettingsMakernoteDirectory>().FirstOrDefault();
 				if (olympusCameraDirectory != null){
 					AddListItem("Makernote:", "+");
@@ -334,24 +347,26 @@ namespace Next_View
 
 				var olympusEquipmentDirectory = directories.OfType<OlympusEquipmentMakernoteDirectory>().FirstOrDefault();
 				if (olympusEquipmentDirectory != null){
+					AddListItem("Makernote:", "+");
 					string lensModel = olympusEquipmentDirectory.GetDescription(OlympusEquipmentMakernoteDirectory.TagLensModel);
 					AddListItem("Lens Model", lensModel);
 				}
 
-				var fujiDirectory = directories.OfType<FujifilmMakernoteDirectory>().FirstOrDefault();
-				if (fujiDirectory != null){
+				var panasonicDirectory = directories.OfType<PanasonicMakernoteDirectory>().FirstOrDefault();
+				if (panasonicDirectory != null){
 					AddListItem("Makernote:", "+");
-					string pictureMode = fujiDirectory.GetDescription(FujifilmMakernoteDirectory.TagPictureMode);
-					AddListItem("Picture Mode", pictureMode);
+					string faceNumber = panasonicDirectory.GetDescription(PanasonicMakernoteDirectory.TagFacesDetected);
+					AddListItem("Faces detected", faceNumber);
 				}
 
-				var canonDirectory = directories.OfType<CanonMakernoteDirectory>().FirstOrDefault();
-				if (canonDirectory != null){
+				var samsungDirectory = directories.OfType<SamsungType2MakernoteDirectory>().FirstOrDefault();
+				if (samsungDirectory != null){
 					AddListItem("Makernote:", "+");
-					string lensType = canonDirectory.GetDescription(CanonMakernoteDirectory.CameraSettings.TagLensType);
-					AddListItem("Lens Type", lensType);
+					string faceDetect = samsungDirectory.GetDescription(SamsungType2MakernoteDirectory.TagFaceDetect);
+					if (faceDetect == "On")
+						AddListItem("Faces detected", "yes");
 				}
-
+								
 				var sonyDirectory = directories.OfType<SonyType1MakernoteDirectory>().FirstOrDefault();
 				if (sonyDirectory != null){
 					AddListItem("Makernote:", "+");

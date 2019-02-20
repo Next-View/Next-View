@@ -665,12 +665,12 @@ namespace Next_View
 		}
 		void FrmMainActivated(object sender, EventArgs e)
 		{
-			Debug.WriteLine("activated main: ");
+			//Debug.WriteLine("activated main: ");
 		}
 
 		void FrmMainKeyDown(object sender, KeyEventArgs e)
 		{
-			Debug.WriteLine("main key: " + e.KeyValue.ToString());
+			//Debug.WriteLine("main key: " + e.KeyValue.ToString());
 		}
 
 	}  // end main

@@ -120,7 +120,7 @@ namespace Next_View
 
 		public static bool CheckExif(out int exType, out string orientation, out string model, out DateTime dtOriginal, out int timeOfD,
 		                             out string expotime, out string fNumber, out string fLength, out bool flash, out string exposi, out string lensmodel, out string scene,
-		                             out bool gps, string fName)
+		                             out bool gps, out bool face, string fName)
 		// called by: exifDash.ScanImages
 		{
 			exType = 0;
@@ -136,6 +136,7 @@ namespace Next_View
 			lensmodel = "";
 			scene = "";
 			gps = false;
+			face = false;
 
 			int exCount = 0;
 
@@ -224,17 +225,9 @@ namespace Next_View
 				if (exCount > 15) exType = 2;
 				// ------------------------------   makernotes   ----------------------------------------------------------
 
-				var olympusCameraDirectory = directories.OfType<OlympusCameraSettingsMakernoteDirectory>().FirstOrDefault();
-				if (olympusCameraDirectory != null){
-					string artFilter = olympusCameraDirectory.GetDescription(OlympusCameraSettingsMakernoteDirectory.TagArtFilter);
-				}
-
-				var olympusEquipmentDirectory = directories.OfType<OlympusEquipmentMakernoteDirectory>().FirstOrDefault();
-				if (olympusEquipmentDirectory != null){
-					string lensModel2 = olympusEquipmentDirectory.GetDescription(OlympusEquipmentMakernoteDirectory.TagLensModel);
-					if (string.IsNullOrEmpty(lensmodel))  {
-						if (lensModel2 != null) lensmodel = lensModel2;
-					}
+				var canonDirectory = directories.OfType<CanonMakernoteDirectory>().FirstOrDefault();
+				if (canonDirectory != null){
+					string lensType = canonDirectory.GetDescription(CanonMakernoteDirectory.CameraSettings.TagLensType);
 				}
 
 				var fujiDirectory = directories.OfType<FujifilmMakernoteDirectory>().FirstOrDefault();
@@ -242,14 +235,44 @@ namespace Next_View
 					string pictureMode = fujiDirectory.GetDescription(FujifilmMakernoteDirectory.TagPictureMode);
 				}
 
-				var canonDirectory = directories.OfType<CanonMakernoteDirectory>().FirstOrDefault();
-				if (canonDirectory != null){
-					string lensType = canonDirectory.GetDescription(CanonMakernoteDirectory.CameraSettings.TagLensType);
+				
+				var olympusCameraDirectory = directories.OfType<OlympusCameraSettingsMakernoteDirectory>().FirstOrDefault();
+				if (olympusCameraDirectory != null){
+					string artFilter = olympusCameraDirectory.GetDescription(OlympusCameraSettingsMakernoteDirectory.TagArtFilter);    // not used
+				}
+
+				var olympusEquipmentDirectory = directories.OfType<OlympusEquipmentMakernoteDirectory>().FirstOrDefault();
+				if (olympusEquipmentDirectory != null){
+					string lensModel2 = olympusEquipmentDirectory.GetDescription(OlympusEquipmentMakernoteDirectory.TagLensModel);
+					if (string.IsNullOrEmpty(lensmodel))  {    // from subIfd
+						if (lensModel2 != null) lensmodel = lensModel2;
+					}
+				}
+
+				var panasonicDirectory = directories.OfType<PanasonicMakernoteDirectory>().FirstOrDefault();
+				if (panasonicDirectory != null){
+					string faceNumber = panasonicDirectory.GetDescription(PanasonicMakernoteDirectory.TagFacesDetected);
+					if (faceNumber != "0"){
+						face = true;
+					}
+				}
+				
+				var samsungDirectory = directories.OfType<SamsungType2MakernoteDirectory>().FirstOrDefault();
+				if (samsungDirectory != null){
+					string faceDetect = samsungDirectory.GetDescription(SamsungType2MakernoteDirectory.TagFaceDetect);
+					if (faceDetect == "On"){
+						face = true;
+					}
 				}
 
 				var sonyDirectory = directories.OfType<SonyType1MakernoteDirectory>().FirstOrDefault();
 				if (sonyDirectory != null){
 					string afMode = sonyDirectory.GetDescription(SonyType1MakernoteDirectory.TagAfMode);
+					if (afMode != null){
+						if (afMode == "Face Detected"){
+							face = true;
+						}
+					}
 				}
 
 				// ------------------------------   gps    --------------

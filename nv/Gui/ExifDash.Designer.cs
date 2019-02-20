@@ -85,6 +85,7 @@ namespace Next_View
 			this.lblInfo = new System.Windows.Forms.Label();
 			this.chartImg = new System.Windows.Forms.DataVisualization.Charting.Chart();
 			this.cmdUp = new System.Windows.Forms.Button();
+			this.lblFace = new System.Windows.Forms.Label();
 			this.popImgList.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.chartImg)).BeginInit();
 			this.SuspendLayout();
@@ -462,6 +463,20 @@ namespace Next_View
 			this.cmdUp.TabIndex = 72;
 			this.cmdUp.Click += new System.EventHandler(this.CmdUpClick);
 			// 
+			// lblFace
+			// 
+			this.lblFace.BackColor = System.Drawing.SystemColors.Window;
+			this.lblFace.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.lblFace.Location = new System.Drawing.Point(452, 199);
+			this.lblFace.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+			this.lblFace.Name = "lblFace";
+			this.lblFace.Padding = new System.Windows.Forms.Padding(2, 0, 0, 0);
+			this.lblFace.Size = new System.Drawing.Size(220, 20);
+			this.lblFace.TabIndex = 73;
+			this.lblFace.Text = "Face:";
+			this.lblFace.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.lblFace.DoubleClick += new System.EventHandler(this.LblFaceDoubleClick);
+			// 
 			// ExifDash
 			// 
 			this.AcceptButton = this.cmdStart;
@@ -471,6 +486,7 @@ namespace Next_View
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.AutoScroll = true;
 			this.ClientSize = new System.Drawing.Size(775, 676);
+			this.Controls.Add(this.lblFace);
 			this.Controls.Add(this.cmdUp);
 			this.Controls.Add(this.chartImg);
 			this.Controls.Add(this.lblInfo);
@@ -544,5 +560,6 @@ namespace Next_View
 		private System.Windows.Forms.DataVisualization.Charting.Chart chartImg;
 		private System.Windows.Forms.Button cmdUp;
 		private System.Windows.Forms.ToolStripMenuItem popProperties;
+		private System.Windows.Forms.Label lblFace;
 	}
 }

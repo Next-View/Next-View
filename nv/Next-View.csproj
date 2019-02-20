@@ -79,7 +79,7 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="WeifenLuo.WinFormsUI.Docking">
-      <HintPath>3rdParty\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+      <HintPath>bin\Debug\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
     <Reference Include="XDMessaging">
       <HintPath>bin\Debug\XDMessaging.dll</HintPath>

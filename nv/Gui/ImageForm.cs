@@ -318,7 +318,7 @@ namespace Next_View
 		{
 
 			//Debug.WriteLine(" ");
-			Debug.WriteLine("key: " + e.KeyValue.ToString());
+			//Debug.WriteLine("key: " + e.KeyValue.ToString());
 
 			bool alt = false;
 			if (e.Modifiers == Keys.Alt){
