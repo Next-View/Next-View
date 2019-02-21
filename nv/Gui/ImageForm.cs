@@ -483,7 +483,7 @@ namespace Next_View
 				bool showOk = ShowExif();
 				sw1.Stop();
 				if (!showOk){
-					Util.ExifOrient(ref _exifType, ref _orientation, _currentPath);
+					ExifRead.ExifOrient(ref _exifType, ref _orientation, _currentPath);
 				}
 
 				//Debug.WriteLine("Ticks: " + sw1.Elapsed.Ticks.ToString());

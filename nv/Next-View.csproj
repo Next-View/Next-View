@@ -91,6 +91,7 @@
   <ItemGroup>
     <Compile Include="Class\CExif.cs" />
     <Compile Include="Class\StatusMainEvent.cs" />
+    <Compile Include="Diff\Exif.cs" />
     <Compile Include="Diff\Multi.cs" />
     <Compile Include="Diff\Netutl.cs" />
     <Compile Include="Diff\Translate.cs" />

@@ -343,7 +343,19 @@ namespace Next_View
 					AddListItem("Makernote:", "+");
 					string artFilter = olympusCameraDirectory.GetDescription(OlympusCameraSettingsMakernoteDirectory.TagArtFilter);
 					AddListItem("Art Filter", artFilter);
+					string focusMode = olympusCameraDirectory.GetDescription(OlympusCameraSettingsMakernoteDirectory.TagFocusMode);
+					if (focusMode.Contains("Face detect")){
+						AddListItem("Faces detected", "yes");
+					}
+					//Debug.WriteLine("Olympus focus: "+ focusMode);
 				}
+
+				var olympusImageProcessingDirectory = directories.OfType<OlympusImageProcessingMakernoteDirectory>().FirstOrDefault();					
+				if (olympusImageProcessingDirectory != null){
+					string facesDetected = olympusImageProcessingDirectory.GetDescription(OlympusImageProcessingMakernoteDirectory.TagFacesDetected);
+					//Debug.WriteLine("Olympus faces: "+ facesDetected);					
+				}
+						
 
 				var olympusEquipmentDirectory = directories.OfType<OlympusEquipmentMakernoteDirectory>().FirstOrDefault();
 				if (olympusEquipmentDirectory != null){

@@ -777,7 +777,7 @@ namespace Next_View
 			foreach (string picPath in imgList)
 			{
 
-				Util.CheckExif(out exType, out orientation, out model, out dtOriginal, out timeOfD, out expotime, out fnumber, out fLength, out flash, out exposi, out lens, out scene,
+				ExifRead.CheckExif(out exType, out orientation, out model, out dtOriginal, out timeOfD, out expotime, out fnumber, out fLength, out flash, out exposi, out lens, out scene,
 				               out gps, out face, picPath);
 				exList.Add(new Exif(exType, model, dtOriginal, timeOfD,
 				                  expotime, fnumber, fLength, flash,  exposi, lens, scene,

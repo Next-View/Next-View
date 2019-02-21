@@ -59,7 +59,9 @@ namespace Next_View
 					textExif0.Text += "Dir: " + directory + Environment.NewLine;
 					foreach (var tag in directory.Tags)
 					{
-						textExif0.Text += directory.Name + " - " + tag.Name + " = " + tag.Description + Environment.NewLine;
+						string tDesc = "";
+						if (tag.Description != null) tDesc = tag.Description;			
+						textExif0.Text += directory.Name + " - " + tag.Name + " = " + tDesc.Replace("\0", String.Empty) + Environment.NewLine;
 					}
 				}
 				return true;
