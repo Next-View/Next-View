@@ -459,7 +459,7 @@ namespace Next_View
 			this.cmdUp.Location = new System.Drawing.Point(696, 55);
 			this.cmdUp.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.cmdUp.Name = "cmdUp";
-			this.cmdUp.Size = new System.Drawing.Size(45, 28);
+			this.cmdUp.Size = new System.Drawing.Size(58, 28);
 			this.cmdUp.TabIndex = 72;
 			this.cmdUp.Click += new System.EventHandler(this.CmdUpClick);
 			// 
@@ -518,6 +518,7 @@ namespace Next_View
 			this.DragDrop += new System.Windows.Forms.DragEventHandler(this.ExifDashDragDrop);
 			this.DragEnter += new System.Windows.Forms.DragEventHandler(this.ExifDashDragEnter);
 			this.Enter += new System.EventHandler(this.ExifDashEnter);
+			this.Leave += new System.EventHandler(this.ExifDashLeave);
 			this.popImgList.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.chartImg)).EndInit();
 			this.ResumeLayout(false);

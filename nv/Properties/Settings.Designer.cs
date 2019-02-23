@@ -286,7 +286,31 @@ namespace Next_View.Properties {
 				this["Exif2Y"] = value;
 			}
 		}
-				
+
+		[global::System.Configuration.UserScopedSettingAttribute()]
+		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+		[global::System.Configuration.DefaultSettingValueAttribute("850")]
+		public int DashW {
+			get {
+				return ((int)(this["DashW"]));
+			}
+			set {
+				this["DashW"] = value;
+			}
+		}
+		
+		[global::System.Configuration.UserScopedSettingAttribute()]
+		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+		[global::System.Configuration.DefaultSettingValueAttribute("750")]
+		public int DashH {
+			get {
+				return ((int)(this["DashH"]));
+			}
+			set {
+				this["DashH"] = value;
+			}
+		}
+						
 		[global::System.Configuration.UserScopedSettingAttribute()]
 		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
 		[global::System.Configuration.DefaultSettingValueAttribute("")]

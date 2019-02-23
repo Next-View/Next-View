@@ -70,6 +70,12 @@
     <Setting Name="Exif2Y" Type="System.Int32" Scope="User" Roaming="false">
       <Value Profile="(Default)">50</Value>
     </Setting>
+    <Setting Name="DashW" Type="System.Int32" Scope="User" Roaming="false">
+      <Value Profile="(Default)">850</Value>
+    </Setting>
+    <Setting Name="DashH" Type="System.Int32" Scope="User" Roaming="false">
+      <Value Profile="(Default)">750</Value>
+    </Setting>
     <Setting Name="RecentImgs" Type="System.String" Scope="User" Roaming="false">
       <Value Profile="(Default)"></Value>
     </Setting>

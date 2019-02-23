@@ -517,7 +517,7 @@ namespace Next_View
 			this.bnHelp});
 			this.toolStrip2.Location = new System.Drawing.Point(3, 0);
 			this.toolStrip2.Name = "toolStrip2";
-			this.toolStrip2.Size = new System.Drawing.Size(256, 31);
+			this.toolStrip2.Size = new System.Drawing.Size(287, 31);
 			this.toolStrip2.TabIndex = 1;
 			// 
 			// bnOpen
@@ -600,7 +600,7 @@ namespace Next_View
 			this.bnExif.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.bnExif.Name = "bnExif";
 			this.bnExif.Size = new System.Drawing.Size(26, 28);
-			this.bnExif.Text = "toolStripButton1";
+			this.bnExif.Text = "Exif data";
 			this.bnExif.Click += new System.EventHandler(this.BnExifClick);
 			// 
 			// toolStripSeparator3

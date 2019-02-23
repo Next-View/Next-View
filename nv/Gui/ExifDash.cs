@@ -176,30 +176,30 @@ namespace Next_View
 					_rangeType = 1;      // years
 					double years = Math.Ceiling(imgSpan.TotalDays / 365.0);
 					string spanS = years.ToString("0.0");
-					lblInfo.Text = String.Format("Info: Number of images {0}. Between {1:yyyy-MM-dd} and {2:yyyy-MM-dd}, a span of {3} years", exList.Count, _minDate, _maxDate, spanS );
+					lblInfo.Text = String.Format("Info: Number of Jpeg images {0}. Between {1:yyyy-MM-dd} and {2:yyyy-MM-dd}, a span of {3} years", exList.Count, _minDate, _maxDate, spanS );
 				}
 				else if (imgSpan.TotalDays > 60){
 					_rangeType = 2;      // months
 					double months = Math.Ceiling(imgSpan.TotalDays / 30.0);
 					string spanS = months.ToString("0");
-					lblInfo.Text = String.Format("Info: Number of images {0}. Between {1:yyyy-MM-dd} and {2:yyyy-MM-dd}, a span of {3} months", exList.Count, _minDate, _maxDate, spanS );
+					lblInfo.Text = String.Format("Info: Number of Jpeg images {0}. Between {1:yyyy-MM-dd} and {2:yyyy-MM-dd}, a span of {3} months", exList.Count, _minDate, _maxDate, spanS );
 				}
 				else if (imgSpan.TotalDays > 1){
 					_rangeType = 3;      // days
 					double days = (int) Math.Ceiling(imgSpan.TotalHours / 24.0);
 					string spanS = days.ToString("0");
-					lblInfo.Text = String.Format("Info: Number of images {0}. Between {1:yyyy-MM-dd} and {2:yyyy-MM-dd}, a span of {3} days", exList.Count, _minDate, _maxDate, spanS );
+					lblInfo.Text = String.Format("Info: Number of Jpeg images {0}. Between {1:yyyy-MM-dd} and {2:yyyy-MM-dd}, a span of {3} days", exList.Count, _minDate, _maxDate, spanS );
 				}
 				else {
 					_rangeType = 4;      // hours
 					int hours = (int) Math.Ceiling(imgSpan.TotalMinutes / 60.0);
 					string spanS = hours.ToString("0");
-					lblInfo.Text = String.Format("Info: Number of images {0}. On {1:yyyy-MM-dd}. Between {2:HH:mm} and {3:HH:mm}, a span of {4} hours", exList.Count, _minDate, _minDate, _maxDate, spanS );
+					lblInfo.Text = String.Format("Info: Number of Jpeg images {0}. On {1:yyyy-MM-dd}. Between {2:HH:mm} and {3:HH:mm}, a span of {4} hours", exList.Count, _minDate, _minDate, _maxDate, spanS );
 				}
 				CreateTimelineChart( );
 			}
 			else {
-				lblInfo.Text = String.Format("Info: Number of images {0} ", exList.Count);
+				lblInfo.Text = String.Format("Info: Number of Jpeg images {0} ", exList.Count);
 			}
 
 			// show listviews
@@ -570,11 +570,19 @@ namespace Next_View
 
 		void ExifDashEnter(object sender, EventArgs e)
 		{
+			Debug.WriteLine("dash enter: ");
 			Settings.Default.LastTab = 2;
-			SetWindowSize(860, 780, 0);
+			int dW = Settings.Default.DashW;
+			int dH = Settings.Default.DashH;
+			SetWindowSize(dW, dH, 0);
 			SetCommand('p', "");
 		}
 
+		void ExifDashLeave(object sender, EventArgs e)
+		{
+			Debug.WriteLine("dash leave: ");
+			SetCommand('l', "");
+		}
 
 		void ExifDashFormClosing(object sender, FormClosingEventArgs e)
 		{
@@ -745,6 +753,9 @@ namespace Next_View
 					edImgPath.Text = Directory.GetParent(sDir).FullName;
 				}
 			}
+			else {
+				MessageBox.Show("Invalid directory", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+			}
 		}
 
     // ------------------------------   BackgroundWorker  ----------------------------------------------------------
@@ -890,7 +901,15 @@ namespace Next_View
 		}
 		void ExifDashLoad(object sender, EventArgs e)
 		{
-
+			ToolTip toolTip1 = new ToolTip();
+			// Set up the delays for the ToolTip.
+			toolTip1.AutoPopDelay = 5000;
+			toolTip1.InitialDelay = 500;
+			toolTip1.ReshowDelay = 500;
+			// Force the ToolTip text to be displayed whether or not the form is active.
+			toolTip1.ShowAlways = true;
+			// Set up the ToolTip text for the Button and Checkbox.
+			toolTip1.SetToolTip(this.cmdUp, "One directory up");
 		}
 
 

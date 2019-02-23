@@ -71,6 +71,7 @@ namespace Next_View
 			this.TopMost = true;
 			this.TopMost = false;
 			this.Activate();
+			m_Image.Show(dockPanel1, DockState.Document);
     	}
 
 		//--------------------------  form  ---------------------------//
@@ -647,9 +648,6 @@ namespace Next_View
 				case 'e':  //  exifdash
 					this.mnuExifDash.PerformClick();
 					break;
-				case 'r':  //  recent
-					recentItem1.AddRecentItem(fName);
-					break;
 				case 'i':  //  exif img
 					List<string> exImgList;
 					m_Exif.DashImgList(out exImgList);
@@ -657,9 +655,21 @@ namespace Next_View
 					m_Image.Show(dockPanel1, DockState.Document);
 					m_Image.ShowExifImages(exImgList, fName);
 					break;
+				case 'l':  //  leave dash
+					Settings.Default.DashW = this.Width;
+					Settings.Default.DashH = this.Height;
+					Settings.Default.Save( );
+					break;
 				case 'p':  //  exif path
 					m_Exif.SetPath2(_currentPath);
 					break;
+				case 'r':  //  recent
+					recentItem1.AddRecentItem(fName);
+					break;
+
+
+
+
 
 			}
 		}
