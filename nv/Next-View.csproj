@@ -89,6 +89,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="3rdParty\ExifReader.cs" />
     <Compile Include="Class\CExif.cs" />
     <Compile Include="Class\StatusMainEvent.cs" />
     <Compile Include="Diff\Exif.cs" />

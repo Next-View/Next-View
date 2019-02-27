@@ -43,7 +43,9 @@ namespace Next_View
 		int _currentHeight = 0;
 		string _picSelection = "";
 		string _currentPath = "";
-		string _orientation = "";
+		string _orientationStr = "";
+		int _oriInitial = -100;
+		int _oriCurrent = -100;
 		int _exifType = 0;
 		string _lastSearchStr = "";
 		Image _myImg;
@@ -429,6 +431,17 @@ namespace Next_View
 				case 13:    // enter  full screen
 					ShowFullScreen();
 					break;
+				case 76:    // L
+					RotateLeft();
+					break;
+				case 82:    // R
+					RotateRight();
+					break;
+				case 83:    // ctrl 's'
+					if (ctrl){
+						SaveOri();
+					}
+					break;
 				case 65:    // 'a'  for test
 					Test();
 					break;
@@ -478,34 +491,42 @@ namespace Next_View
 					return false;
 				}
 
-				Stopwatch sw1 = new Stopwatch();
-				sw1.Start();
+				//Stopwatch sw1 = new Stopwatch();
+				//sw1.Start();
 				bool showOk = ShowExif();
-				sw1.Stop();
-				if (!showOk){
-					ExifRead.ExifOrient(ref _exifType, ref _orientation, _currentPath);
+				//sw1.Stop();
+				if (!showOk){   // exif form not shown	
+					ExifRead.ExifOrient(ref _exifType, ref _orientationStr, _currentPath);
 				}
 
 				//Debug.WriteLine("Ticks: " + sw1.Elapsed.Ticks.ToString());
-				var t = new DateTime(sw1.Elapsed.Ticks);
+				//var t = new DateTime(sw1.Elapsed.Ticks);
 				//Debug.WriteLine("Exif time: {0:D2}s:{1:D5}ms", t.Second, t.Millisecond);
 
 				//Image myImg;
+				_oriInitial = -100;
 				using (FileStream stream = new FileStream(pPath, FileMode.Open, FileAccess.Read))
 				{
 					_myImg = Image.FromStream(stream);  // abort for gif
-					if (_orientation.Equals("right side, top (rotate 90 cw)")){
+					if (_orientationStr.Equals("right side, top (rotate 90 cw)")){
 						_myImg.RotateFlip(RotateFlipType.Rotate90FlipNone);
+						_oriInitial = 1;
 					}
-					else if (_orientation.Equals("bottom, right side (rotate 180)")){
+					else if (_orientationStr.Equals("bottom, right side (rotate 180)")){
 						_myImg.RotateFlip(RotateFlipType.Rotate180FlipNone);
+						_oriInitial = 2;
 					}
-					else if (_orientation.Equals("left side, bottom (rotate 270 cw)")){
+					else if (_orientationStr.Equals("left side, bottom (rotate 270 cw)")){
 						_myImg.RotateFlip(RotateFlipType.Rotate270FlipNone);
+						_oriInitial = 3;
+					}
+					else if (_orientationStr.Equals("top, left side (horizontal / normal)")){
+						_oriInitial = 0;
 					}
 
 					stream.Close();
 				}
+				_oriCurrent = _oriInitial;
 				GC.Collect();
 				Application.DoEvents();
 
@@ -661,6 +682,8 @@ namespace Next_View
 			PicLoad(_currentPath, true);
 		}
 
+		// ------------------------------   file functions  ----------------------------------------------------------
+		
 		public void RenamePic()
 		{
 			string newPath = "";
@@ -711,42 +734,6 @@ namespace Next_View
 			}
 		}
 
-		// ------------------------------   Tempmark functions  ----------------------------------------------------------
-		public void TempmarkDelete()
-		{
-			if (!_il.MarkDelete(_currentPath)){
-				MessageBox.Show(T._("This image is not marked"), T._("Error"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-			}
-		}
-
-		public void TempmarkGo()
-		{
-			string markPath = "";
-			if (_il.MarkGo(ref markPath)){
-				PicLoad(markPath, true);
-				_currentPath = markPath;
-			}
-			else {
-				MessageBox.Show(T._("No image is marked yet"), T._("Error"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-			}
-		}
-
-		public void TempmarkPic()
-		{
-			_il.MarkPic(_currentPath);
-		}
-
-		bool FileRename2(string nameFrom, string nameTo)
-		{
-			try {
-				File.Move(nameFrom, nameTo);
-				return true;
-			}
-			catch {
-				return false;
-			}
-		}
-
 		public void DelPic()
 		{
 			if (DelFile.MoveToRecycleBin(_currentPath)){
@@ -786,6 +773,81 @@ namespace Next_View
 			}
 		}
 
+		public bool SaveOri()
+		{
+			string mess1 = ""; 
+			if (_oriCurrent == -100){
+				mess1 = "This file has no Exif orientation."; 
+				MessageBox.Show(mess1, "Save not possible", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				return false;
+			}
+			
+			if (_oriCurrent == _oriInitial){
+				mess1 = "Orientation not changed"; 
+				MessageBox.Show(mess1, "Save not possible.", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				return false;
+			}		
+			byte oriByte;
+			switch(_oriCurrent)
+			{
+				case 1:  oriByte = 8;
+				break;
+				case 2:  oriByte = 3;
+				break;
+				case 3:  oriByte = 6;
+				break;
+				default: oriByte = 1; 
+				break;
+			}
+			ushort ori = 0;
+			using (var reader = new ExifReader(_currentPath))
+			{
+				if (reader.GetTagValue(ExifTags.Orientation, out ori)) {
+					reader.SaveOrient(oriByte);
+				}
+			}	
+              
+			Debug.WriteLine("Orient ini: {0}, current {1}, byte {2} ", _oriInitial, _oriCurrent, ori);			
+			return true;		
+		}
+		
+		// ------------------------------   Tempmark functions  ----------------------------------------------------------
+		public void TempmarkDelete()
+		{
+			if (!_il.MarkDelete(_currentPath)){
+				MessageBox.Show(T._("This image is not marked"), T._("Error"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+			}
+		}
+
+		public void TempmarkGo()
+		{
+			string markPath = "";
+			if (_il.MarkGo(ref markPath)){
+				PicLoad(markPath, true);
+				_currentPath = markPath;
+			}
+			else {
+				MessageBox.Show(T._("No image is marked yet"), T._("Error"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+			}
+		}
+
+		public void TempmarkPic()
+		{
+			_il.MarkPic(_currentPath);
+		}
+
+		bool FileRename2(string nameFrom, string nameTo)
+		{
+			try {
+				File.Move(nameFrom, nameTo);
+				return true;
+			}
+			catch {
+				return false;
+			}
+		}
+
+		
 		// ------------------------------   pop up  ----------------------------------------------------------
 
 		void PopOpenClick(object sender, EventArgs e)
@@ -895,6 +957,26 @@ namespace Next_View
 			}
 		}
 
+		public void RotateLeft()
+		{
+			_myImg.RotateFlip(RotateFlipType.Rotate270FlipNone);
+			picBox.Image = _myImg;
+			if (_oriCurrent != -100){
+				_oriCurrent--;
+				if (_oriCurrent < 0) _oriCurrent = 3;
+			}
+		}
+
+		public void RotateRight()
+		{
+			_myImg.RotateFlip(RotateFlipType.Rotate90FlipNone);
+			picBox.Image = _myImg;
+			if (_oriCurrent != -100){
+				_oriCurrent++;
+				if (_oriCurrent > 3) _oriCurrent = 0;
+			}
+		}
+				
 		public void StartEditor()
 		{
 			string editorPath = Settings.Default.Editor;
@@ -1033,7 +1115,7 @@ namespace Next_View
 		}
 
 
-		public bool StartExif()   //  with 'e'
+		public bool StartExif()   //  with e
 		{
 			try
 			{
@@ -1043,7 +1125,7 @@ namespace Next_View
 				if (CanStartExif()){
 					m_Exif = new ExifForm();
 					m_Exif.KeyChanged += new HandleKeyChange(HandleKey);
-					m_Exif.CheckFile(ref _exifType, ref _orientation, _currentPath);
+					m_Exif.CheckFile(ref _exifType, ref _orientationStr, _currentPath);
 					m_Exif.Show();
 				}
 				else {    // img to foreground
@@ -1066,7 +1148,7 @@ namespace Next_View
 		{
 			bool showRet = CanShowExif();
 			if (showRet){
-				m_Exif.CheckFile(ref _exifType, ref _orientation, _currentPath);
+				m_Exif.CheckFile(ref _exifType, ref _orientationStr, _currentPath);
 			}
 			return showRet;
 		}

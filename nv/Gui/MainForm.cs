@@ -288,11 +288,17 @@ namespace Next_View
 			m_Image.DelPic();
 		}
 
+		void MnuSaveOriClick(object sender, EventArgs e)
+		{
+			m_Image.SaveOri();
+		}
+		
 		void MnuExitClick(object sender, EventArgs e)
 		{
 			ExitApp();
 		}
 
+		
 		//--------------------------  menu edit ---------------------------//
 
 		void MnuOptionsClick(object sender, EventArgs e)
@@ -354,6 +360,16 @@ namespace Next_View
 			m_Image.ShowFullScreen();
 		}
 
+		void MnuRotateLeftClick(object sender, EventArgs e)
+		{
+			m_Image.RotateLeft();
+		}
+		
+		void MnuRotateRightClick(object sender, EventArgs e)
+		{
+			m_Image.RotateRight();
+		}
+		
 		void MnuShowImageClick(object sender, EventArgs e)
 		{
 			m_Image.Show(dockPanel1, DockState.Document);
@@ -682,6 +698,8 @@ namespace Next_View
 		{
 			//Debug.WriteLine("main key: " + e.KeyValue.ToString());
 		}
+
+
 
 	}  // end main
 
