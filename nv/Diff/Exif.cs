@@ -255,7 +255,7 @@ namespace Next_View
 			catch (Exception e)
 			{
 				Debug.WriteLine(e.Message);
-				MessageBox.Show("Exif is invalid" + "\n " + e.Message, "Invalid file" + fName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				MessageBox.Show(T._("Exif is invalid") + "\n " + e.Message, T._("Invalid file") + fName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				return false;
 			}
 		}

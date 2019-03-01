@@ -89,7 +89,7 @@ namespace Next_View
 
 		public void FormClear()
 		{
-			lblInfo.Text = "Info:";
+			lblInfo.Text = T._("Info:");
 			exList.Clear();
 			exifImgList.Clear();
 			listImg.Items.Clear();
@@ -113,7 +113,7 @@ namespace Next_View
 			_faceCount = 0;
 			_flashCount = 0;
 			lblGps.Text = "GPS: ";
-			lblFlash.Text = "Flash: ";
+			lblFlash.Text = T._("Flash") + ": ";
 
 			_dateCount = 0;
 			_minDate = DateTime.MaxValue;
@@ -126,11 +126,11 @@ namespace Next_View
 		{
 			string imgDir = edImgPath.Text;
 			if (string.IsNullOrEmpty(imgDir)) {
-				MessageBox.Show ("No directory given", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				MessageBox.Show (T._("No directory given"), T._("Error"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				return false;
 			}
 			if (!Directory.Exists(imgDir)) {
-				MessageBox.Show ("Directory does not exist", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				MessageBox.Show (T._("Directory does not exist"), T._("Error"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				return false;
 			}
 
@@ -144,7 +144,7 @@ namespace Next_View
 		{
 			if (_stop == false){
 				_stop = true;
-				cmdStart.Text = "&Stop";
+				cmdStart.Text = T._("&Stop");
 				//Debug.WriteLine("bw: start: ");
 				if (backgroundWorker1.IsBusy != true)
 				{
@@ -176,30 +176,30 @@ namespace Next_View
 					_rangeType = 1;      // years
 					double years = Math.Ceiling(imgSpan.TotalDays / 365.0);
 					string spanS = years.ToString("0.0");
-					lblInfo.Text = String.Format("Info: Number of Jpeg images {0}. Between {1:yyyy-MM-dd} and {2:yyyy-MM-dd}, a span of {3} years", exList.Count, _minDate, _maxDate, spanS );
+					lblInfo.Text = String.Format(T._("Info: Number of Jpeg images {0}. Between {1:yyyy-MM-dd} and {2:yyyy-MM-dd}, a span of {3} years"), exList.Count, _minDate, _maxDate, spanS );
 				}
 				else if (imgSpan.TotalDays > 60){
 					_rangeType = 2;      // months
 					double months = Math.Ceiling(imgSpan.TotalDays / 30.0);
 					string spanS = months.ToString("0");
-					lblInfo.Text = String.Format("Info: Number of Jpeg images {0}. Between {1:yyyy-MM-dd} and {2:yyyy-MM-dd}, a span of {3} months", exList.Count, _minDate, _maxDate, spanS );
+					lblInfo.Text = String.Format(T._("Info: Number of Jpeg images {0}. Between {1:yyyy-MM-dd} and {2:yyyy-MM-dd}, a span of {3} months"), exList.Count, _minDate, _maxDate, spanS );
 				}
 				else if (imgSpan.TotalDays > 1){
 					_rangeType = 3;      // days
 					double days = (int) Math.Ceiling(imgSpan.TotalHours / 24.0);
 					string spanS = days.ToString("0");
-					lblInfo.Text = String.Format("Info: Number of Jpeg images {0}. Between {1:yyyy-MM-dd} and {2:yyyy-MM-dd}, a span of {3} days", exList.Count, _minDate, _maxDate, spanS );
+					lblInfo.Text = String.Format(T._("Info: Number of Jpeg images {0}. Between {1:yyyy-MM-dd} and {2:yyyy-MM-dd}, a span of {3} days"), exList.Count, _minDate, _maxDate, spanS );
 				}
 				else {
 					_rangeType = 4;      // hours
 					int hours = (int) Math.Ceiling(imgSpan.TotalMinutes / 60.0);
 					string spanS = hours.ToString("0");
-					lblInfo.Text = String.Format("Info: Number of Jpeg images {0}. On {1:yyyy-MM-dd}. Between {2:HH:mm} and {3:HH:mm}, a span of {4} hours", exList.Count, _minDate, _minDate, _maxDate, spanS );
+					lblInfo.Text = String.Format(T._("Info: Number of Jpeg images {0}. On {1:yyyy-MM-dd}. Between {2:HH:mm} and {3:HH:mm}, a span of {4} hours"), exList.Count, _minDate, _minDate, _maxDate, spanS );
 				}
 				CreateTimelineChart( );
 			}
 			else {
-				lblInfo.Text = String.Format("Info: Number of Jpeg images {0} ", exList.Count);
+				lblInfo.Text = String.Format(T._("Info: Number of Jpeg images {0} "), exList.Count);
 			}
 
 			// show listviews
@@ -208,11 +208,11 @@ namespace Next_View
 				string exift;
 				switch(det.Key)
 				{
-					case 1: exift = "Reduced Exif";
+					case 1: exift = T._("Reduced Exif");
 					break;
-					case 2: exift = "Full Exif";
+					case 2: exift = T._("Full Exif");
 					break;
-					default: exift = "No Exif";  // 0
+					default: exift = T._("No Exif");  // 0
 					break;
 				}
 				ListViewItem item = this.listExift.Items.Add(exift);
@@ -227,17 +227,17 @@ namespace Next_View
 				string tod;
 				switch(dtd.Key)
 				{
-					case 0: tod = "Night";
+					case 0: tod = T._("Night");
 					break;
-					case 1: tod = "Morning";
+					case 1: tod = T._("Morning");
 					break;
-					case 2: tod = "Noon";
+					case 2: tod = T._("Noon");
 					break;
-					case 3: tod = "Afternoon";
+					case 3: tod = T._("Afternoon");
 					break;
-					case 4: tod = "Evening";
+					case 4: tod = T._("Evening");
 					break;
-					default: tod = "No time";
+					default: tod = T._("No time");
 					break;
 				}
 				ListViewItem item = this.listToD.Items.Add(tod);
@@ -250,7 +250,7 @@ namespace Next_View
 			foreach (KeyValuePair<string, int> dm in dicModel.OrderBy(key=> key.Key))
 			{
 				string mo = dm.Key;
-				if (string.IsNullOrEmpty(mo)) mo = "<no data>";
+				if (string.IsNullOrEmpty(mo)) mo = T._("<no data>");
 				ListViewItem item = this.listModel.Items.Add(mo);
 				item.ImageIndex = 0;
 				item.SubItems.Add(dm.Value.ToString());
@@ -261,7 +261,7 @@ namespace Next_View
 			foreach (KeyValuePair<string, int> dl in dicLens.OrderBy(key=> key.Key))
 			{
 				string le = dl.Key;
-				if (string.IsNullOrEmpty(le)) le = "<no data>";
+				if (string.IsNullOrEmpty(le)) le = T._("<no data>");
 				ListViewItem item = this.listLens.Items.Add(le);
 				item.ImageIndex = 0;
 				item.SubItems.Add(dl.Value.ToString());
@@ -272,7 +272,7 @@ namespace Next_View
 			foreach (KeyValuePair<string, int> dfl in dicFLen.OrderBy(key=> key.Key, new NsComparer()))
 			{
 				string fl = dfl.Key;
-				if (string.IsNullOrEmpty(fl)) fl = "<no data>";
+				if (string.IsNullOrEmpty(fl)) fl = T._("<no data>");
 				ListViewItem item = this.listFLen.Items.Add(fl);
 				item.ImageIndex = 0;
 				item.SubItems.Add(dfl.Value.ToString());
@@ -283,7 +283,7 @@ namespace Next_View
 			foreach (KeyValuePair<string, int> dex in dicExposi.OrderBy(key=> key.Key))
 			{
 				string exp = dex.Key;
-				if (string.IsNullOrEmpty(exp)) exp = "<no data>";
+				if (string.IsNullOrEmpty(exp)) exp = T._("<no data>");
 				ListViewItem item = this.listExpo.Items.Add(exp);
 				item.ImageIndex = 0;
 				item.SubItems.Add(dex.Value.ToString());
@@ -294,7 +294,7 @@ namespace Next_View
 			foreach (KeyValuePair<string, int> ds in dicScene.OrderBy(key=> key.Key))
 			{
 				string sc = ds.Key;
-				if (string.IsNullOrEmpty(sc)) sc = "<no data>";
+				if (string.IsNullOrEmpty(sc)) sc = T._("<no data>");
 				ListViewItem item = this.listScene.Items.Add(sc);
 				item.ImageIndex = 0;
 				item.SubItems.Add(ds.Value.ToString());
@@ -303,8 +303,8 @@ namespace Next_View
 			listScene.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
 
 			lblGps.Text = "GPS: " + _gpsCount.ToString();
-			lblFace.Text = "Face: " + _faceCount.ToString();
-			lblFlash.Text = "Flash: " + _flashCount.ToString();
+			lblFace.Text = T._("Face") + ": " + _faceCount.ToString();
+			lblFlash.Text = T._("Flash") + ": " + _flashCount.ToString();
 		}
 
 		void CreateTimelineChart( )
@@ -317,7 +317,7 @@ namespace Next_View
 			if (_rangeType == 1){  // years
 				DateTime nextYear = new DateTime (_minDate.Year, 1, 1);  // time 0:0:0
 				periodFormat = "{0:yyyy}";
-				chartTitle = "Images per year";
+				chartTitle = T._("Images per year");
 				do {    // pre fill
 					string year = String.Format(periodFormat , nextYear);
 					dicPeriod.Add(year, 0);
@@ -327,7 +327,7 @@ namespace Next_View
 			else if (_rangeType == 2){
 				var nextMonth = new DateTime (_minDate.Year, _minDate.Month, 1);  // time 0:0:0
 				periodFormat = "{0:yyyy-MM}";
-				chartTitle = "Images per month";
+				chartTitle = T._("Images per month");
 				do {
 					string month = String.Format(periodFormat , nextMonth);
 					dicPeriod.Add(month, 0);
@@ -338,7 +338,7 @@ namespace Next_View
 			else if (_rangeType == 3){   // days
 				var nextDay = new DateTime (_minDate.Year, _minDate.Month, _minDate.Day);
 				periodFormat = "{0:yyyy-MM-dd}";
-				chartTitle = "Images per day";
+				chartTitle = T._("Images per day");
 				do {
 					string day = String.Format(periodFormat , nextDay);
 					dicPeriod.Add(day, 0);
@@ -348,7 +348,7 @@ namespace Next_View
 			else {   // hours
 				var nextHour = new DateTime(_minDate.Year, _minDate.Month, _minDate.Day, _minDate.Hour, 0, 0);
 				periodFormat = "{0:yyyy-MM-dd HH}";
-				chartTitle = "Images per hour";
+				chartTitle = T._("Images per hour");
 				do {
 					string hour = String.Format(periodFormat , nextHour);
 					dicPeriod.Add(hour, 0);
@@ -434,8 +434,8 @@ namespace Next_View
 		void SearchExif(string searchStr)
 		{
 			int ext = 0;     // No Exif
-			if (string.Compare("Reduced Exif", searchStr, StringComparison.InvariantCulture) == 0) ext = 1;
-			else if (string.Compare("Full Exif", searchStr, StringComparison.InvariantCulture) == 0) ext = 2;
+			if (string.Compare(T._("Reduced Exif"), searchStr, StringComparison.InvariantCulture) == 0) ext = 1;
+			else if (string.Compare(T._("Full Exif"), searchStr, StringComparison.InvariantCulture) == 0) ext = 2;
 
 			foreach (Exif exi in exList) {
 				if (exi.eType ==  ext){
@@ -488,11 +488,11 @@ namespace Next_View
 		void SearchExifToD(string searchStr)
 		{
 			int tod = -1;
-			if (string.Compare("Night", searchStr, StringComparison.InvariantCulture) == 0) tod = 0;
-			else if (string.Compare("Morning", searchStr, StringComparison.InvariantCulture) == 0) tod = 1;
-			else if (string.Compare("Noon", searchStr, StringComparison.InvariantCulture) == 0) tod = 2;
-			else if (string.Compare("Afternoon", searchStr, StringComparison.InvariantCulture) == 0) tod = 3;
-			else if (string.Compare("Evening", searchStr, StringComparison.InvariantCulture) == 0) tod = 4;
+			if (string.Compare(T._("Night"), searchStr, StringComparison.InvariantCulture) == 0) tod = 0;
+			else if (string.Compare(T._("Morning"), searchStr, StringComparison.InvariantCulture) == 0) tod = 1;
+			else if (string.Compare(T._("Noon"), searchStr, StringComparison.InvariantCulture) == 0) tod = 2;
+			else if (string.Compare(T._("Afternoon"), searchStr, StringComparison.InvariantCulture) == 0) tod = 3;
+			else if (string.Compare(T._("Evening"), searchStr, StringComparison.InvariantCulture) == 0) tod = 4;
 
 			foreach (Exif exi in exList) {
 				if (exi.eTimeOfD ==  tod){
@@ -570,7 +570,7 @@ namespace Next_View
 
 		void ExifDashEnter(object sender, EventArgs e)
 		{
-			Debug.WriteLine("dash enter: ");
+			//Debug.WriteLine("dash enter: ");
 			Settings.Default.LastTab = 2;
 			int dW = Settings.Default.DashW;
 			int dH = Settings.Default.DashH;
@@ -580,7 +580,7 @@ namespace Next_View
 
 		void ExifDashLeave(object sender, EventArgs e)
 		{
-			Debug.WriteLine("dash leave: ");
+			//Debug.WriteLine("dash leave: ");
 			SetCommand('l', "");
 		}
 
@@ -754,7 +754,7 @@ namespace Next_View
 				}
 			}
 			else {
-				MessageBox.Show("Invalid directory", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				MessageBox.Show(T._("Invalid directory"), T._("Error"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}
 		}
 
@@ -782,7 +782,7 @@ namespace Next_View
 			DateTime nullDate = DateTime.MinValue;
 			int maxTicks = imgList.Count() / 100;
 			if (maxTicks < 1) maxTicks = 1;
-			bw.ReportProgress(maxTicks, "Start");
+			bw.ReportProgress(maxTicks, T._("Start"));
 
 			int fCount =0;
 			foreach (string picPath in imgList)
@@ -870,7 +870,7 @@ namespace Next_View
 		void BackgroundWorker1RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
 			_stop = false;
-			cmdStart.Text = "&Start";
+			cmdStart.Text = T._("&Start");
 			if (e.Cancelled == true)
 			{
 				//Debug.WriteLine("bw: cancel2: ");
@@ -892,7 +892,7 @@ namespace Next_View
 				// MessageBox.Show ("Directories in Source Path now sorted by release date", "Wrong sort sequence",
 
 				SetStatusText(-9, "");  // progress reset
-				SetStatusText(0, "Scan complete - " + edImgPath.Text + "  "  + ptime);
+				SetStatusText(0, T._("Scan complete") + " - " + edImgPath.Text + "  "  + ptime);
 				DateTime lastScan = DateTime.Now;
 
 
@@ -901,6 +901,7 @@ namespace Next_View
 		}
 		void ExifDashLoad(object sender, EventArgs e)
 		{
+			TranslateExifDashForm();
 			ToolTip toolTip1 = new ToolTip();
 			// Set up the delays for the ToolTip.
 			toolTip1.AutoPopDelay = 5000;
@@ -909,13 +910,41 @@ namespace Next_View
 			// Force the ToolTip text to be displayed whether or not the form is active.
 			toolTip1.ShowAlways = true;
 			// Set up the ToolTip text for the Button and Checkbox.
-			toolTip1.SetToolTip(this.cmdUp, "One directory up");
+			toolTip1.SetToolTip(this.cmdUp, T._("One directory up"));
 		}
 
 
 
   // end Background
 
+		public void TranslateExifDashForm( )
+		{
+			Text = T._("Exif dashboard");
+			cmdStart.Text = T._("&Start");
+			label1.Text = T._("Path");	
+			colFiles.Text = T._("Filename");		
+			popProperties.Text = T._("Properties...");
+			columnHeader1.Text = T._("Model");
+			columnHeader2.Text = T._("Count");
+			columnHeader3.Text = T._("Lens");
+			columnHeader4.Text = T._("Count");
+			columnHeader5.Text = T._("Scene");
+			columnHeader6.Text = T._("Count");
+			columnHeader7.Text = T._("Exposition");
+			columnHeader8.Text = T._("Count");
+			columnHeader9.Text = T._("Exif");
+			columnHeader10.Text = T._("Count");
+			cmdShow.Text = T._("Show");
+			columnHeader11.Text = T._("Time");
+			columnHeader12.Text = T._("Count");
+			lblFlash.Text = T._("Flash" + ": ");
+			columnHeader13.Text = T._("Focus Length");
+			columnHeader14.Text = T._("Count");
+			lblInfo.Text = T._("Info:");
+			chartImg.Titles[0].Text = T._("Images per day");
+			lblFace.Text = T._("Face" + ": ");
+		}
+		
 		// ------------------------------   delegates   ----------------------------------------------------------
 
 		public void SetStatusText(int sVal, string sText)

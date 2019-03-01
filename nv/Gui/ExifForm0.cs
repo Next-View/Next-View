@@ -47,7 +47,7 @@ namespace Next_View
 		public bool CheckFile0(string fName)
 		{
 			textExif0.Clear();
-			this.Text = "File: " + fName;
+			this.Text = T._("File") + ": " +  fName;
 			try
 			{
 				IEnumerable<Directory> directories = ImageMetadataReader.ReadMetadata(fName);

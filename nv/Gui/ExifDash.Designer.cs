@@ -346,7 +346,7 @@ namespace Next_View
 			this.lblGps.Padding = new System.Windows.Forms.Padding(2, 0, 0, 0);
 			this.lblGps.Size = new System.Drawing.Size(220, 20);
 			this.lblGps.TabIndex = 67;
-			this.lblGps.Text = "GPS:";
+			this.lblGps.Text = "GPS: ";
 			this.lblGps.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			this.lblGps.DoubleClick += new System.EventHandler(this.LblGpsDoubleClick);
 			// 

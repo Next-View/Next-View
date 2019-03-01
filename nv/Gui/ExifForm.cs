@@ -91,6 +91,7 @@ namespace Next_View
 
 		void ExifFormLoad(object sender, EventArgs e)
 		{
+			TranslateExifForm();
 			int le;
 			int to;
 			int wi = Settings.Default.ExifW;
@@ -168,16 +169,16 @@ namespace Next_View
 					if (iWidth != null){
 						string iWidthDigits = new string(iWidth.TakeWhile(c => Char.IsDigit(c)).ToArray());
 						Int32.TryParse(iWidthDigits, out iWidthVal);
-						AddListItem("Image Width", iWidth);
+						AddListItem(T._("Image Width"), iWidth);
 					}
 					string iHeight = jpgDirectory.GetDescription(JpegDirectory.TagImageHeight);
-					AddListItem("Image Height", iHeight);
+					AddListItem(T._("Image Height"), iHeight);
 				}
 
 				var jpgComDirectory = directories.OfType<JpegCommentDirectory>().FirstOrDefault();
 				if (jpgComDirectory != null){
 					string jComm = jpgComDirectory.GetDescription(JpegCommentDirectory.TagComment);
-					AddListItem("Comment", jComm);
+					AddListItem(T._("Comment"), jComm);
 				}
 
 
@@ -185,44 +186,44 @@ namespace Next_View
 				if (bmpDirectory != null){
 					AddListItem("BMP:", "+");
 					string iWidth = bmpDirectory.GetDescription(BmpHeaderDirectory.TagImageWidth);
-					AddListItem("Image Width", iWidth);
+					AddListItem(T._("Image Width"), iWidth);
 					string iHeight = bmpDirectory.GetDescription(BmpHeaderDirectory.TagImageHeight);
-					AddListItem("Image Height", iHeight);
+					AddListItem(T._("Image Height"), iHeight);
 					string bBits = bmpDirectory.GetDescription(BmpHeaderDirectory.TagBitsPerPixel);
-					AddListItem("Bits per pixel", bBits);
+					AddListItem(T._("Bits per pixel"), bBits);
 				}
 
 				var pngDirectory = directories.OfType<PngDirectory>().FirstOrDefault();
 				if (pngDirectory != null){
 					AddListItem("PNG:", "+");
 					string iWidth = pngDirectory.GetDescription(PngDirectory.TagImageWidth);
-					AddListItem("Image Width", iWidth);
+					AddListItem(T._("Image Width"), iWidth);
 					string iHeight = pngDirectory.GetDescription(PngDirectory.TagImageHeight);
-					AddListItem("Image Height", iHeight);
+					AddListItem(T._("Image Height"), iHeight);
 					string pColor = pngDirectory.GetDescription(PngDirectory.TagColorType);
-					AddListItem("Color", pColor);
+					AddListItem(T._("Color"), pColor);
 				}
 
 				var icDirectory = directories.OfType<IcoDirectory>().FirstOrDefault();
 				if (icDirectory != null){
 					AddListItem("Icon:", "+");
 					string iWidth = icDirectory.GetDescription(IcoDirectory.TagImageWidth);
-					AddListItem("Image Width", iWidth);
+					AddListItem(T._("Image Width"), iWidth);
 					string iHeight = icDirectory.GetDescription(IcoDirectory.TagImageHeight);
-					AddListItem("Image Height", iHeight);
+					AddListItem(T._("Image Height"), iHeight);
 					string bBits = icDirectory.GetDescription(IcoDirectory.TagBitsPerPixel);
-					AddListItem("Bits per pixel", bBits);
+					AddListItem(T._("Bits per pixel"), bBits);
 				}
 
 				var gifDirectory = directories.OfType<GifHeaderDirectory>().FirstOrDefault();
 				if (gifDirectory != null){
 					AddListItem("GIF:", "+");
 					string iWidth = gifDirectory.GetDescription(GifHeaderDirectory.TagImageWidth);
-					AddListItem("Image Width", iWidth);
+					AddListItem(T._("Image Width"), iWidth);
 					string iHeight = gifDirectory.GetDescription(GifHeaderDirectory.TagImageHeight);
-					AddListItem("Image Height", iHeight);
+					AddListItem(T._("Image Height"), iHeight);
 					string bBits = gifDirectory.GetDescription(GifHeaderDirectory.TagBitsPerPixel);
-					AddListItem("Bits per pixel", bBits);
+					AddListItem(T._("Bits per pixel"), bBits);
 				}
 
 				// ------------------------------   exif   ----------------------------------------------------------
@@ -233,90 +234,90 @@ namespace Next_View
 					AddListItem(" ", "+");
 					AddListItem("EXIF:", "+");
 					string idescription = ifd0Directory.GetDescription(ExifDirectoryBase.TagImageDescription);
-					AddListItem("Description", idescription);
+					AddListItem(T._("Description"), idescription);
 
 					string dt = ifd0Directory.GetDescription(ExifDirectoryBase.TagDateTime);
-					AddListItem("Date Time", dt);
+					AddListItem(T._("Date Time"), dt);
 
 					string iw = ifd0Directory.GetDescription(ExifDirectoryBase.TagImageWidth);
-					AddListItem("Image Width", iw);
+					AddListItem(T._("Image Width"), iw);
 
 					string ih = ifd0Directory.GetDescription(ExifDirectoryBase.TagImageHeight);
-					AddListItem("Image Height", ih);
+					AddListItem(T._("Image Height"), ih);
 
 					string or = ifd0Directory.GetDescription(ExifDirectoryBase.TagOrientation);
 					if (or != null) orientation = or.ToLower();
-					AddListItem("Orientation", orientation);
+					AddListItem(T._("Orientation"), orientation);
 
 					string make = ifd0Directory.GetDescription(ExifDirectoryBase.TagMake);
-					AddListItem("Make", make);
+					AddListItem(T._("Make"), make);
 
 					string model = ifd0Directory.GetDescription(ExifDirectoryBase.TagModel);
-					AddListItem("Camera model", model);
+					AddListItem(T._("Camera model"), model);
 
 					string software = ifd0Directory.GetDescription(ExifDirectoryBase.TagSoftware);
-					AddListItem("Software", software);
+					AddListItem(T._("Software"), software);
 
 					string copyright = ifd0Directory.GetDescription(ExifDirectoryBase.TagCopyright);
-					AddListItem("Copyright", copyright);
+					AddListItem(T._("Copyright"), copyright);
 
 					string artist = ifd0Directory.GetDescription(ExifDirectoryBase.TagArtist);
-					AddListItem("Artist", artist);
+					AddListItem(T._("Artist"), artist);
 				}
 
 				var subIfdDirectory = directories.OfType<ExifSubIfdDirectory>().FirstOrDefault();
 				if (subIfdDirectory != null){
 					exCount += subIfdDirectory.TagCount;
 					string dtOriginal = subIfdDirectory.GetDescription(ExifDirectoryBase.TagDateTimeOriginal);
-					AddListItem("Original date", dtOriginal);
+					AddListItem(T._("Original date"), dtOriginal);
 
 					string dtDigitized = subIfdDirectory.GetDescription(ExifDirectoryBase.TagDateTimeDigitized);
-					AddListItem("Digitized date", dtDigitized);
+					AddListItem(T._("Digitized date"), dtDigitized);
 
 					string iWidth = subIfdDirectory.GetDescription(ExifDirectoryBase.TagExifImageWidth);
 					if (iWidth != null){
 						string iWidthDigits = new string(iWidth.TakeWhile(c => Char.IsDigit(c)).ToArray());
 						Int32.TryParse(iWidthDigits, out exifWidthVal);
-						AddListItem("Exif Image Width", iWidth);
+						AddListItem(T._("Exif Image Width"), iWidth);
 					}
 
 					string iHeight = subIfdDirectory.GetDescription(ExifDirectoryBase.TagExifImageHeight);
-					AddListItem("Exif Image Height", iHeight);
+					AddListItem(T._("Exif Image Height"), iHeight);
 
 					if (exifWidthVal != iWidthVal && exifWidthVal != 0){
 						float changedSizePerc = (float) iWidthVal * 100 / exifWidthVal;
-						AddListItem("!  Image reduced to", changedSizePerc.ToString("0") + "%");
+						AddListItem("!  " + T._("Image reduced to"), changedSizePerc.ToString("0") + "%");
 					}
 
 					string exposure = subIfdDirectory.GetDescription(ExifDirectoryBase.TagExposureTime);
-					if (!AddListItem("Exposure Time", exposure)){
+					if (!AddListItem(T._("Exposure Time"), exposure)){
 						string shutterSpeed = subIfdDirectory.GetDescription(ExifDirectoryBase.TagShutterSpeed);
-						AddListItem("Shutter Speed", shutterSpeed);
+						AddListItem(T._("Shutter Speed"), shutterSpeed);
 					}
 
 					string fNumber = subIfdDirectory.GetDescription(ExifDirectoryBase.TagFNumber);
-					if (!AddListItem("F Number", fNumber)){
+					if (!AddListItem(T._("F Number"), fNumber)){
 						string aperture = subIfdDirectory.GetDescription(ExifDirectoryBase.TagAperture);
-						AddListItem("Aperture", aperture);
+						AddListItem(T._("Aperture"), aperture);
 					}
 
 					string isoSpeed = subIfdDirectory.GetDescription(ExifDirectoryBase.TagIsoEquivalent);
-					AddListItem("ISO Speed", isoSpeed);
+					AddListItem(T._("ISO Speed"), isoSpeed);
 
 					string fLength = subIfdDirectory.GetDescription(ExifDirectoryBase.TagFocalLength);
-					AddListItem("Focal Length", fLength);
+					AddListItem(T._("Focal Length"), fLength);
 
 					string flash = subIfdDirectory.GetDescription(ExifDirectoryBase.TagFlash);
-					AddListItem("Flash", flash);
+					AddListItem(T._("Flash"), flash);
 
 					string expo = subIfdDirectory.GetDescription(ExifDirectoryBase.TagExposureProgram);
-					AddListItem("Exposure", expo);
+					AddListItem(T._("Exposure"), expo);
 
 					string lensmodel = subIfdDirectory.GetDescription(ExifDirectoryBase.TagLensModel);
-					AddListItem("Lens Model", lensmodel);
+					AddListItem(T._("Lens Model"), lensmodel);
 
 					string scene = subIfdDirectory.GetDescription(ExifDirectoryBase.TagSceneCaptureType);
-					AddListItem("Scene", scene);
+					AddListItem(T._("Scene"), scene);
 				}
 
 				if (exCount > 5) exifType = 1;
@@ -328,24 +329,24 @@ namespace Next_View
 				if (canonDirectory != null){
 					AddListItem("Makernote:", "+");
 					string lensType = canonDirectory.GetDescription(CanonMakernoteDirectory.CameraSettings.TagLensType);
-					AddListItem("Lens Type", lensType);
+					AddListItem(T._("Lens Type"), lensType);
 				}
 
 				var fujiDirectory = directories.OfType<FujifilmMakernoteDirectory>().FirstOrDefault();
 				if (fujiDirectory != null){
 					AddListItem("Makernote:", "+");
 					string pictureMode = fujiDirectory.GetDescription(FujifilmMakernoteDirectory.TagPictureMode);
-					AddListItem("Picture Mode", pictureMode);
+					AddListItem(T._("Picture Mode"), pictureMode);
 				}
 								
 				var olympusCameraDirectory = directories.OfType<OlympusCameraSettingsMakernoteDirectory>().FirstOrDefault();
 				if (olympusCameraDirectory != null){
 					AddListItem("Makernote:", "+");
 					string artFilter = olympusCameraDirectory.GetDescription(OlympusCameraSettingsMakernoteDirectory.TagArtFilter);
-					AddListItem("Art Filter", artFilter);
+					AddListItem(T._("Art Filter"), artFilter);
 					string focusMode = olympusCameraDirectory.GetDescription(OlympusCameraSettingsMakernoteDirectory.TagFocusMode);
 					if (focusMode.Contains("Face detect")){
-						AddListItem("Faces detected", "yes");
+						AddListItem(T._("Faces detected"), T._("yes"));
 					}
 					//Debug.WriteLine("Olympus focus: "+ focusMode);
 				}
@@ -361,14 +362,14 @@ namespace Next_View
 				if (olympusEquipmentDirectory != null){
 					AddListItem("Makernote:", "+");
 					string lensModel = olympusEquipmentDirectory.GetDescription(OlympusEquipmentMakernoteDirectory.TagLensModel);
-					AddListItem("Lens Model", lensModel);
+					AddListItem(T._("Lens Model"), lensModel);
 				}
 
 				var panasonicDirectory = directories.OfType<PanasonicMakernoteDirectory>().FirstOrDefault();
 				if (panasonicDirectory != null){
 					AddListItem("Makernote:", "+");
 					string faceNumber = panasonicDirectory.GetDescription(PanasonicMakernoteDirectory.TagFacesDetected);
-					AddListItem("Faces detected", faceNumber);
+					AddListItem(T._("Faces detected"), faceNumber);
 				}
 
 				var samsungDirectory = directories.OfType<SamsungType2MakernoteDirectory>().FirstOrDefault();
@@ -376,14 +377,14 @@ namespace Next_View
 					AddListItem("Makernote:", "+");
 					string faceDetect = samsungDirectory.GetDescription(SamsungType2MakernoteDirectory.TagFaceDetect);
 					if (faceDetect == "On")
-						AddListItem("Faces detected", "yes");
+						AddListItem(T._("Faces detected"), T._("yes"));
 				}
 								
 				var sonyDirectory = directories.OfType<SonyType1MakernoteDirectory>().FirstOrDefault();
 				if (sonyDirectory != null){
 					AddListItem("Makernote:", "+");
 					string afMode = sonyDirectory.GetDescription(SonyType1MakernoteDirectory.TagAfMode);
-					AddListItem("AF Mode", afMode);
+					AddListItem(T._("AF Mode"), afMode);
 				}
 
 				// ------------------------------   gps    --------------
@@ -394,10 +395,10 @@ namespace Next_View
 					string laRef = gpsDirectory.GetDescription(GpsDirectory.TagLatitudeRef);
 					string latitude = gpsDirectory.GetDescription(GpsDirectory.TagLatitude);
 					if (latitude != null) exifType = 3;
-					AddListItem("Latitude", laRef + latitude);
+					AddListItem(T._("Latitude"), laRef + latitude);
 					string loRef = gpsDirectory.GetDescription(GpsDirectory.TagLongitudeRef);
 					string longitude = gpsDirectory.GetDescription(GpsDirectory.TagLongitude);
-					AddListItem("Longitude", loRef + longitude);
+					AddListItem(T._("Longitude"), loRef + longitude);
 					string gps1 = latitude + laRef + "+" + longitude + loRef;
 					_gps2 = gps1.Replace(" ", "").Replace(",", ".");
 
@@ -410,7 +411,7 @@ namespace Next_View
 			catch (Exception e)
 			{
 				Debug.WriteLine(e.Message);
-				MessageBox.Show("Exif, file is invalid" + "\n " + e.Message, "Invalid file", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				MessageBox.Show(T._("Exif is invalid") + "\n " + e.Message, T._("Invalid file") + fPath, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				return false;
 			}
 		}
@@ -419,16 +420,16 @@ namespace Next_View
 		{
 				// ------------------------------   file    --------------
 				AddListItem(" ", "+");
-				AddListItem("File:", "+");
+				AddListItem(T._("File:"), "+");
 				string aName = System.IO.Path.GetFileName(fName);    // full path, no directory dup
-				AddListItem("Name", aName);
+				AddListItem(T._("Name"), aName);
 				long size = new System.IO.FileInfo(fName).Length;
 				string sizeS = Util.SizeFormat(size);
-				AddListItem("Size", sizeS);
+				AddListItem(T._("Size"), sizeS);
 				string creation = System.IO.File.GetCreationTime(fName).ToString();
-				AddListItem("Creation", creation);
+				AddListItem(T._("Creation"), creation);
 				string changed = System.IO.File.GetLastWriteTime(fName).ToString();
-				AddListItem("Changed", changed);
+				AddListItem(T._("Changed"), changed);
 				return true;
 		}
 
@@ -452,6 +453,11 @@ namespace Next_View
 			return true;
 		}
 
+		public void TranslateExifForm( )
+		{
+			Text = T._("Exif data");
+		}
+		
 		// ------------------------------   delegates   ----------------------------------------------------------
 
 		public void SetKeyChange(int kVal, bool alt, bool ctrl)

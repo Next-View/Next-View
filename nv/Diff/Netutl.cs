@@ -35,7 +35,7 @@ namespace Next_View
 
 		public string LoadPage(string loadUrl)
 		{
-			Debug.WriteLine("url: " + loadUrl);
+			//Debug.WriteLine("url: " + loadUrl);
 			HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(loadUrl);
 			myRequest.Method = "GET";
 			string result = "";
@@ -72,7 +72,7 @@ namespace Next_View
 
 		public bool LoadHead(string loadUrl)
 		{
-			Debug.WriteLine("url head: " + loadUrl);
+			//Debug.WriteLine("url head: " + loadUrl);
 			HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(loadUrl);
 			myRequest.Method = "HEAD";
 			bool result = false;
@@ -81,7 +81,7 @@ namespace Next_View
 				WebResponse myResponse = myRequest.GetResponse();
 				StreamReader sr = new StreamReader(myResponse.GetResponseStream(), System.Text.Encoding.UTF8);
 				string head = sr.ReadToEnd();
-				Debug.WriteLine("head: " + head);
+				//Debug.WriteLine("head: " + head);
 				sr.Close();
 				myResponse.Close();
 				result = true;

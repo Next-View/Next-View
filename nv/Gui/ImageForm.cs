@@ -195,12 +195,12 @@ namespace Next_View
 				Settings.Default.SecondW = this.Width;
 				Settings.Default.SecondH = this.Height;
 				Settings.Default.Save( );
-				Debug.WriteLine("close 2nd y: {0} ", Settings.Default.SecondY);
+				//Debug.WriteLine("close 2nd y: {0} ", Settings.Default.SecondY);
 			}
 			if (_wType == WinType.normal){
 				e.Cancel = true;
 				this.Hide();
-				Debug.WriteLine("hide img ");
+				//Debug.WriteLine("hide img ");
 			}
 		}
 
@@ -495,7 +495,7 @@ namespace Next_View
 				//sw1.Start();
 				bool showOk = ShowExif();
 				//sw1.Stop();
-				if (!showOk){   // exif form not shown	
+				if (!showOk){   // exif form not shown
 					ExifRead.ExifOrient(ref _exifType, ref _orientationStr, _currentPath);
 				}
 
@@ -683,7 +683,7 @@ namespace Next_View
 		}
 
 		// ------------------------------   file functions  ----------------------------------------------------------
-		
+
 		public void RenamePic()
 		{
 			string newPath = "";
@@ -710,7 +710,7 @@ namespace Next_View
 				//PicLoad(_currentPath, true);
 			}
 			else {
-				Debug.WriteLine("no rename");
+				//Debug.WriteLine("no rename");
 			}
 		}
 
@@ -775,42 +775,50 @@ namespace Next_View
 
 		public bool SaveOri()
 		{
-			string mess1 = ""; 
-			if (_oriCurrent == -100){
-				mess1 = "This file has no Exif orientation."; 
-				MessageBox.Show(mess1, "Save not possible", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-				return false;
-			}
-			
-			if (_oriCurrent == _oriInitial){
-				mess1 = "Orientation not changed"; 
-				MessageBox.Show(mess1, "Save not possible.", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-				return false;
-			}		
-			byte oriByte;
-			switch(_oriCurrent)
+			try
 			{
-				case 1:  oriByte = 8;
-				break;
-				case 2:  oriByte = 3;
-				break;
-				case 3:  oriByte = 6;
-				break;
-				default: oriByte = 1; 
-				break;
-			}
-			ushort ori = 0;
-			using (var reader = new ExifReader(_currentPath))
-			{
-				if (reader.GetTagValue(ExifTags.Orientation, out ori)) {
-					reader.SaveOrient(oriByte);
+				string mess1 = "";
+				if (_oriCurrent == -100){
+					mess1 = T._("This file has no Exif orientation.");
+					MessageBox.Show(mess1, T._("Save not possible"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					return false;
 				}
-			}	
-              
-			Debug.WriteLine("Orient ini: {0}, current {1}, byte {2} ", _oriInitial, _oriCurrent, ori);			
-			return true;		
+
+				if (_oriCurrent == _oriInitial){
+					mess1 = T._("Orientation not changed");
+					MessageBox.Show(mess1, T._("Save not possible"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					return false;
+				}
+				byte oriByte;
+				switch(_oriCurrent)
+				{
+					case 1:  oriByte = 6;
+					break;
+					case 2:  oriByte = 3;
+					break;
+					case 3:  oriByte = 8;
+					break;
+					default: oriByte = 1;   // 0
+					break;
+				}
+				ushort ori = 0;
+				using (var reader = new ExifReader(_currentPath))
+				{
+					if (reader.GetTagValue(ExifTags.Orientation, out ori)) {
+						reader.SaveOrient(oriByte);
+					}
+				}
+
+				//Debug.WriteLine("Orient ini: {0}, current {1}, byte {2} ", _oriInitial, _oriCurrent, ori);
+				return true;
+			}
+			catch (Exception e)
+			{
+				MessageBox.Show(T._("Error for update") + "\n"  + e.Message, T._("Error"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				return false;
+			}
 		}
-		
+
 		// ------------------------------   Tempmark functions  ----------------------------------------------------------
 		public void TempmarkDelete()
 		{
@@ -847,7 +855,7 @@ namespace Next_View
 			}
 		}
 
-		
+
 		// ------------------------------   pop up  ----------------------------------------------------------
 
 		void PopOpenClick(object sender, EventArgs e)
@@ -976,7 +984,7 @@ namespace Next_View
 				if (_oriCurrent > 3) _oriCurrent = 0;
 			}
 		}
-				
+
 		public void StartEditor()
 		{
 			string editorPath = Settings.Default.Editor;

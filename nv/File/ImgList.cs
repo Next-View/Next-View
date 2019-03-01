@@ -94,7 +94,7 @@ namespace Next_View
 				_imList.Sort(fc);
 			}
 			else {
-				Debug.WriteLine("no dir change");
+				//Debug.WriteLine("no dir change");
 			}
 		}
 

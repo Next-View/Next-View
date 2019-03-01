@@ -98,7 +98,7 @@ namespace Next_View
 			this.Controls.Add(this.listExif);
 			this.KeyPreview = true;
 			this.Name = "ExifForm";
-			this.Text = "ExifForm";
+			this.Text = "Exif data";
 			this.Activated += new System.EventHandler(this.ExifFormActivated);
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ExifFormFormClosing);
 			this.Load += new System.EventHandler(this.ExifFormLoad);

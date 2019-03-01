@@ -90,7 +90,6 @@ namespace Next_View
 					Settings.Default.Upgrade();
 					Settings.Default.UpgradeRequired = false;
 					Settings.Default.Save( );
-					Debug.WriteLine("settings upgrade done: ");
 				}
 				int wX;
 				int wY;
@@ -123,7 +122,7 @@ namespace Next_View
 					cultureStr = CultureInfo.InstalledUICulture.ToString();
 					Settings.Default.Language = cultureStr;
 				}
-				Debug.WriteLine("Culture: " + cultureStr);
+				//Debug.WriteLine("Culture: " + cultureStr);
 				T.SetCatalog(moPath, cultureStr);
 				TranslateMainForm();
 
@@ -169,7 +168,7 @@ namespace Next_View
 			bool doShow = true;
 			if (Control.ModifierKeys == Keys.Control){
 				doShow = false;
-				Debug.WriteLine(" key control ");
+				//Debug.WriteLine(" key control ");
 			}
 
 			string firstImage = "";
@@ -493,7 +492,7 @@ namespace Next_View
 		void ExitApp()
 		{
 			this.Close();
-			Debug.WriteLine("Exit:");
+			//Debug.WriteLine("Exit:");
 			Application.Exit();      // exit self
 			Environment.Exit(0);     // kill by win
 		}
@@ -558,7 +557,9 @@ namespace Next_View
 			recentItem1.Text = T._("Recent images") + "               ";
 			mnuRename.Text = T._("Rename...");
 			mnuDelete.Text = T._("Delete");
+			mnuSaveOri.Text = T._("Save orientation");
 			mnuExit.Text = T._("Exit");
+			
 			mnuEdit.Text = T._("Edit");
 			mnuOptions.Text = T._("Options...");
 			mnuStartEditor.Text = T._("Start editor...");
@@ -566,6 +567,7 @@ namespace Next_View
 			mnuLanguage.Text = T._("Language");
 			langEnglish.Text = T._("English");
 			langGerman.Text = T._("German");
+			
 			mnuView.Text = T._("View");
 			mnuNextImage.Text = T._("Next Image") + "               ";
 			mnuPriorImage.Text = T._("Prior Image");
@@ -575,6 +577,12 @@ namespace Next_View
 			mnuForward.Text = T._("Forward");
 			mnuRefresh.Text = T._("Refresh");
 			mnuFullScreen.Text = T._("Full screen");
+			mnuRotateLeft.Text = T._("Rotate left");
+			mnuRotateRight.Text = T._("Rotate right");
+			mnuExif.Text = T._("Exif...");
+			mnuShowImage.Text = T._("Show image");
+			mnuExifDash.Text = T._("Exif dashboard...");
+			
 			mnuHelp.Text = T._("Help");
 			mnuHelp1.Text = T._("Help");
 			mnuWeb.Text = T._("Homepage...");
@@ -587,9 +595,9 @@ namespace Next_View
 			bnPrior.Text = T._("Prior image");
 			bnNext.Text = T._("Next image");
 			bnFullscreen.Text = T._("Fullscreen");
-			bnHelp.Text = T._("Help");
+			bnExif.Text = T._("Exif");
 			bnSearch.Text = T._("Search");
-
+			bnHelp.Text = T._("Help");
 		}
 
 
@@ -624,7 +632,7 @@ namespace Next_View
 					break;
 
 				default:  // start progress
-					statusLabel1.Text = "Scan";
+					statusLabel1.Text = T._("Scan");
 					_maxStep = sVal;
 					progress1.Maximum = _maxStep;
 					_step = 0;

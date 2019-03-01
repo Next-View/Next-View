@@ -46,6 +46,7 @@ namespace Next_View
 			this.N1 = new System.Windows.Forms.ToolStripSeparator();
 			this.mnuRename = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuDelete = new System.Windows.Forms.ToolStripMenuItem();
+			this.mnuSaveOri = new System.Windows.Forms.ToolStripMenuItem();
 			this.N2 = new System.Windows.Forms.ToolStripSeparator();
 			this.mnuExit = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuEdit = new System.Windows.Forms.ToolStripMenuItem();
@@ -98,7 +99,6 @@ namespace Next_View
 			this.bnSearch = new System.Windows.Forms.ToolStripButton();
 			this.bnHelp = new System.Windows.Forms.ToolStripButton();
 			this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-			this.mnuSaveOri = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuMain.SuspendLayout();
 			this.statusMain.SuspendLayout();
 			this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
@@ -191,6 +191,14 @@ namespace Next_View
 			this.mnuDelete.Text = "Delete";
 			this.mnuDelete.Click += new System.EventHandler(this.MnuDeleteClick);
 			// 
+			// mnuSaveOri
+			// 
+			this.mnuSaveOri.Name = "mnuSaveOri";
+			this.mnuSaveOri.ShortcutKeyDisplayString = "Ctrl + S";
+			this.mnuSaveOri.Size = new System.Drawing.Size(207, 22);
+			this.mnuSaveOri.Text = "Save Orientation";
+			this.mnuSaveOri.Click += new System.EventHandler(this.MnuSaveOriClick);
+			// 
 			// N2
 			// 
 			this.N2.Name = "N2";
@@ -255,7 +263,7 @@ namespace Next_View
 			this.langEnglish.Image = ((System.Drawing.Image)(resources.GetObject("langEnglish.Image")));
 			this.langEnglish.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
 			this.langEnglish.Name = "langEnglish";
-			this.langEnglish.Size = new System.Drawing.Size(152, 22);
+			this.langEnglish.Size = new System.Drawing.Size(116, 22);
 			this.langEnglish.Text = "English";
 			this.langEnglish.Click += new System.EventHandler(this.LangEnglishClick);
 			// 
@@ -264,7 +272,7 @@ namespace Next_View
 			this.langGerman.Image = ((System.Drawing.Image)(resources.GetObject("langGerman.Image")));
 			this.langGerman.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
 			this.langGerman.Name = "langGerman";
-			this.langGerman.Size = new System.Drawing.Size(152, 22);
+			this.langGerman.Size = new System.Drawing.Size(116, 22);
 			this.langGerman.Text = "German";
 			this.langGerman.Click += new System.EventHandler(this.LangGermanClick);
 			// 
@@ -411,7 +419,7 @@ namespace Next_View
 			// 
 			this.mnuShowImage.Name = "mnuShowImage";
 			this.mnuShowImage.Size = new System.Drawing.Size(214, 22);
-			this.mnuShowImage.Text = "Show Image";
+			this.mnuShowImage.Text = "Show image";
 			this.mnuShowImage.Click += new System.EventHandler(this.MnuShowImageClick);
 			// 
 			// mnuExifDash
@@ -419,6 +427,7 @@ namespace Next_View
 			this.mnuExifDash.Name = "mnuExifDash";
 			this.mnuExifDash.Size = new System.Drawing.Size(214, 22);
 			this.mnuExifDash.Text = "Exif dashboard...";
+			this.mnuExifDash.Visible = false;
 			this.mnuExifDash.Click += new System.EventHandler(this.MnuExifDashClick);
 			// 
 			// mnuHelp
@@ -438,14 +447,14 @@ namespace Next_View
 			this.mnuHelp1.Image = ((System.Drawing.Image)(resources.GetObject("mnuHelp1.Image")));
 			this.mnuHelp1.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
 			this.mnuHelp1.Name = "mnuHelp1";
-			this.mnuHelp1.Size = new System.Drawing.Size(142, 22);
+			this.mnuHelp1.Size = new System.Drawing.Size(152, 22);
 			this.mnuHelp1.Text = "Help";
 			this.mnuHelp1.Click += new System.EventHandler(this.MnuHelp1Click);
 			// 
 			// mnuWeb
 			// 
 			this.mnuWeb.Name = "mnuWeb";
-			this.mnuWeb.Size = new System.Drawing.Size(142, 22);
+			this.mnuWeb.Size = new System.Drawing.Size(152, 22);
 			this.mnuWeb.Text = "Homepage...";
 			this.mnuWeb.Click += new System.EventHandler(this.MnuWebClick);
 			// 
@@ -453,22 +462,23 @@ namespace Next_View
 			// 
 			this.mnuGithub.CheckOnClick = true;
 			this.mnuGithub.Name = "mnuGithub";
-			this.mnuGithub.Size = new System.Drawing.Size(142, 22);
+			this.mnuGithub.Size = new System.Drawing.Size(152, 22);
 			this.mnuGithub.Text = "Github";
 			this.mnuGithub.Click += new System.EventHandler(this.MnuGithubClick);
 			// 
 			// mnuAbout
 			// 
 			this.mnuAbout.Name = "mnuAbout";
-			this.mnuAbout.Size = new System.Drawing.Size(142, 22);
+			this.mnuAbout.Size = new System.Drawing.Size(152, 22);
 			this.mnuAbout.Text = "About...";
 			this.mnuAbout.Click += new System.EventHandler(this.MnuAboutClick);
 			// 
 			// mnuTest
 			// 
 			this.mnuTest.Name = "mnuTest";
-			this.mnuTest.Size = new System.Drawing.Size(142, 22);
+			this.mnuTest.Size = new System.Drawing.Size(152, 22);
 			this.mnuTest.Text = "Test";
+			this.mnuTest.Visible = false;
 			this.mnuTest.Click += new System.EventHandler(this.MnuTestClick);
 			// 
 			// statusMain
@@ -665,14 +675,6 @@ namespace Next_View
 			this.imageList1.Images.SetKeyName(1, "exif-2.png");
 			this.imageList1.Images.SetKeyName(2, "exif-3.png");
 			this.imageList1.Images.SetKeyName(3, "exif-4.png");
-			// 
-			// mnuSaveOri
-			// 
-			this.mnuSaveOri.Name = "mnuSaveOri";
-			this.mnuSaveOri.ShortcutKeyDisplayString = "Ctrl + S";
-			this.mnuSaveOri.Size = new System.Drawing.Size(207, 22);
-			this.mnuSaveOri.Text = "Save Orientation";
-			this.mnuSaveOri.Click += new System.EventHandler(this.MnuSaveOriClick);
 			// 
 			// frmMain
 			// 

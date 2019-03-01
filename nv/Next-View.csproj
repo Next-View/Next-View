@@ -89,7 +89,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="3rdParty\ExifReader.cs" />
     <Compile Include="Class\CExif.cs" />
     <Compile Include="Class\StatusMainEvent.cs" />
     <Compile Include="Diff\Exif.cs" />
@@ -98,6 +97,7 @@
     <Compile Include="Diff\Translate.cs" />
     <Compile Include="Diff\Util.cs" />
     <Compile Include="File\DelFile.cs" />
+    <Compile Include="File\ExifReader.cs" />
     <Compile Include="File\FileInfo.cs" />
     <Compile Include="File\ImgList.cs" />
     <Compile Include="Gui\About.cs" />
@@ -194,7 +194,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Class" />
-    <Folder Include="3rdParty" />
     <Folder Include="Gui" />
     <Folder Include="File" />
     <Folder Include="Diff" />

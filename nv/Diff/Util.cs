@@ -49,7 +49,7 @@ namespace Next_View
 		{
 			Debug.WriteLine(eMessage);
 			if (boxCount == 0){
-				MessageBox.Show(eMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				MessageBox.Show(eMessage, T._("Error"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}
 			boxCount++;
 			return true;

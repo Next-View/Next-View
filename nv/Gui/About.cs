@@ -65,7 +65,7 @@ namespace Next_View
 		void WebBrowser1Navigating(object sender, WebBrowserNavigatingEventArgs e)
 		{
 			string bUrl = e.Url.ToString();
-			Debug.WriteLine("url: " + bUrl);
+			//Debug.WriteLine("url: " + bUrl);
 			if (bUrl.StartsWith("http")){
 				e.Cancel = true;
 				Process.Start(bUrl);
@@ -75,10 +75,10 @@ namespace Next_View
 
 		void CmdOkClick(object sender, EventArgs e)
 		{
-			Debug.WriteLine("Path: " + System.Reflection.Assembly.GetExecutingAssembly().Location);
-			Debug.WriteLine("Version: " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version);
-			Debug.WriteLine("Conf: " + ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath);
-			Debug.WriteLine("App path: " + ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath);
+			//Debug.WriteLine("Path: " + System.Reflection.Assembly.GetExecutingAssembly().Location);
+			//Debug.WriteLine("Version: " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version);
+			//Debug.WriteLine("Conf: " + ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath);
+			//Debug.WriteLine("App path: " + ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath);
 			this.Close();
 		}
 
