@@ -56,6 +56,7 @@ namespace Next_View
 
 		public void DirClear()
 		{
+			// called by: refresh, drop, searchForm
 			_imList.Clear();
 			_picDir = "";
 		}
@@ -65,8 +66,9 @@ namespace Next_View
 			_imList.Add(picPath);
 		}
 
-		public void DirScan(string picPath, bool allDirs)
+		public void DirScan(out int picCount, string picPath, bool allDirs)
 		{
+			// called by: PicScan - open, refesh, drop, main: formShow, recent
 			string picDir = "";
 			if (File.Exists(picPath)) {
 				picDir = Path.GetDirectoryName(picPath);
@@ -94,8 +96,10 @@ namespace Next_View
 				_imList.Sort(fc);
 			}
 			else {
-				//Debug.WriteLine("no dir change");
+				Debug.WriteLine("no dir change");
 			}
+			picCount = _imList.Count();
+			if (picCount == 0) _picDir = "";   // fix for re-scan
 		}
 
 		public void DirPosPath(ref int picPos, ref int picAll, string pPath)

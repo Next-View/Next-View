@@ -280,7 +280,10 @@ namespace Next_View
 			}
 			else if (dirCount > 0){
 				_picSelection = T._("Directory:");
-				PicScan(loadFile, allDirs);
+				int pCount = PicScan(loadFile, allDirs);
+				if (pCount  == 0) {
+					PicScan(loadFile, true);
+				}
 				_il.DirPicFirst(ref loadFile);
 			}
 			else {
@@ -442,13 +445,17 @@ namespace Next_View
 						SaveOri();
 					}
 					break;
+				case 87:    // ctrl w
+					if (ctrl){
+						SetCommand('w', "");
+					}
+					break;
 				case 65:    // 'a'  for test
 					Test();
 					break;
 				case 69:    // 'e'  for exif
 					if (alt){
-						SetCommand('e', _currentPath);
-						//ShowExifDash();
+						SetCommand('e', _currentPath);    //ShowExifDash();
 					}
 					else if (ctrl){
 						ShowExif0();
@@ -586,9 +593,11 @@ namespace Next_View
 		}
 
 
-		public void PicScan(string  pPath, bool allDirs)
+		public int PicScan(string  pPath, bool allDirs)
 		{
-			_il.DirScan(pPath, allDirs);
+			int pCount;
+			_il.DirScan(out pCount, pPath, allDirs);
+			return pCount;
 		}
 
 		void DarkPic()
@@ -792,13 +801,13 @@ namespace Next_View
 				byte oriByte;
 				switch(_oriCurrent)
 				{
-					case 1:  oriByte = 6;
+					case 1:  oriByte = 6;      //  90 l
 					break;
-					case 2:  oriByte = 3;
+					case 2:  oriByte = 3;      // 180
 					break;
-					case 3:  oriByte = 8;
+					case 3:  oriByte = 8;      //  270
 					break;
-					default: oriByte = 1;   // 0
+					default: oriByte = 1;      // 0
 					break;
 				}
 				ushort ori = 0;
@@ -940,6 +949,7 @@ namespace Next_View
 
 		public void ShowExifImages(List<string> exImgList, string selImg)
 		{
+			_il.DirClear();
 			_il._imList = exImgList;
 			int picPos = 0;
 			int picAll = 0;

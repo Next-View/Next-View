@@ -83,7 +83,7 @@ namespace Next_View
 			listener.MessageReceived += new XDListener.XDMessageHandler(listener_MessageReceived);
 			listener.RegisterChannel("NVMessage");
 
-			bool created ;
+			bool created;
 			s_event = new EventWaitHandle (false, EventResetMode.ManualReset, "Next-View", out created);   //  instead of mutex
    		if (created){         // 1st instance
 				if (Properties.Settings.Default.UpgradeRequired) {
@@ -178,7 +178,10 @@ namespace Next_View
 			}
 			if (File.Exists(firstImage)) {
 				m_Image.PicScan(firstImage, false);
-				if (doShow) m_Image.PicLoad(firstImage, true);
+				if (doShow){
+					m_Image.PicLoad(firstImage, true);
+					recentItem1.AddRecentItem(firstImage);
+				}
 			}
 			else if (File.Exists(Settings.Default.LastImage)) {
 				m_Image.PicScan(Settings.Default.LastImage, false);
@@ -503,6 +506,7 @@ namespace Next_View
 			if (File.Exists(commandLine)) {
 				m_Image.PicScan(commandLine, false);
 				m_Image.PicLoad(commandLine, true);
+				recentItem1.AddRecentItem(commandLine);
 			}
 			ShowMe();
 		}
@@ -661,7 +665,7 @@ namespace Next_View
 		}
 
 		private void HandleCommand(object sender, SetCommandEventArgs e)
-		// called by: image.KDown, OpenPic, ProcessDrop; exifdash.CmdShowClick
+		// called via SetCommand: image.KDown, OpenPic, ProcessDrop; exifdash.CmdShowClick
 		// commands for main
 		{
 			char comm = e.Command;
@@ -670,9 +674,10 @@ namespace Next_View
 			switch(comm)
 			{
 				case 'e':  //  exifdash
-					this.mnuExifDash.PerformClick();
+					m_Exif.SetPath2(_currentPath);
+					m_Exif.Show(dockPanel1, DockState.Document);
 					break;
-				case 'i':  //  exif img
+				case 'i':  //  exif dash img
 					List<string> exImgList;
 					m_Exif.DashImgList(out exImgList);
 					//Debug.WriteLine("imgs: " + exImgList.Count.ToString());
@@ -687,13 +692,12 @@ namespace Next_View
 				case 'p':  //  exif path
 					m_Exif.SetPath2(_currentPath);
 					break;
-				case 'r':  //  recent
+				case 'r':  //  recent  for drop and open
 					recentItem1.AddRecentItem(fName);
 					break;
-
-
-
-
+				case 'w':  //  exit
+					ExitApp();
+					break;
 
 			}
 		}

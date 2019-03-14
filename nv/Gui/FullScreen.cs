@@ -181,7 +181,8 @@ namespace Next_View
 
 		public void FPicScan(string	pPath, bool allDirs)
 		{
-			_il.DirScan(pPath, allDirs);
+			int pCount;
+			_il.DirScan(out pCount, pPath, allDirs);
 		}
 
 		void FDarkPic()

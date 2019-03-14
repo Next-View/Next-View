@@ -715,8 +715,24 @@ namespace Next_View
         public bool SaveOrient(byte oriByte)
         {
         	if (_oriPos > 0){
-        		_stream.Position = _oriPos;
-        		//Debug.WriteLine("File pos: {0} ", _oriPos);
+        		_stream.Position = _oriPos;          // msn
+        		byte[] oriData = ReadBytes(4);
+        		int bCount = 0;
+        		int bCorrect = 0;
+        		bool byteFound = false;
+        		foreach (byte oByte in oriData)  // byte correction, orientation byte can be on position 1 or 2
+        		{
+        			if (oByte == 0x01 || oByte == 0x03 || oByte == 0x06 || oByte == 0x08){
+        				bCorrect = bCount;
+        				byteFound = true;
+        			}
+        			bCount++;
+        		}
+        		if (!byteFound) return false;
+        		
+        		_oriPos += bCorrect; 
+        		_stream.Position = _oriPos;  
+        		//Debug.WriteLine("File save pos: {0} byte {1} ", _oriPos, oriByte);
         		_stream.WriteByte(oriByte);   // 1 = normal   0x03 = 180   6 = 90   3 = 270 
         		_stream.Close();
          		return true;   
@@ -787,7 +803,9 @@ namespace Next_View
             _oriPos = _stream.Position;
             
             byte[] tagData = ReadBytes(4);                // msn read here
-
+            
+            //string hex = BitConverter.ToString(tagData);
+						//Debug.WriteLine("Ori read pos: {0} data {1} ", _oriPos, hex);  
             // If the total space taken up by the field is longer than the
             // 2 bytes afforded by the tagData, tagData will contain an offset
             // to the actual data.

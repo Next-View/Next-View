@@ -263,8 +263,28 @@ namespace Next_View
 
 					string artist = ifd0Directory.GetDescription(ExifDirectoryBase.TagArtist);
 					AddListItem(T._("Artist"), artist);
-				}
+					
+					// ------------------------------   windows  ------------------ 
+					string winComment = ifd0Directory.GetDescription(ExifDirectoryBase.TagWinComment);
+					AddListItem(T._("Windows Comment"), winComment);					
 
+					string winTitle = ifd0Directory.GetDescription(ExifDirectoryBase.TagWinTitle);
+					AddListItem(T._("Windows Title"), winTitle);	
+
+					string winAuthor = ifd0Directory.GetDescription(ExifDirectoryBase.TagWinAuthor);
+					AddListItem(T._("Windows Author"), winAuthor);	
+
+					string winKeywords = ifd0Directory.GetDescription(ExifDirectoryBase.TagWinKeywords);
+					AddListItem(T._("Windows Keywords"), winKeywords);	
+
+					string winSubject = ifd0Directory.GetDescription(ExifDirectoryBase.TagWinSubject);
+					AddListItem(T._("Windows Subject"), winSubject);
+
+					string winRating = ifd0Directory.GetDescription(ExifDirectoryBase.TagRating);
+					AddListItem(T._("Windows Rating"), winRating);
+																														
+				}
+				// ------------------------------   subIfd   ------------------ 
 				var subIfdDirectory = directories.OfType<ExifSubIfdDirectory>().FirstOrDefault();
 				if (subIfdDirectory != null){
 					exCount += subIfdDirectory.TagCount;
