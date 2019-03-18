@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;  // IEnumerable
 using System.Diagnostics;  //   debug
 using System.Drawing;  // rectangle
+//  using System.IO;    duplicate names with metadataExtractor 
 using System.Linq;	 //	OfType
 using System.Windows.Forms;
 using MetadataExtractor;

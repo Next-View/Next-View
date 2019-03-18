@@ -85,6 +85,7 @@ namespace Next_View
 		// from imageForm
 		{
 			edImgPath.Text = Path.GetDirectoryName(fPath);
+			this.Text = edImgPath.Text;
 		}
 
 		public void FormClear()
@@ -610,6 +611,7 @@ namespace Next_View
 						dropDir = dropFile;
 				}
 				edImgPath.Text = dropDir;
+				this.Text = dropDir;
 			}
 		}
 
@@ -751,6 +753,7 @@ namespace Next_View
 				var upperDir = Directory.GetParent(sDir);
 				if (upperDir != null) {
 					edImgPath.Text = Directory.GetParent(sDir).FullName;
+					this.Text = edImgPath.Text;
 				}
 			}
 			else {

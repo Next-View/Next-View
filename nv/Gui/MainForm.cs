@@ -38,7 +38,7 @@ namespace Next_View
 	{
 		private DeserializeDockContent _deserializeDockContent;
 		public frmImage  m_Image;
-		public ExifDash  m_Exif;
+		public ExifDash  m_ExifDash;
 		static EventWaitHandle s_event ;
 		private XDListener listener;
 
@@ -151,18 +151,19 @@ namespace Next_View
 		{
 			int fHeight = this.Height;
 			int fWidth = this.Width;
-
-			m_Image  = new frmImage(fWidth, fHeight, WinType.normal);
+			
+			Form fm = this;
+			m_Image  = new frmImage(fm, WinType.normal);
 			m_Image.StatusChanged += new HandleStatusMainChange(HandleStatus);
 			m_Image.WindowChanged += new HandleWindowMainChange(HandleWindow);
 			m_Image.WindowSize += new HandleWindowSize(HandleSize);
 			m_Image.CommandChanged += new HandleCommandChange(HandleCommand);
 
 			m_Image.Show(dockPanel1, DockState.Document);      // sequence of tabs
-			m_Exif = new ExifDash();
-			m_Exif.StatusChanged += new HandleStatusMainChange(HandleStatus);
-			m_Exif.WindowSize += new HandleWindowSize(HandleSize);
-			m_Exif.CommandChanged += new HandleCommandChange(HandleCommand);
+			m_ExifDash = new ExifDash();
+			m_ExifDash.StatusChanged += new HandleStatusMainChange(HandleStatus);
+			m_ExifDash.WindowSize += new HandleWindowSize(HandleSize);
+			m_ExifDash.CommandChanged += new HandleCommandChange(HandleCommand);
 			//m_Image.Show(dockPanel1, DockState.Document);     // set active
 
 			bool doShow = true;
@@ -384,8 +385,8 @@ namespace Next_View
 
 		void MnuExifDashClick(object sender, EventArgs e)
 		{
-			m_Exif.SetPath2(_currentPath);
-			m_Exif.Show(dockPanel1, DockState.Document);
+			m_ExifDash.SetPath2(_currentPath);
+			m_ExifDash.Show(dockPanel1, DockState.Document);
 		}
 
 		//--------------------------  menu help ---------------------------//
@@ -674,12 +675,12 @@ namespace Next_View
 			switch(comm)
 			{
 				case 'e':  //  exifdash
-					m_Exif.SetPath2(_currentPath);
-					m_Exif.Show(dockPanel1, DockState.Document);
+					m_ExifDash.SetPath2(_currentPath);
+					m_ExifDash.Show(dockPanel1, DockState.Document);
 					break;
 				case 'i':  //  exif dash img
 					List<string> exImgList;
-					m_Exif.DashImgList(out exImgList);
+					m_ExifDash.DashImgList(out exImgList);
 					//Debug.WriteLine("imgs: " + exImgList.Count.ToString());
 					m_Image.Show(dockPanel1, DockState.Document);
 					m_Image.ShowExifImages(exImgList, fName);
@@ -689,8 +690,8 @@ namespace Next_View
 					Settings.Default.DashH = this.Height;
 					Settings.Default.Save( );
 					break;
-				case 'p':  //  exif path
-					m_Exif.SetPath2(_currentPath);
+				case 'p':  //  dash enter - exif path
+					m_ExifDash.SetPath2(_currentPath);
 					break;
 				case 'r':  //  recent  for drop and open
 					recentItem1.AddRecentItem(fName);

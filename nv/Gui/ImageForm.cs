@@ -32,6 +32,7 @@ namespace Next_View
 	/// </summary>
 	public partial class frmImage : DockContent
 	{
+		Form _fM;
 		ImgList _il = new ImgList();
 		int _scHeight = 0;
 		int _scWidth = 0;
@@ -69,21 +70,28 @@ namespace Next_View
 
 		public frmImage(int mainWidth, int mainHeight, WinType wType)
 		{
-			//
-			// The InitializeComponent() call is required for Windows Forms designer support.
-			//
 			InitializeComponent();
 			_wType = wType;
 
 			_mainWidth = mainWidth;
 			_mainHeight = mainHeight;
-
 			//Debug.WriteLine("Screen W / H: {0}/{1}", _scWidth, _scHeight);
-
 			//Debug.WriteLine("main W / H: {0}/{1}", mainWidth, mainHeight);
-
 		}
 
+		public frmImage(Form fM, WinType wType)
+		{
+			InitializeComponent();
+			_wType = wType;
+
+			_fM = fM;
+			// use _fM.Width
+			//     _fM.Width
+			_mainWidth = _fM.Width;
+			_mainHeight = _fM.Height;
+			//Debug.WriteLine("Screen W / H: {0}/{1}", _scWidth, _scHeight);
+			//Debug.WriteLine("main W / H: {0}/{1}", mainWidth, mainHeight);
+		}
 
 		// ------------------------------   events form ----------------------------------------------------------
 
@@ -149,24 +157,20 @@ namespace Next_View
 
 		void FrmImageShown(object sender, EventArgs e)
 		{
-			int pbHeight = picBox.Height;
-			int pbWidth = picBox.Width;
-			//Debug.WriteLine("picbox-2 W / H: {0}/{1}", pbWidth, pbHeight);
-			_borderWidth = _mainWidth - pbWidth;
-			_borderHeight = _mainHeight - pbHeight;
-
+			CalcBorderSize();
 		}
 
 		void FrmImageEnter(object sender, EventArgs e)
 		{
 			if (_currentWidth > 0){
+				RefreshDir();
 				SetWindowSize(_currentWidth, _currentHeight, _exifType);
 			}
 		}
 
 		void FrmImageLeave(object sender, EventArgs e)
 		{
-			// Debug.WriteLine("img leave");
+			// Debug.WriteLine("img: leave");
 		}
 
 		void FrmImageHelpRequested(object sender, HelpEventArgs hlpevent)
@@ -557,6 +561,7 @@ namespace Next_View
 				int imWidth = _myImg.Width;
 				//Debug.WriteLine("Image W / H: {0}/{1}", imWidth, imHeight);
 
+				CalcBorderSize();
 				if ((imWidth + _borderWidth > _scWidth) || (imHeight + _borderHeight > _scHeight)){
 					picBox.SizeMode = PictureBoxSizeMode.Zoom;
 					picBox.BackColor = SystemColors.Control;
@@ -1024,7 +1029,17 @@ namespace Next_View
 		  popRefresh.Text = T._("Refresh");
 		  popFullscreen.Text = T._("Full screen");
 		  popClose.Text = T._("Exit");
+		}
 
+		public void CalcBorderSize()
+		{
+			int pbWidth = picBox.Width;
+			int pbHeight = picBox.Height;
+			_mainWidth = _fM.Width;
+			_mainHeight = _fM.Height;
+			_borderWidth = _mainWidth - pbWidth;
+			_borderHeight = _mainHeight - pbHeight;
+			Debug.WriteLine("picbox border size W / H: {0}/{1}; pic box {2} / {3}; form {4} / {5} ", _borderWidth, _borderHeight, pbWidth, pbHeight, this.Width, this.Height);
 		}
 
 		// ------------------------------   2nd screen    ----------------------------------------------------------
@@ -1194,7 +1209,7 @@ namespace Next_View
 		{
 			// called by: PicLoad, RenamePic, RenamePicPlus, RemovePicPlus
 			// output: main.HandleWindow
-			this.Text = text2 + "  -  Next-View";
+			this.Text = Path.GetFileName(text2);
 
 			OnWindowChanged(new SetTitleEventArgs(text2));
 			Application.DoEvents();
