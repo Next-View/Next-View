@@ -42,6 +42,7 @@ namespace Next_View
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExifForm));
 			this.listExif = new System.Windows.Forms.ListView();
 			this.colTag = new System.Windows.Forms.ColumnHeader();
 			this.colValue = new System.Windows.Forms.ColumnHeader();
@@ -57,9 +58,10 @@ namespace Next_View
 			this.colValue});
 			this.listExif.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.listExif.Location = new System.Drawing.Point(0, 0);
+			this.listExif.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
 			this.listExif.MultiSelect = false;
 			this.listExif.Name = "listExif";
-			this.listExif.Size = new System.Drawing.Size(253, 376);
+			this.listExif.Size = new System.Drawing.Size(337, 463);
 			this.listExif.TabIndex = 0;
 			this.listExif.TabStop = false;
 			this.listExif.UseCompatibleStateImageBehavior = false;
@@ -91,12 +93,14 @@ namespace Next_View
 			// 
 			// ExifForm
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(253, 376);
+			this.ClientSize = new System.Drawing.Size(337, 463);
 			this.ContextMenuStrip = this.popExif;
 			this.Controls.Add(this.listExif);
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.KeyPreview = true;
+			this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
 			this.Name = "ExifForm";
 			this.Text = "Exif data";
 			this.Activated += new System.EventHandler(this.ExifFormActivated);

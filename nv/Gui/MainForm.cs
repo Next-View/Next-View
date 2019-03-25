@@ -151,7 +151,7 @@ namespace Next_View
 		{
 			int fHeight = this.Height;
 			int fWidth = this.Width;
-			
+
 			Form fm = this;
 			m_Image  = new frmImage(fm, WinType.normal);
 			m_Image.StatusChanged += new HandleStatusMainChange(HandleStatus);
@@ -194,7 +194,7 @@ namespace Next_View
 					m_Image.PicScan(userImagePath, true);
 				}
 				//Debug.WriteLine("pic path: " + userImagePath);
-				firstImage = Directory.GetCurrentDirectory() + @"\Next-View-0.5.png";
+				firstImage = Directory.GetCurrentDirectory() + @"\Next-View-0.5.jpg";
 				recentItem1.AddRecentItem(firstImage);
 				if (doShow) m_Image.PicLoad(firstImage, true);
 			}
@@ -295,13 +295,13 @@ namespace Next_View
 		{
 			m_Image.SaveOri();
 		}
-		
+
 		void MnuExitClick(object sender, EventArgs e)
 		{
 			ExitApp();
 		}
 
-		
+
 		//--------------------------  menu edit ---------------------------//
 
 		void MnuOptionsClick(object sender, EventArgs e)
@@ -367,12 +367,12 @@ namespace Next_View
 		{
 			m_Image.RotateLeft();
 		}
-		
+
 		void MnuRotateRightClick(object sender, EventArgs e)
 		{
 			m_Image.RotateRight();
 		}
-		
+
 		void MnuShowImageClick(object sender, EventArgs e)
 		{
 			m_Image.Show(dockPanel1, DockState.Document);
@@ -467,7 +467,7 @@ namespace Next_View
 
 		void BnExifClick(object sender, EventArgs e)
 		{
-
+			m_Image.StartExif();
 		}
 
 		void BnSearchClick(object sender, EventArgs e)
@@ -564,7 +564,7 @@ namespace Next_View
 			mnuDelete.Text = T._("Delete");
 			mnuSaveOri.Text = T._("Save orientation");
 			mnuExit.Text = T._("Exit");
-			
+
 			mnuEdit.Text = T._("Edit");
 			mnuOptions.Text = T._("Options...");
 			mnuStartEditor.Text = T._("Start editor...");
@@ -572,7 +572,7 @@ namespace Next_View
 			mnuLanguage.Text = T._("Language");
 			langEnglish.Text = T._("English");
 			langGerman.Text = T._("German");
-			
+
 			mnuView.Text = T._("View");
 			mnuNextImage.Text = T._("Next Image") + "               ";
 			mnuPriorImage.Text = T._("Prior Image");
@@ -587,7 +587,7 @@ namespace Next_View
 			mnuExif.Text = T._("Exif...");
 			mnuShowImage.Text = T._("Show image");
 			mnuExifDash.Text = T._("Exif dashboard...");
-			
+
 			mnuHelp.Text = T._("Help");
 			mnuHelp1.Text = T._("Help");
 			mnuWeb.Text = T._("Homepage...");
@@ -681,7 +681,7 @@ namespace Next_View
 				case 'i':  //  exif dash img
 					List<string> exImgList;
 					m_ExifDash.DashImgList(out exImgList);
-					//Debug.WriteLine("imgs: " + exImgList.Count.ToString());
+					Debug.WriteLine("img on main: " + exImgList.Count.ToString());
 					m_Image.Show(dockPanel1, DockState.Document);
 					m_Image.ShowExifImages(exImgList, fName);
 					break;

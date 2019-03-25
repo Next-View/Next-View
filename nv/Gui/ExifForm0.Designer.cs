@@ -38,6 +38,7 @@ namespace Next_View
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExifForm0));
 			this.textExif0 = new System.Windows.Forms.TextBox();
 			this.cmdClip = new System.Windows.Forms.Button();
 			this.SuspendLayout();
@@ -74,6 +75,7 @@ namespace Next_View
 			this.ClientSize = new System.Drawing.Size(900, 464);
 			this.Controls.Add(this.cmdClip);
 			this.Controls.Add(this.textExif0);
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Margin = new System.Windows.Forms.Padding(4);
 			this.Name = "ExifForm0";
 			this.Text = "ExifForm0";

@@ -144,7 +144,7 @@ namespace Next_View
 				}
 				this.Width = wW;
 				this.Height = wH;
-
+				this.Icon = Icon1.Icon;
 				Debug.WriteLine("open 2nd y: {0} ", Settings.Default.SecondY);
 
 				_ndRunning = true;
@@ -163,7 +163,7 @@ namespace Next_View
 		void FrmImageEnter(object sender, EventArgs e)
 		{
 			if (_currentWidth > 0){
-				RefreshDir();
+				//RefreshDir();  msn
 				SetWindowSize(_currentWidth, _currentHeight, _exifType);
 			}
 		}
@@ -438,10 +438,10 @@ namespace Next_View
 				case 13:    // enter  full screen
 					ShowFullScreen();
 					break;
-				case 76:    // L
+				case 76:    // 'l
 					RotateLeft();
 					break;
-				case 82:    // R
+				case 82:    //  'r
 					RotateRight();
 					break;
 				case 83:    // ctrl 's'
@@ -557,30 +557,8 @@ namespace Next_View
 					picBox.Image = _myImg;
 				}
 
-				int imHeight = _myImg.Height;
-				int imWidth = _myImg.Width;
-				//Debug.WriteLine("Image W / H: {0}/{1}", imWidth, imHeight);
+				PicSetSize();
 
-				CalcBorderSize();
-				if ((imWidth + _borderWidth > _scWidth) || (imHeight + _borderHeight > _scHeight)){
-					picBox.SizeMode = PictureBoxSizeMode.Zoom;
-					picBox.BackColor = SystemColors.Control;
-					float scFactor = (float) _scWidth / _scHeight;
-					float imFactor = (float) imWidth / imHeight;
-					if (imFactor > scFactor){   // wide img
-						int ih = (imHeight * (_scWidth - _borderWidth) / imWidth);
-						SetWindowSize(_scWidth, ih + _borderHeight, _exifType);
-					}
-					else {    // high img
-						int iw = (imWidth * (_scHeight - _borderHeight) / imHeight);// + _borderWidth;
-						SetWindowSize(iw + _borderWidth, _scHeight, _exifType);
-					}
-				}
-				else {  // small img
-					picBox.SizeMode = PictureBoxSizeMode.CenterImage;
-					picBox.BackColor = Color.Black;
-					SetWindowSize(imWidth + _borderWidth, imHeight + _borderHeight, _exifType);
-				}
 				if (_wType != WinType.second){
 					Settings.Default.LastImage = pPath;
 				}
@@ -597,6 +575,33 @@ namespace Next_View
 			}
 		}
 
+		public void PicSetSize( )
+		{
+			int imHeight = _myImg.Height;
+			int imWidth = _myImg.Width;
+			//Debug.WriteLine("Image W / H: {0}/{1}", imWidth, imHeight);
+
+			CalcBorderSize();
+			if ((imWidth + _borderWidth > _scWidth) || (imHeight + _borderHeight > _scHeight)){
+				picBox.SizeMode = PictureBoxSizeMode.Zoom;
+				picBox.BackColor = SystemColors.Control;
+				float scFactor = (float) _scWidth / _scHeight;
+				float imFactor = (float) imWidth / imHeight;
+				if (imFactor > scFactor){   // wide img
+					int ih = (imHeight * (_scWidth - _borderWidth) / imWidth);
+					SetWindowSize(_scWidth, ih + _borderHeight, _exifType);
+				}
+				else {    // high img
+					int iw = (imWidth * (_scHeight - _borderHeight) / imHeight);// + _borderWidth;
+					SetWindowSize(iw + _borderWidth, _scHeight, _exifType);
+				}
+			}
+			else {  // small img
+				picBox.SizeMode = PictureBoxSizeMode.CenterImage;
+				picBox.BackColor = SystemColors.Control;  // Color.Black;
+				SetWindowSize(imWidth + _borderWidth, imHeight + _borderHeight, _exifType);
+			}
+		}
 
 		public int PicScan(string  pPath, bool allDirs)
 		{
@@ -955,7 +960,12 @@ namespace Next_View
 		public void ShowExifImages(List<string> exImgList, string selImg)
 		{
 			_il.DirClear();
-			_il._imList = exImgList;
+			// _il._imList = exImgList;
+			exImgList.ForEach((item)=>   // msn deep copy required
+    		{
+        		_il._imList.Add(item);
+    		});
+			
 			int picPos = 0;
 			int picAll = 0;
 			_il.DirPosPath(ref picPos, ref picAll, selImg);
@@ -988,6 +998,7 @@ namespace Next_View
 				_oriCurrent--;
 				if (_oriCurrent < 0) _oriCurrent = 3;
 			}
+			PicSetSize();
 		}
 
 		public void RotateRight()
@@ -998,6 +1009,7 @@ namespace Next_View
 				_oriCurrent++;
 				if (_oriCurrent > 3) _oriCurrent = 0;
 			}
+			PicSetSize();
 		}
 
 		public void StartEditor()
@@ -1033,13 +1045,15 @@ namespace Next_View
 
 		public void CalcBorderSize()
 		{
-			int pbWidth = picBox.Width;
-			int pbHeight = picBox.Height;
-			_mainWidth = _fM.Width;
-			_mainHeight = _fM.Height;
-			_borderWidth = _mainWidth - pbWidth;
-			_borderHeight = _mainHeight - pbHeight;
-			Debug.WriteLine("picbox border size W / H: {0}/{1}; pic box {2} / {3}; form {4} / {5} ", _borderWidth, _borderHeight, pbWidth, pbHeight, this.Width, this.Height);
+			if (_wType == WinType.normal){
+				int pbWidth = picBox.Width;
+				int pbHeight = picBox.Height;
+				_mainWidth = _fM.Width;
+				_mainHeight = _fM.Height;
+				_borderWidth = _mainWidth - pbWidth;
+				_borderHeight = _mainHeight - pbHeight;
+				// Debug.WriteLine("picbox border size W / H: {0}/{1}; pic box {2} / {3}; form {4} / {5} ", _borderWidth, _borderHeight, pbWidth, pbHeight, this.Width, this.Height);
+			}
 		}
 
 		// ------------------------------   2nd screen    ----------------------------------------------------------
