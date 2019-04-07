@@ -98,6 +98,9 @@ namespace Next_View
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.bnSearch = new System.Windows.Forms.ToolStripButton();
 			this.bnHelp = new System.Windows.Forms.ToolStripButton();
+			this.bnSearchPrior = new System.Windows.Forms.ToolStripButton();
+			this.edSearch = new System.Windows.Forms.ToolStripTextBox();
+			this.bnSearchNext = new System.Windows.Forms.ToolStripButton();
 			this.imageList1 = new System.Windows.Forms.ImageList(this.components);
 			this.menuMain.SuspendLayout();
 			this.statusMain.SuspendLayout();
@@ -118,7 +121,7 @@ namespace Next_View
 			this.dockPanel1.DockTopPortion = 0.15D;
 			this.dockPanel1.DocumentStyle = WeifenLuo.WinFormsUI.Docking.DocumentStyle.DockingSdi;
 			this.dockPanel1.Location = new System.Drawing.Point(0, 0);
-			this.dockPanel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.dockPanel1.Margin = new System.Windows.Forms.Padding(4);
 			this.dockPanel1.Name = "dockPanel1";
 			this.dockPanel1.Size = new System.Drawing.Size(1179, 614);
 			this.dockPanel1.TabIndex = 0;
@@ -525,11 +528,11 @@ namespace Next_View
 			// 
 			this.toolStripContainer1.ContentPanel.AutoScroll = true;
 			this.toolStripContainer1.ContentPanel.Controls.Add(this.dockPanel1);
-			this.toolStripContainer1.ContentPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.toolStripContainer1.ContentPanel.Margin = new System.Windows.Forms.Padding(4);
 			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(1179, 614);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
-			this.toolStripContainer1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.toolStripContainer1.Margin = new System.Windows.Forms.Padding(4);
 			this.toolStripContainer1.Name = "toolStripContainer1";
 			this.toolStripContainer1.Size = new System.Drawing.Size(1179, 692);
 			this.toolStripContainer1.TabIndex = 4;
@@ -556,10 +559,13 @@ namespace Next_View
 			this.bnExif,
 			this.toolStripSeparator3,
 			this.bnSearch,
-			this.bnHelp});
+			this.bnHelp,
+			this.bnSearchPrior,
+			this.edSearch,
+			this.bnSearchNext});
 			this.toolStrip2.Location = new System.Drawing.Point(3, 0);
 			this.toolStrip2.Name = "toolStrip2";
-			this.toolStrip2.Size = new System.Drawing.Size(256, 31);
+			this.toolStrip2.Size = new System.Drawing.Size(404, 31);
 			this.toolStrip2.TabIndex = 1;
 			// 
 			// bnOpen
@@ -670,6 +676,34 @@ namespace Next_View
 			this.bnHelp.Text = "Help";
 			this.bnHelp.Click += new System.EventHandler(this.BnHelpClick);
 			// 
+			// bnSearchPrior
+			// 
+			this.bnSearchPrior.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.bnSearchPrior.Image = ((System.Drawing.Image)(resources.GetObject("bnSearchPrior.Image")));
+			this.bnSearchPrior.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+			this.bnSearchPrior.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.bnSearchPrior.Name = "bnSearchPrior";
+			this.bnSearchPrior.Size = new System.Drawing.Size(23, 28);
+			this.bnSearchPrior.Text = "Search prior";
+			this.bnSearchPrior.Click += new System.EventHandler(this.BnSearchPriorClick);
+			// 
+			// edSearch
+			// 
+			this.edSearch.Name = "edSearch";
+			this.edSearch.Size = new System.Drawing.Size(100, 31);
+			this.edSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.EdSearchKeyDown);
+			// 
+			// bnSearchNext
+			// 
+			this.bnSearchNext.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.bnSearchNext.Image = ((System.Drawing.Image)(resources.GetObject("bnSearchNext.Image")));
+			this.bnSearchNext.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+			this.bnSearchNext.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.bnSearchNext.Name = "bnSearchNext";
+			this.bnSearchNext.Size = new System.Drawing.Size(23, 28);
+			this.bnSearchNext.Text = "Search next";
+			this.bnSearchNext.Click += new System.EventHandler(this.BnSearchNextClick);
+			// 
 			// imageList1
 			// 
 			this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
@@ -688,8 +722,8 @@ namespace Next_View
 			this.Controls.Add(this.toolStripContainer1);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MainMenuStrip = this.menuMain;
-			this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-			this.MinimumSize = new System.Drawing.Size(499, 187);
+			this.Margin = new System.Windows.Forms.Padding(4);
+			this.MinimumSize = new System.Drawing.Size(600, 187);
 			this.Name = "frmMain";
 			this.Text = "Next-View";
 			this.Activated += new System.EventHandler(this.FrmMainActivated);
@@ -776,5 +810,8 @@ namespace Next_View
 		private System.Windows.Forms.ToolStripMenuItem mnuRotateRight;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
 		private System.Windows.Forms.ToolStripMenuItem mnuSaveOri;
+		private System.Windows.Forms.ToolStripTextBox edSearch;
+		private System.Windows.Forms.ToolStripButton bnSearchPrior;
+		private System.Windows.Forms.ToolStripButton bnSearchNext;
 	}
 }

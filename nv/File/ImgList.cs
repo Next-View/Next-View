@@ -125,6 +125,53 @@ namespace Next_View
 			return true;
 		}
 
+		public bool DirPicSearchNext(string pSearch, ref string pPath)
+		{
+			if (_imList.Count < 1) {
+				return false;
+			}
+			int pPos = _picPos;
+			do 
+			{
+				pPos++;
+				if (pPos >= _imList.Count)
+				{
+					pPos = 0;
+				}
+				string sPath = _imList[pPos];
+				if (sPath.Contains(pSearch)){
+					_picPos = pPos;
+					pPath = sPath;
+					return true;
+				}
+				//Debug.WriteLine("s pos: " + pPos + " " + _picPos);
+			} while (pPos != _picPos);
+			return false;
+		}
+
+		public bool DirPicSearchPrior(string pSearch, ref string pPath)
+		{
+			if (_imList.Count < 1) {
+				return false;
+			}
+			int pPos = _picPos;
+			do
+			{
+				pPos--;
+				if (pPos < 0)
+				{
+					pPos = _imList.Count - 1;
+				}
+				string sPath = _imList[pPos];
+				if (sPath.Contains(pSearch)){
+					_picPos = pPos;
+					pPath = sPath;
+					return true;
+				}
+			} while (pPos != _picPos);
+			return false;
+		}
+				
 		public bool DirPicPrior(ref string pPath)
 		{
 			if (_imList.Count < 1) {

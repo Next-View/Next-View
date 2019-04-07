@@ -787,7 +787,7 @@ namespace Next_View
 			if (maxTicks < 1) maxTicks = 1;
 			bw.ReportProgress(maxTicks, T._("Start"));
 
-			int fCount =0;
+			int fCount = 0;
 			foreach (string picPath in imgList)
 			{
 
@@ -897,11 +897,9 @@ namespace Next_View
 				SetStatusText(-9, "");  // progress reset
 				SetStatusText(0, T._("Scan complete") + " - " + edImgPath.Text + "  "  + ptime);
 				DateTime lastScan = DateTime.Now;
-
-
-
 			}
 		}
+
 		void ExifDashLoad(object sender, EventArgs e)
 		{
 			TranslateExifDashForm();

@@ -627,6 +627,17 @@ namespace Next_View
 			}
 		}
 
+		public void NextSearchPic(string pSearch)
+		{
+			string pPath = "";
+			if (_il.DirPicSearchNext(pSearch, ref pPath)){
+				PicLoad(pPath, true);
+			}
+			else {
+				SetStatusText(0, T._("No image found"));
+			}
+		}
+		
 		public void NextPicDir()
 		{
 			PicScan(_currentPath, false);
@@ -647,6 +658,17 @@ namespace Next_View
 			}
 		}
 
+		public void PriorSearchPic(string pSearch)
+		{
+			string pPath = "";
+			if (_il.DirPicSearchPrior(pSearch, ref pPath)){
+				PicLoad(pPath, true);
+			}
+			else {
+				SetStatusText(0, T._("No image found"));
+			}
+		}
+		
 		public void PriorPicDir()
 		{
 			PicScan(_currentPath, false);

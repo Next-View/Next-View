@@ -194,7 +194,7 @@ namespace Next_View
 					m_Image.PicScan(userImagePath, true);
 				}
 				//Debug.WriteLine("pic path: " + userImagePath);
-				firstImage = Directory.GetCurrentDirectory() + @"\Next-View-0.5.jpg";
+				firstImage = Directory.GetCurrentDirectory() + @"\Next-View-0.6.jpg";
 				recentItem1.AddRecentItem(firstImage);
 				if (doShow) m_Image.PicLoad(firstImage, true);
 			}
@@ -467,7 +467,7 @@ namespace Next_View
 
 		void BnExifClick(object sender, EventArgs e)
 		{
-			m_Image.StartExif();
+
 		}
 
 		void BnSearchClick(object sender, EventArgs e)
@@ -475,7 +475,30 @@ namespace Next_View
 			this.mnuSearch.PerformClick();
 		}
 
+		void BnSearchPriorClick(object sender, EventArgs e)
+		{
+			m_Image.PriorSearchPic(edSearch.Text);
+		}
+		
+		void BnSearchNextClick(object sender, EventArgs e)
+		{
+			m_Image.NextSearchPic(edSearch.Text);
+		}
 
+		void EdSearchKeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.KeyCode == Keys.Enter){
+				m_Image.NextSearchPic(edSearch.Text);
+			}
+			if (e.KeyCode == Keys.Left){
+				m_Image.PriorSearchPic(edSearch.Text);
+			}
+			if (e.KeyCode == Keys.Right){
+				m_Image.NextSearchPic(edSearch.Text);
+			}
+		}
+		
+		
 		void BnHelpClick(object sender, EventArgs e)
 		{
 			this.mnuHelp1.PerformClick();

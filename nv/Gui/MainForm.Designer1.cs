@@ -143,6 +143,26 @@ namespace Next_View.Gui {
 		/// <summary>
 		///   Looks up a localized resource of type System.Drawing.Bitmap.
 		/// </summary>
+		internal static System.Drawing.Bitmap bnSearchNext_Image {
+			get {
+				object obj = ResourceManager.GetObject("bnSearchNext.Image", resourceCulture);
+				return ((System.Drawing.Bitmap)(obj));
+			}
+		}
+		
+		/// <summary>
+		///   Looks up a localized resource of type System.Drawing.Bitmap.
+		/// </summary>
+		internal static System.Drawing.Bitmap bnSearchPrior_Image {
+			get {
+				object obj = ResourceManager.GetObject("bnSearchPrior.Image", resourceCulture);
+				return ((System.Drawing.Bitmap)(obj));
+			}
+		}
+		
+		/// <summary>
+		///   Looks up a localized resource of type System.Drawing.Bitmap.
+		/// </summary>
 		internal static System.Drawing.Bitmap bnStartEditor_Image {
 			get {
 				object obj = ResourceManager.GetObject("bnStartEditor.Image", resourceCulture);
