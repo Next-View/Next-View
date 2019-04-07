@@ -767,7 +767,11 @@ namespace Next_View
 		// called by: BackgroundWorker1DoWork
 		// shown with ExifDataShow
 		{
-			string[] imgList = Directory.GetFiles(_imgDir, "*.jpg", SearchOption.AllDirectories);
+			var imgList = new List<string>();
+			imgList = Directory.GetFiles(_imgDir, "*.jpg", SearchOption.AllDirectories).ToList();
+			FilenameComparer fc = new FilenameComparer();
+			imgList.Sort(fc);
+				
 			int exType;
 			string orientation;
 			string model;
@@ -788,6 +792,8 @@ namespace Next_View
 			bw.ReportProgress(maxTicks, T._("Start"));
 
 			int fCount = 0;
+			DateTime priorDate = DateTime.MaxValue;
+			var spanDict = new Dictionary<int, int>();
 			foreach (string picPath in imgList)
 			{
 
@@ -807,6 +813,13 @@ namespace Next_View
 					_dateCount++;
 					if (_minDate > dtOriginal) _minDate = dtOriginal;
 					if (_maxDate < dtOriginal) _maxDate = dtOriginal;
+
+					if (_dateCount > 1){
+						TimeSpan span = dtOriginal.Subtract(priorDate);
+						int spanSec = Math.Abs((int) span.TotalSeconds);
+						spanDict.Add(fCount, spanSec);
+					}
+					priorDate = dtOriginal;
 				}
 
 				if (dicExift.ContainsKey(exType)) dicExift[exType] +=1;
@@ -837,11 +850,35 @@ namespace Next_View
 
 			}
 
-			foreach (KeyValuePair<string, int> dfn in dicFNum)
-			{
-				//Debug.WriteLine("F Num: " + dfn.Key + " " + dfn.Value);
+			// span values
+			if (_dateCount > 0){
+				TimeSpan imgSpan = _maxDate.Subtract(_minDate);
+				int mean = (int) imgSpan.TotalSeconds / _dateCount;
+				long sumVar = 0;
+				foreach (KeyValuePair<int, int> sd in spanDict)
+				{
+					long var = (long) Math.Pow((mean - sd.Value), 2);
+					sumVar += var;
+					//Debug.WriteLine("F Num: " + dfn.Key + " " + dfn.Value);
+				}
+				int stdDev = (int) Math.Sqrt(sumVar / _dateCount);
+				Debug.WriteLine("mean / std : {0}/{1}", mean, stdDev);
+				
+				int breakVal = 0;
+				if (mean * 4 > stdDev){
+					breakVal = stdDev * 10;
+				}
+				else {
+					breakVal = stdDev * 2;
+				}
+				int i = 0;
+				foreach (KeyValuePair<int, int> sd in spanDict.OrderByDescending(key=> key.Value))
+				{
+					i++;
+					if (sd.Value < breakVal) break;
+					Debug.WriteLine("pic no / dist : {0}/{1}", sd.Key, sd.Value);
+				}
 			}
-
 			return true;
 		}
 
@@ -922,8 +959,8 @@ namespace Next_View
 		{
 			Text = T._("Exif dashboard");
 			cmdStart.Text = T._("&Start");
-			label1.Text = T._("Path");	
-			colFiles.Text = T._("Filename");		
+			label1.Text = T._("Path");
+			colFiles.Text = T._("Filename");
 			popProperties.Text = T._("Properties...");
 			columnHeader1.Text = T._("Model");
 			columnHeader2.Text = T._("Count");
@@ -945,7 +982,7 @@ namespace Next_View
 			chartImg.Titles[0].Text = T._("Images per day");
 			lblFace.Text = T._("Face" + ": ");
 		}
-		
+
 		// ------------------------------   delegates   ----------------------------------------------------------
 
 		public void SetStatusText(int sVal, string sText)

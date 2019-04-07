@@ -63,6 +63,9 @@ namespace Next_View
 			this.popClose = new System.Windows.Forms.ToolStripMenuItem();
 			this.picBox = new System.Windows.Forms.PictureBox();
 			this.Icon1 = new System.Windows.Forms.NotifyIcon(this.components);
+			this.Scollbar1 = new ProXoft.WinForms.ScrollBarEnhanced();
+			this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+			this.bw2 = new System.ComponentModel.BackgroundWorker();
 			this.popImage.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picBox)).BeginInit();
 			this.SuspendLayout();
@@ -190,7 +193,7 @@ namespace Next_View
 			// 
 			// picBox
 			// 
-			this.picBox.BackColor = System.Drawing.Color.Black;
+			this.picBox.BackColor = System.Drawing.SystemColors.Control;
 			this.picBox.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.picBox.Location = new System.Drawing.Point(0, 0);
 			this.picBox.Margin = new System.Windows.Forms.Padding(2);
@@ -206,6 +209,59 @@ namespace Next_View
 			this.Icon1.Text = "Icon1";
 			this.Icon1.Visible = true;
 			// 
+			// Scollbar1
+			// 
+			this.Scollbar1.Dock = System.Windows.Forms.DockStyle.Right;
+			this.Scollbar1.InitialDelay = 500;
+			this.Scollbar1.LargeChange = new decimal(new int[] {
+			10,
+			0,
+			0,
+			0});
+			this.Scollbar1.Location = new System.Drawing.Point(386, 0);
+			this.Scollbar1.Margin = new System.Windows.Forms.Padding(2);
+			this.Scollbar1.Maximum = new decimal(new int[] {
+			1000,
+			0,
+			0,
+			0});
+			this.Scollbar1.Minimum = new decimal(new int[] {
+			1,
+			0,
+			0,
+			0});
+			this.Scollbar1.MinimumSize = new System.Drawing.Size(23, 63);
+			this.Scollbar1.Name = "Scollbar1";
+			this.Scollbar1.RepeatRate = 200;
+			this.Scollbar1.Size = new System.Drawing.Size(23, 262);
+			this.Scollbar1.SmallChange = new decimal(new int[] {
+			1,
+			0,
+			0,
+			0});
+			this.Scollbar1.TabIndex = 46;
+			this.Scollbar1.Value = new decimal(new int[] {
+			1,
+			0,
+			0,
+			0});
+			this.Scollbar1.ToolTipNeeded += new System.EventHandler<ProXoft.WinForms.TooltipNeededEventArgs>(this.Scollbar1ToolTipNeeded);
+			this.Scollbar1.ValueChanged += new System.EventHandler(this.Scollbar1ValueChanged);
+			this.Scollbar1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Scollbar1KeyDown);
+			this.Scollbar1.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.Scollbar1PreviewKeyDown);
+			// 
+			// backgroundWorker1
+			// 
+			this.backgroundWorker1.WorkerSupportsCancellation = true;
+			this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BackgroundWorker1DoWork);
+			this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BackgroundWorker1RunWorkerCompleted);
+			// 
+			// bw2
+			// 
+			this.bw2.WorkerSupportsCancellation = true;
+			this.bw2.DoWork += new System.ComponentModel.DoWorkEventHandler(this.Bw2DoWork);
+			this.bw2.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.Bw2RunWorkerCompleted);
+			// 
 			// frmImage
 			// 
 			this.AllowDrop = true;
@@ -215,6 +271,7 @@ namespace Next_View
 			this.BackColor = System.Drawing.SystemColors.ControlDark;
 			this.ClientSize = new System.Drawing.Size(409, 262);
 			this.ContextMenuStrip = this.popImage;
+			this.Controls.Add(this.Scollbar1);
 			this.Controls.Add(this.picBox);
 			this.DockAreas = ((WeifenLuo.WinFormsUI.Docking.DockAreas)(((((WeifenLuo.WinFormsUI.Docking.DockAreas.DockLeft | WeifenLuo.WinFormsUI.Docking.DockAreas.DockRight) 
 			| WeifenLuo.WinFormsUI.Docking.DockAreas.DockTop) 
@@ -259,5 +316,8 @@ namespace Next_View
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 		private System.Windows.Forms.ToolStripMenuItem popClose;
 		private System.Windows.Forms.NotifyIcon Icon1;
+		private ProXoft.WinForms.ScrollBarEnhanced Scollbar1;
+		private System.ComponentModel.BackgroundWorker backgroundWorker1;
+		private System.ComponentModel.BackgroundWorker bw2;
 	}
 }

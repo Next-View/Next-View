@@ -167,7 +167,7 @@ namespace Next_View
 			//m_Image.Show(dockPanel1, DockState.Document);     // set active
 
 			bool doShow = true;
-			if (Control.ModifierKeys == Keys.Control){
+			if (Control.ModifierKeys == Keys.Control){  // ctrl
 				doShow = false;
 				//Debug.WriteLine(" key control ");
 			}
@@ -178,25 +178,32 @@ namespace Next_View
 				firstImage = args[1];
 			}
 			if (File.Exists(firstImage)) {
-				m_Image.PicScan(firstImage, false);
+				m_Image.PicScan(firstImage, false, 0);
 				if (doShow){
 					m_Image.PicLoad(firstImage, true);
 					recentItem1.AddRecentItem(firstImage);
 				}
+				else _currentPath = firstImage;
 			}
 			else if (File.Exists(Settings.Default.LastImage)) {
-				m_Image.PicScan(Settings.Default.LastImage, false);
-				if (doShow) m_Image.PicLoad(Settings.Default.LastImage, true);
+				m_Image.PicScan(Settings.Default.LastImage, false, 0);
+				if (doShow){
+					 m_Image.PicLoad(Settings.Default.LastImage, true);
+				}
+				else _currentPath = Settings.Default.LastImage;
 			}
 			else {
 				string userImagePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\Pictures";
 				if (Directory.Exists(userImagePath)) {
-					m_Image.PicScan(userImagePath, true);
+					m_Image.PicScan(userImagePath, true, 0);
 				}
 				//Debug.WriteLine("pic path: " + userImagePath);
 				firstImage = Directory.GetCurrentDirectory() + @"\Next-View-0.6.jpg";
 				recentItem1.AddRecentItem(firstImage);
-				if (doShow) m_Image.PicLoad(firstImage, true);
+				if (doShow) {
+					m_Image.PicLoad(firstImage, true);
+				}
+				else _currentPath = firstImage;
 			}
 		}
 
@@ -273,7 +280,7 @@ namespace Next_View
 			if (File.Exists(picPath))
 			{
 				recentItem1.AddRecentItem(picPath);
-				m_Image.PicScan(picPath, false);
+				m_Image.PicScan(picPath, false, 0);
 				m_Image.PicLoad(picPath, true);
 			}
 			else
@@ -318,6 +325,17 @@ namespace Next_View
 		void MnuSearchClick(object sender, EventArgs e)
 		{
 			m_Image.SearchPic();
+		}
+
+		void MnuSearchBarClick(object sender, EventArgs e)
+		{
+			if (mnuSearchBar.Checked == true) {
+				mnuSearchBar.Checked = false;
+			}
+			else {
+				mnuSearchBar.Checked = true;
+			}
+			m_Image.ScollbarVis(mnuSearchBar.Checked);
 		}
 
 		//--------------------------  menu view ---------------------------//
@@ -479,7 +497,7 @@ namespace Next_View
 		{
 			m_Image.PriorSearchPic(edSearch.Text);
 		}
-		
+
 		void BnSearchNextClick(object sender, EventArgs e)
 		{
 			m_Image.NextSearchPic(edSearch.Text);
@@ -497,8 +515,8 @@ namespace Next_View
 				m_Image.NextSearchPic(edSearch.Text);
 			}
 		}
-		
-		
+
+
 		void BnHelpClick(object sender, EventArgs e)
 		{
 			this.mnuHelp1.PerformClick();
@@ -528,7 +546,7 @@ namespace Next_View
 		{
 			string commandLine = e.DataGram.Message;
 			if (File.Exists(commandLine)) {
-				m_Image.PicScan(commandLine, false);
+				m_Image.PicScan(commandLine, false, 0);
 				m_Image.PicLoad(commandLine, true);
 				recentItem1.AddRecentItem(commandLine);
 			}
@@ -704,7 +722,7 @@ namespace Next_View
 				case 'i':  //  exif dash img
 					List<string> exImgList;
 					m_ExifDash.DashImgList(out exImgList);
-					Debug.WriteLine("img on main: " + exImgList.Count.ToString());
+					//Debug.WriteLine("img on main: " + exImgList.Count.ToString());
 					m_Image.Show(dockPanel1, DockState.Document);
 					m_Image.ShowExifImages(exImgList, fName);
 					break;
@@ -734,8 +752,6 @@ namespace Next_View
 		{
 			//Debug.WriteLine("main key: " + e.KeyValue.ToString());
 		}
-
-
 
 	}  // end main
 

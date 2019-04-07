@@ -61,6 +61,9 @@
     <Reference Include="NGettext">
       <HintPath>bin\Debug\NGettext.dll</HintPath>
     </Reference>
+    <Reference Include="ScrollBarEnhancedControl">
+      <HintPath>bin\Debug\ScrollBarEnhancedControl.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
@@ -99,6 +102,7 @@
     <Compile Include="File\DelFile.cs" />
     <Compile Include="File\ExifReader.cs" />
     <Compile Include="File\FileInfo.cs" />
+    <Compile Include="File\FilenameComparer.cs" />
     <Compile Include="File\ImgList.cs" />
     <Compile Include="Gui\About.cs" />
     <Compile Include="Gui\About.Designer.cs">

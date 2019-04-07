@@ -51,8 +51,10 @@ namespace Next_View
 			this.mnuExit = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuEdit = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuOptions = new System.Windows.Forms.ToolStripMenuItem();
-			this.mnuStartEditor = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuSearch = new System.Windows.Forms.ToolStripMenuItem();
+			this.mnuSearchBar = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+			this.mnuStartEditor = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuLanguage = new System.Windows.Forms.ToolStripMenuItem();
 			this.langEnglish = new System.Windows.Forms.ToolStripMenuItem();
 			this.langGerman = new System.Windows.Forms.ToolStripMenuItem();
@@ -121,9 +123,8 @@ namespace Next_View
 			this.dockPanel1.DockTopPortion = 0.15D;
 			this.dockPanel1.DocumentStyle = WeifenLuo.WinFormsUI.Docking.DocumentStyle.DockingSdi;
 			this.dockPanel1.Location = new System.Drawing.Point(0, 0);
-			this.dockPanel1.Margin = new System.Windows.Forms.Padding(4);
 			this.dockPanel1.Name = "dockPanel1";
-			this.dockPanel1.Size = new System.Drawing.Size(1179, 614);
+			this.dockPanel1.Size = new System.Drawing.Size(884, 484);
 			this.dockPanel1.TabIndex = 0;
 			// 
 			// menuMain
@@ -137,7 +138,7 @@ namespace Next_View
 			this.mnuHelp});
 			this.menuMain.Location = new System.Drawing.Point(0, 31);
 			this.menuMain.Name = "menuMain";
-			this.menuMain.Size = new System.Drawing.Size(1179, 24);
+			this.menuMain.Size = new System.Drawing.Size(884, 24);
 			this.menuMain.TabIndex = 0;
 			this.menuMain.Text = "menuMain";
 			// 
@@ -221,8 +222,10 @@ namespace Next_View
 			// 
 			this.mnuEdit.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
 			this.mnuOptions,
-			this.mnuStartEditor,
 			this.mnuSearch,
+			this.mnuSearchBar,
+			this.toolStripSeparator7,
+			this.mnuStartEditor,
 			this.mnuLanguage});
 			this.mnuEdit.Name = "mnuEdit";
 			this.mnuEdit.Size = new System.Drawing.Size(39, 20);
@@ -233,25 +236,37 @@ namespace Next_View
 			this.mnuOptions.Image = ((System.Drawing.Image)(resources.GetObject("mnuOptions.Image")));
 			this.mnuOptions.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
 			this.mnuOptions.Name = "mnuOptions";
-			this.mnuOptions.Size = new System.Drawing.Size(141, 22);
+			this.mnuOptions.Size = new System.Drawing.Size(158, 22);
 			this.mnuOptions.Text = "Options...";
 			this.mnuOptions.Click += new System.EventHandler(this.MnuOptionsClick);
-			// 
-			// mnuStartEditor
-			// 
-			this.mnuStartEditor.Name = "mnuStartEditor";
-			this.mnuStartEditor.Size = new System.Drawing.Size(141, 22);
-			this.mnuStartEditor.Text = "Start editor...";
-			this.mnuStartEditor.Click += new System.EventHandler(this.MnuStartEditorClick);
 			// 
 			// mnuSearch
 			// 
 			this.mnuSearch.Image = ((System.Drawing.Image)(resources.GetObject("mnuSearch.Image")));
 			this.mnuSearch.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
 			this.mnuSearch.Name = "mnuSearch";
-			this.mnuSearch.Size = new System.Drawing.Size(141, 22);
+			this.mnuSearch.Size = new System.Drawing.Size(158, 22);
 			this.mnuSearch.Text = "Search...";
 			this.mnuSearch.Click += new System.EventHandler(this.MnuSearchClick);
+			// 
+			// mnuSearchBar
+			// 
+			this.mnuSearchBar.Name = "mnuSearchBar";
+			this.mnuSearchBar.Size = new System.Drawing.Size(158, 22);
+			this.mnuSearchBar.Text = "Show SearchBar";
+			this.mnuSearchBar.Click += new System.EventHandler(this.MnuSearchBarClick);
+			// 
+			// toolStripSeparator7
+			// 
+			this.toolStripSeparator7.Name = "toolStripSeparator7";
+			this.toolStripSeparator7.Size = new System.Drawing.Size(155, 6);
+			// 
+			// mnuStartEditor
+			// 
+			this.mnuStartEditor.Name = "mnuStartEditor";
+			this.mnuStartEditor.Size = new System.Drawing.Size(158, 22);
+			this.mnuStartEditor.Text = "Start editor...";
+			this.mnuStartEditor.Click += new System.EventHandler(this.MnuStartEditorClick);
 			// 
 			// mnuLanguage
 			// 
@@ -259,7 +274,7 @@ namespace Next_View
 			this.langEnglish,
 			this.langGerman});
 			this.mnuLanguage.Name = "mnuLanguage";
-			this.mnuLanguage.Size = new System.Drawing.Size(141, 22);
+			this.mnuLanguage.Size = new System.Drawing.Size(158, 22);
 			this.mnuLanguage.Text = "Language";
 			// 
 			// langEnglish
@@ -496,7 +511,7 @@ namespace Next_View
 			this.statusMain.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
 			this.statusMain.Location = new System.Drawing.Point(0, 0);
 			this.statusMain.Name = "statusMain";
-			this.statusMain.Size = new System.Drawing.Size(1179, 23);
+			this.statusMain.Size = new System.Drawing.Size(884, 23);
 			this.statusMain.TabIndex = 3;
 			this.statusMain.Text = " ";
 			// 
@@ -528,13 +543,11 @@ namespace Next_View
 			// 
 			this.toolStripContainer1.ContentPanel.AutoScroll = true;
 			this.toolStripContainer1.ContentPanel.Controls.Add(this.dockPanel1);
-			this.toolStripContainer1.ContentPanel.Margin = new System.Windows.Forms.Padding(4);
-			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(1179, 614);
+			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(884, 484);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
-			this.toolStripContainer1.Margin = new System.Windows.Forms.Padding(4);
 			this.toolStripContainer1.Name = "toolStripContainer1";
-			this.toolStripContainer1.Size = new System.Drawing.Size(1179, 692);
+			this.toolStripContainer1.Size = new System.Drawing.Size(884, 562);
 			this.toolStripContainer1.TabIndex = 4;
 			this.toolStripContainer1.Text = "toolStripContainer1";
 			// 
@@ -716,14 +729,13 @@ namespace Next_View
 			// frmMain
 			// 
 			this.AllowDrop = true;
-			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1179, 692);
+			this.ClientSize = new System.Drawing.Size(884, 562);
 			this.Controls.Add(this.toolStripContainer1);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MainMenuStrip = this.menuMain;
-			this.Margin = new System.Windows.Forms.Padding(4);
-			this.MinimumSize = new System.Drawing.Size(600, 187);
+			this.MinimumSize = new System.Drawing.Size(454, 180);
 			this.Name = "frmMain";
 			this.Text = "Next-View";
 			this.Activated += new System.EventHandler(this.FrmMainActivated);
@@ -813,5 +825,7 @@ namespace Next_View
 		private System.Windows.Forms.ToolStripTextBox edSearch;
 		private System.Windows.Forms.ToolStripButton bnSearchPrior;
 		private System.Windows.Forms.ToolStripButton bnSearchNext;
+		private System.Windows.Forms.ToolStripMenuItem mnuSearchBar;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
 	}
 }

@@ -24,6 +24,7 @@ using System.Linq;	 //	OfType
 using System.Windows.Forms;
 using Next_View.Properties;
 using WeifenLuo.WinFormsUI.Docking;
+using ProXoft.WinForms;
 
 namespace Next_View
 {
@@ -51,6 +52,8 @@ namespace Next_View
 		string _lastSearchStr = "";
 		Image _myImg;
 		bool _loadNextPic = true;
+
+		bool _stop = false;
 
 		WinType _wType;   // normal, full, second
 		public bool _ndRunning {get;set;}
@@ -93,10 +96,12 @@ namespace Next_View
 			//Debug.WriteLine("main W / H: {0}/{1}", mainWidth, mainHeight);
 		}
 
-		// ------------------------------   events form ----------------------------------------------------------
+
+
+		//------------------------------   events form ----------------------------------------------------------
 
 		private void HandleKey(object sender, SetKeyEventArgs e)
-		// called by:
+		// HandleKeyChange for exif form
 		{
 			int kVal = e.kValue;
 			bool alt = e.alt;
@@ -220,7 +225,7 @@ namespace Next_View
 			this.Close();
 		}
 
-		// ------------------------------   drop  ----------------------------------------------------------
+		//------------------------------   drop  ----------------------------------------------------------
 
 		void FrmImageDragDrop(object sender, DragEventArgs e)
 		{
@@ -276,7 +281,7 @@ namespace Next_View
 
 			if (picCount == 1) {
 				_picSelection = T._("Directory:");
-				PicScan(loadFile, allDirs);
+				PicScan(loadFile, allDirs, 0);
 			}
 			else if (picCount > 0){
 				_picSelection = T._("Selection:");
@@ -284,19 +289,18 @@ namespace Next_View
 			}
 			else if (dirCount > 0){
 				_picSelection = T._("Directory:");
-				int pCount = PicScan(loadFile, allDirs);
-				if (pCount  == 0) {
-					PicScan(loadFile, true);
-				}
-				_il.DirPicFirst(ref loadFile);
+				PicScan(loadFile, allDirs, 1);  // rescan for lower
 			}
 			else {
 				//MessageBox.Show("No drop selection", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}
 
 			if (loadFile != ""){
-				PicLoad(loadFile, true);
-				SetCommand('r', loadFile);
+				if (File.Exists(loadFile)) {
+					PicLoad(loadFile, true);
+					SetCommand('r', loadFile);
+				}
+				// else load with RunWorkerCompleted
 			}
 			else {
 				picBox.Image = null;
@@ -321,7 +325,7 @@ namespace Next_View
 			}
 		}
 
-		// ------------------------------   key functions  ----------------------------------------------------------
+		//------------------------------   key functions  ----------------------------------------------------------
 
 		void FrmImageKeyDown(object sender, KeyEventArgs e)
 		{
@@ -341,6 +345,29 @@ namespace Next_View
 				_loadNextPic = false;           // eat up keys
 				KDown(e.KeyValue, ctrl, alt);
 			}
+			//else Debug.WriteLine("eat up1: " + e.KeyValue);
+		}
+
+		void Scollbar1KeyDown(object sender, KeyEventArgs e)
+		{
+			bool alt = false;
+			if (e.Modifiers == Keys.Alt){
+				alt = true;
+			}
+			bool ctrl = false;
+			if (e.Modifiers == Keys.Control){
+				ctrl = true;
+			}
+			if (_loadNextPic){
+				_loadNextPic = false;           // eat up keys
+				KDown(e.KeyValue, ctrl, alt);
+			}
+			//else Debug.WriteLine("eat up2: " + e.KeyValue);
+		}
+
+		void Scollbar1PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+		{
+			e.IsInputKey = true;     // triggers keydown for arrow keys
 		}
 
 		public bool KDown(int kValue, bool ctrl, bool alt)
@@ -474,11 +501,45 @@ namespace Next_View
 			//  ctrl 17
 		}
 
-		// ------------------------------   pic functions  ----------------------------------------------------------
+		//------------------------------   scrollbar events  ----------------------------------------------------------
 
+		void Scollbar1ValueChanged(object sender, EventArgs e)
+		{
+			if (_loadNextPic){
+				_loadNextPic = false;           // eat up clicks
+				string pPath = "";
+				int scrollPos = (int) Scollbar1.Value;
+				//Debug.WriteLine("scroll change val: " + scrollPos.ToString());
+				if (_il.DirPathPos(ref pPath, scrollPos)){
+					PicLoad(pPath, true);
+				}
+				_loadNextPic = true;
+			}
+			//else Debug.WriteLine("eat up click1: ");
+		}
+
+		void Scollbar1ToolTipNeeded(object sender, TooltipNeededEventArgs e)
+		{
+			if (e.Bookmarks.Count > 0) {
+				//get topmost bookmark
+				ScrollBarBookmark bookmark = e.Bookmarks[e.Bookmarks.Count - 1];
+				if (bookmark is BasicShapeScrollBarBookmark) {
+					BasicShapeScrollBarBookmark shapeBookmark = (BasicShapeScrollBarBookmark)bookmark;
+					e.ToolTip = string.Format("Marked picture at {0:###,##0} ", shapeBookmark.Value);
+				}
+
+			}
+			else {
+				e.ToolTip = string.Format("Image {0:###,##0}", e.Value);
+			}
+		}
+
+
+		//------------------------------   pic functions  ----------------------------------------------------------
 
 		public bool PicLoad(string  pPath, bool log)
 		{
+			//Debug.WriteLine("pic load: " + pPath);
 			try
 			{
 				int picPos = 0;
@@ -603,11 +664,22 @@ namespace Next_View
 			}
 		}
 
-		public int PicScan(string  pPath, bool allDirs)
+
+		public void PicScan(string  pPath, bool allDirs, int postAction)
+		// called by: Next/PriorPicDir, open, refresh, drop; main: show, recent, MessageReceived
 		{
-			int pCount;
-			_il.DirScan(out pCount, pPath, allDirs);
-			return pCount;
+			object oPath = pPath;
+			object oDirs = allDirs;
+			object oAction = postAction;
+			object[] parameters = new object [] { oPath, oDirs, oAction };
+			if (_stop == false){
+				_stop = true;
+				if (backgroundWorker1.IsBusy != true)
+				{
+					//Debug.WriteLine("bw1: start: ");
+					backgroundWorker1.RunWorkerAsync(parameters);
+				}
+			}
 		}
 
 		void DarkPic()
@@ -637,14 +709,10 @@ namespace Next_View
 				SetStatusText(0, T._("No image found"));
 			}
 		}
-		
+
 		public void NextPicDir()
 		{
-			PicScan(_currentPath, false);
-			int picPos = 0;
-			int picAll = 0;
-			_il.DirPosPath(ref picPos, ref picAll, _currentPath);
-			NextPic();
+			PicScan(_currentPath, false, 2);
 		}
 
 		public void PriorPic()
@@ -668,14 +736,10 @@ namespace Next_View
 				SetStatusText(0, T._("No image found"));
 			}
 		}
-		
+
 		public void PriorPicDir()
 		{
-			PicScan(_currentPath, false);
-			int picPos = 0;
-			int picAll = 0;
-			_il.DirPosPath(ref picPos, ref picAll, _currentPath);
-			PriorPic();
+			PicScan(_currentPath, false, 3);
 		}
 
 		public void FirstPic()
@@ -719,11 +783,11 @@ namespace Next_View
 		public void RefreshDir()
 		{
 			_il.DirClear();
-			PicScan(_currentPath, false);
+			PicScan(_currentPath, false, 0);
 			PicLoad(_currentPath, true);
 		}
 
-		// ------------------------------   file functions  ----------------------------------------------------------
+		//------------------------------   file functions  ----------------------------------------------------------
 
 		public void RenamePic()
 		{
@@ -808,9 +872,9 @@ namespace Next_View
 			if(dialog.ShowDialog() == DialogResult.OK)
 			{
 				string picPath = dialog.FileName;
-				PicScan(picPath, false);
+				PicScan(picPath, false, 0);
 				PicLoad(picPath, true);
-				SetCommand('r', picPath);
+				SetCommand('r', picPath);  // recent
 			}
 		}
 
@@ -860,7 +924,7 @@ namespace Next_View
 			}
 		}
 
-		// ------------------------------   Tempmark functions  ----------------------------------------------------------
+		//------------------------------   tempmark functions  ----------------------------------------------------------
 		public void TempmarkDelete()
 		{
 			if (!_il.MarkDelete(_currentPath)){
@@ -897,7 +961,7 @@ namespace Next_View
 		}
 
 
-		// ------------------------------   pop up  ----------------------------------------------------------
+		//------------------------------   pop up  ----------------------------------------------------------
 
 		void PopOpenClick(object sender, EventArgs e)
 		{
@@ -955,7 +1019,7 @@ namespace Next_View
 			}
 		}
 
-		// ------------------------------   other functions   ----------------------------------------------------------
+		//------------------------------   other functions   ----------------------------------------------------------
 
 		public void SearchPic()
 		{
@@ -979,6 +1043,11 @@ namespace Next_View
 			}
 		}
 
+		public void ScollbarVis(bool sVisible)
+		{
+			Scollbar1.Visible = sVisible;
+		}
+
 		public void ShowExifImages(List<string> exImgList, string selImg)
 		{
 			_il.DirClear();
@@ -987,7 +1056,7 @@ namespace Next_View
     		{
         		_il._imList.Add(item);
     		});
-			
+
 			int picPos = 0;
 			int picAll = 0;
 			_il.DirPosPath(ref picPos, ref picAll, selImg);
@@ -1078,7 +1147,183 @@ namespace Next_View
 			}
 		}
 
-		// ------------------------------   2nd screen    ----------------------------------------------------------
+		//------------------------------   bar functions    ----------------------------------------------------------
+
+		public void ScanImagesBar(string pPath)
+		{
+			List<string> imList;
+			_il.ImgListOut(out imList);
+
+			var pList = new List<int>();
+			var ppList = new List<int>();
+
+			DateTime dtOriginal = DateTime.MinValue;
+			DateTime nullDate = DateTime.MinValue;
+			DateTime minDate = DateTime.MaxValue;
+			DateTime maxDate = DateTime.MinValue;
+
+			int fCount = 0;
+			int dateCount = 0;
+			DateTime priorDate = DateTime.MaxValue;
+			var spanDict = new Dictionary<int, int>();
+			foreach (string picPath in imList)
+			{
+				ExifRead.ExifODate(out dtOriginal, picPath);
+				fCount++;
+
+				string fName = Path.GetFileName(picPath);
+				int pPos = fName.IndexOf("+");
+				if (pPos > -1){
+					pList.Add(fCount);
+				}
+
+				if (dtOriginal != nullDate){
+					//Debug.WriteLine("path: " + picPath + " " + dtOriginal.ToString());
+					dateCount++;
+					if (minDate > dtOriginal) minDate = dtOriginal;
+					if (maxDate < dtOriginal) maxDate = dtOriginal;
+
+					if (dateCount > 1){
+						TimeSpan span = dtOriginal.Subtract(priorDate);
+						int spanSec = Math.Abs((int) span.TotalSeconds);
+						spanDict.Add(fCount, spanSec);
+					}
+					priorDate = dtOriginal;
+				}
+
+			}
+
+
+			Scollbar1.Maximum = fCount;
+			foreach (int pNo in pList)
+			{
+				Debug.WriteLine("mark: {0}", pNo);
+				BasicShapeScrollBarBookmark bookmarkBS = new BasicShapeScrollBarBookmark(" ", pNo, ScrollBarBookmarkAlignment.LeftOrTop, 1, 1, ScrollbarBookmarkShape.Rectangle, Color.Green, true, true, null);
+				Scollbar1.Bookmarks.Add(bookmarkBS);
+			}
+
+			// span values
+			if (dateCount > 0){
+				TimeSpan imgSpan = maxDate.Subtract(minDate);
+				int mean = (int) imgSpan.TotalSeconds / dateCount;
+				long sumVar = 0;
+				foreach (KeyValuePair<int, int> sd in spanDict)
+				{
+					long var = (long) Math.Pow((mean - sd.Value), 2);
+					sumVar += var;
+					//Debug.WriteLine("F Num: " + dfn.Key + " " + dfn.Value);
+				}
+				int stdDev = (int) Math.Sqrt(sumVar / dateCount);
+				Debug.WriteLine("mean / std : {0}/{1}", mean, stdDev);
+
+				int	breakVal = mean + stdDev * 2;
+				//int wi = 2;
+
+				int i = 0;
+				foreach (KeyValuePair<int, int> sd in spanDict.OrderByDescending(key=> key.Value))
+				{
+					i++;
+					if (sd.Value < breakVal) break;
+					Debug.WriteLine("pic no / dist : {0}/{1}", sd.Key, sd.Value);
+					BasicShapeScrollBarBookmark bookmarkBS2 = new BasicShapeScrollBarBookmark( " ", sd.Key, ScrollBarBookmarkAlignment.LeftOrTop, 1, 1, ScrollbarBookmarkShape.Rectangle, Color.Red, true, true, null);
+					Scollbar1.Bookmarks.Add(bookmarkBS2);
+				}
+			}
+
+		}
+
+		//------------------------------   BackgroundWorker    ----------------------------------------------------------
+
+		void BackgroundWorker1DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+		// called by RunWorkerAsync
+		{
+			object[] parameters = e.Argument as object[];
+			//Debug.WriteLine("para " + parameters[0]);
+			string picPath = (string) parameters[0];
+			bool allDirs = (bool) parameters[1];
+			int postAction = (int) parameters[2];
+
+			int pCount;
+			_il.DirScan(out pCount, picPath, allDirs);
+			if (pCount == 0 && postAction == 1) {        // rescan for lower
+				_il.DirScan(out pCount, picPath, true);
+			}
+
+			object oPath = picPath;
+			object oAction = postAction;
+			object[] results = new object [] { oPath, oAction };
+			e.Result = results;
+		}
+
+		void BackgroundWorker1RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+		{
+			_stop = false;
+			object[] results = e.Result as object[];
+			string pPath = (string) results[0];
+			int postAction = (int) results[1];
+			_currentPath = pPath;
+
+			int picPos = 0;
+			int picAll = 0;
+			switch(postAction)
+			{
+				case 1:
+					_il.DirPicFirst(ref _currentPath);
+					_il.DirPosPath(ref picPos, ref picAll, _currentPath);
+					SetStatusText(0, String.Format(_picSelection + " {0}/{1}", picPos, picAll));
+					PicLoad(_currentPath, true);
+					SetCommand('r', _currentPath);
+					break;
+
+				case 2:
+					_il.DirPosPath(ref picPos, ref picAll, _currentPath);
+					_picSelection = T._("Directory:");
+					NextPic();
+					break;
+
+				case 3:
+					_il.DirPosPath(ref picPos, ref picAll, _currentPath);
+					_picSelection = T._("Directory:");
+					PriorPic();
+					break;
+
+				default:
+					_il.DirPosPath(ref picPos, ref picAll, _currentPath);
+					SetStatusText(0, String.Format(_picSelection + " {0}/{1}", picPos, picAll));
+					break;
+			}
+
+			// scan for scroll bar
+			Scollbar1.Bookmarks.Clear();
+			Scollbar1.SuspendLayout();
+
+			object oPath = pPath;
+			if (_stop == false){
+				_stop = true;
+				if (bw2.IsBusy != true)
+				{
+					bw2.RunWorkerAsync(oPath);
+				}
+			}
+		}
+
+		void Bw2DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+		{
+			object oPath = e.Argument;
+			string picPath = (string) oPath;
+			ScanImagesBar(picPath);
+
+
+		}
+
+		void Bw2RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+		{
+			Debug.WriteLine("bw2: complete ");
+			Scollbar1.ResumeLayout();
+			_stop = false;
+		}
+
+		//------------------------------   2nd screen    ----------------------------------------------------------
 
 		public void Start2ndScreen()
 		{
@@ -1152,7 +1397,7 @@ namespace Next_View
 			}
 		}
 
-		// ------------------------------   Exif screen    ----------------------------------------------------------
+		//------------------------------   Exif screen    ----------------------------------------------------------
 
 
 		public void ShowExifDash()
@@ -1239,7 +1484,7 @@ namespace Next_View
 		}
 
 
-		// ------------------------------   delegates   ----------------------------------------------------------
+		//------------------------------   delegates   ----------------------------------------------------------
 
 		public void SetWindowText(string text2)
 		{
@@ -1314,7 +1559,6 @@ namespace Next_View
 			}
 		}
 
-
 	}  // end frmImage
 
 	public enum WinType
@@ -1324,7 +1568,7 @@ namespace Next_View
 		second = 2
 	}
 
-	// ------------------------------		delegates 	----------------------------------------------------------
+		//------------------------------   delegates   ----------------------------------------------------------
 
 	public delegate void HandleKeyChange(object sender, SetKeyEventArgs e);
 

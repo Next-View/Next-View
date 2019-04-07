@@ -33,6 +33,34 @@ namespace Next_View
 	/// </summary>
 	public static class ExifRead
 	{
+		public static bool ExifODate(out DateTime dtOriginal, string fName)
+		// called by: image.PicLoad
+		{
+			dtOriginal = default(DateTime);
+			try
+			{
+				string ext = System.IO.Path.GetExtension(fName).ToLower();
+				if (ext != ".jpg"){         
+					return false;
+				}
+				IEnumerable<Directory> directories = ImageMetadataReader.ReadMetadata(fName);
+
+				// ------------------------------   exif   ----------------------------------------------------------
+				var subIfdDirectory = directories.OfType<ExifSubIfdDirectory>().FirstOrDefault();
+				if (subIfdDirectory != null){
+					string dtOriginalS = subIfdDirectory.GetDescription(ExifDirectoryBase.TagDateTimeOriginal);
+					DateTime.TryParseExact(dtOriginalS, "yyyy:MM:dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out dtOriginal);
+				}
+				return true;
+			}
+			catch (Exception e)
+			{
+				Debug.WriteLine(e.Message);
+				MessageBox.Show("Exif. File is invalid" + "\n " + e.Message, "Invalid orientation", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				return false;
+			}
+		}
+				
 		public static bool ExifOrient(ref int exifType, ref string orientation, string fName)
 		// called by: image.PicLoad
 		{
@@ -43,7 +71,7 @@ namespace Next_View
 				orientation = "";
 				string ext = System.IO.Path.GetExtension(fName).ToLower();
 				if (ext == ".wmf" || ext == ".emf"){         // invalid for MetadataExtractor
-					return true;
+					return false;
 				}
 				IEnumerable<Directory> directories = ImageMetadataReader.ReadMetadata(fName);
 

@@ -48,12 +48,19 @@ namespace Next_View
 
 		}
 
+		public void ImgListOut(out List<string> pList)
+		{
+			pList = _imList;
+		}
+		
 		public bool FileIsValid(string pPath)
 		{
 			string ext = Path.GetExtension(pPath).ToLower();
 			return _validExtensions.Contains(ext);
 		}
 
+		//--------------------------  pic  ------------------------------------
+		
 		public void DirClear()
 		{
 			// called by: refresh, drop, searchForm
@@ -224,7 +231,19 @@ namespace Next_View
 			return true;
 		}
 
-		//--------------------------  log  ------------------------------------//
+		public bool DirPathPos(ref string pPath, int barPos)
+		{
+			// path for position 
+			if (barPos < 1 || barPos > _imList.Count){
+				return false;
+			}
+			else {
+				pPath = _imList[barPos - 1];
+				return true;
+			}
+		}
+		
+		//--------------------------  log  ------------------------------------
 
 		public void LogPic(string pPath)
 		{
@@ -306,7 +325,7 @@ namespace Next_View
 			}
 		}
 
-		//--------------------------  temp mark  ------------------------------------//
+		//--------------------------  temp mark  ------------------------------------
 
 		public bool MarkDelete(string pPath)
 		{
@@ -352,15 +371,5 @@ namespace Next_View
 	}  // end ImgList
 
 
-	public class FilenameComparer: IComparer<string>
-	{
-		[DllImport("shlwapi.dll", CharSet = CharSet.Unicode)]
-		static extern Int32 StrCmpLogical(String x, String y);
-	
-		public int Compare(string x, string y)
-		{
-			return StrCmpLogical(x, y);
-		}
-	}
 	
 }
