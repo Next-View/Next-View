@@ -1194,7 +1194,7 @@ namespace Next_View
 			}
 
 
-			Scollbar1.Maximum = fCount;
+			Scollbar1.Maximum = fCount;  
 			foreach (int pNo in pList)
 			{
 				Debug.WriteLine("mark: {0}", pNo);
