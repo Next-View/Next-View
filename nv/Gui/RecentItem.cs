@@ -80,15 +80,16 @@ namespace	Next_View
 				_recentList.RemoveAt(rPos);
 			}
 			_recentList.Insert(0, filePath);
-			if (_recentList.Count > 5){
+			do {    
 				_recentList.RemoveAt(5);
-			}
+			} while (_recentList.Count > 5);
+							
 			UpdateList();
 		}
 
 		public void LoadList(string pathString)
 		{
-			_recentList = pathString.Split(',').ToList();
+			_recentList = pathString.Split('\t').ToList();
 			if (_recentList[_recentList.Count - 1] == ""){
 				_recentList.RemoveAt(_recentList.Count - 1);                // last entry empty from default, delete
 			}
@@ -96,7 +97,7 @@ namespace	Next_View
 
 		public void StringList(ref string pathString)
 		{
-			pathString = string.Join(",", _recentList);
+			pathString = string.Join("\t", _recentList);
 		}
 						
 	}

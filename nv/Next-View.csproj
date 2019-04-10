@@ -61,9 +61,6 @@
     <Reference Include="NGettext">
       <HintPath>bin\Debug\NGettext.dll</HintPath>
     </Reference>
-    <Reference Include="ScrollBarEnhancedControl">
-      <HintPath>bin\Debug\ScrollBarEnhancedControl.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
@@ -199,5 +196,11 @@
     <Folder Include="Gui" />
     <Folder Include="File" />
     <Folder Include="Diff" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ScrollBarEnhancedControl\ScrollBarEnhancedControl.csproj">
+      <Project>{F3977CA6-CF97-4A06-8A5D-91D72775A3D9}</Project>
+      <Name>ScrollBarEnhancedControl</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

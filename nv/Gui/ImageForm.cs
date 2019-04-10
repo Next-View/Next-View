@@ -24,7 +24,7 @@ using System.Linq;	 //	OfType
 using System.Windows.Forms;
 using Next_View.Properties;
 using WeifenLuo.WinFormsUI.Docking;
-using ProXoft.WinForms;
+using ProXoft.WinForms;   // Scollbar
 
 namespace Next_View
 {
@@ -54,7 +54,11 @@ namespace Next_View
 		bool _loadNextPic = true;
 
 		bool _stop = false;
-
+		Color[] _colors = {Color.Aqua, Color.Magenta, Color.Blue, Color.Lime, Color.Yellow, Color.Red};
+		List<int> _posList = new List<int>();           //  set scrollbar marks outside background worker 
+		List<int> _rangeList = new List<int>();
+		bool _barClick = true; 
+					
 		WinType _wType;   // normal, full, second
 		public bool _ndRunning {get;set;}
 		string _priorPath = "";
@@ -106,11 +110,7 @@ namespace Next_View
 			int kVal = e.kValue;
 			bool alt = e.alt;
 			bool ctrl = e.ctrl;
-
-			if (_loadNextPic){
-				_loadNextPic = false;           // eat up keys
-				KDown(kVal, ctrl, alt);
-			}
+			KDown(kVal, ctrl, alt);
 		}
 
 		void FrmImageLoad(object sender, EventArgs e)
@@ -191,7 +191,7 @@ namespace Next_View
 
 		void FrmImageKeyUp(object sender, KeyEventArgs e)
 		{
-			_loadNextPic = true;
+ 
 		}
 
 		void FrmImageFormClosing(object sender, FormClosingEventArgs e)
@@ -297,7 +297,7 @@ namespace Next_View
 
 			if (loadFile != ""){
 				if (File.Exists(loadFile)) {
-					PicLoad(loadFile, true);
+					PicLoadPos(loadFile, true);
 					SetCommand('r', loadFile);
 				}
 				// else load with RunWorkerCompleted
@@ -341,10 +341,7 @@ namespace Next_View
 			if (e.Modifiers == Keys.Control){
 				ctrl = true;
 			}
-			if (_loadNextPic){
-				_loadNextPic = false;           // eat up keys
-				KDown(e.KeyValue, ctrl, alt);
-			}
+			KDown(e.KeyValue, ctrl, alt);
 			//else Debug.WriteLine("eat up1: " + e.KeyValue);
 		}
 
@@ -358,10 +355,7 @@ namespace Next_View
 			if (e.Modifiers == Keys.Control){
 				ctrl = true;
 			}
-			if (_loadNextPic){
-				_loadNextPic = false;           // eat up keys
-				KDown(e.KeyValue, ctrl, alt);
-			}
+			KDown(e.KeyValue, ctrl, alt);
 			//else Debug.WriteLine("eat up2: " + e.KeyValue);
 		}
 
@@ -496,7 +490,6 @@ namespace Next_View
 					}
 					break;
 			}
-			_loadNextPic = true;
 			return true;
 			//  ctrl 17
 		}
@@ -511,13 +504,25 @@ namespace Next_View
 				int scrollPos = (int) Scollbar1.Value;
 				//Debug.WriteLine("scroll change val: " + scrollPos.ToString());
 				if (_il.DirPathPos(ref pPath, scrollPos)){
-					PicLoad(pPath, true);
+					if (_barClick){
+						int picPos = 0;
+						int picAll = 0;
+						_il.DirPosPath(ref picPos, ref picAll, pPath);
+						SetStatusText(0, String.Format(_picSelection + " {0}/{1}", picPos, picAll));						
+						SetWindowText(pPath);
+						_priorPath =_currentPath;
+						_currentPath = pPath; 
+						PicLoad(pPath);
+					}
+					else _barClick = true;
 				}
 				_loadNextPic = true;
 			}
-			//else Debug.WriteLine("eat up click1: ");
+				//else Debug.WriteLine("eat up click1: ");
 		}
 
+			
+			
 		void Scollbar1ToolTipNeeded(object sender, TooltipNeededEventArgs e)
 		{
 			if (e.Bookmarks.Count > 0) {
@@ -537,26 +542,37 @@ namespace Next_View
 
 		//------------------------------   pic functions  ----------------------------------------------------------
 
-		public bool PicLoad(string  pPath, bool log)
+		public bool PicLoadPos(string pPath, bool log)
 		{
-			//Debug.WriteLine("pic load: " + pPath);
-			try
-			{
-				int picPos = 0;
-				int picAll = 0;
-				if (log) {
-					_il.DirPosPath(ref picPos, ref picAll, pPath);
-					SetStatusText(0, String.Format(_picSelection + " {0}/{1}", picPos, picAll));
-					_il.LogPic(pPath);
-				}
-				else {
-					_il.LogPos(ref picPos, ref picAll);
-					SetStatusText(0, String.Format(T._("History: {0}/{1}"), picPos, picAll));
-				}
-				SetWindowText(pPath);
-				_priorPath =_currentPath;
-				_currentPath = pPath;
+			int picPos = 0;
+			int picAll = 0;
+			if (log) {
+				_il.DirPosPath(ref picPos, ref picAll, pPath);
+				SetStatusText(0, String.Format(_picSelection + " {0}/{1}", picPos, picAll));
+				_il.LogPic(pPath);
+			}
+			else {
+				_il.LogPos(ref picPos, ref picAll);
+				SetStatusText(0, String.Format(T._("History: {0}/{1}"), picPos, picAll));
+			}
 
+			//Debug.WriteLine("pic load: " + pPath + " pos " + picPos + " all " + picAll);			
+			SetWindowText(pPath);
+			_priorPath =_currentPath;
+			_currentPath = pPath;          
+			
+			_barClick = false;		        // scrollbar change only 
+			if (picAll > 0){	
+				Scollbar1.Value = picPos; 
+			}    
+			PicLoad(pPath);
+			return true;
+		}
+		
+		public bool PicLoad(string pPath)
+		{
+			try
+			{		
 				if (!File.Exists(pPath)){
 					picBox.SizeMode = PictureBoxSizeMode.CenterImage;
 					picBox.Image = picBox.ErrorImage;
@@ -626,6 +642,7 @@ namespace Next_View
 
 				Show2ndPic(_priorPath);
 				//Debug.WriteLine("pic end " + pPath);
+				_barClick = true;
 				return true;
 			}
 			catch (Exception e)
@@ -674,6 +691,7 @@ namespace Next_View
 			object[] parameters = new object [] { oPath, oDirs, oAction };
 			if (_stop == false){
 				_stop = true;
+				Scollbar1.Bookmarks.Clear();
 				if (backgroundWorker1.IsBusy != true)
 				{
 					//Debug.WriteLine("bw1: start: ");
@@ -692,7 +710,7 @@ namespace Next_View
 		{
 			string pPath = "";
 			if (_il.DirPicNext(ref pPath)){
-				PicLoad(pPath, true);
+				PicLoadPos(pPath, true);
 			}
 			else {
 				SetStatusText(0, T._("No image loaded"));
@@ -703,7 +721,7 @@ namespace Next_View
 		{
 			string pPath = "";
 			if (_il.DirPicSearchNext(pSearch, ref pPath)){
-				PicLoad(pPath, true);
+				PicLoadPos(pPath, true);
 			}
 			else {
 				SetStatusText(0, T._("No image found"));
@@ -719,7 +737,7 @@ namespace Next_View
 		{
 			string pPath = "";
 			if (_il.DirPicPrior(ref pPath)){
-				PicLoad(pPath, true);
+				PicLoadPos(pPath, true);
 			}
 			else {
 				SetStatusText(0, T._("No image loaded"));
@@ -730,7 +748,7 @@ namespace Next_View
 		{
 			string pPath = "";
 			if (_il.DirPicSearchPrior(pSearch, ref pPath)){
-				PicLoad(pPath, true);
+				PicLoadPos(pPath, true);
 			}
 			else {
 				SetStatusText(0, T._("No image found"));
@@ -746,7 +764,7 @@ namespace Next_View
 		{
 			string pPath = "";
 			if (_il.DirPicFirst(ref pPath)){
-				PicLoad(pPath, true);
+				PicLoadPos(pPath, true);
 			}
 			else {
 				SetStatusText(0, T._("No image loaded"));
@@ -757,7 +775,7 @@ namespace Next_View
 		{
 			string pPath = "";
 			if (_il.DirPicLast(ref pPath)){
-				PicLoad(pPath, true);
+				PicLoadPos(pPath, true);
 			}
 			else {
 				SetStatusText(0, T._("No image loaded"));
@@ -768,7 +786,7 @@ namespace Next_View
 		{
 			string pPath = "";
 			if (_il.LogBack(ref pPath)){
-				PicLoad(pPath, false);
+				PicLoadPos(pPath, false);
 			}
 		}
 
@@ -776,7 +794,7 @@ namespace Next_View
 		{
 			string pPath = "";
 			if (_il.LogForward(ref pPath)){
-				PicLoad(pPath, false);
+				PicLoadPos(pPath, false);
 			}
 		}
 
@@ -784,7 +802,7 @@ namespace Next_View
 		{
 			_il.DirClear();
 			PicScan(_currentPath, false, 0);
-			PicLoad(_currentPath, true);
+			PicLoadPos(_currentPath, true);
 		}
 
 		//------------------------------   file functions  ----------------------------------------------------------
@@ -799,7 +817,7 @@ namespace Next_View
 				_il.RenameListLog(_currentPath, newPath);
 				_currentPath = newPath;
 				SetWindowText(_currentPath);
-				//PicLoad(_currentPath, true);
+				//PicLoadPos(_currentPath, true);
 			}
 		}
 
@@ -812,7 +830,7 @@ namespace Next_View
 				_il.RenameListLog(_currentPath, newPath);
 				_currentPath = newPath;
 				SetWindowText(_currentPath);
-				//PicLoad(_currentPath, true);
+				//PicLoadPos(_currentPath, true);
 			}
 			else {
 				//Debug.WriteLine("no rename");
@@ -831,7 +849,7 @@ namespace Next_View
 					_il.RenameListLog(_currentPath, newPath);
 					_currentPath = newPath;
 					SetWindowText(_currentPath);
-					//PicLoad(_currentPath, true);
+					//PicLoadPos(_currentPath, true);
 				}
 				else {
 					Debug.WriteLine("no rename");
@@ -844,7 +862,7 @@ namespace Next_View
 			if (DelFile.MoveToRecycleBin(_currentPath)){
 				string nextPath = "";
 				if (_il.DeleteListLog(_currentPath, ref nextPath)){
-					PicLoad(nextPath, true);
+					PicLoadPos(nextPath, true);
 					_currentPath = nextPath;
 				}
 				else {  // last img in selection deleted
@@ -873,7 +891,7 @@ namespace Next_View
 			{
 				string picPath = dialog.FileName;
 				PicScan(picPath, false, 0);
-				PicLoad(picPath, true);
+				PicLoadPos(picPath, true);
 				SetCommand('r', picPath);  // recent
 			}
 		}
@@ -936,7 +954,7 @@ namespace Next_View
 		{
 			string markPath = "";
 			if (_il.MarkGo(ref markPath)){
-				PicLoad(markPath, true);
+				PicLoadPos(markPath, true);
 				_currentPath = markPath;
 			}
 			else {
@@ -1039,7 +1057,7 @@ namespace Next_View
 				}
 				_currentPath = selImg;
 				_picSelection = T._("Search:");
-				PicLoad(_currentPath, true);
+				PicLoadPos(_currentPath, true);
 			}
 		}
 
@@ -1063,7 +1081,7 @@ namespace Next_View
 
 			_currentPath = selImg;
 			_picSelection = T._("Search:");
-			PicLoad(_currentPath, true);
+			PicLoadPos(_currentPath, true);
 		}
 
 		public void ShowFullScreen()
@@ -1074,7 +1092,7 @@ namespace Next_View
 				frm.FPicLoad(pPath, false);
 				var result = frm.ShowDialog();
 				pPath = frm.ReturnPath;
-				PicLoad(pPath, true);
+				PicLoadPos(pPath, true);
 			}
 			else {
 				SetStatusText(0, T._("No image loaded"));
@@ -1154,7 +1172,6 @@ namespace Next_View
 			List<string> imList;
 			_il.ImgListOut(out imList);
 
-			var pList = new List<int>();
 			var ppList = new List<int>();
 
 			DateTime dtOriginal = DateTime.MinValue;
@@ -1166,6 +1183,7 @@ namespace Next_View
 			int dateCount = 0;
 			DateTime priorDate = DateTime.MaxValue;
 			var spanDict = new Dictionary<int, int>();
+			// dict for time gaps
 			foreach (string picPath in imList)
 			{
 				ExifRead.ExifODate(out dtOriginal, picPath);
@@ -1174,7 +1192,7 @@ namespace Next_View
 				string fName = Path.GetFileName(picPath);
 				int pPos = fName.IndexOf("+");
 				if (pPos > -1){
-					pList.Add(fCount);
+					_posList.Add(fCount);
 				}
 
 				if (dtOriginal != nullDate){
@@ -1190,21 +1208,14 @@ namespace Next_View
 					}
 					priorDate = dtOriginal;
 				}
-
-			}
-
-
-			Scollbar1.Maximum = fCount;  
-			foreach (int pNo in pList)
-			{
-				Debug.WriteLine("mark: {0}", pNo);
-				BasicShapeScrollBarBookmark bookmarkBS = new BasicShapeScrollBarBookmark(" ", pNo, ScrollBarBookmarkAlignment.LeftOrTop, 1, 1, ScrollbarBookmarkShape.Rectangle, Color.Green, true, true, null);
-				Scollbar1.Bookmarks.Add(bookmarkBS);
 			}
 
 			// span values
 			if (dateCount > 0){
-				TimeSpan imgSpan = maxDate.Subtract(minDate);
+				TimeSpan imgSpan = maxDate.Subtract(minDate); 
+				Debug.WriteLine("min: " + minDate.ToString() + " max: " + maxDate.ToString());
+				Debug.WriteLine("range: " + imgSpan.ToString());
+				
 				int mean = (int) imgSpan.TotalSeconds / dateCount;
 				long sumVar = 0;
 				foreach (KeyValuePair<int, int> sd in spanDict)
@@ -1216,20 +1227,19 @@ namespace Next_View
 				int stdDev = (int) Math.Sqrt(sumVar / dateCount);
 				Debug.WriteLine("mean / std : {0}/{1}", mean, stdDev);
 
-				int	breakVal = mean + stdDev * 2;
+				int	breakVal = mean + stdDev * 2; 
 				//int wi = 2;
 
 				int i = 0;
+				// largest breaks 
 				foreach (KeyValuePair<int, int> sd in spanDict.OrderByDescending(key=> key.Value))
 				{
 					i++;
-					if (sd.Value < breakVal) break;
 					Debug.WriteLine("pic no / dist : {0}/{1}", sd.Key, sd.Value);
-					BasicShapeScrollBarBookmark bookmarkBS2 = new BasicShapeScrollBarBookmark( " ", sd.Key, ScrollBarBookmarkAlignment.LeftOrTop, 1, 1, ScrollbarBookmarkShape.Rectangle, Color.Red, true, true, null);
-					Scollbar1.Bookmarks.Add(bookmarkBS2);
+					if (sd.Value < breakVal) break;
+					_rangeList.Add(sd.Key);
 				}
-			}
-
+			}			
 		}
 
 		//------------------------------   BackgroundWorker    ----------------------------------------------------------
@@ -1267,21 +1277,21 @@ namespace Next_View
 			int picAll = 0;
 			switch(postAction)
 			{
-				case 1:
+				case 1:        // 
 					_il.DirPicFirst(ref _currentPath);
 					_il.DirPosPath(ref picPos, ref picAll, _currentPath);
 					SetStatusText(0, String.Format(_picSelection + " {0}/{1}", picPos, picAll));
-					PicLoad(_currentPath, true);
+					PicLoadPos(_currentPath, true);
 					SetCommand('r', _currentPath);
 					break;
 
-				case 2:
+				case 2:       // next pic dir
 					_il.DirPosPath(ref picPos, ref picAll, _currentPath);
 					_picSelection = T._("Directory:");
 					NextPic();
 					break;
 
-				case 3:
+				case 3:       // prior pic dir
 					_il.DirPosPath(ref picPos, ref picAll, _currentPath);
 					_picSelection = T._("Directory:");
 					PriorPic();
@@ -1292,10 +1302,11 @@ namespace Next_View
 					SetStatusText(0, String.Format(_picSelection + " {0}/{1}", picPos, picAll));
 					break;
 			}
+			if (picAll > 0) {
+				Scollbar1.Value = picPos; 
+			}
 
 			// scan for scroll bar
-			Scollbar1.Bookmarks.Clear();
-			Scollbar1.SuspendLayout();
 
 			object oPath = pPath;
 			if (_stop == false){
@@ -1319,8 +1330,39 @@ namespace Next_View
 		void Bw2RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
 		{
 			Debug.WriteLine("bw2: complete ");
-			Scollbar1.ResumeLayout();
 			_stop = false;
+			Scollbar1.SuspendLayout();     //   same thread
+			int dirCount = _il.DirCount();
+			if (dirCount == 0) dirCount = 1;
+			Scollbar1.Maximum = dirCount;
+			// + marks
+			foreach (int pNo in _posList)
+			{
+				BasicShapeScrollBarBookmark bookmarkBS = new BasicShapeScrollBarBookmark(" ", pNo, ScrollBarBookmarkAlignment.LeftOrTop, 1, 1, ScrollbarBookmarkShape.Rectangle, Color.Green, true, true, null);
+				Scollbar1.Bookmarks.Add(bookmarkBS);
+				Debug.WriteLine("bookmark: {0}", pNo);
+			}
+			
+			int start1 = 1;
+			int end1 = 0;
+			int depth1 = 8;
+			int colIndex = 0;
+			_rangeList.Sort();
+			foreach (int rl in _rangeList)
+			{					
+				end1 = rl;
+				ValueRangeScrollBarBookmark bookmarkVR = new ValueRangeScrollBarBookmark("Range1 ", start1, end1, ScrollBarBookmarkAlignment.RightOrBottom, depth1, _colors[colIndex], true, false, null);
+				Scollbar1.Bookmarks.Add(bookmarkVR);
+				Debug.WriteLine("bookrange: {0}, {1}", start1, end1 );
+				start1 = end1;
+				colIndex++;
+				if (colIndex > _colors.Length - 1) colIndex = 0;
+			}
+			end1 = dirCount;
+			ValueRangeScrollBarBookmark bookmarkVR2 = new ValueRangeScrollBarBookmark( "Range last ", start1, end1, ScrollBarBookmarkAlignment.RightOrBottom, depth1, _colors[colIndex], true, false, null);
+			Scollbar1.Bookmarks.Add(bookmarkVR2);
+			Debug.WriteLine("bookrange-end: {0}, {1}", start1, end1 );
+			Scollbar1.ResumeLayout();								
 		}
 
 		//------------------------------   2nd screen    ----------------------------------------------------------
@@ -1334,7 +1376,7 @@ namespace Next_View
 
 			if (CanStart2nd()){
 				m_Image2  = new frmImage(0, 0, WinType.second);
-				m_Image2.PicLoad(prPath, false);
+				m_Image2.PicLoadPos(prPath, false);
 				m_Image2.Show();
 
 			}
@@ -1353,7 +1395,7 @@ namespace Next_View
 					prPath = _currentPath;
 				}
 				if (File.Exists(prPath)){
-					m_Image2.PicLoad(prPath, false);
+					m_Image2.PicLoadPos(prPath, false);
 				}
 			}
 		}
@@ -1414,7 +1456,7 @@ namespace Next_View
 //					}
 //					_currentPath = selImg;
 //					_picSelection = T._("Exif Search:");
-//					PicLoad(_currentPath, true);
+//					PicLoadPos(_currentPath, true);
 
 
 		}

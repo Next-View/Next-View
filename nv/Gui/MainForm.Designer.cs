@@ -466,14 +466,14 @@ namespace Next_View
 			this.mnuHelp1.Image = ((System.Drawing.Image)(resources.GetObject("mnuHelp1.Image")));
 			this.mnuHelp1.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
 			this.mnuHelp1.Name = "mnuHelp1";
-			this.mnuHelp1.Size = new System.Drawing.Size(142, 22);
+			this.mnuHelp1.Size = new System.Drawing.Size(152, 22);
 			this.mnuHelp1.Text = "Help";
 			this.mnuHelp1.Click += new System.EventHandler(this.MnuHelp1Click);
 			// 
 			// mnuWeb
 			// 
 			this.mnuWeb.Name = "mnuWeb";
-			this.mnuWeb.Size = new System.Drawing.Size(142, 22);
+			this.mnuWeb.Size = new System.Drawing.Size(152, 22);
 			this.mnuWeb.Text = "Homepage...";
 			this.mnuWeb.Click += new System.EventHandler(this.MnuWebClick);
 			// 
@@ -481,23 +481,22 @@ namespace Next_View
 			// 
 			this.mnuGithub.CheckOnClick = true;
 			this.mnuGithub.Name = "mnuGithub";
-			this.mnuGithub.Size = new System.Drawing.Size(142, 22);
+			this.mnuGithub.Size = new System.Drawing.Size(152, 22);
 			this.mnuGithub.Text = "Github";
 			this.mnuGithub.Click += new System.EventHandler(this.MnuGithubClick);
 			// 
 			// mnuAbout
 			// 
 			this.mnuAbout.Name = "mnuAbout";
-			this.mnuAbout.Size = new System.Drawing.Size(142, 22);
+			this.mnuAbout.Size = new System.Drawing.Size(152, 22);
 			this.mnuAbout.Text = "About...";
 			this.mnuAbout.Click += new System.EventHandler(this.MnuAboutClick);
 			// 
 			// mnuTest
 			// 
 			this.mnuTest.Name = "mnuTest";
-			this.mnuTest.Size = new System.Drawing.Size(142, 22);
+			this.mnuTest.Size = new System.Drawing.Size(152, 22);
 			this.mnuTest.Text = "Test";
-			this.mnuTest.Visible = false;
 			this.mnuTest.Click += new System.EventHandler(this.MnuTestClick);
 			// 
 			// statusMain

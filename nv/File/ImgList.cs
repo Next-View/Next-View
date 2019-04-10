@@ -73,6 +73,11 @@ namespace Next_View
 			_imList.Add(picPath);
 		}
 
+		public int DirCount()
+		{
+			return _imList.Count;
+		}
+		
 		public void DirScan(out int picCount, string picPath, bool allDirs)
 		{
 			// called by: PicScan - open, refesh, drop, main: formShow, recent

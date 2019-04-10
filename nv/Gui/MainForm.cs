@@ -180,7 +180,7 @@ namespace Next_View
 			if (File.Exists(firstImage)) {
 				m_Image.PicScan(firstImage, false, 0);
 				if (doShow){
-					m_Image.PicLoad(firstImage, true);
+					m_Image.PicLoadPos(firstImage, true);
 					recentItem1.AddRecentItem(firstImage);
 				}
 				else _currentPath = firstImage;
@@ -188,7 +188,7 @@ namespace Next_View
 			else if (File.Exists(Settings.Default.LastImage)) {
 				m_Image.PicScan(Settings.Default.LastImage, false, 0);
 				if (doShow){
-					 m_Image.PicLoad(Settings.Default.LastImage, true);
+					 m_Image.PicLoadPos(Settings.Default.LastImage, true);
 				}
 				else _currentPath = Settings.Default.LastImage;
 			}
@@ -201,7 +201,7 @@ namespace Next_View
 				firstImage = Directory.GetCurrentDirectory() + @"\Next-View-0.6.jpg";
 				recentItem1.AddRecentItem(firstImage);
 				if (doShow) {
-					m_Image.PicLoad(firstImage, true);
+					m_Image.PicLoadPos(firstImage, true);
 				}
 				else _currentPath = firstImage;
 			}
@@ -281,7 +281,7 @@ namespace Next_View
 			{
 				recentItem1.AddRecentItem(picPath);
 				m_Image.PicScan(picPath, false, 0);
-				m_Image.PicLoad(picPath, true);
+				m_Image.PicLoadPos(picPath, true);
 			}
 			else
 				MessageBox.Show (sender.ToString(), T._("File does not exist"),
@@ -527,7 +527,7 @@ namespace Next_View
 
 		void MnuTestClick(object sender, EventArgs e)
 		{
-			//TestException();
+			TestException();
 			TestScreen();
 		}
 
@@ -547,7 +547,7 @@ namespace Next_View
 			string commandLine = e.DataGram.Message;
 			if (File.Exists(commandLine)) {
 				m_Image.PicScan(commandLine, false, 0);
-				m_Image.PicLoad(commandLine, true);
+				m_Image.PicLoadPos(commandLine, true);
 				recentItem1.AddRecentItem(commandLine);
 			}
 			ShowMe();
