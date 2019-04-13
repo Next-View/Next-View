@@ -54,11 +54,12 @@ namespace Next_View
 		bool _loadNextPic = true;
 
 		bool _stop = false;
+		int _currentScrollPos = 0;
 		Color[] _colors = {Color.Aqua, Color.Magenta, Color.Blue, Color.Lime, Color.Yellow, Color.Red};
-		List<int> _posList = new List<int>();           //  set scrollbar marks outside background worker 
+		List<int> _posList = new List<int>();           //  set scrollbar marks outside background worker
 		List<int> _rangeList = new List<int>();
-		bool _barClick = true; 
-					
+		bool _barClick = false;
+
 		WinType _wType;   // normal, full, second
 		public bool _ndRunning {get;set;}
 		string _priorPath = "";
@@ -150,7 +151,7 @@ namespace Next_View
 				this.Width = wW;
 				this.Height = wH;
 				this.Icon = Icon1.Icon;
-				Debug.WriteLine("open 2nd y: {0} ", Settings.Default.SecondY);
+				//Debug.WriteLine("open 2nd y: {0} ", Settings.Default.SecondY);
 
 				_ndRunning = true;
 				_mainWidth = picBox.Width;
@@ -191,7 +192,7 @@ namespace Next_View
 
 		void FrmImageKeyUp(object sender, KeyEventArgs e)
 		{
- 
+
 		}
 
 		void FrmImageFormClosing(object sender, FormClosingEventArgs e)
@@ -502,16 +503,17 @@ namespace Next_View
 				_loadNextPic = false;           // eat up clicks
 				string pPath = "";
 				int scrollPos = (int) Scollbar1.Value;
+				_currentScrollPos = scrollPos;
 				//Debug.WriteLine("scroll change val: " + scrollPos.ToString());
 				if (_il.DirPathPos(ref pPath, scrollPos)){
 					if (_barClick){
 						int picPos = 0;
 						int picAll = 0;
 						_il.DirPosPath(ref picPos, ref picAll, pPath);
-						SetStatusText(0, String.Format(_picSelection + " {0}/{1}", picPos, picAll));						
+						SetStatusText(0, String.Format(_picSelection + " {0}/{1}", picPos, picAll));
 						SetWindowText(pPath);
 						_priorPath =_currentPath;
-						_currentPath = pPath; 
+						_currentPath = pPath;
 						PicLoad(pPath);
 					}
 					else _barClick = true;
@@ -521,16 +523,22 @@ namespace Next_View
 				//else Debug.WriteLine("eat up click1: ");
 		}
 
-			
-			
+
+
 		void Scollbar1ToolTipNeeded(object sender, TooltipNeededEventArgs e)
 		{
 			if (e.Bookmarks.Count > 0) {
 				//get topmost bookmark
 				ScrollBarBookmark bookmark = e.Bookmarks[e.Bookmarks.Count - 1];
 				if (bookmark is BasicShapeScrollBarBookmark) {
-					BasicShapeScrollBarBookmark shapeBookmark = (BasicShapeScrollBarBookmark)bookmark;
-					e.ToolTip = string.Format("Marked picture at {0:###,##0} ", shapeBookmark.Value);
+					if (bookmark is ValueRangeScrollBarBookmark) {
+						BasicShapeScrollBarBookmark shapeBookmark = (BasicShapeScrollBarBookmark)bookmark;
+						e.ToolTip = string.Format("Range start at {0:###,##0} ", shapeBookmark.Value);
+					}
+					else{
+						BasicShapeScrollBarBookmark shapeBookmark = (BasicShapeScrollBarBookmark)bookmark;
+						e.ToolTip = string.Format("Marked picture {0:###,##0} ", shapeBookmark.Value);						
+					}
 				}
 
 			}
@@ -556,23 +564,23 @@ namespace Next_View
 				SetStatusText(0, String.Format(T._("History: {0}/{1}"), picPos, picAll));
 			}
 
-			//Debug.WriteLine("pic load: " + pPath + " pos " + picPos + " all " + picAll);			
 			SetWindowText(pPath);
 			_priorPath =_currentPath;
-			_currentPath = pPath;          
-			
-			_barClick = false;		        // scrollbar change only 
-			if (picAll > 0){	
-				Scollbar1.Value = picPos; 
-			}    
+			_currentPath = pPath;
+
+			_barClick = false;		        // scrollbar change only
+			if (picAll > 0){
+				Scollbar1.Value = picPos;
+			}
 			PicLoad(pPath);
 			return true;
 		}
-		
+
 		public bool PicLoad(string pPath)
 		{
+			//Debug.WriteLine("pic load: " + pPath);			
 			try
-			{		
+			{
 				if (!File.Exists(pPath)){
 					picBox.SizeMode = PictureBoxSizeMode.CenterImage;
 					picBox.Image = picBox.ErrorImage;
@@ -691,6 +699,7 @@ namespace Next_View
 			object[] parameters = new object [] { oPath, oDirs, oAction };
 			if (_stop == false){
 				_stop = true;
+				Debug.WriteLine("bookmarks: clear ");
 				Scollbar1.Bookmarks.Clear();
 				if (backgroundWorker1.IsBusy != true)
 				{
@@ -830,7 +839,8 @@ namespace Next_View
 				_il.RenameListLog(_currentPath, newPath);
 				_currentPath = newPath;
 				SetWindowText(_currentPath);
-				//PicLoadPos(_currentPath, true);
+				BasicShapeScrollBarBookmark bookmarkBS = new BasicShapeScrollBarBookmark(" ", _currentScrollPos, ScrollBarBookmarkAlignment.LeftOrTop, 1, 1, ScrollbarBookmarkShape.Rectangle, Color.Green, true, true, null);
+				Scollbar1.Bookmarks.Add(bookmarkBS);
 			}
 			else {
 				//Debug.WriteLine("no rename");
@@ -849,14 +859,31 @@ namespace Next_View
 					_il.RenameListLog(_currentPath, newPath);
 					_currentPath = newPath;
 					SetWindowText(_currentPath);
-					//PicLoadPos(_currentPath, true);
+					RemoveBookmark(_currentScrollPos);
 				}
 				else {
-					Debug.WriteLine("no rename");
+					//Debug.WriteLine("no rename");
 				}
 			}
 		}
 
+		public void RemoveBookmark(int bPos)
+		{
+			int i = 0;
+			foreach (ScrollBarBookmark bm in Scollbar1.Bookmarks)
+			{
+				if (bm is BasicShapeScrollBarBookmark){
+					if (! (bm is ValueRangeScrollBarBookmark)) {
+						if (bPos == (int)bm.Value){
+							break;
+						}
+					}
+				}
+				i++;
+			}
+			Scollbar1.Bookmarks.RemoveAt(i);
+		}
+		
 		public void DelPic()
 		{
 			if (DelFile.MoveToRecycleBin(_currentPath)){
@@ -1183,6 +1210,8 @@ namespace Next_View
 			int dateCount = 0;
 			DateTime priorDate = DateTime.MaxValue;
 			var spanDict = new Dictionary<int, int>();
+			_posList.Clear();
+			_rangeList.Clear();
 			// dict for time gaps
 			foreach (string picPath in imList)
 			{
@@ -1212,10 +1241,10 @@ namespace Next_View
 
 			// span values
 			if (dateCount > 0){
-				TimeSpan imgSpan = maxDate.Subtract(minDate); 
+				TimeSpan imgSpan = maxDate.Subtract(minDate);
 				Debug.WriteLine("min: " + minDate.ToString() + " max: " + maxDate.ToString());
 				Debug.WriteLine("range: " + imgSpan.ToString());
-				
+
 				int mean = (int) imgSpan.TotalSeconds / dateCount;
 				long sumVar = 0;
 				foreach (KeyValuePair<int, int> sd in spanDict)
@@ -1227,11 +1256,11 @@ namespace Next_View
 				int stdDev = (int) Math.Sqrt(sumVar / dateCount);
 				Debug.WriteLine("mean / std : {0}/{1}", mean, stdDev);
 
-				int	breakVal = mean + stdDev * 2; 
+				int	breakVal = mean + stdDev * 2;
 				//int wi = 2;
 
 				int i = 0;
-				// largest breaks 
+				// largest breaks
 				foreach (KeyValuePair<int, int> sd in spanDict.OrderByDescending(key=> key.Value))
 				{
 					i++;
@@ -1239,7 +1268,7 @@ namespace Next_View
 					if (sd.Value < breakVal) break;
 					_rangeList.Add(sd.Key);
 				}
-			}			
+			}
 		}
 
 		//------------------------------   BackgroundWorker    ----------------------------------------------------------
@@ -1277,7 +1306,7 @@ namespace Next_View
 			int picAll = 0;
 			switch(postAction)
 			{
-				case 1:        // 
+				case 1:        //
 					_il.DirPicFirst(ref _currentPath);
 					_il.DirPosPath(ref picPos, ref picAll, _currentPath);
 					SetStatusText(0, String.Format(_picSelection + " {0}/{1}", picPos, picAll));
@@ -1303,7 +1332,7 @@ namespace Next_View
 					break;
 			}
 			if (picAll > 0) {
-				Scollbar1.Value = picPos; 
+				Scollbar1.Value = picPos;
 			}
 
 			// scan for scroll bar
@@ -1329,7 +1358,7 @@ namespace Next_View
 
 		void Bw2RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
 		{
-			Debug.WriteLine("bw2: complete ");
+			//Debug.WriteLine("bw2: complete ");
 			_stop = false;
 			Scollbar1.SuspendLayout();     //   same thread
 			int dirCount = _il.DirCount();
@@ -1340,16 +1369,16 @@ namespace Next_View
 			{
 				BasicShapeScrollBarBookmark bookmarkBS = new BasicShapeScrollBarBookmark(" ", pNo, ScrollBarBookmarkAlignment.LeftOrTop, 1, 1, ScrollbarBookmarkShape.Rectangle, Color.Green, true, true, null);
 				Scollbar1.Bookmarks.Add(bookmarkBS);
-				Debug.WriteLine("bookmark: {0}", pNo);
+				//Debug.WriteLine("bookmark: {0}", pNo);
 			}
-			
+
 			int start1 = 1;
 			int end1 = 0;
 			int depth1 = 8;
 			int colIndex = 0;
 			_rangeList.Sort();
 			foreach (int rl in _rangeList)
-			{					
+			{
 				end1 = rl;
 				ValueRangeScrollBarBookmark bookmarkVR = new ValueRangeScrollBarBookmark("Range1 ", start1, end1, ScrollBarBookmarkAlignment.RightOrBottom, depth1, _colors[colIndex], true, false, null);
 				Scollbar1.Bookmarks.Add(bookmarkVR);
@@ -1362,7 +1391,7 @@ namespace Next_View
 			ValueRangeScrollBarBookmark bookmarkVR2 = new ValueRangeScrollBarBookmark( "Range last ", start1, end1, ScrollBarBookmarkAlignment.RightOrBottom, depth1, _colors[colIndex], true, false, null);
 			Scollbar1.Bookmarks.Add(bookmarkVR2);
 			Debug.WriteLine("bookrange-end: {0}, {1}", start1, end1 );
-			Scollbar1.ResumeLayout();								
+			Scollbar1.ResumeLayout();
 		}
 
 		//------------------------------   2nd screen    ----------------------------------------------------------

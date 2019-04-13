@@ -42,7 +42,8 @@ namespace Next_View
 
 		List<Exif> exList = new List<Exif>();
 		List<string> exifImgList = new List<string>();
-
+		List<string> errorList = new List<string>();
+		
 		Dictionary<int, int> dicExift = new Dictionary<int, int>();
 		Dictionary<int, int> dicToD = new Dictionary<int, int>();
 		Dictionary<string, int> dicModel = new Dictionary<string, int>();
@@ -93,6 +94,7 @@ namespace Next_View
 			lblInfo.Text = T._("Info:");
 			exList.Clear();
 			exifImgList.Clear();
+			errorList.Clear();
 			listImg.Items.Clear();
 			listExift.Items.Clear();
 			listToD.Items.Clear();
@@ -171,36 +173,41 @@ namespace Next_View
 		// called by: bw end
 		{
 			// timespan for info
+			string error1 = "";
+			if (errorList.Count > 0) {
+				error1 = "               " + errorList[0] + " :" + errorList.Count.ToString(); 
+			}
+			
 			if (_dateCount > 0){
 				TimeSpan imgSpan = _maxDate.Subtract(_minDate);
 				if (imgSpan.TotalDays > 730){
 					_rangeType = 1;      // years
 					double years = Math.Ceiling(imgSpan.TotalDays / 365.0);
 					string spanS = years.ToString("0.0");
-					lblInfo.Text = String.Format(T._("Info: Number of Jpeg images {0}. Between {1:yyyy-MM-dd} and {2:yyyy-MM-dd}, a span of {3} years"), exList.Count, _minDate, _maxDate, spanS );
+					lblInfo.Text = String.Format(T._("Info: Number of Jpeg images {0}. Between {1:yyyy-MM-dd} and {2:yyyy-MM-dd}, a span of {3} years"), exList.Count, _minDate, _maxDate, spanS ) + error1;
 				}
 				else if (imgSpan.TotalDays > 60){
 					_rangeType = 2;      // months
 					double months = Math.Ceiling(imgSpan.TotalDays / 30.0);
 					string spanS = months.ToString("0");
-					lblInfo.Text = String.Format(T._("Info: Number of Jpeg images {0}. Between {1:yyyy-MM-dd} and {2:yyyy-MM-dd}, a span of {3} months"), exList.Count, _minDate, _maxDate, spanS );
+					lblInfo.Text = String.Format(T._("Info: Number of Jpeg images {0}. Between {1:yyyy-MM-dd} and {2:yyyy-MM-dd}, a span of {3} months"), exList.Count, _minDate, _maxDate, spanS ) + error1;
 				}
 				else if (imgSpan.TotalDays > 1){
 					_rangeType = 3;      // days
 					double days = (int) Math.Ceiling(imgSpan.TotalHours / 24.0);
 					string spanS = days.ToString("0");
-					lblInfo.Text = String.Format(T._("Info: Number of Jpeg images {0}. Between {1:yyyy-MM-dd} and {2:yyyy-MM-dd}, a span of {3} days"), exList.Count, _minDate, _maxDate, spanS );
+					lblInfo.Text = String.Format(T._("Info: Number of Jpeg images {0}. Between {1:yyyy-MM-dd} and {2:yyyy-MM-dd}, a span of {3} days"), exList.Count, _minDate, _maxDate, spanS ) + error1;
 				}
 				else {
 					_rangeType = 4;      // hours
 					int hours = (int) Math.Ceiling(imgSpan.TotalMinutes / 60.0);
 					string spanS = hours.ToString("0");
-					lblInfo.Text = String.Format(T._("Info: Number of Jpeg images {0}. On {1:yyyy-MM-dd}. Between {2:HH:mm} and {3:HH:mm}, a span of {4} hours"), exList.Count, _minDate, _minDate, _maxDate, spanS );
+					lblInfo.Text = String.Format(T._("Info: Number of Jpeg images {0}. On {1:yyyy-MM-dd}. Between {2:HH:mm} and {3:HH:mm}, a span of {4} hours"), exList.Count, _minDate, _minDate, _maxDate, spanS ) + error1;
 				}
 				CreateTimelineChart( );
 			}
 			else {
-				lblInfo.Text = String.Format(T._("Info: Number of Jpeg images {0} "), exList.Count);
+				lblInfo.Text = String.Format(T._("Info: Number of Jpeg images {0} "), exList.Count) + error1;
 			}
 
 			// show listviews
@@ -786,6 +793,7 @@ namespace Next_View
 			string scene;
 			bool gps;
 			bool face;
+			string exError;
 			DateTime nullDate = DateTime.MinValue;
 			int maxTicks = imgList.Count() / 100;
 			if (maxTicks < 1) maxTicks = 1;
@@ -798,10 +806,13 @@ namespace Next_View
 			{
 
 				ExifRead.CheckExif(out exType, out orientation, out model, out dtOriginal, out timeOfD, out expotime, out fnumber, out fLength, out flash, out exposi, out lens, out scene,
-				               out gps, out face, picPath);
+				               out gps, out face, out exError, picPath);
 				exList.Add(new Exif(exType, model, dtOriginal, timeOfD,
 				                  expotime, fnumber, fLength, flash,  exposi, lens, scene,
 					                gps, face, picPath));
+				if (exError != ""){
+					errorList.Add(exError);
+				}
 				fCount++;
 				int mod = fCount % 100;
 				if (mod == 0){

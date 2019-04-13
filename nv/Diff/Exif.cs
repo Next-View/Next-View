@@ -111,7 +111,7 @@ namespace Next_View
 
 		public static bool CheckExif(out int exType, out string orientation, out string model, out DateTime dtOriginal, out int timeOfD,
 		                             out string expotime, out string fNumber, out string fLength, out bool flash, out string exposi, out string lensmodel, out string scene,
-		                             out bool gps, out bool face, string fName)
+		                             out bool gps, out bool face, out string exifError, string fName)
 		// called by: exifDash.ScanImages
 		{
 			exType = 0;
@@ -128,6 +128,7 @@ namespace Next_View
 			scene = "";
 			gps = false;
 			face = false;
+			exifError = "";
 
 			int exCount = 0;
 
@@ -184,6 +185,11 @@ namespace Next_View
 						else if (orHours >= 18 && orHours < 22) timeOfD = 4;
 						else if (orHours >= 20) timeOfD = 0;
 						//Debug.WriteLine("date " + dtOriginal + " " + orHours.ToString() + " " + timeOfD.ToString());
+					}
+					else {
+						if (dtOriginalS != ""){
+							exifError = "Unknown original date format";
+						}
 					}
 
 					string expotime1 = subIfdDirectory.GetDescription(ExifDirectoryBase.TagExposureTime);

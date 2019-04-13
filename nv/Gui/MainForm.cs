@@ -78,7 +78,7 @@ namespace Next_View
 
 		void FrmMainLoad(object sender, EventArgs e)
 		{
-			Debug.WriteLine("Main start: ");
+			//Debug.WriteLine("Main start: ");
 			listener = new XDListener();
 			listener.MessageReceived += new XDListener.XDMessageHandler(listener_MessageReceived);
 			listener.RegisterChannel("NVMessage");
@@ -186,6 +186,7 @@ namespace Next_View
 				else _currentPath = firstImage;
 			}
 			else if (File.Exists(Settings.Default.LastImage)) {
+				//Debug.WriteLine("Last image, async: ");
 				m_Image.PicScan(Settings.Default.LastImage, false, 0);
 				if (doShow){
 					 m_Image.PicLoadPos(Settings.Default.LastImage, true);
@@ -232,8 +233,7 @@ namespace Next_View
 		void FrmMainDragDrop(object sender, DragEventArgs e)
 		{
 			bool allDirs = false;
-			if ((e.KeyState & 8) == 8){
-				Debug.WriteLine("ctrl");
+			if ((e.KeyState & 8) == 8){      // ctrl
 				allDirs = true;
 			}
 

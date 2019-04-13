@@ -289,5 +289,25 @@ namespace Next_View.Gui {
 				return ((System.Drawing.Bitmap)(obj));
 			}
 		}
+		
+		/// <summary>
+		///   Looks up a localized resource of type System.Drawing.Bitmap.
+		/// </summary>
+		internal static System.Drawing.Bitmap toolStripDropDownButton1_Image {
+			get {
+				object obj = ResourceManager.GetObject("toolStripDropDownButton1.Image", resourceCulture);
+				return ((System.Drawing.Bitmap)(obj));
+			}
+		}
+		
+		/// <summary>
+		///   Looks up a localized resource of type System.Drawing.Bitmap.
+		/// </summary>
+		internal static System.Drawing.Bitmap toolStripSplitButton1_Image {
+			get {
+				object obj = ResourceManager.GetObject("toolStripSplitButton1.Image", resourceCulture);
+				return ((System.Drawing.Bitmap)(obj));
+			}
+		}
 	}
 }
