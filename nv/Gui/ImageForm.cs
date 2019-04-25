@@ -57,12 +57,14 @@ namespace Next_View
 		int _currentScrollPos = 0;
 		Color[] _colors = {Color.Aqua, Color.Magenta, Color.Blue, Color.Lime, Color.Yellow, Color.Red};
 		List<int> _posList = new List<int>();           //  set scrollbar marks outside background worker
-		List<int> _rangeList = new List<int>();
+		Dictionary<int, int> _rangeDict = new Dictionary<int, int>();
+		int _rangeType = 0;
 		bool _barClick = false;
 
 		WinType _wType;   // normal, full, second
 		public bool _ndRunning {get;set;}
 		string _priorPath = "";
+
 
 		ExifForm m_Exif;
 
@@ -537,7 +539,7 @@ namespace Next_View
 					}
 					else{
 						BasicShapeScrollBarBookmark shapeBookmark = (BasicShapeScrollBarBookmark)bookmark;
-						e.ToolTip = string.Format("Marked picture {0:###,##0} ", shapeBookmark.Value);						
+						e.ToolTip = string.Format("Marked picture {0:###,##0} ", shapeBookmark.Value);
 					}
 				}
 
@@ -578,7 +580,7 @@ namespace Next_View
 
 		public bool PicLoad(string pPath)
 		{
-			//Debug.WriteLine("pic load: " + pPath);			
+			//Debug.WriteLine("pic load: " + pPath);
 			try
 			{
 				if (!File.Exists(pPath)){
@@ -883,7 +885,7 @@ namespace Next_View
 			}
 			Scollbar1.Bookmarks.RemoveAt(i);
 		}
-		
+
 		public void DelPic()
 		{
 			if (DelFile.MoveToRecycleBin(_currentPath)){
@@ -1211,7 +1213,7 @@ namespace Next_View
 			DateTime priorDate = DateTime.MaxValue;
 			var spanDict = new Dictionary<int, int>();
 			_posList.Clear();
-			_rangeList.Clear();
+			_rangeDict.Clear();
 			// dict for time gaps
 			foreach (string picPath in imList)
 			{
@@ -1259,6 +1261,20 @@ namespace Next_View
 				int	breakVal = mean + stdDev * 2;
 				//int wi = 2;
 
+				if (imgSpan.TotalDays > 730){
+					_rangeType = 1;      // years
+				}
+				else if (imgSpan.TotalDays > 60){
+					_rangeType = 2;      // months
+				}
+				else if (imgSpan.TotalDays > 1){
+					_rangeType = 3;      // days
+				}
+				else {
+					_rangeType = 4;      // hours
+				}
+				Debug.WriteLine("range : {0}", _rangeType);
+
 				int i = 0;
 				// largest breaks
 				foreach (KeyValuePair<int, int> sd in spanDict.OrderByDescending(key=> key.Value))
@@ -1266,7 +1282,7 @@ namespace Next_View
 					i++;
 					Debug.WriteLine("pic no / dist : {0}/{1}", sd.Key, sd.Value);
 					if (sd.Value < breakVal) break;
-					_rangeList.Add(sd.Key);
+					_rangeDict.Add(sd.Key, 1);
 				}
 			}
 		}
@@ -1376,10 +1392,9 @@ namespace Next_View
 			int end1 = 0;
 			int depth1 = 8;
 			int colIndex = 0;
-			_rangeList.Sort();
-			foreach (int rl in _rangeList)
+			foreach (KeyValuePair<int, int> rd in _rangeDict.OrderBy(key=> key.Key))
 			{
-				end1 = rl;
+				end1 = rd.Key;
 				ValueRangeScrollBarBookmark bookmarkVR = new ValueRangeScrollBarBookmark("Range1 ", start1, end1, ScrollBarBookmarkAlignment.RightOrBottom, depth1, _colors[colIndex], true, false, null);
 				Scollbar1.Bookmarks.Add(bookmarkVR);
 				Debug.WriteLine("bookrange: {0}, {1}", start1, end1 );
