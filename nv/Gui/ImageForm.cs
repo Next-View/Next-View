@@ -57,8 +57,10 @@ namespace Next_View
 		int _currentScrollPos = 0;
 		Color[] _colors = {Color.Aqua, Color.Magenta, Color.Blue, Color.Lime, Color.Yellow, Color.Red};
 		List<int> _posList = new List<int>();           //  set scrollbar marks outside background worker
-		Dictionary<int, int> _rangeDict = new Dictionary<int, int>();
+		List<int> _priorList = new List<int>();
+		Dictionary<int, DateTime> _rangeDict = new Dictionary<int, DateTime>();
 		int _rangeType = 0;
+		DateTime _r0Date = DateTime.MinValue;
 		bool _barClick = false;
 
 		WinType _wType;   // normal, full, second
@@ -262,7 +264,7 @@ namespace Next_View
 				if (File.Exists(dropFile)) {
 					if (_il.FileIsValid(dropFile)){
 						picCount++;
-						_il.DirPicAdd(dropFile);
+						//_il.DirPicAdd(dropFile);
 						dropDir = Path.GetDirectoryName(dropFile);
 						loadFile = dropFile;
 					}
@@ -535,7 +537,7 @@ namespace Next_View
 				if (bookmark is BasicShapeScrollBarBookmark) {
 					if (bookmark is ValueRangeScrollBarBookmark) {
 						BasicShapeScrollBarBookmark shapeBookmark = (BasicShapeScrollBarBookmark)bookmark;
-						e.ToolTip = string.Format("Range start at {0:###,##0} ", shapeBookmark.Value);
+						e.ToolTip = string.Format("Range start, picture {0:###,##0} - ", shapeBookmark.Value) + shapeBookmark.Name;
 					}
 					else{
 						BasicShapeScrollBarBookmark shapeBookmark = (BasicShapeScrollBarBookmark)bookmark;
@@ -701,7 +703,6 @@ namespace Next_View
 			object[] parameters = new object [] { oPath, oDirs, oAction };
 			if (_stop == false){
 				_stop = true;
-				Debug.WriteLine("bookmarks: clear ");
 				Scollbar1.Bookmarks.Clear();
 				if (backgroundWorker1.IsBusy != true)
 				{
@@ -814,6 +815,23 @@ namespace Next_View
 			_il.DirClear();
 			PicScan(_currentPath, false, 0);
 			PicLoadPos(_currentPath, true);
+		}
+
+		//------------------------------   sort functions  ----------------------------------------------------------
+
+		public void NameSort()
+		{
+			_il.SortName();
+		}
+
+		public void FDateSort()
+		{
+			_il.SortFDate();
+		}
+
+		public void ExifSort()
+		{
+			_il.SortExifDate();
 		}
 
 		//------------------------------   file functions  ----------------------------------------------------------
@@ -1086,7 +1104,8 @@ namespace Next_View
 				}
 				_currentPath = selImg;
 				_picSelection = T._("Search:");
-				PicLoadPos(_currentPath, true);
+				PicLoadPos(selImg, true);
+				Bw2Run(selImg);
 			}
 		}
 
@@ -1095,13 +1114,13 @@ namespace Next_View
 			Scollbar1.Visible = sVisible;
 		}
 
-		public void ShowExifImages(List<string> exImgList, string selImg)
+		public void ShowExifImages(List<ImgFile> exImgList, string selImg)
+		// called by: dash via main
 		{
 			_il.DirClear();
-			// _il._imList = exImgList;
-			exImgList.ForEach((item)=>   // msn deep copy required
+			exImgList.ForEach((item)=>   // deep copy
     		{
-        		_il._imList.Add(item);
+        	_il._imList.Add(new ImgFile(item.fName, item.fDate, item.fDateOriginal));
     		});
 
 			int picPos = 0;
@@ -1111,6 +1130,7 @@ namespace Next_View
 			_currentPath = selImg;
 			_picSelection = T._("Search:");
 			PicLoadPos(_currentPath, true);
+			Bw2Run(selImg);
 		}
 
 		public void ShowFullScreen()
@@ -1198,7 +1218,7 @@ namespace Next_View
 
 		public void ScanImagesBar(string pPath)
 		{
-			List<string> imList;
+			List<ImgFile> imList;
 			_il.ImgListOut(out imList);
 
 			var ppList = new List<int>();
@@ -1210,13 +1230,26 @@ namespace Next_View
 
 			int fCount = 0;
 			int dateCount = 0;
-			DateTime priorDate = DateTime.MaxValue;
+			DateTime priorDate = DateTime.MinValue;
 			var spanDict = new Dictionary<int, int>();
 			_posList.Clear();
+			_priorList.Clear();
 			_rangeDict.Clear();
 			// dict for time gaps
-			foreach (string picPath in imList)
+			foreach (ImgFile imf in imList)
 			{
+				string picPath = imf.fName;
+				DateTime dtCreation = File.GetCreationTime(picPath);
+				DateTime dtChanged = File.GetLastWriteTime(picPath);
+				DateTime dtFile;
+				if (dtCreation < dtChanged){
+					dtFile = dtCreation;
+				}
+				else {
+					dtFile = dtChanged;
+				}
+				imf.fDate = dtFile;
+
 				ExifRead.ExifODate(out dtOriginal, picPath);
 				fCount++;
 
@@ -1229,6 +1262,11 @@ namespace Next_View
 				if (dtOriginal != nullDate){
 					//Debug.WriteLine("path: " + picPath + " " + dtOriginal.ToString());
 					dateCount++;
+					imf.fDateOriginal = dtOriginal;
+					if (priorDate > dtOriginal){
+						Debug.WriteLine("prior date: " + fCount);
+						_priorList.Add(fCount);
+					}
 					if (minDate > dtOriginal) minDate = dtOriginal;
 					if (maxDate < dtOriginal) maxDate = dtOriginal;
 
@@ -1273,16 +1311,25 @@ namespace Next_View
 				else {
 					_rangeType = 4;      // hours
 				}
-				Debug.WriteLine("range : {0}", _rangeType);
 
 				int i = 0;
 				// largest breaks
+				string p0Path = "";
+				if (_il.DirPathPos(ref p0Path, 1)){
+					ExifRead.ExifODate(out _r0Date, p0Path);
+				}
 				foreach (KeyValuePair<int, int> sd in spanDict.OrderByDescending(key=> key.Value))
 				{
 					i++;
 					Debug.WriteLine("pic no / dist : {0}/{1}", sd.Key, sd.Value);
 					if (sd.Value < breakVal) break;
-					_rangeDict.Add(sd.Key, 1);
+
+					string piPath = "";
+					DateTime dOriginal = DateTime.MinValue;
+					if (_il.DirPathPos(ref piPath, sd.Key)){
+						ExifRead.ExifODate(out dOriginal, piPath);
+					}
+					_rangeDict.Add(sd.Key, dOriginal);
 				}
 			}
 		}
@@ -1352,8 +1399,12 @@ namespace Next_View
 			}
 
 			// scan for scroll bar
+			Bw2Run(pPath);
+		}
 
-			object oPath = pPath;
+		void Bw2Run(string bwPath)
+		{
+			object oPath = bwPath;
 			if (_stop == false){
 				_stop = true;
 				if (bw2.IsBusy != true)
@@ -1380,33 +1431,68 @@ namespace Next_View
 			int dirCount = _il.DirCount();
 			if (dirCount == 0) dirCount = 1;
 			Scollbar1.Maximum = dirCount;
-			// + marks
+			// scrollbar marks
 			foreach (int pNo in _posList)
 			{
 				BasicShapeScrollBarBookmark bookmarkBS = new BasicShapeScrollBarBookmark(" ", pNo, ScrollBarBookmarkAlignment.LeftOrTop, 1, 1, ScrollbarBookmarkShape.Rectangle, Color.Green, true, true, null);
 				Scollbar1.Bookmarks.Add(bookmarkBS);
 				//Debug.WriteLine("bookmark: {0}", pNo);
 			}
+			// image
+			Image barImg = barIcon.Icon.ToBitmap();
+			foreach (int pNo in _priorList)
+			{
+				ImageScrollBarBookmark ibookmark = new ImageScrollBarBookmark(" ", pNo, barImg, ScrollBarBookmarkAlignment.Center, null);
+				Scollbar1.Bookmarks.Add(ibookmark);
+			}
 
+			// range
 			int start1 = 1;
 			int end1 = 0;
 			int depth1 = 8;
 			int colIndex = 0;
-			foreach (KeyValuePair<int, int> rd in _rangeDict.OrderBy(key=> key.Key))
+			string rangeText = GetRangeText(_r0Date);
+			foreach (KeyValuePair<int, DateTime> rd in _rangeDict.OrderBy(key=> key.Key))
 			{
 				end1 = rd.Key;
-				ValueRangeScrollBarBookmark bookmarkVR = new ValueRangeScrollBarBookmark("Range1 ", start1, end1, ScrollBarBookmarkAlignment.RightOrBottom, depth1, _colors[colIndex], true, false, null);
+				ValueRangeScrollBarBookmark bookmarkVR = new ValueRangeScrollBarBookmark(rangeText , start1, end1, ScrollBarBookmarkAlignment.RightOrBottom, depth1, _colors[colIndex], true, false, null);
 				Scollbar1.Bookmarks.Add(bookmarkVR);
-				Debug.WriteLine("bookrange: {0}, {1}", start1, end1 );
+				rangeText = GetRangeText(rd.Value);
+				//Debug.WriteLine("bookrange: {0}, {1}", start1, end1 );
 				start1 = end1;
 				colIndex++;
 				if (colIndex > _colors.Length - 1) colIndex = 0;
 			}
 			end1 = dirCount;
-			ValueRangeScrollBarBookmark bookmarkVR2 = new ValueRangeScrollBarBookmark( "Range last ", start1, end1, ScrollBarBookmarkAlignment.RightOrBottom, depth1, _colors[colIndex], true, false, null);
+			ValueRangeScrollBarBookmark bookmarkVR2 = new ValueRangeScrollBarBookmark(rangeText , start1, end1, ScrollBarBookmarkAlignment.RightOrBottom, depth1, _colors[colIndex], true, false, null);
 			Scollbar1.Bookmarks.Add(bookmarkVR2);
-			Debug.WriteLine("bookrange-end: {0}, {1}", start1, end1 );
+			//Debug.WriteLine("bookrange-end: {0}, {1}", start1, end1 );
 			Scollbar1.ResumeLayout();
+		}
+
+		public String GetRangeText(DateTime rangeStart)
+		{
+			string rText;
+			switch(_rangeType)
+			{
+				case 1:  // year
+					rText = String.Format("{0:yyyy-MM}", rangeStart);
+					break;
+
+				case 2:  // month
+					rText = String.Format("{0:yyyy-MM}", rangeStart);
+					break;
+
+				case 3:  // days
+					rText = String.Format("{0:MMM dd}", rangeStart);
+					break;
+
+				default:    // hours
+					rText = String.Format("{0:HH:mm}", rangeStart);
+					break;
+			}
+
+			return rText;
 		}
 
 		//------------------------------   2nd screen    ----------------------------------------------------------

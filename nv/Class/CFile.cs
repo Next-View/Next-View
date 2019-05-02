@@ -1,6 +1,6 @@
 ﻿/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-File name:     filenamecomparer.cs
-Description:   windows compare for filenames
+File name:     cfile.cs
+Description:   class file  data
 Copyright:     Copyright (c) Martin A. Schnell, 2019
 Licence:       GNU General Public License
                This program is free software; you can redistribute it and/or
@@ -16,23 +16,27 @@ History:
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 using System;
-using System.Collections.Generic;   // IComparer
-using System.Runtime.InteropServices;
 
 namespace Next_View
 {
 	/// <summary>
-	/// Description of FilenameComparer.
+	/// exif data for one image
 	/// </summary>
-	public class FilenameComparer: IComparer<string>
-	// for imgList.DirScan, dash scan, doSearch
+	public class ImgFile
 	{
-	[DllImport("shlwapi.dll", CharSet = CharSet.Unicode)]
-	static extern Int32 StrCmpLogical(String x, String y);
+		public string fName;
+		public DateTime fDate;
+		public DateTime fDateOriginal;
 
-		public int Compare(string x, string y)
+		public ImgFile()
+		{}
+
+		public ImgFile(string fName, DateTime fDate, DateTime fDateOriginal)
 		{
-			return StrCmpLogical(x, y);
+			this.fName = fName;
+			this.fDate = fDate;
+			this.fDateOriginal = fDateOriginal;
 		}
+
 	}
 }

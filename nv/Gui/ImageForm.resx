@@ -2140,6 +2140,18 @@
   <metadata name="bw2.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>513, 17</value>
   </metadata>
+  <metadata name="barIcon.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>589, 17</value>
+  </metadata>
+  <data name="barIcon.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAEABwcAAAEAIAAIAQAAFgAAACgAAAAHAAAADgAAAAEAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAACZMwD/AAAAAAAAAAAAAAAAAAAAAAAAAACZMwD/mTMA/wAAAAAAAAAAAAAAAAAA
+        AACZMwD/mTMA/5kzAP8AAAAAAAAAAAAAAACZMwD/mTMA/5kzAP+ZMwD/AAAAAAAAAAAAAAAAAAAAAJkz
+        AP+ZMwD/mTMA/wAAAAAAAAAAAAAAAAAAAAAAAAAAmTMA/5kzAP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AACZMwD/AAAAAAAAAAAAAAAA7uCsQc7grEGO4KxBDuCsQY7grEHO4KxB7uCsQQ==
+</value>
+  </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAAEAGBgAAAEAIACICQAAFgAAACgAAAAYAAAAMAAAAAEAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA

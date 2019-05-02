@@ -66,6 +66,7 @@ namespace Next_View
 			this.Scollbar1 = new ProXoft.WinForms.ScrollBarEnhanced();
 			this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
 			this.bw2 = new System.ComponentModel.BackgroundWorker();
+			this.barIcon = new System.Windows.Forms.NotifyIcon(this.components);
 			this.popImage.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picBox)).BeginInit();
 			this.SuspendLayout();
@@ -262,6 +263,12 @@ namespace Next_View
 			this.bw2.DoWork += new System.ComponentModel.DoWorkEventHandler(this.Bw2DoWork);
 			this.bw2.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.Bw2RunWorkerCompleted);
 			// 
+			// barIcon
+			// 
+			this.barIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("barIcon.Icon")));
+			this.barIcon.Text = "Icon1";
+			this.barIcon.Visible = true;
+			// 
 			// frmImage
 			// 
 			this.AllowDrop = true;
@@ -319,5 +326,6 @@ namespace Next_View
 		private ProXoft.WinForms.ScrollBarEnhanced Scollbar1;
 		private System.ComponentModel.BackgroundWorker backgroundWorker1;
 		private System.ComponentModel.BackgroundWorker bw2;
+		private System.Windows.Forms.NotifyIcon barIcon;
 	}
 }

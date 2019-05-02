@@ -97,15 +97,19 @@ namespace Next_View
 		void CmdOkClick(object sender, EventArgs e)
 		{
 			if (_searchList2.Count > 0){
-					_il.DirClear();
-					_il._imList = _searchList2;
-					if (listSearch.SelectedItems.Count > 0){
-						_selImg = listSearch.SelectedItems[0].Text;
-					}
-					else {
-						_selImg = "";
-					}
-					_SearchReturn = true;
+				_il.DirClear();
+				foreach(string fName in _searchList2)
+				{
+					_il._imList.Add(new ImgFile(fName, DateTime.MinValue, DateTime.MinValue));
+				}
+									
+				if (listSearch.SelectedItems.Count > 0){
+					_selImg = listSearch.SelectedItems[0].Text;
+				}
+				else {
+					_selImg = "";
+				}
+				_SearchReturn = true;
 			}
 			this.Close();
 		}

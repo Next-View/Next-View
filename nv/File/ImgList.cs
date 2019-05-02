@@ -29,7 +29,7 @@ namespace Next_View
 	/// </summary>
 	public class ImgList
 	{
-		public List<string> _imList = new List<string>();
+		public List<ImgFile> _imList = new List<ImgFile>();
 		int _picPos = 1;
 		string _picDir = "";
 		readonly string[] _validExtensions  = new [] {".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tif", ".ico", ".wmf", ".emf"};
@@ -42,17 +42,17 @@ namespace Next_View
 
 		List<string> _markList = new List<string>();
 		int _markPos = -1;
-		
+
 		public ImgList()
 		{
 
 		}
 
-		public void ImgListOut(out List<string> pList)
+		public void ImgListOut(out List<ImgFile> pList)
 		{
 			pList = _imList;
 		}
-		
+
 		public bool FileIsValid(string pPath)
 		{
 			string ext = Path.GetExtension(pPath).ToLower();
@@ -60,7 +60,7 @@ namespace Next_View
 		}
 
 		//--------------------------  pic  ------------------------------------
-		
+
 		public void DirClear()
 		{
 			// called by: refresh, drop, searchForm
@@ -70,14 +70,14 @@ namespace Next_View
 
 		public void DirPicAdd(string picPath)
 		{
-			_imList.Add(picPath);
+			_imList.Add(new ImgFile(picPath, DateTime.MinValue, DateTime.MinValue));
 		}
 
 		public int DirCount()
 		{
 			return _imList.Count;
 		}
-		
+
 		public void DirScan(out int picCount, string picPath, bool allDirs)
 		{
 			// called by: PicScan - open, refesh, drop, main: formShow, recent
@@ -93,19 +93,25 @@ namespace Next_View
 			}
 			if (_picDir !=  picDir) {
 				_picDir = picDir;
-
+				var iList = new List<string>();
 				if (allDirs){
-					_imList = Directory.GetFiles(picDir, "*.*", SearchOption.AllDirectories)
+					iList = Directory.GetFiles(picDir, "*.*", SearchOption.AllDirectories)
 										.Where(file => _validExtensions.Any(file.ToLower().EndsWith))
 										.ToList();
 				}
 				else {
-					_imList = Directory.GetFiles(picDir)
+					iList = Directory.GetFiles(picDir)
 										.Where(file => _validExtensions.Any(file.ToLower().EndsWith))
 										.ToList();
 				}
 				FilenameComparer fc = new FilenameComparer();
-				_imList.Sort(fc);
+				iList.Sort(fc);
+
+				foreach(string fName in iList)
+				{
+					_imList.Add(new ImgFile(fName, DateTime.MinValue, DateTime.MinValue));
+				}
+
 			}
 			else {
 				Debug.WriteLine("no dir change");
@@ -116,8 +122,8 @@ namespace Next_View
 
 		public void DirPosPath(ref int picPos, ref int picAll, string pPath)
 		{
-			// position of image in imageList 
-			_picPos = _imList.IndexOf(pPath);
+			// position of image in imageList
+			_picPos = _imList.FindIndex(x => x.fName == pPath);   //.IndexOf( .IndexOf   (pPath);
 			if(_picPos < 0) _picPos = 0;
 			picPos = _picPos + 1;
 			picAll = _imList.Count;
@@ -133,7 +139,7 @@ namespace Next_View
 			{
 				_picPos = 0;
 			}
-			pPath = _imList[_picPos];
+			pPath = _imList[_picPos].fName;
 			return true;
 		}
 
@@ -143,15 +149,16 @@ namespace Next_View
 				return false;
 			}
 			int pPos = _picPos;
-			do 
+			do
 			{
 				pPos++;
 				if (pPos >= _imList.Count)
 				{
 					pPos = 0;
 				}
-				string sPath = _imList[pPos];
-				if (sPath.Contains(pSearch)){
+				string sPath = _imList[pPos].fName;
+				string sFileName = Path.GetFileName(sPath);
+				if (sFileName.Contains(pSearch)){
 					_picPos = pPos;
 					pPath = sPath;
 					return true;
@@ -174,8 +181,9 @@ namespace Next_View
 				{
 					pPos = _imList.Count - 1;
 				}
-				string sPath = _imList[pPos];
-				if (sPath.Contains(pSearch)){
+				string sPath = _imList[pPos].fName;
+				string 	sFileName = Path.GetFileName(sPath);
+				if (sFileName.Contains(pSearch)){
 					_picPos = pPos;
 					pPath = sPath;
 					return true;
@@ -183,7 +191,7 @@ namespace Next_View
 			} while (pPos != _picPos);
 			return false;
 		}
-				
+
 		public bool DirPicPrior(ref string pPath)
 		{
 			if (_imList.Count < 1) {
@@ -194,7 +202,7 @@ namespace Next_View
 			{
 				_picPos = _imList.Count - 1;
 			}
-			pPath = _imList[_picPos];
+			pPath = _imList[_picPos].fName;
 			return true;
 		}
 
@@ -204,7 +212,7 @@ namespace Next_View
 				return false;
 			}
 			_picPos = 0;
-			pPath = _imList[_picPos];
+			pPath = _imList[_picPos].fName;
 			return true;
 		}
 
@@ -214,7 +222,7 @@ namespace Next_View
 				return false;
 			}
 			_picPos = _imList.Count - 1;
-			pPath = _imList[_picPos];
+			pPath = _imList[_picPos].fName;
 			return true;
 		}
 
@@ -223,7 +231,7 @@ namespace Next_View
 			if (_imList.Count < 1) {
 				return false;
 			}
-			pPath = _imList[_picPos];
+			pPath = _imList[_picPos].fName;
 			return true;
 		}
 
@@ -232,22 +240,39 @@ namespace Next_View
 			if (_imList.Count < 1) {
 				return false;
 			}
-			pPath = _imList[_picPos];
+			pPath = _imList[_picPos].fName;
 			return true;
 		}
 
 		public bool DirPathPos(ref string pPath, int barPos)
 		{
-			// path for position 
+			// path for position
 			if (barPos < 1 || barPos > _imList.Count){
 				return false;
 			}
 			else {
-				pPath = _imList[barPos - 1];
+				pPath = _imList[barPos - 1].fName;
 				return true;
 			}
 		}
-		
+
+		//--------------------------  sort  ------------------------------------
+
+		public void SortName( )
+		{
+			_imList = _imList.OrderBy(o => o.fName).ToList();
+		}
+
+		public void SortFDate( )
+		{
+			_imList = _imList.OrderBy(o => o.fDate).ToList();
+		}
+
+		public void SortExifDate( )
+		{
+			_imList = _imList.OrderBy(o => o.fDateOriginal).ToList();
+		}
+
 		//--------------------------  log  ------------------------------------
 
 		public void LogPic(string pPath)
@@ -290,9 +315,9 @@ namespace Next_View
 
 		public void RenameListLog(string nameFrom, string nameTo)
 		{
-			int pPos = _imList.IndexOf(nameFrom);
+			int pPos = _imList.FindIndex(x => x.fName == nameFrom);
 			if (pPos > -1){
-				 _imList[pPos] = nameTo;
+				 _imList[pPos].fName = nameTo;
 			}
 			pPos = _logList.IndexOf(nameFrom);
 			if (pPos > -1){
@@ -303,7 +328,7 @@ namespace Next_View
 
 		public bool DeleteListLog(string nameDel, ref string nameNext)
 		{
-			_picPos = _imList.IndexOf(nameDel);
+			_picPos = _imList.FindIndex(x => x.fName == nameDel);
 			if(_picPos > -1) {
 				_imList.RemoveAt(_picPos);
 				_picPos--;
@@ -320,7 +345,7 @@ namespace Next_View
 				_logMax--;
 			}
 			MarkDelete(nameDel);
-			
+
 			if (_imList.Count > 0){
 				DirPicNext(ref nameNext);
 				return true;
@@ -338,12 +363,12 @@ namespace Next_View
 			if(rPos > -1) {
 				_markList.RemoveAt(rPos);
 				return true;
-			}       
+			}
 			else {
 				return false;
 			}
 		}
-		
+
 		public bool MarkGo(ref string pPath)
 		{
 			if (_markList.Count == 0){
@@ -353,11 +378,11 @@ namespace Next_View
 			if (_markPos > _markList.Count - 1){
 				_markPos = 0;
 			}
-			
+
 			pPath = _markList[_markPos];
 			return true;
 		}
-				
+
 		public void MarkPic(string pPath)
 		{
 			if (_markList.IndexOf(pPath) == -1){   // no dups
@@ -371,10 +396,10 @@ namespace Next_View
 			if (pPos > -1){
 				 _markList[pPos] = nameTo;
 			}
-		}   
+		}
 
 	}  // end ImgList
 
 
-	
+
 }

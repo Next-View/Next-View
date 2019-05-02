@@ -116,16 +116,17 @@ namespace Next_View
 			// 
 			// listImg
 			// 
+			this.listImg.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+			| System.Windows.Forms.AnchorStyles.Left)));
 			this.listImg.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
 			this.colFiles});
-			this.listImg.Dock = System.Windows.Forms.DockStyle.Bottom;
 			this.listImg.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.listImg.FullRowSelect = true;
 			this.listImg.GridLines = true;
-			this.listImg.Location = new System.Drawing.Point(0, 580);
+			this.listImg.Location = new System.Drawing.Point(0, 559);
 			this.listImg.Margin = new System.Windows.Forms.Padding(2);
 			this.listImg.Name = "listImg";
-			this.listImg.Size = new System.Drawing.Size(775, 96);
+			this.listImg.Size = new System.Drawing.Size(775, 141);
 			this.listImg.TabIndex = 50;
 			this.listImg.UseCompatibleStateImageBehavior = false;
 			this.listImg.View = System.Windows.Forms.View.Details;
@@ -485,7 +486,7 @@ namespace Next_View
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.AutoScroll = true;
-			this.ClientSize = new System.Drawing.Size(775, 676);
+			this.ClientSize = new System.Drawing.Size(775, 700);
 			this.Controls.Add(this.lblFace);
 			this.Controls.Add(this.cmdUp);
 			this.Controls.Add(this.chartImg);

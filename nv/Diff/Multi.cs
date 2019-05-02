@@ -145,6 +145,8 @@ namespace Next_View
 				if (screenFix.Bottom < rectForm.Bottom){
 					top = screenFix.Bottom - rectForm.Height;
 				}
+				if (top < 0) top = 10;
+				if (left < 0) left = 10;
 				//Debug.WriteLine("sc: ", screenFix.ToString());
 				//Debug.WriteLine("ar: ", rectForm.ToString());
 			}

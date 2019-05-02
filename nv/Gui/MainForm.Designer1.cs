@@ -171,6 +171,16 @@ namespace Next_View.Gui {
 		}
 		
 		/// <summary>
+		///   Looks up a localized resource of type System.Drawing.Bitmap.
+		/// </summary>
+		internal static System.Drawing.Bitmap btnSortName_Image {
+			get {
+				object obj = ResourceManager.GetObject("btnSortName.Image", resourceCulture);
+				return ((System.Drawing.Bitmap)(obj));
+			}
+		}
+		
+		/// <summary>
 		///   Looks up a localized resource of type System.Windows.Forms.ImageListStreamer.
 		/// </summary>
 		internal static System.Windows.Forms.ImageListStreamer imageList1_ImageStream {
@@ -286,26 +296,6 @@ namespace Next_View.Gui {
 		internal static System.Drawing.Bitmap mnuSearch_Image {
 			get {
 				object obj = ResourceManager.GetObject("mnuSearch.Image", resourceCulture);
-				return ((System.Drawing.Bitmap)(obj));
-			}
-		}
-		
-		/// <summary>
-		///   Looks up a localized resource of type System.Drawing.Bitmap.
-		/// </summary>
-		internal static System.Drawing.Bitmap toolStripDropDownButton1_Image {
-			get {
-				object obj = ResourceManager.GetObject("toolStripDropDownButton1.Image", resourceCulture);
-				return ((System.Drawing.Bitmap)(obj));
-			}
-		}
-		
-		/// <summary>
-		///   Looks up a localized resource of type System.Drawing.Bitmap.
-		/// </summary>
-		internal static System.Drawing.Bitmap toolStripSplitButton1_Image {
-			get {
-				object obj = ResourceManager.GetObject("toolStripSplitButton1.Image", resourceCulture);
 				return ((System.Drawing.Bitmap)(obj));
 			}
 		}

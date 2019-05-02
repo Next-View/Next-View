@@ -97,7 +97,7 @@ namespace Next_View
 				int wH = Settings.Default.MainH;
 
 				Multi.MainLoad(out wX, out wY);
-
+				//Debug.WriteLine("open main 1 y: {0} ", wY);
 				bool visible;
 				// menu bar visible
 				Rectangle screenRectangle = RectangleToScreen(this.ClientRectangle);
@@ -106,11 +106,13 @@ namespace Next_View
 				if (!visible){
 					this.Left = wX;
 					this.Top = wY;
+					//Debug.WriteLine("open main 2 y: {0} ", wY);
 				}
 				else {
 					Multi.FormShowVisible(out visible, ref wX, ref wY, wW, wH);
 					this.Left = wX;
 					this.Top = wY;
+					//Debug.WriteLine("open main 3 y: {0} ", wY);
 				}
 				this.Width = wW;
 				this.Height = wH;
@@ -522,6 +524,21 @@ namespace Next_View
 			this.mnuHelp1.PerformClick();
 		}
 
+		void MnuSortFDateClick(object sender, EventArgs e)
+		{
+			m_Image.FDateSort();
+		}
+
+		void MnuSortExifDateClick(object sender, EventArgs e)
+		{
+			m_Image.ExifSort();
+		}
+
+		void BtnSortNameButtonClick(object sender, EventArgs e)
+		{
+			m_Image.NameSort();
+		}
+
 
 		//--------------------------  test  ---------------------------//
 
@@ -720,7 +737,7 @@ namespace Next_View
 					m_ExifDash.Show(dockPanel1, DockState.Document);
 					break;
 				case 'i':  //  exif dash img
-					List<string> exImgList;
+					List<ImgFile> exImgList;
 					m_ExifDash.DashImgList(out exImgList);
 					//Debug.WriteLine("img on main: " + exImgList.Count.ToString());
 					m_Image.Show(dockPanel1, DockState.Document);
@@ -752,6 +769,7 @@ namespace Next_View
 		{
 			//Debug.WriteLine("main key: " + e.KeyValue.ToString());
 		}
+
 
 	}  // end main
 

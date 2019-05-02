@@ -40,13 +40,14 @@ namespace Next_View
 		public bool eGps;
 		public bool eFace;
 		public string eFname;
+		public DateTime dtFile;
 
 		public Exif()
 		{}
 
 		public Exif(int type, string model, DateTime dtOriginal, int timeOfD,
 		      string expotime, string fNumber, string fLength, bool flash, string exposi, string lensmodel, string scene,
-					bool gps, bool face, string fname)
+					bool gps, bool face, string fname, DateTime dtFile)
 		{
 			this.eType = type;
 			this.eModel = model;
@@ -64,6 +65,7 @@ namespace Next_View
 			this.eGps = gps;
 			this.eFace = face;
 			this.eFname = fname;
+			this.dtFile = dtFile;
 		}
 
 	}

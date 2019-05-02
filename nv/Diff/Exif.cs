@@ -225,6 +225,9 @@ namespace Next_View
 				var canonDirectory = directories.OfType<CanonMakernoteDirectory>().FirstOrDefault();
 				if (canonDirectory != null){
 					string lensType = canonDirectory.GetDescription(CanonMakernoteDirectory.CameraSettings.TagLensType);
+					if (string.IsNullOrEmpty(lensmodel))  {    // from subIfd
+						if (lensType != null) lensmodel = lensType;
+					}
 				}
 
 				var fujiDirectory = directories.OfType<FujifilmMakernoteDirectory>().FirstOrDefault();

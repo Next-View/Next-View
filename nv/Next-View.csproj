@@ -61,6 +61,9 @@
     <Reference Include="NGettext">
       <HintPath>bin\Debug\NGettext.dll</HintPath>
     </Reference>
+    <Reference Include="ScrollBarEnhancedControl">
+      <HintPath>bin\Debug\ScrollBarEnhancedControl.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
@@ -90,6 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class\CExif.cs" />
+    <Compile Include="Class\CFile.cs" />
     <Compile Include="Class\StatusMainEvent.cs" />
     <Compile Include="Diff\Exif.cs" />
     <Compile Include="Diff\Multi.cs" />
@@ -117,7 +121,9 @@
     <Compile Include="Gui\FullScreen.Designer.cs">
       <DependentUpon>FullScreen.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\MainForm.cs" />
+    <Compile Include="Gui\MainForm.cs">
+      <Generator>open </Generator>
+    </Compile>
     <Compile Include="Gui\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
@@ -196,11 +202,5 @@
     <Folder Include="Gui" />
     <Folder Include="File" />
     <Folder Include="Diff" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ScrollBarEnhancedControl\ScrollBarEnhancedControl.csproj">
-      <Project>{F3977CA6-CF97-4A06-8A5D-91D72775A3D9}</Project>
-      <Name>ScrollBarEnhancedControl</Name>
-    </ProjectReference>
   </ItemGroup>
 </Project>
