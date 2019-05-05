@@ -189,16 +189,6 @@ namespace Next_View
 			MessageBox.Show("Help not yet done", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 		}
 
-		void FrmImagePreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-		{
-			e.IsInputKey = true;     // triggers keydown for arrow keys
-		}
-
-		void FrmImageKeyUp(object sender, KeyEventArgs e)
-		{
-
-		}
-
 		void FrmImageFormClosing(object sender, FormClosingEventArgs e)
 		{
 			_ndRunning = false;
@@ -350,6 +340,11 @@ namespace Next_View
 			//else Debug.WriteLine("eat up1: " + e.KeyValue);
 		}
 
+		void FrmImagePreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+		{
+			e.IsInputKey = true;     // triggers keydown for arrow keys
+		}
+		
 		void Scollbar1KeyDown(object sender, KeyEventArgs e)
 		{
 			bool alt = false;
@@ -361,7 +356,6 @@ namespace Next_View
 				ctrl = true;
 			}
 			KDown(e.KeyValue, ctrl, alt);
-			//else Debug.WriteLine("eat up2: " + e.KeyValue);
 		}
 
 		void Scollbar1PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
@@ -369,6 +363,24 @@ namespace Next_View
 			e.IsInputKey = true;     // triggers keydown for arrow keys
 		}
 
+		void SplitContainer1KeyDown(object sender, KeyEventArgs e)
+		{
+			bool alt = false;
+			if (e.Modifiers == Keys.Alt){
+				alt = true;
+			}
+			bool ctrl = false;
+			if (e.Modifiers == Keys.Control){
+				ctrl = true;
+			}
+			KDown(e.KeyValue, ctrl, alt);
+		}
+		
+		void SplitContainer1KeyUp(object sender, KeyEventArgs e)
+		{
+
+		}
+		
 		public bool KDown(int kValue, bool ctrl, bool alt)
 		{
 			switch(kValue)
@@ -1112,6 +1124,7 @@ namespace Next_View
 		public void ScollbarVis(bool sVisible)
 		{
 			Scollbar1.Visible = sVisible;
+			splitContainer1.Panel2Collapsed = !sVisible;
 		}
 
 		public void ShowExifImages(List<ImgFile> exImgList, string selImg)

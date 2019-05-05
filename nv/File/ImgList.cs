@@ -106,7 +106,8 @@ namespace Next_View
 				}
 				FilenameComparer fc = new FilenameComparer();
 				iList.Sort(fc);
-
+				_imList.Clear();
+				
 				foreach(string fName in iList)
 				{
 					_imList.Add(new ImgFile(fName, DateTime.MinValue, DateTime.MinValue));
@@ -260,6 +261,8 @@ namespace Next_View
 
 		public void SortName( )
 		{
+			//FilenameComparer fc = new FilenameComparer();
+			//_imList.Sort(fc);
 			_imList = _imList.OrderBy(o => o.fName).ToList();
 		}
 

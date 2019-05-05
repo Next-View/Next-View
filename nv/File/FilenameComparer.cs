@@ -26,6 +26,7 @@ namespace Next_View
 	/// </summary>
 	public class FilenameComparer: IComparer<string>
 	// for imgList.DirScan, dash scan, doSearch
+	// https://stackoverflow.com/questions/31538293/sorting-listfileinfo-in-natural-sorted-order
 	{
 	[DllImport("shlwapi.dll", CharSet = CharSet.Unicode)]
 	static extern Int32 StrCmpLogical(String x, String y);

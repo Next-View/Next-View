@@ -151,9 +151,6 @@ namespace Next_View
 
 		void FrmMainShown(object sender, EventArgs e)
 		{
-			int fHeight = this.Height;
-			int fWidth = this.Width;
-
 			Form fm = this;
 			m_Image  = new frmImage(fm, WinType.normal);
 			m_Image.StatusChanged += new HandleStatusMainChange(HandleStatus);
@@ -720,7 +717,7 @@ namespace Next_View
 			this.Width = w;
 			this.Height = h;
 			bnExif.Image = imageList1.Images[ex];
-			// Debug.WriteLine("set size W / H: {0}/{1}", w, h);
+			//Debug.WriteLine("set size W / H: {0}/{1}", w, h);
 		}
 
 		private void HandleCommand(object sender, SetCommandEventArgs e)

@@ -255,6 +255,8 @@ namespace Next_View
 			// 
 			// mnuSearchBar
 			// 
+			this.mnuSearchBar.Checked = true;
+			this.mnuSearchBar.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.mnuSearchBar.Name = "mnuSearchBar";
 			this.mnuSearchBar.Size = new System.Drawing.Size(222, 30);
 			this.mnuSearchBar.Text = "Show SearchBar";
@@ -584,7 +586,7 @@ namespace Next_View
 			this.btnSortName});
 			this.toolStrip2.Location = new System.Drawing.Point(3, 0);
 			this.toolStrip2.Name = "toolStrip2";
-			this.toolStrip2.Size = new System.Drawing.Size(491, 31);
+			this.toolStrip2.Size = new System.Drawing.Size(445, 31);
 			this.toolStrip2.TabIndex = 1;
 			// 
 			// bnOpen
