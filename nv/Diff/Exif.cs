@@ -187,7 +187,7 @@ namespace Next_View
 						//Debug.WriteLine("date " + dtOriginal + " " + orHours.ToString() + " " + timeOfD.ToString());
 					}
 					else {
-						if (dtOriginalS != ""){
+						if (!String.IsNullOrEmpty(dtOriginalS)){
 							exifError = "Unknown original date format";
 						}
 					}

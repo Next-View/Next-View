@@ -254,7 +254,7 @@ namespace Next_View
 				if (File.Exists(dropFile)) {
 					if (_il.FileIsValid(dropFile)){
 						picCount++;
-						//_il.DirPicAdd(dropFile);
+						_il.DirPicAdd(dropFile);     // for multi file drop
 						dropDir = Path.GetDirectoryName(dropFile);
 						loadFile = dropFile;
 					}
@@ -518,7 +518,7 @@ namespace Next_View
 			if (_loadNextPic){
 				_loadNextPic = false;           // eat up clicks
 				string pPath = "";
-				int scrollPos = (int) Scollbar1.Value;
+				int scrollPos = (int) Scrollbar1.Value;
 				_currentScrollPos = scrollPos;
 				//Debug.WriteLine("scroll change val: " + scrollPos.ToString());
 				if (_il.DirPathPos(ref pPath, scrollPos)){
@@ -586,7 +586,7 @@ namespace Next_View
 
 			_barClick = false;		        // scrollbar change only
 			if (picAll > 0){
-				Scollbar1.Value = picPos;
+				Scrollbar1.Value = picPos;
 			}
 			PicLoad(pPath);
 			return true;
@@ -678,11 +678,15 @@ namespace Next_View
 		}
 
 		public void PicSetSize( )
+		// called by: picLoad, L, R
 		{
 			int imHeight = _myImg.Height;
 			int imWidth = _myImg.Width;
 			//Debug.WriteLine("Image W / H: {0}/{1}", imWidth, imHeight);
-
+			int scWidth = 0;
+			if (Scrollbar1.Visible){
+				scWidth = 0; // Scrollbar1.Width;
+			}
 			CalcBorderSize();
 			if ((imWidth + _borderWidth > _scWidth) || (imHeight + _borderHeight > _scHeight)){
 				picBox.SizeMode = PictureBoxSizeMode.Zoom;
@@ -691,17 +695,21 @@ namespace Next_View
 				float imFactor = (float) imWidth / imHeight;
 				if (imFactor > scFactor){   // wide img
 					int ih = (imHeight * (_scWidth - _borderWidth) / imWidth);
+					//splitContainer1.SplitterDistance = _scWidth;
 					SetWindowSize(_scWidth, ih + _borderHeight, _exifType);
 				}
 				else {    // high img
 					int iw = (imWidth * (_scHeight - _borderHeight) / imHeight);// + _borderWidth;
-					SetWindowSize(iw + _borderWidth, _scHeight, _exifType);
+					//splitContainer1.SplitterDistance = iw;
+					SetWindowSize(iw + _borderWidth + scWidth, _scHeight, _exifType);
 				}
 			}
 			else {  // small img
 				picBox.SizeMode = PictureBoxSizeMode.CenterImage;
 				picBox.BackColor = SystemColors.Control;  // Color.Black;
-				SetWindowSize(imWidth + _borderWidth, imHeight + _borderHeight, _exifType);
+				//splitContainer1.Panel2.Width = 12;
+				//splitContainer1.SplitterDistance = imWidth;
+				SetWindowSize(imWidth + _borderWidth + scWidth, imHeight + _borderHeight, _exifType);
 			}
 		}
 
@@ -715,7 +723,7 @@ namespace Next_View
 			object[] parameters = new object [] { oPath, oDirs, oAction };
 			if (_stop == false){
 				_stop = true;
-				Scollbar1.Bookmarks.Clear();
+				Scrollbar1.Bookmarks.Clear();
 				if (backgroundWorker1.IsBusy != true)
 				{
 					//Debug.WriteLine("bw1: start: ");
@@ -834,16 +842,52 @@ namespace Next_View
 		public void NameSort()
 		{
 			_il.SortName();
+			int picPos = 0;
+			int picAll = 0;
+			_il.DirPosPath(ref picPos, ref picAll, _currentPath);
+			SetStatusText(0, String.Format(_picSelection + " {0}/{1}", picPos, picAll));
+			
+			Scrollbar1.Bookmarks.Clear();
+			_barClick = false;		        // scrollbar change only
+			if (picAll > 0){
+				Scrollbar1.Value = picPos;
+			}
+			CalcBar();
+			DrawBar();
 		}
 
 		public void FDateSort()
 		{
 			_il.SortFDate();
+			int picPos = 0;
+			int picAll = 0;
+			_il.DirPosPath(ref picPos, ref picAll, _currentPath);
+			SetStatusText(0, String.Format(_picSelection + " {0}/{1}", picPos, picAll));
+			
+			Scrollbar1.Bookmarks.Clear();
+			_barClick = false;		        // scrollbar change only
+			if (picAll > 0){
+				Scrollbar1.Value = picPos;
+			}			
+			CalcBar();
+			DrawBar();
 		}
 
 		public void ExifSort()
 		{
 			_il.SortExifDate();
+			int picPos = 0;
+			int picAll = 0;
+			_il.DirPosPath(ref picPos, ref picAll, _currentPath);
+			SetStatusText(0, String.Format(_picSelection + " {0}/{1}", picPos, picAll));
+			
+			Scrollbar1.Bookmarks.Clear();
+			_barClick = false;		        // scrollbar change only
+			if (picAll > 0){
+				Scrollbar1.Value = picPos;
+			}			
+			CalcBar();
+			DrawBar();
 		}
 
 		//------------------------------   file functions  ----------------------------------------------------------
@@ -872,7 +916,7 @@ namespace Next_View
 				_currentPath = newPath;
 				SetWindowText(_currentPath);
 				BasicShapeScrollBarBookmark bookmarkBS = new BasicShapeScrollBarBookmark(" ", _currentScrollPos, ScrollBarBookmarkAlignment.LeftOrTop, 1, 1, ScrollbarBookmarkShape.Rectangle, Color.Green, true, true, null);
-				Scollbar1.Bookmarks.Add(bookmarkBS);
+				Scrollbar1.Bookmarks.Add(bookmarkBS);
 			}
 			else {
 				//Debug.WriteLine("no rename");
@@ -902,7 +946,7 @@ namespace Next_View
 		public void RemoveBookmark(int bPos)
 		{
 			int i = 0;
-			foreach (ScrollBarBookmark bm in Scollbar1.Bookmarks)
+			foreach (ScrollBarBookmark bm in Scrollbar1.Bookmarks)
 			{
 				if (bm is BasicShapeScrollBarBookmark){
 					if (! (bm is ValueRangeScrollBarBookmark)) {
@@ -913,14 +957,16 @@ namespace Next_View
 				}
 				i++;
 			}
-			Scollbar1.Bookmarks.RemoveAt(i);
+			Scrollbar1.Bookmarks.RemoveAt(i);
 		}
 
 		public void DelPic()
 		{
 			if (DelFile.MoveToRecycleBin(_currentPath)){
 				string nextPath = "";
-				if (_il.DeleteListLog(_currentPath, ref nextPath)){
+				int imgCount = 0;
+				if (_il.DeleteListLog(_currentPath, ref nextPath, ref imgCount)){
+					Scrollbar1.Maximum = imgCount;
 					PicLoadPos(nextPath, true);
 					_currentPath = nextPath;
 				}
@@ -1117,14 +1163,14 @@ namespace Next_View
 				_currentPath = selImg;
 				_picSelection = T._("Search:");
 				PicLoadPos(selImg, true);
-				Bw2Run(selImg);
+				Bw2Run( );
 			}
 		}
 
 		public void ScollbarVis(bool sVisible)
 		{
-			Scollbar1.Visible = sVisible;
-			splitContainer1.Panel2Collapsed = !sVisible;
+			Scrollbar1.Visible = sVisible;
+			PicSetSize();
 		}
 
 		public void ShowExifImages(List<ImgFile> exImgList, string selImg)
@@ -1143,7 +1189,7 @@ namespace Next_View
 			_currentPath = selImg;
 			_picSelection = T._("Search:");
 			PicLoadPos(_currentPath, true);
-			Bw2Run(selImg);
+			Bw2Run( );
 		}
 
 		public void ShowFullScreen()
@@ -1229,26 +1275,12 @@ namespace Next_View
 
 		//------------------------------   bar functions    ----------------------------------------------------------
 
-		public void ScanImagesBar(string pPath)
+		public void ScanImagesBar( )
 		{
 			List<ImgFile> imList;
 			_il.ImgListOut(out imList);
 
-			var ppList = new List<int>();
-
 			DateTime dtOriginal = DateTime.MinValue;
-			DateTime nullDate = DateTime.MinValue;
-			DateTime minDate = DateTime.MaxValue;
-			DateTime maxDate = DateTime.MinValue;
-
-			int fCount = 0;
-			int dateCount = 0;
-			DateTime priorDate = DateTime.MinValue;
-			var spanDict = new Dictionary<int, int>();
-			_posList.Clear();
-			_priorList.Clear();
-			_rangeDict.Clear();
-			// dict for time gaps
 			foreach (ImgFile imf in imList)
 			{
 				string picPath = imf.fName;
@@ -1264,6 +1296,33 @@ namespace Next_View
 				imf.fDate = dtFile;
 
 				ExifRead.ExifODate(out dtOriginal, picPath);
+				imf.fDateOriginal = dtOriginal;
+			}
+		}
+
+		public void CalcBar( )
+		{
+			List<ImgFile> imList;
+			_il.ImgListOut(out imList);
+
+			DateTime dtOriginal = DateTime.MinValue;
+			DateTime nullDate = DateTime.MinValue;
+			DateTime minDate = DateTime.MaxValue;
+			DateTime maxDate = DateTime.MinValue;
+
+			int fCount = 0;
+			int fCountExif = -1;
+			int dateCount = 0;
+			DateTime priorDate = DateTime.MinValue;
+			var spanDict = new Dictionary<int, int>();
+			_posList.Clear();
+			_priorList.Clear();
+			_rangeDict.Clear();
+			// dict for time gaps
+			foreach (ImgFile imf in imList)
+			{
+				string picPath = imf.fName;
+				dtOriginal = imf.fDateOriginal;
 				fCount++;
 
 				string fName = Path.GetFileName(picPath);
@@ -1274,6 +1333,7 @@ namespace Next_View
 
 				if (dtOriginal != nullDate){
 					//Debug.WriteLine("path: " + picPath + " " + dtOriginal.ToString());
+					fCountExif = fCount;
 					dateCount++;
 					imf.fDateOriginal = dtOriginal;
 					if (priorDate > dtOriginal){
@@ -1290,6 +1350,11 @@ namespace Next_View
 					}
 					priorDate = dtOriginal;
 				}
+				else {   // no exif date
+					if (fCountExif == fCount - 1){        // gap to exif date
+						spanDict.Add(fCount, Int32.MaxValue);
+					}
+				}
 			}
 
 			// span values
@@ -1302,9 +1367,11 @@ namespace Next_View
 				long sumVar = 0;
 				foreach (KeyValuePair<int, int> sd in spanDict)
 				{
-					long var = (long) Math.Pow((mean - sd.Value), 2);
-					sumVar += var;
-					//Debug.WriteLine("F Num: " + dfn.Key + " " + dfn.Value);
+					if (sd.Value != Int32.MaxValue){
+						long var = (long) Math.Pow((mean - sd.Value), 2);
+						sumVar += var;
+						//Debug.WriteLine("F Num: " + dfn.Key + " " + dfn.Value);
+					}
 				}
 				int stdDev = (int) Math.Sqrt(sumVar / dateCount);
 				Debug.WriteLine("mean / std : {0}/{1}", mean, stdDev);
@@ -1338,7 +1405,7 @@ namespace Next_View
 					if (sd.Value < breakVal) break;
 
 					string piPath = "";
-					DateTime dOriginal = DateTime.MinValue;
+					DateTime dOriginal = nullDate;
 					if (_il.DirPathPos(ref piPath, sd.Key)){
 						ExifRead.ExifODate(out dOriginal, piPath);
 					}
@@ -1346,7 +1413,7 @@ namespace Next_View
 				}
 			}
 		}
-
+		
 		//------------------------------   BackgroundWorker    ----------------------------------------------------------
 
 		void BackgroundWorker1DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
@@ -1408,47 +1475,48 @@ namespace Next_View
 					break;
 			}
 			if (picAll > 0) {
-				Scollbar1.Value = picPos;
+				Scrollbar1.Value = picPos;
 			}
 
 			// scan for scroll bar
-			Bw2Run(pPath);
+			Bw2Run( );
 		}
 
-		void Bw2Run(string bwPath)
+		void Bw2Run( )
 		{
-			object oPath = bwPath;
 			if (_stop == false){
 				_stop = true;
 				if (bw2.IsBusy != true)
 				{
-					bw2.RunWorkerAsync(oPath);
+					bw2.RunWorkerAsync( );
 				}
 			}
 		}
 
 		void Bw2DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
 		{
-			object oPath = e.Argument;
-			string picPath = (string) oPath;
-			ScanImagesBar(picPath);
-
-
+			ScanImagesBar( );
+			CalcBar ();
 		}
 
 		void Bw2RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
 		{
 			//Debug.WriteLine("bw2: complete ");
+			DrawBar();
+		}
+
+		void DrawBar( )
+		{
 			_stop = false;
-			Scollbar1.SuspendLayout();     //   same thread
+			Scrollbar1.SuspendLayout();     //   same thread
 			int dirCount = _il.DirCount();
 			if (dirCount == 0) dirCount = 1;
-			Scollbar1.Maximum = dirCount;
+			Scrollbar1.Maximum = dirCount;
 			// scrollbar marks
 			foreach (int pNo in _posList)
 			{
 				BasicShapeScrollBarBookmark bookmarkBS = new BasicShapeScrollBarBookmark(" ", pNo, ScrollBarBookmarkAlignment.LeftOrTop, 1, 1, ScrollbarBookmarkShape.Rectangle, Color.Green, true, true, null);
-				Scollbar1.Bookmarks.Add(bookmarkBS);
+				Scrollbar1.Bookmarks.Add(bookmarkBS);
 				//Debug.WriteLine("bookmark: {0}", pNo);
 			}
 			// image
@@ -1456,20 +1524,20 @@ namespace Next_View
 			foreach (int pNo in _priorList)
 			{
 				ImageScrollBarBookmark ibookmark = new ImageScrollBarBookmark(" ", pNo, barImg, ScrollBarBookmarkAlignment.Center, null);
-				Scollbar1.Bookmarks.Add(ibookmark);
+				Scrollbar1.Bookmarks.Add(ibookmark);
 			}
 
 			// range
 			int start1 = 1;
 			int end1 = 0;
-			int depth1 = 8;
+			int depth1 = 6;
 			int colIndex = 0;
 			string rangeText = GetRangeText(_r0Date);
 			foreach (KeyValuePair<int, DateTime> rd in _rangeDict.OrderBy(key=> key.Key))
 			{
 				end1 = rd.Key;
-				ValueRangeScrollBarBookmark bookmarkVR = new ValueRangeScrollBarBookmark(rangeText , start1, end1, ScrollBarBookmarkAlignment.RightOrBottom, depth1, _colors[colIndex], true, false, null);
-				Scollbar1.Bookmarks.Add(bookmarkVR);
+				ValueRangeScrollBarBookmark bookmarkVR = new ValueRangeScrollBarBookmark(rangeText , start1, end1, ScrollBarBookmarkAlignment.LeftOrTop, depth1, _colors[colIndex], true, false, null);
+				Scrollbar1.Bookmarks.Add(bookmarkVR);
 				rangeText = GetRangeText(rd.Value);
 				//Debug.WriteLine("bookrange: {0}, {1}", start1, end1 );
 				start1 = end1;
@@ -1477,12 +1545,12 @@ namespace Next_View
 				if (colIndex > _colors.Length - 1) colIndex = 0;
 			}
 			end1 = dirCount;
-			ValueRangeScrollBarBookmark bookmarkVR2 = new ValueRangeScrollBarBookmark(rangeText , start1, end1, ScrollBarBookmarkAlignment.RightOrBottom, depth1, _colors[colIndex], true, false, null);
-			Scollbar1.Bookmarks.Add(bookmarkVR2);
+			ValueRangeScrollBarBookmark bookmarkVR2 = new ValueRangeScrollBarBookmark(rangeText , start1, end1, ScrollBarBookmarkAlignment.LeftOrTop, depth1, _colors[colIndex], true, false, null);
+			Scrollbar1.Bookmarks.Add(bookmarkVR2);
 			//Debug.WriteLine("bookrange-end: {0}, {1}", start1, end1 );
-			Scollbar1.ResumeLayout();
+			Scrollbar1.ResumeLayout();
 		}
-
+		
 		public String GetRangeText(DateTime rangeStart)
 		{
 			string rText;

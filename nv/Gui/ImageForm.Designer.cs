@@ -61,19 +61,14 @@ namespace Next_View
 			this.popFullscreen = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.popClose = new System.Windows.Forms.ToolStripMenuItem();
+			this.Scrollbar1 = new ProXoft.WinForms.ScrollBarEnhanced();
 			this.picBox = new System.Windows.Forms.PictureBox();
 			this.Icon1 = new System.Windows.Forms.NotifyIcon(this.components);
-			this.Scollbar1 = new ProXoft.WinForms.ScrollBarEnhanced();
 			this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
 			this.bw2 = new System.ComponentModel.BackgroundWorker();
 			this.barIcon = new System.Windows.Forms.NotifyIcon(this.components);
-			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.popImage.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picBox)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-			this.splitContainer1.Panel1.SuspendLayout();
-			this.splitContainer1.Panel2.SuspendLayout();
-			this.splitContainer1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// popImage
@@ -197,14 +192,57 @@ namespace Next_View
 			this.popClose.Text = "Exit";
 			this.popClose.Click += new System.EventHandler(this.PopCloseClick);
 			// 
+			// Scrollbar1
+			// 
+			this.Scrollbar1.Dock = System.Windows.Forms.DockStyle.Left;
+			this.Scrollbar1.InitialDelay = 500;
+			this.Scrollbar1.LargeChange = new decimal(new int[] {
+			10,
+			0,
+			0,
+			0});
+			this.Scrollbar1.Location = new System.Drawing.Point(0, 0);
+			this.Scrollbar1.Margin = new System.Windows.Forms.Padding(2);
+			this.Scrollbar1.Maximum = new decimal(new int[] {
+			1000,
+			0,
+			0,
+			0});
+			this.Scrollbar1.Minimum = new decimal(new int[] {
+			1,
+			0,
+			0,
+			0});
+			this.Scrollbar1.MinimumSize = new System.Drawing.Size(23, 63);
+			this.Scrollbar1.Name = "Scrollbar1";
+			this.Scrollbar1.RepeatRate = 200;
+			this.Scrollbar1.Size = new System.Drawing.Size(27, 663);
+			this.Scrollbar1.SmallChange = new decimal(new int[] {
+			1,
+			0,
+			0,
+			0});
+			this.Scrollbar1.TabIndex = 46;
+			this.Scrollbar1.Value = new decimal(new int[] {
+			1,
+			0,
+			0,
+			0});
+			this.Scrollbar1.ToolTipNeeded += new System.EventHandler<ProXoft.WinForms.TooltipNeededEventArgs>(this.Scollbar1ToolTipNeeded);
+			this.Scrollbar1.ValueChanged += new System.EventHandler(this.Scollbar1ValueChanged);
+			this.Scrollbar1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Scollbar1KeyDown);
+			this.Scrollbar1.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.Scollbar1PreviewKeyDown);
+			// 
 			// picBox
 			// 
+			this.picBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+			| System.Windows.Forms.AnchorStyles.Left) 
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.picBox.BackColor = System.Drawing.SystemColors.Control;
-			this.picBox.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.picBox.Location = new System.Drawing.Point(0, 0);
+			this.picBox.Location = new System.Drawing.Point(30, 0);
 			this.picBox.Margin = new System.Windows.Forms.Padding(2);
 			this.picBox.Name = "picBox";
-			this.picBox.Size = new System.Drawing.Size(800, 487);
+			this.picBox.Size = new System.Drawing.Size(1015, 663);
 			this.picBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
 			this.picBox.TabIndex = 45;
 			this.picBox.TabStop = false;
@@ -214,47 +252,6 @@ namespace Next_View
 			this.Icon1.Icon = ((System.Drawing.Icon)(resources.GetObject("Icon1.Icon")));
 			this.Icon1.Text = "Icon1";
 			this.Icon1.Visible = true;
-			// 
-			// Scollbar1
-			// 
-			this.Scollbar1.Dock = System.Windows.Forms.DockStyle.Right;
-			this.Scollbar1.InitialDelay = 500;
-			this.Scollbar1.LargeChange = new decimal(new int[] {
-			10,
-			0,
-			0,
-			0});
-			this.Scollbar1.Location = new System.Drawing.Point(7, 0);
-			this.Scollbar1.Margin = new System.Windows.Forms.Padding(2);
-			this.Scollbar1.Maximum = new decimal(new int[] {
-			1000,
-			0,
-			0,
-			0});
-			this.Scollbar1.Minimum = new decimal(new int[] {
-			1,
-			0,
-			0,
-			0});
-			this.Scollbar1.MinimumSize = new System.Drawing.Size(23, 63);
-			this.Scollbar1.Name = "Scollbar1";
-			this.Scollbar1.RepeatRate = 200;
-			this.Scollbar1.Size = new System.Drawing.Size(23, 487);
-			this.Scollbar1.SmallChange = new decimal(new int[] {
-			1,
-			0,
-			0,
-			0});
-			this.Scollbar1.TabIndex = 46;
-			this.Scollbar1.Value = new decimal(new int[] {
-			1,
-			0,
-			0,
-			0});
-			this.Scollbar1.ToolTipNeeded += new System.EventHandler<ProXoft.WinForms.TooltipNeededEventArgs>(this.Scollbar1ToolTipNeeded);
-			this.Scollbar1.ValueChanged += new System.EventHandler(this.Scollbar1ValueChanged);
-			this.Scollbar1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Scollbar1KeyDown);
-			this.Scollbar1.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.Scollbar1PreviewKeyDown);
 			// 
 			// backgroundWorker1
 			// 
@@ -274,26 +271,6 @@ namespace Next_View
 			this.barIcon.Text = "Icon1";
 			this.barIcon.Visible = true;
 			// 
-			// splitContainer1
-			// 
-			this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-			this.splitContainer1.Name = "splitContainer1";
-			// 
-			// splitContainer1.Panel1
-			// 
-			this.splitContainer1.Panel1.Controls.Add(this.picBox);
-			// 
-			// splitContainer1.Panel2
-			// 
-			this.splitContainer1.Panel2.Controls.Add(this.Scollbar1);
-			this.splitContainer1.Size = new System.Drawing.Size(831, 487);
-			this.splitContainer1.SplitterDistance = 800;
-			this.splitContainer1.SplitterWidth = 1;
-			this.splitContainer1.TabIndex = 47;
-			this.splitContainer1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.SplitContainer1KeyDown);
-			this.splitContainer1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.SplitContainer1KeyUp);
-			// 
 			// frmImage
 			// 
 			this.AllowDrop = true;
@@ -301,9 +278,10 @@ namespace Next_View
 			this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.SystemColors.ControlDark;
-			this.ClientSize = new System.Drawing.Size(831, 487);
+			this.ClientSize = new System.Drawing.Size(1046, 663);
 			this.ContextMenuStrip = this.popImage;
-			this.Controls.Add(this.splitContainer1);
+			this.Controls.Add(this.Scrollbar1);
+			this.Controls.Add(this.picBox);
 			this.DockAreas = ((WeifenLuo.WinFormsUI.Docking.DockAreas)(((((WeifenLuo.WinFormsUI.Docking.DockAreas.DockLeft | WeifenLuo.WinFormsUI.Docking.DockAreas.DockRight) 
 			| WeifenLuo.WinFormsUI.Docking.DockAreas.DockTop) 
 			| WeifenLuo.WinFormsUI.Docking.DockAreas.DockBottom) 
@@ -327,10 +305,6 @@ namespace Next_View
 			this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.FrmImagePreviewKeyDown);
 			this.popImage.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.picBox)).EndInit();
-			this.splitContainer1.Panel1.ResumeLayout(false);
-			this.splitContainer1.Panel2.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-			this.splitContainer1.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -350,10 +324,9 @@ namespace Next_View
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 		private System.Windows.Forms.ToolStripMenuItem popClose;
 		private System.Windows.Forms.NotifyIcon Icon1;
-		private ProXoft.WinForms.ScrollBarEnhanced Scollbar1;
+		private ProXoft.WinForms.ScrollBarEnhanced Scrollbar1;
 		private System.ComponentModel.BackgroundWorker backgroundWorker1;
 		private System.ComponentModel.BackgroundWorker bw2;
 		private System.Windows.Forms.NotifyIcon barIcon;
-		private System.Windows.Forms.SplitContainer splitContainer1;
 	}
 }

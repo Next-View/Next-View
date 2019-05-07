@@ -261,9 +261,8 @@ namespace Next_View
 
 		public void SortName( )
 		{
-			//FilenameComparer fc = new FilenameComparer();
-			//_imList.Sort(fc);
-			_imList = _imList.OrderBy(o => o.fName).ToList();
+			_imList.SortNatural(x => x.fName);
+			//_imList = _imList.OrderBy(o => o.fName).ToList();
 		}
 
 		public void SortFDate( )
@@ -329,7 +328,7 @@ namespace Next_View
 			RenameMarkList(nameFrom, nameTo);
 		}
 
-		public bool DeleteListLog(string nameDel, ref string nameNext)
+		public bool DeleteListLog(string nameDel, ref string nameNext, ref int imgCount)
 		{
 			_picPos = _imList.FindIndex(x => x.fName == nameDel);
 			if(_picPos > -1) {
@@ -340,7 +339,8 @@ namespace Next_View
 					_picPos = _imList.Count - 1;
 				}
 			}
-
+			imgCount = _imList.Count;
+			
 			int pPos = _logList.IndexOf(nameDel);
 			if (pPos > -1){
 				_logList.RemoveAt(pPos);

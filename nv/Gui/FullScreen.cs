@@ -297,7 +297,8 @@ namespace Next_View
 		{
 			if (DelFile.MoveToRecycleBin(_currentPath)){
 				string nextPath = "";
-				if(_il.DeleteListLog(_currentPath, ref nextPath)){
+				int imgCount = 0;
+				if(_il.DeleteListLog(_currentPath, ref nextPath, ref imgCount)){
 					FPicLoad(nextPath, true);
 					_currentPath = nextPath;
 				}

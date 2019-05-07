@@ -28,12 +28,25 @@ namespace Next_View
 	// for imgList.DirScan, dash scan, doSearch
 	// https://stackoverflow.com/questions/31538293/sorting-listfileinfo-in-natural-sorted-order
 	{
-	[DllImport("shlwapi.dll", CharSet = CharSet.Unicode)]
-	static extern Int32 StrCmpLogical(String x, String y);
+		[DllImport("shlwapi.dll", CharSet = CharSet.Unicode)]
+		static extern Int32 StrCmpLogical(String x, String y);
 
 		public int Compare(string x, string y)
 		{
 			return StrCmpLogical(x, y);
 		}
+        
 	}
+	
+	public static class SortN
+	{
+		[DllImport("shlwapi.dll", CharSet = CharSet.Unicode)]
+		private static extern int StrCmpLogicalW(string lhs, string rhs);
+	
+		public static void SortNatural<T>(this List<T> self, Func<T, string> stringSelector)
+		{
+			self.Sort((lhs, rhs) => StrCmpLogicalW(stringSelector(lhs), stringSelector(rhs)));
+		}
+	}
+	
 }

@@ -741,14 +741,14 @@ namespace Next_View
 			// mnuSortFDate
 			// 
 			this.mnuSortFDate.Name = "mnuSortFDate";
-			this.mnuSortFDate.Size = new System.Drawing.Size(203, 30);
+			this.mnuSortFDate.Size = new System.Drawing.Size(210, 30);
 			this.mnuSortFDate.Text = "Sort file date";
 			this.mnuSortFDate.Click += new System.EventHandler(this.MnuSortFDateClick);
 			// 
 			// mnuSortExifDate
 			// 
 			this.mnuSortExifDate.Name = "mnuSortExifDate";
-			this.mnuSortExifDate.Size = new System.Drawing.Size(203, 30);
+			this.mnuSortExifDate.Size = new System.Drawing.Size(210, 30);
 			this.mnuSortExifDate.Text = "Sort Exif Date";
 			this.mnuSortExifDate.Click += new System.EventHandler(this.MnuSortExifDateClick);
 			// 
