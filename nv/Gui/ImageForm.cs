@@ -344,7 +344,7 @@ namespace Next_View
 		{
 			e.IsInputKey = true;     // triggers keydown for arrow keys
 		}
-		
+
 		void Scollbar1KeyDown(object sender, KeyEventArgs e)
 		{
 			bool alt = false;
@@ -375,12 +375,12 @@ namespace Next_View
 			}
 			KDown(e.KeyValue, ctrl, alt);
 		}
-		
+
 		void SplitContainer1KeyUp(object sender, KeyEventArgs e)
 		{
 
 		}
-		
+
 		public bool KDown(int kValue, bool ctrl, bool alt)
 		{
 			switch(kValue)
@@ -846,7 +846,7 @@ namespace Next_View
 			int picAll = 0;
 			_il.DirPosPath(ref picPos, ref picAll, _currentPath);
 			SetStatusText(0, String.Format(_picSelection + " {0}/{1}", picPos, picAll));
-			
+
 			Scrollbar1.Bookmarks.Clear();
 			_barClick = false;		        // scrollbar change only
 			if (picAll > 0){
@@ -863,12 +863,12 @@ namespace Next_View
 			int picAll = 0;
 			_il.DirPosPath(ref picPos, ref picAll, _currentPath);
 			SetStatusText(0, String.Format(_picSelection + " {0}/{1}", picPos, picAll));
-			
+
 			Scrollbar1.Bookmarks.Clear();
 			_barClick = false;		        // scrollbar change only
 			if (picAll > 0){
 				Scrollbar1.Value = picPos;
-			}			
+			}
 			CalcBar();
 			DrawBar();
 		}
@@ -880,12 +880,12 @@ namespace Next_View
 			int picAll = 0;
 			_il.DirPosPath(ref picPos, ref picAll, _currentPath);
 			SetStatusText(0, String.Format(_picSelection + " {0}/{1}", picPos, picAll));
-			
+
 			Scrollbar1.Bookmarks.Clear();
 			_barClick = false;		        // scrollbar change only
 			if (picAll > 0){
 				Scrollbar1.Value = picPos;
-			}			
+			}
 			CalcBar();
 			DrawBar();
 		}
@@ -967,6 +967,7 @@ namespace Next_View
 				int imgCount = 0;
 				if (_il.DeleteListLog(_currentPath, ref nextPath, ref imgCount)){
 					Scrollbar1.Maximum = imgCount;
+					AdjustBookmark(_currentScrollPos);
 					PicLoadPos(nextPath, true);
 					_currentPath = nextPath;
 				}
@@ -974,9 +975,6 @@ namespace Next_View
 					picBox.Image = null;
 					SetStatusText(0, T._("No image loaded"));
 				}
-			}
-			else {
-
 			}
 		}
 
@@ -1413,7 +1411,21 @@ namespace Next_View
 				}
 			}
 		}
-		
+
+		public void AdjustBookmark(int bPos)
+		{
+			foreach (ScrollBarBookmark bm in Scrollbar1.Bookmarks)
+			{
+				if (bm is ValueRangeScrollBarBookmark) {
+					Debug.WriteLine("b-range : {0} ", bm.Value);  // .EndValue);
+					Debug.WriteLine("b-range end : " + ((ValueRangeScrollBarBookmark)bm).EndValue);
+				}
+				else{
+					Debug.WriteLine("bmark : {0}", bm.Value);
+				}
+			}
+		}
+
 		//------------------------------   BackgroundWorker    ----------------------------------------------------------
 
 		void BackgroundWorker1DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
@@ -1550,7 +1562,7 @@ namespace Next_View
 			//Debug.WriteLine("bookrange-end: {0}, {1}", start1, end1 );
 			Scrollbar1.ResumeLayout();
 		}
-		
+
 		public String GetRangeText(DateTime rangeStart)
 		{
 			string rText;
@@ -1770,7 +1782,7 @@ namespace Next_View
 
 		protected virtual void OnWindowSize(SetSizeEventArgs  e)
 		{
-			if(this.WindowSize != null)    // nothing subscribed to this event
+			if(this.WindowSize != null)
 			{
 				this.WindowSize(this, e);
 			}
@@ -1787,7 +1799,7 @@ namespace Next_View
 
 		protected virtual void OnStatusChanged(SetStatusMainEventArgs e)
 		{
-			if(this.StatusChanged != null)     // nothing subscribed to this event
+			if(this.StatusChanged != null)
 			{
 				this.StatusChanged(this, e);
 			}
