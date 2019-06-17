@@ -1,4 +1,5 @@
 // Copyright © 2009 Simon McKenzie, released under the Code Project Open License (CPOL) 1.02
+//  martin, mar 2019, add SaveOrient to save exif orientation. Use PrimaryCatalogue only.
 //
 using System;
 using System.Collections.Generic;

@@ -185,7 +185,7 @@ namespace Next_View
 				else _currentPath = firstImage;
 			}
 			else if (File.Exists(Settings.Default.LastImage)) {
-				//Debug.WriteLine("Last image, async: ");
+				Debug.WriteLine("Last image settings: " + Settings.Default.LastImage);
 				m_Image.PicScan(Settings.Default.LastImage, false, 0);
 				if (doShow){
 					 m_Image.PicLoadPos(Settings.Default.LastImage, true);
@@ -197,13 +197,13 @@ namespace Next_View
 				if (Directory.Exists(userImagePath)) {
 					m_Image.PicScan(userImagePath, true, 0);
 				}
-				//Debug.WriteLine("pic path: " + userImagePath);
 				firstImage = Directory.GetCurrentDirectory() + @"\Next-View-0.6.jpg";
 				recentItem1.AddRecentItem(firstImage);
 				if (doShow) {
 					m_Image.PicLoadPos(firstImage, true);
 				}
 				else _currentPath = firstImage;
+				Debug.WriteLine("Default image: " + _currentPath);
 			}
 		}
 
@@ -541,7 +541,7 @@ namespace Next_View
 
 		void MnuTestClick(object sender, EventArgs e)
 		{
-			TestException();
+			//TestException();
 			TestScreen();
 		}
 

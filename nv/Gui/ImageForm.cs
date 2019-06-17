@@ -65,13 +65,15 @@ namespace Next_View
 
 		WinType _wType;   // normal, full, second
 		public bool _ndRunning {get;set;}
+		public bool _fullRunning {get;set;}
 		string _priorPath = "";
 
 
 		ExifForm m_Exif;
 
 		public frmImage  m_Image2;
-
+		public frmImage  m_ImageF;
+		
 		public event HandleStatusMainChange  StatusChanged;
 
 		public event HandleWindowMainChange  WindowChanged;
@@ -80,11 +82,12 @@ namespace Next_View
 
 		public event HandleCommandChange  CommandChanged;
 
-		public frmImage(int mainWidth, int mainHeight, WinType wType)
+		public frmImage(int mainWidth, int mainHeight, WinType wType, ImgList il)
 		{
 			InitializeComponent();
 			_wType = wType;
-
+			_il = il;
+			
 			_mainWidth = mainWidth;
 			_mainHeight = mainHeight;
 			//Debug.WriteLine("Screen W / H: {0}/{1}", _scWidth, _scHeight);
@@ -122,11 +125,28 @@ namespace Next_View
 		{
 			if (_wType == WinType.normal){
 				_ndRunning = false;
+				_fullRunning = false;
 				_scWidth = Screen.FromControl(this).Bounds.Width;
 				_scHeight = Screen.FromControl(this).Bounds.Height;
-
+				picBox.BackColor = SystemColors.Control;   
 			}
-
+			if (_wType == WinType.full){
+				_ndRunning = false;
+				_fullRunning = true;
+				_scWidth = Screen.FromControl(this).Bounds.Width;
+				_scHeight = Screen.FromControl(this).Bounds.Height;
+				Debug.WriteLine("Full Image W / H: {0}/{1}", _scWidth, _scHeight);
+				ScollbarVis(false);
+				//this.Width = _scWidth;				
+				//this.Height = _scHeight;
+				//this.Top = 0;
+				//this.Left = 0;
+				
+				picBox.BackColor = Color.Black;
+				this.FormBorderStyle = FormBorderStyle.None;
+				this.WindowState = FormWindowState.Maximized;
+			}
+			
 			TranslateImageForm();
 
 			if (_wType == WinType.second){
@@ -158,11 +178,13 @@ namespace Next_View
 				//Debug.WriteLine("open 2nd y: {0} ", Settings.Default.SecondY);
 
 				_ndRunning = true;
+				_fullRunning = false;
 				_mainWidth = picBox.Width;
 				_mainHeight = picBox.Height;
 				_scWidth = this.Width;
 				_scHeight = this.Height;
-			}
+				picBox.BackColor = SystemColors.Control;   
+			}  // end 2nd 
 		}
 
 		void FrmImageShown(object sender, EventArgs e)
@@ -191,8 +213,8 @@ namespace Next_View
 
 		void FrmImageFormClosing(object sender, FormClosingEventArgs e)
 		{
-			_ndRunning = false;
 			if (_wType == WinType.second){
+				_ndRunning = false;
 				int wX = this.Left;
 				int wY = this.Top;
 				Multi.SecondSave(wX, wY);
@@ -205,6 +227,9 @@ namespace Next_View
 				e.Cancel = true;
 				this.Hide();
 				//Debug.WriteLine("hide img ");
+			}
+			if (_wType == WinType.full){
+				_fullRunning = false;
 			}
 		}
 
@@ -677,11 +702,22 @@ namespace Next_View
 			}
 		}
 
-		public void PicSetSize( )
+		public bool PicSetSize( )
 		// called by: picLoad, L, R
 		{
 			int imHeight = _myImg.Height;
-			int imWidth = _myImg.Width;
+			int imWidth = _myImg.Width;	
+					
+			if (_wType == WinType.full){
+				if ((imWidth + _borderWidth > _scWidth) || (imHeight + _borderHeight > _scHeight)){
+					picBox.SizeMode = PictureBoxSizeMode.Zoom;
+				}
+				else {
+					picBox.SizeMode = PictureBoxSizeMode.CenterImage;
+				}
+				return true;
+			}
+				
 			//Debug.WriteLine("Image W / H: {0}/{1}", imWidth, imHeight);
 			int scWidth = 0;
 			if (Scrollbar1.Visible){
@@ -706,11 +742,11 @@ namespace Next_View
 			}
 			else {  // small img
 				picBox.SizeMode = PictureBoxSizeMode.CenterImage;
-				picBox.BackColor = SystemColors.Control;  // Color.Black;
 				//splitContainer1.Panel2.Width = 12;
 				//splitContainer1.SplitterDistance = imWidth;
 				SetWindowSize(imWidth + _borderWidth + scWidth, imHeight + _borderHeight, _exifType);
 			}
+			return true;
 		}
 
 
@@ -1034,7 +1070,11 @@ namespace Next_View
 						reader.SaveOrient(oriByte);
 					}
 				}
-
+				//  set original date after update
+				DateTime dtOriginal = DateTime.MinValue;
+				ExifRead.ExifODate(out dtOriginal, _currentPath);
+				System.IO.File.SetLastWriteTime(_currentPath, dtOriginal);
+				
 				//Debug.WriteLine("Orient ini: {0}, current {1}, byte {2} ", _oriInitial, _oriCurrent, ori);
 				return true;
 			}
@@ -1167,7 +1207,16 @@ namespace Next_View
 
 		public void ScollbarVis(bool sVisible)
 		{
-			Scrollbar1.Visible = sVisible;
+			if (sVisible){
+				picBox.Left = 18;
+				picBox.Width = picBox.Width - Scrollbar1.Width + 1;
+				Scrollbar1.Visible = true;
+			}
+			else {
+				picBox.Left = 0;
+				picBox.Width = picBox.Width + Scrollbar1.Width + 2;
+				Scrollbar1.Visible = false;
+			}
 			PicSetSize();
 		}
 
@@ -1190,7 +1239,7 @@ namespace Next_View
 			Bw2Run( );
 		}
 
-		public void ShowFullScreen()
+		public void ShowFullScreenx()
 		{
 			string pPath = "";
 			var frm = new FullScreen(_il);
@@ -1205,6 +1254,19 @@ namespace Next_View
 			}
 		}
 
+		public void ShowFullScreen()
+		{
+			if (CanStartFull()){
+				m_ImageF  = new frmImage(0, 0, WinType.full, _il);
+				m_ImageF.PicLoadPos(_currentPath, false);
+				m_ImageF.Show();
+				m_ImageF.BringToFront();
+			}
+			if (_wType == WinType.full) {
+				this.Close();
+			}
+		}
+		
 		public void RotateLeft()
 		{
 			_myImg.RotateFlip(RotateFlipType.Rotate270FlipNone);
@@ -1413,15 +1475,19 @@ namespace Next_View
 		}
 
 		public void AdjustBookmark(int bPos)
-		{
+		{ 
 			foreach (ScrollBarBookmark bm in Scrollbar1.Bookmarks)
 			{
-				if (bm is ValueRangeScrollBarBookmark) {
-					Debug.WriteLine("b-range : {0} ", bm.Value);  // .EndValue);
-					Debug.WriteLine("b-range end : " + ((ValueRangeScrollBarBookmark)bm).EndValue);
+				int scPos = (int) bm.Value;
+				if (bPos <= scPos){
+					bm.Value = --scPos;
 				}
-				else{
-					Debug.WriteLine("bmark : {0}", bm.Value);
+					
+				if (bm is ValueRangeScrollBarBookmark) {
+					int raPos = (int) ((ValueRangeScrollBarBookmark)bm).EndValue;
+					if (bPos <= raPos){
+						((ValueRangeScrollBarBookmark)bm).EndValue = --raPos;
+					}
 				}
 			}
 		}
@@ -1535,7 +1601,7 @@ namespace Next_View
 			Image barImg = barIcon.Icon.ToBitmap();
 			foreach (int pNo in _priorList)
 			{
-				ImageScrollBarBookmark ibookmark = new ImageScrollBarBookmark(" ", pNo, barImg, ScrollBarBookmarkAlignment.Center, null);
+				ImageScrollBarBookmark ibookmark = new ImageScrollBarBookmark(" ", pNo, barImg, ScrollBarBookmarkAlignment.RightOrBottom, null);
 				Scrollbar1.Bookmarks.Add(ibookmark);
 			}
 
@@ -1598,7 +1664,7 @@ namespace Next_View
 			}
 
 			if (CanStart2nd()){
-				m_Image2  = new frmImage(0, 0, WinType.second);
+				m_Image2  = new frmImage(0, 0, WinType.second, _il);
 				m_Image2.PicLoadPos(prPath, false);
 				m_Image2.Show();
 
@@ -1628,10 +1694,27 @@ namespace Next_View
 			if (_wType == WinType.second){
 				return false;
 			}
+			if (_wType == WinType.full){
+				return false;
+			}
 			if (m_Image2 == null){
 				return true;
 			}
 			return !m_Image2._ndRunning;
+		}
+
+		bool CanStartFull()
+		{
+			if (_wType == WinType.second){
+				return false;
+			}
+			if (_wType == WinType.full){
+				return false;
+			}
+			if (m_ImageF == null){
+				return true;
+			}
+			return !m_ImageF._fullRunning;
 		}
 
 		bool CanShow2nd()

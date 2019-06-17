@@ -47,7 +47,7 @@ namespace Next_View
 
 			_fHeight = Screen.FromControl(this).Bounds.Height;
 			_fWidth = Screen.FromControl(this).Bounds.Width;
-			//Debug.WriteLine("Full Image W / H: {0}/{1}", _fWidth, _fHeight);
+			Debug.WriteLine("Full Image W / H: {0}/{1}", _fWidth, _fHeight);
 
 		}
 
