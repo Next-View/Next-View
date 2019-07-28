@@ -726,7 +726,7 @@ namespace Next_View
 		{
 			char comm = e.Command;
 			string fName = e.Fname;
-			//Debug.WriteLine("Command: " +  comm);
+			Debug.WriteLine("Command: " +  comm);
 			switch(comm)
 			{
 				case 'e':  //  exifdash
@@ -753,6 +753,9 @@ namespace Next_View
 					break;
 				case 'w':  //  exit
 					ExitApp();
+					break;
+				default:     //  unknown
+					Debug.WriteLine("unknown command: " + comm);
 					break;
 
 			}

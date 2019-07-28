@@ -81,7 +81,9 @@ namespace Next_View
 		public event HandleWindowSize WindowSize;
 
 		public event HandleCommandChange  CommandChanged;
-
+		
+		public event HandleSelfChange  SelfChanged;
+		
 		public frmImage(int mainWidth, int mainHeight, WinType wType, ImgList il)
 		{
 			InitializeComponent();
@@ -121,6 +123,13 @@ namespace Next_View
 			KDown(kVal, ctrl, alt);
 		}
 
+		private void HandleSelf(object sender, SetSelfEventArgs e)
+		// return from full  
+		{
+			_currentPath = e.Fname;
+			PicLoadPos(_currentPath, true);
+		}
+		
 		void FrmImageLoad(object sender, EventArgs e)
 		{
 			if (_wType == WinType.normal){
@@ -135,7 +144,7 @@ namespace Next_View
 				_fullRunning = true;
 				_scWidth = Screen.FromControl(this).Bounds.Width;
 				_scHeight = Screen.FromControl(this).Bounds.Height;
-				Debug.WriteLine("Full Image W / H: {0}/{1}", _scWidth, _scHeight);
+				//Debug.WriteLine("Full Image W / H: {0}/{1}", _scWidth, _scHeight);
 				ScollbarVis(false);
 				//this.Width = _scWidth;				
 				//this.Height = _scHeight;
@@ -1239,7 +1248,7 @@ namespace Next_View
 			Bw2Run( );
 		}
 
-		public void ShowFullScreenx()
+		public void ShowFullScreenold()
 		{
 			string pPath = "";
 			var frm = new FullScreen(_il);
@@ -1258,11 +1267,15 @@ namespace Next_View
 		{
 			if (CanStartFull()){
 				m_ImageF  = new frmImage(0, 0, WinType.full, _il);
+				m_ImageF.SelfChanged += new HandleSelfChange(HandleSelf);         // send event for full screen close
 				m_ImageF.PicLoadPos(_currentPath, false);
 				m_ImageF.Show();
 				m_ImageF.BringToFront();
+				SetCommand('y', _currentPath);
 			}
 			if (_wType == WinType.full) {
+				Debug.WriteLine("close full " + _currentPath);
+				SetSelf(_currentPath);     // handled by HandleSelf
 				this.Close();
 			}
 		}
@@ -1397,7 +1410,7 @@ namespace Next_View
 					dateCount++;
 					imf.fDateOriginal = dtOriginal;
 					if (priorDate > dtOriginal){
-						Debug.WriteLine("prior date: " + fCount);
+						//Debug.WriteLine("prior date: " + fCount);
 						_priorList.Add(fCount);
 					}
 					if (minDate > dtOriginal) minDate = dtOriginal;
@@ -1420,8 +1433,8 @@ namespace Next_View
 			// span values
 			if (dateCount > 0){
 				TimeSpan imgSpan = maxDate.Subtract(minDate);
-				Debug.WriteLine("min: " + minDate.ToString() + " max: " + maxDate.ToString());
-				Debug.WriteLine("range: " + imgSpan.ToString());
+				//Debug.WriteLine("min: " + minDate.ToString() + " max: " + maxDate.ToString());
+				//Debug.WriteLine("range: " + imgSpan.ToString());
 
 				int mean = (int) imgSpan.TotalSeconds / dateCount;
 				long sumVar = 0;
@@ -1434,7 +1447,7 @@ namespace Next_View
 					}
 				}
 				int stdDev = (int) Math.Sqrt(sumVar / dateCount);
-				Debug.WriteLine("mean / std : {0}/{1}", mean, stdDev);
+				//Debug.WriteLine("mean / std: {0}/{1}", mean, stdDev);
 
 				int	breakVal = mean + stdDev * 2;
 				//int wi = 2;
@@ -1461,7 +1474,7 @@ namespace Next_View
 				foreach (KeyValuePair<int, int> sd in spanDict.OrderByDescending(key=> key.Value))
 				{
 					i++;
-					Debug.WriteLine("pic no / dist : {0}/{1}", sd.Key, sd.Value);
+					//Debug.WriteLine("pic no / dist: {0}/{1}", sd.Key, sd.Value);
 					if (sd.Value < breakVal) break;
 
 					string piPath = "";
@@ -1907,6 +1920,22 @@ namespace Next_View
 			}
 		}
 
+		public void SetSelf(string fName)
+		{
+		// called by: recent: full screen
+
+			OnSelfChanged(new SetSelfEventArgs(fName));
+			Application.DoEvents();
+		}
+
+		protected virtual void OnSelfChanged(SetSelfEventArgs e)
+		{
+			if(this.SelfChanged != null)
+			{
+				this.SelfChanged(this, e);
+			}
+		}
+		
 	}  // end frmImage
 
 	public enum WinType
@@ -1919,5 +1948,5 @@ namespace Next_View
 		//------------------------------   delegates   ----------------------------------------------------------
 
 	public delegate void HandleKeyChange(object sender, SetKeyEventArgs e);
-
+	public delegate void HandleSelfChange(object sender, SetSelfEventArgs e);
 }

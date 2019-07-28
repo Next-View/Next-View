@@ -70,6 +70,16 @@ namespace Next_View
 		}
 	}
 
+	public class SetSelfEventArgs : EventArgs
+	{
+		public string Fname;
+		public SetSelfEventArgs(string fName)
+			: base()
+		{
+			this.Fname = fName;
+		}
+	}
+	
 	public class SetKeyEventArgs : EventArgs
 	{
 		public int kValue;
