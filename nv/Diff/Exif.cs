@@ -40,7 +40,7 @@ namespace Next_View
 			try
 			{
 				string ext = System.IO.Path.GetExtension(fName).ToLower();
-				if (ext != ".jpg"){         
+				if (ext != ".jpg"){
 					return false;
 				}
 				IEnumerable<Directory> directories = ImageMetadataReader.ReadMetadata(fName);
@@ -55,19 +55,19 @@ namespace Next_View
 			}
 			catch (Exception e)
 			{
-				Debug.WriteLine(e.Message);
-				MessageBox.Show("Exif. File is invalid" + "\n " + e.Message, "Invalid orientation", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				Debug.WriteLine(e.Message + " " + fName);
+				MessageBox.Show("Exif. File is invalid" + "\n " + e.Message + "\n " + fName, "Invalid date", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				return false;
 			}
 		}
-				
+
 		public static bool ExifOrient(ref int exifType, ref string orientation, string fName)
 		// called by: image.PicLoad
 		{
 			try
 			{
 				int exCount = 0;
-				exifType = 0;     
+				exifType = 0;
 				orientation = "";
 				string ext = System.IO.Path.GetExtension(fName).ToLower();
 				if (ext == ".wmf" || ext == ".emf"){         // invalid for MetadataExtractor
@@ -83,12 +83,12 @@ namespace Next_View
 					string or = ifd0Directory.GetDescription(ExifDirectoryBase.TagOrientation);
 					if (or != null) orientation = or.ToLower();
 				}
-				
+
 				var subIfdDirectory = directories.OfType<ExifSubIfdDirectory>().FirstOrDefault();
 				if (subIfdDirectory != null){
 					exCount += subIfdDirectory.TagCount;
 				}
-				
+
 				if (exCount > 5) exifType = 1;
 				if (exCount > 15) exifType = 2;
 
@@ -98,7 +98,7 @@ namespace Next_View
 					string latitude = gpsDirectory.GetDescription(GpsDirectory.TagLatitude);
 					if (latitude != null) exifType = 3;
 				}
-						
+
 				return true;
 			}
 			catch (Exception e)
@@ -144,17 +144,17 @@ namespace Next_View
 					exCount = ifd0Directory.TagCount;
 					string orientation1 = ifd0Directory.GetDescription(ExifDirectoryBase.TagOrientation);
 					if (orientation1 != null) orientation = orientation1.ToLower();
-					
+
 					string make = "";
 					string make1 = ifd0Directory.GetDescription(ExifDirectoryBase.TagMake);
-					if (make1 != null){ 
+					if (make1 != null){
 						Match match1 = Regex.Match(make1, @"^([\w\-]+)");
 						if (match1.Success){
 							make =  match1.Groups[0].Value;
-							
+
 						}
 					}
-					
+
 					string model1 = ifd0Directory.GetDescription(ExifDirectoryBase.TagModel);
 					if (model1 != null) model = model1;
 					if (!model.Contains(make)){
@@ -239,7 +239,7 @@ namespace Next_View
 				var olympusCameraDirectory = directories.OfType<OlympusCameraSettingsMakernoteDirectory>().FirstOrDefault();
 				if (olympusCameraDirectory != null){
 					string focusMode1 = olympusCameraDirectory.GetDescription(OlympusCameraSettingsMakernoteDirectory.TagFocusMode);
-					if (focusMode1 != null) focusMode = focusMode1;				
+					if (focusMode1 != null) focusMode = focusMode1;
 					if (focusMode.Contains("Face detect")){
 						face = true;
 					}
@@ -260,7 +260,7 @@ namespace Next_View
 						face = true;
 					}
 				}
-				
+
 				var samsungDirectory = directories.OfType<SamsungType2MakernoteDirectory>().FirstOrDefault();
 				if (samsungDirectory != null){
 					string faceDetect = samsungDirectory.GetDescription(SamsungType2MakernoteDirectory.TagFaceDetect);
