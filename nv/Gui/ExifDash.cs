@@ -185,30 +185,30 @@ namespace Next_View
 					_rangeType = 1;      // years
 					double years = Math.Ceiling(imgSpan.TotalDays / 365.0);
 					string spanS = years.ToString("0.0");
-					lblInfo.Text = String.Format(T._("Info: Number of Jpeg images {0}. Between {1:yyyy-MM-dd} and {2:yyyy-MM-dd}, a span of {3} years"), exList.Count, _minDate, _maxDate, spanS ) + error1;
+					lblInfo.Text = String.Format(T._("Info: Number of images {0}. Between {1:yyyy-MM-dd} and {2:yyyy-MM-dd}, a span of {3} years"), exList.Count, _minDate, _maxDate, spanS ) + error1;
 				}
 				else if (imgSpan.TotalDays > 60){
 					_rangeType = 2;      // months
 					double months = Math.Ceiling(imgSpan.TotalDays / 30.0);
 					string spanS = months.ToString("0");
-					lblInfo.Text = String.Format(T._("Info: Number of Jpeg images {0}. Between {1:yyyy-MM-dd} and {2:yyyy-MM-dd}, a span of {3} months"), exList.Count, _minDate, _maxDate, spanS ) + error1;
+					lblInfo.Text = String.Format(T._("Info: Number of images {0}. Between {1:yyyy-MM-dd} and {2:yyyy-MM-dd}, a span of {3} months"), exList.Count, _minDate, _maxDate, spanS ) + error1;
 				}
 				else if (imgSpan.TotalDays > 1){
 					_rangeType = 3;      // days
 					double days = (int) Math.Ceiling(imgSpan.TotalHours / 24.0);
 					string spanS = days.ToString("0");
-					lblInfo.Text = String.Format(T._("Info: Number of Jpeg images {0}. Between {1:yyyy-MM-dd} and {2:yyyy-MM-dd}, a span of {3} days"), exList.Count, _minDate, _maxDate, spanS ) + error1;
+					lblInfo.Text = String.Format(T._("Info: Number of images {0}. Between {1:yyyy-MM-dd} and {2:yyyy-MM-dd}, a span of {3} days"), exList.Count, _minDate, _maxDate, spanS ) + error1;
 				}
 				else {
 					_rangeType = 4;      // hours
 					int hours = (int) Math.Ceiling(imgSpan.TotalMinutes / 60.0);
 					string spanS = hours.ToString("0");
-					lblInfo.Text = String.Format(T._("Info: Number of Jpeg images {0}. On {1:yyyy-MM-dd}. Between {2:HH:mm} and {3:HH:mm}, a span of {4} hours"), exList.Count, _minDate, _minDate, _maxDate, spanS ) + error1;
+					lblInfo.Text = String.Format(T._("Info: Number of images {0}. On {1:yyyy-MM-dd}. Between {2:HH:mm} and {3:HH:mm}, a span of {4} hours"), exList.Count, _minDate, _minDate, _maxDate, spanS ) + error1;
 				}
 				CreateTimelineChart( );
 			}
 			else {
-				lblInfo.Text = String.Format(T._("Info: Number of Jpeg images {0} "), exList.Count) + error1;
+				lblInfo.Text = String.Format(T._("Info: Number of images {0} "), exList.Count) + error1;
 			}
 
 			// show listviews
@@ -813,6 +813,7 @@ namespace Next_View
 			int fCount = 0;
 			DateTime priorDate = DateTime.MaxValue;
 			var spanDict = new Dictionary<int, int>();
+			ExifRead.ResetBox();
 			
 			foreach (string picPath in dashImgList)
 			{	
@@ -880,36 +881,6 @@ namespace Next_View
 				if (gps) ++_gpsCount;
 				if (face) ++_faceCount;
 
-			}
-
-			// span values
-			if (_dateCount > 0){
-				TimeSpan imgSpan = _maxDate.Subtract(_minDate);
-				int mean = (int) imgSpan.TotalSeconds / _dateCount;
-				long sumVar = 0;
-				foreach (KeyValuePair<int, int> sd in spanDict)
-				{
-					long var = (long) Math.Pow((mean - sd.Value), 2);
-					sumVar += var;
-					//Debug.WriteLine("F Num: " + dfn.Key + " " + dfn.Value);
-				}
-				int stdDev = (int) Math.Sqrt(sumVar / _dateCount);
-				Debug.WriteLine("mean / std : {0}/{1}", mean, stdDev);
-				
-				int breakVal = 0;
-				if (mean * 4 > stdDev){
-					breakVal = stdDev * 10;
-				}
-				else {
-					breakVal = stdDev * 2;
-				}
-				int i = 0;
-				foreach (KeyValuePair<int, int> sd in spanDict.OrderByDescending(key=> key.Value))
-				{
-					i++;
-					if (sd.Value < breakVal) break;
-					Debug.WriteLine("pic no / dist : {0}/{1}", sd.Key, sd.Value);
-				}
 			}
 			return true;
 		}

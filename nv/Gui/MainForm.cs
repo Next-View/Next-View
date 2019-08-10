@@ -484,7 +484,7 @@ namespace Next_View
 
 		void BnExifClick(object sender, EventArgs e)
 		{
-
+			m_Image.StartExif();
 		}
 
 		void BnSearchClick(object sender, EventArgs e)

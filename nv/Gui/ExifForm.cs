@@ -286,10 +286,11 @@ namespace Next_View
 																														
 				}
 				// ------------------------------   subIfd   ------------------ 
+				string dtOriginal = "";
 				var subIfdDirectory = directories.OfType<ExifSubIfdDirectory>().FirstOrDefault();
 				if (subIfdDirectory != null){
 					exCount += subIfdDirectory.TagCount;
-					string dtOriginal = subIfdDirectory.GetDescription(ExifDirectoryBase.TagDateTimeOriginal);
+					dtOriginal = subIfdDirectory.GetDescription(ExifDirectoryBase.TagDateTimeOriginal);
 					AddListItem(T._("Original date"), dtOriginal);
 
 					string dtDigitized = subIfdDirectory.GetDescription(ExifDirectoryBase.TagDateTimeDigitized);
@@ -341,9 +342,13 @@ namespace Next_View
 					AddListItem(T._("Scene"), scene);
 				}
 
-				if (exCount > 5) exifType = 1;
-				if (exCount > 15) exifType = 2;
-
+				if (exCount > 5) exifType = 1;      // partial
+				if (exCount > 15){
+					exifType = 2;     // full exif
+					if (string.IsNullOrEmpty(dtOriginal)){
+						exifType = 1; 
+					}
+				}
 				// ------------------------------   makernotes   ----------------------------------------------------------
 
 				var canonDirectory = directories.OfType<CanonMakernoteDirectory>().FirstOrDefault();
