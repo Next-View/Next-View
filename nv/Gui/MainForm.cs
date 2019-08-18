@@ -27,7 +27,7 @@ using System.Threading;
 using System.Windows.Forms;
 using Next_View.Properties;
 using WeifenLuo.WinFormsUI.Docking;
-using XDMessaging;
+using XDMessaging;   // XDBroadcast
 
 namespace Next_View
 {
@@ -83,9 +83,11 @@ namespace Next_View
 			listener.MessageReceived += new XDListener.XDMessageHandler(listener_MessageReceived);
 			listener.RegisterChannel("NVMessage");
 
+			bool kShift = (Control.ModifierKeys == Keys.Shift);
+			  
 			bool created;
 			s_event = new EventWaitHandle (false, EventResetMode.ManualReset, "Next-View", out created);   //  instead of mutex
-   		if (created){         // 1st instance
+   		if (created || kShift){         // 1st instance or shift key 
 				if (Properties.Settings.Default.UpgradeRequired) {
 					Settings.Default.Upgrade();
 					Settings.Default.UpgradeRequired = false;

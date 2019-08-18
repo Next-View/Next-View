@@ -24,7 +24,7 @@ using System.Linq;	 //	OfType
 using System.Windows.Forms;
 using Next_View.Properties;
 using WeifenLuo.WinFormsUI.Docking;
-using ProXoft.WinForms;   // Scollbar
+using ProXoft.WinForms;   // Scollbar 
 
 namespace Next_View
 {
