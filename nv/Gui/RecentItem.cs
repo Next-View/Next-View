@@ -80,9 +80,11 @@ namespace	Next_View
 				_recentList.RemoveAt(rPos);
 			}
 			_recentList.Insert(0, filePath);
-			do {    
-				_recentList.RemoveAt(5);
-			} while (_recentList.Count > 5);
+			if (_recentList.Count > 5){
+				do {    
+					_recentList.RemoveAt(5);
+				} while (_recentList.Count > 5);
+			}
 							
 			UpdateList();
 		}

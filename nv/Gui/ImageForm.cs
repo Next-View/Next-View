@@ -1354,6 +1354,7 @@ namespace Next_View
 			_il.ImgListOut(out imList);
 
 			DateTime dtOriginal = DateTime.MinValue;
+			ExifRead.ResetBox();
 			foreach (ImgFile imf in imList)
 			{
 				string picPath = imf.fName;
