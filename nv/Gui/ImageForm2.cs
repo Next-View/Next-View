@@ -24,7 +24,7 @@ using System.Linq;	 //	OfType
 using System.Windows.Forms;
 using Next_View.Properties;
 using WeifenLuo.WinFormsUI.Docking;
-using ProXoft.WinForms;   // Scollbar 
+using ProXoft.WinForms;   // Scollbar
 
 namespace Next_View
 {
@@ -417,7 +417,6 @@ namespace Next_View
 
 		public bool KDown(int kValue, bool ctrl, bool alt)
 		{
-		  //Debug.WriteLine("char: " + kValue);
 			switch(kValue)
 			{
 				case 39:  //  ->
@@ -508,8 +507,7 @@ namespace Next_View
 					}
 					break;
 
-				case 13:    // enter    start / end full screen
-				case 27:    // esc 
+				case 13:    // enter  full screen
 					ShowFullScreen();
 					break;
 				case 76:    // 'l
@@ -523,7 +521,7 @@ namespace Next_View
 						SaveOri();
 					}
 					break;
-				case 87:    // ctrl w     end program 
+				case 87:    // ctrl w
 					if (ctrl){
 						SetCommand('w', "");
 					}
@@ -532,7 +530,6 @@ namespace Next_View
 					Test();
 					break;
 				case 69:    // 'e'  for exif
-				case 73:    // 'i'  for info
 					if (alt){
 						SetCommand('e', _currentPath);    //ShowExifDash();
 					}
@@ -1357,6 +1354,7 @@ namespace Next_View
 			_il.ImgListOut(out imList);
 
 			DateTime dtOriginal = DateTime.MinValue;
+			ExifRead.ResetBox();
 			foreach (ImgFile imf in imList)
 			{
 				string picPath = imf.fName;
@@ -1436,7 +1434,7 @@ namespace Next_View
 			// span values
 			if (dateCount > 0){
 				TimeSpan imgSpan = maxDate.Subtract(minDate);
-				//Debug.WriteLine("min: " + minDate.ToString() + " max: " + maxDate.ToString());
+				Debug.WriteLine("min: " + minDate.ToString() + " max: " + maxDate.ToString() + " date count: " + dateCount.ToString());
 				//Debug.WriteLine("range: " + imgSpan.ToString());
 
 				int mean = (int) imgSpan.TotalSeconds / dateCount;
@@ -1444,16 +1442,21 @@ namespace Next_View
 				foreach (KeyValuePair<int, int> sd in spanDict)
 				{
 					if (sd.Value != Int32.MaxValue){
-						long var = (long) Math.Pow((mean - sd.Value), 2);
+						long var = (long) Math.Pow((mean - sd.Value), 2);    // overflow
 						sumVar += var;
 						//Debug.WriteLine("F Num: " + dfn.Key + " " + dfn.Value);
 					}
 				}
-				int stdDev = (int) Math.Sqrt(sumVar / dateCount);
-				//Debug.WriteLine("mean / std: {0}/{1}", mean, stdDev);
-
-				int	breakVal = mean + stdDev * 2;
-				//int wi = 2;
+				int stdDev = (int) Math.Sqrt(sumVar);
+				Debug.WriteLine("mean, std: {0}, {1}", mean, stdDev);
+				
+				int breakVal = 0;
+				if (mean * 4 > stdDev){
+					breakVal = mean + stdDev * 10;
+				}
+				else {
+					breakVal = mean + stdDev * 2;
+				}
 
 				if (imgSpan.TotalDays > 730){
 					_rangeType = 1;      // years
