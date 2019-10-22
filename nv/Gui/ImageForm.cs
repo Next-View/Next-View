@@ -53,7 +53,6 @@ namespace Next_View
 		Image _myImg;
 		bool _loadNextPic = true;
 
-		bool _stop = false;
 		int _currentScrollPos = 0;
 		Color[] _colors = {Color.Aqua, Color.Magenta, Color.Blue, Color.Lime, Color.Yellow, Color.Red};
 		List<int> _posList = new List<int>();           //  set scrollbar marks outside background worker
@@ -695,8 +694,10 @@ namespace Next_View
 					picBox.Image = _myImg;
 				}
 
-				PicSetSize();
-
+				int scalePerc = PicSetSize();
+				//Debug.WriteLine("Size: {0}x{1}", picBox.Image.Width, picBox.Image.Height);
+				SetStatusText(-2, String.Format("Size: {0} x {1} ({2} %)", picBox.Image.Width, picBox.Image.Height, scalePerc));
+			
 				if (_wType != WinType.second){
 					Settings.Default.LastImage = pPath;
 				}
@@ -714,20 +715,24 @@ namespace Next_View
 			}
 		}
 
-		public bool PicSetSize( )
+		public int PicSetSize( )
 		// called by: picLoad, L, R
 		{
 			int imHeight = _myImg.Height;
 			int imWidth = _myImg.Width;	
-					
+			float scaleFactor = 0;	
+			int scalePerc = 100;	
 			if (_wType == WinType.full){
 				if ((imWidth + _borderWidth > _scWidth) || (imHeight + _borderHeight > _scHeight)){
 					picBox.SizeMode = PictureBoxSizeMode.Zoom;
+					scaleFactor = (float) (imWidth * imHeight) / ((_scWidth - _borderWidth) * (_scHeight - _borderHeight));
+					scalePerc = (int) Math.Round(100 / scaleFactor);
 				}
 				else {
 					picBox.SizeMode = PictureBoxSizeMode.CenterImage;
+					 scalePerc = 100;	
 				}
-				return true;
+				return scalePerc;
 			}
 				
 			//Debug.WriteLine("Image W / H: {0}/{1}", imWidth, imHeight);
@@ -745,11 +750,15 @@ namespace Next_View
 					int ih = (imHeight * (_scWidth - _borderWidth) / imWidth);
 					//splitContainer1.SplitterDistance = _scWidth;
 					SetWindowSize(_scWidth, ih + _borderHeight, _exifType);
+					scaleFactor = (float) imWidth / (_scWidth - _borderWidth); 
+					scalePerc = (int) Math.Round(100 / scaleFactor);
 				}
 				else {    // high img
 					int iw = (imWidth * (_scHeight - _borderHeight) / imHeight);// + _borderWidth;
 					//splitContainer1.SplitterDistance = iw;
 					SetWindowSize(iw + _borderWidth + scWidth, _scHeight, _exifType);
+					scaleFactor = (float) imHeight / (_scHeight - _borderHeight);
+					scalePerc = (int) Math.Round(100 / scaleFactor);
 				}
 			}
 			else {  // small img
@@ -757,8 +766,9 @@ namespace Next_View
 				//splitContainer1.Panel2.Width = 12;
 				//splitContainer1.SplitterDistance = imWidth;
 				SetWindowSize(imWidth + _borderWidth + scWidth, imHeight + _borderHeight, _exifType);
+				scalePerc = 100;		
 			}
-			return true;
+			return scalePerc;
 		}
 
 
@@ -769,15 +779,18 @@ namespace Next_View
 			object oDirs = allDirs;
 			object oAction = postAction;
 			object[] parameters = new object [] { oPath, oDirs, oAction };
-			if (_stop == false){
-				_stop = true;
-				Scrollbar1.Bookmarks.Clear();
-				if (backgroundWorker1.IsBusy != true)
-				{
-					//Debug.WriteLine("bw1: start: ");
-					backgroundWorker1.RunWorkerAsync(parameters);
-				}
+
+			Scrollbar1.Bookmarks.Clear();
+			if (backgroundWorker1.IsBusy == true){
+			  Debug.WriteLine("bw1: busy - cancel ");
+			  backgroundWorker1.CancelAsync();
 			}
+				
+			while (backgroundWorker1.IsBusy)
+			  Application.DoEvents();
+				
+			//Debug.WriteLine("bw1: start: ");
+			backgroundWorker1.RunWorkerAsync(parameters);
 		}
 
 		void DarkPic()
@@ -1511,7 +1524,7 @@ namespace Next_View
 		//------------------------------   BackgroundWorker    ----------------------------------------------------------
 
 		void BackgroundWorker1DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
-		// called by RunWorkerAsync
+		// called by backgroundWorker1.RunWorkerAsync  (picScan)
 		{
 			object[] parameters = e.Argument as object[];
 			//Debug.WriteLine("para " + parameters[0]);
@@ -1533,7 +1546,6 @@ namespace Next_View
 
 		void BackgroundWorker1RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
 		{
-			_stop = false;
 			object[] results = e.Result as object[];
 			string pPath = (string) results[0];
 			int postAction = (int) results[1];
@@ -1543,7 +1555,7 @@ namespace Next_View
 			int picAll = 0;
 			switch(postAction)
 			{
-				case 1:        //
+				case 1:        //  scan lower
 					_il.DirPicFirst(ref _currentPath);
 					_il.DirPosPath(ref picPos, ref picAll, _currentPath);
 					SetStatusText(0, String.Format(_picSelection + " {0}/{1}", picPos, picAll));
@@ -1563,7 +1575,7 @@ namespace Next_View
 					PriorPic();
 					break;
 
-				default:
+				default:    // singel pic
 					_il.DirPosPath(ref picPos, ref picAll, _currentPath);
 					SetStatusText(0, String.Format(_picSelection + " {0}/{1}", picPos, picAll));
 					break;
@@ -1578,16 +1590,19 @@ namespace Next_View
 
 		void Bw2Run( )
 		{
-			if (_stop == false){
-				_stop = true;
-				if (bw2.IsBusy != true)
-				{
-					bw2.RunWorkerAsync( );
-				}
+			if (bw2.IsBusy == true){
+			  Debug.WriteLine("bw2: busy - cancel ");
+			  backgroundWorker1.CancelAsync();
 			}
+				
+			while (bw2.IsBusy)
+			  Application.DoEvents();
+			  
+			bw2.RunWorkerAsync( );
 		}
 
 		void Bw2DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+		// called by: 
 		{
 			ScanImagesBar( );
 			CalcBar ();
@@ -1601,7 +1616,6 @@ namespace Next_View
 
 		void DrawBar( )
 		{
-			_stop = false;
 			Scrollbar1.SuspendLayout();     //   same thread
 			int dirCount = _il.DirCount();
 			if (dirCount == 0) dirCount = 1;
