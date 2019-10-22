@@ -56,8 +56,12 @@ namespace Next_View
 				// ------------------------------   exif   ----------------------------------------------------------
 				var subIfdDirectory = directories.OfType<ExifSubIfdDirectory>().FirstOrDefault();
 				if (subIfdDirectory != null){
+				  bool dateValid = false;
 					string dtOriginalS = subIfdDirectory.GetDescription(ExifDirectoryBase.TagDateTimeOriginal);
-					DateTime.TryParseExact(dtOriginalS, "yyyy:MM:dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out dtOriginal);
+					dateValid = DateTime.TryParseExact(dtOriginalS, "yyyy:MM:dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out dtOriginal);
+					if (!dateValid){                    // try default format
+					  dateValid = DateTime.TryParse(dtOriginalS, CultureInfo.InvariantCulture, DateTimeStyles.None, out dtOriginal);
+					}					
 				}
 				return true;
 			}
@@ -189,11 +193,17 @@ namespace Next_View
 				string dtOriginalS = "";
 				var subIfdDirectory = directories.OfType<ExifSubIfdDirectory>().FirstOrDefault();
 				if (subIfdDirectory != null){
+				  bool dateValid = false;
 					exCount += subIfdDirectory.TagCount;
 					dtOriginalS = subIfdDirectory.GetDescription(ExifDirectoryBase.TagDateTimeOriginal);
-					// if DateTimeOriginal does not exist, do not use exif.DateTime. This is the date of image editing if image was changed or rotated 
-					if (DateTime.TryParseExact(dtOriginalS, "yyyy:MM:dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out dtOriginal)){
-						
+					// if DateTimeOriginal does not exist, do not use exif.DateTime. This is the date of image editing if image was changed or rotated
+					// date format  mostly:   2017:10:17 09:28:15
+					// some older picture have this format   2008-07-31T20:39:13-04:00 
+					dateValid = DateTime.TryParseExact(dtOriginalS, "yyyy:MM:dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out dtOriginal);
+					if (!dateValid){                    // try default format
+					  dateValid = DateTime.TryParse(dtOriginalS, CultureInfo.InvariantCulture, DateTimeStyles.None, out dtOriginal);
+					}
+					if (dateValid){ 
 						DateTime myTime = default(DateTime).Add(dtOriginal.TimeOfDay);
 						TimeSpan orTime = dtOriginal.TimeOfDay;
 						int orHours = (int)orTime.Hours;
