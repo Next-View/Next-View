@@ -24,7 +24,7 @@ using System.Linq;	 //	OfType
 using System.Windows.Forms;
 using Next_View.Properties;
 using WeifenLuo.WinFormsUI.Docking;
-using ProXoft.WinForms;   // Scollbar 
+using ProXoft.WinForms;   // Scollbar
 
 namespace Next_View
 {
@@ -52,6 +52,7 @@ namespace Next_View
 		string _lastSearchStr = "";
 		Image _myImg;
 		bool _loadNextPic = true;
+		bool _sameDir  = false;
 
 		int _currentScrollPos = 0;
 		Color[] _colors = {Color.Aqua, Color.Magenta, Color.Blue, Color.Lime, Color.Yellow, Color.Red};
@@ -72,7 +73,7 @@ namespace Next_View
 
 		public frmImage  m_Image2;
 		public frmImage  m_ImageF;
-		
+
 		public event HandleStatusMainChange  StatusChanged;
 
 		public event HandleWindowMainChange  WindowChanged;
@@ -80,15 +81,15 @@ namespace Next_View
 		public event HandleWindowSize WindowSize;
 
 		public event HandleCommandChange  CommandChanged;
-		
+
 		public event HandleSelfChange  SelfChanged;
-		
+
 		public frmImage(int mainWidth, int mainHeight, WinType wType, ImgList il)
 		{
 			InitializeComponent();
 			_wType = wType;
 			_il = il;
-			
+
 			_mainWidth = mainWidth;
 			_mainHeight = mainHeight;
 			//Debug.WriteLine("Screen W / H: {0}/{1}", _scWidth, _scHeight);
@@ -123,12 +124,12 @@ namespace Next_View
 		}
 
 		private void HandleSelf(object sender, SetSelfEventArgs e)
-		// return from full  
+		// return from full
 		{
 			_currentPath = e.Fname;
 			PicLoadPos(_currentPath, true);
 		}
-		
+
 		void FrmImageLoad(object sender, EventArgs e)
 		{
 			if (_wType == WinType.normal){
@@ -136,7 +137,7 @@ namespace Next_View
 				_fullRunning = false;
 				_scWidth = Screen.FromControl(this).Bounds.Width;
 				_scHeight = Screen.FromControl(this).Bounds.Height;
-				picBox.BackColor = SystemColors.Control;   
+				picBox.BackColor = SystemColors.Control;
 			}
 			if (_wType == WinType.full){
 				_ndRunning = false;
@@ -145,16 +146,16 @@ namespace Next_View
 				_scHeight = Screen.FromControl(this).Bounds.Height;
 				//Debug.WriteLine("Full Image W / H: {0}/{1}", _scWidth, _scHeight);
 				ScollbarVis(false);
-				//this.Width = _scWidth;				
+				//this.Width = _scWidth;
 				//this.Height = _scHeight;
 				//this.Top = 0;
 				//this.Left = 0;
-				
+
 				picBox.BackColor = Color.Black;
 				this.FormBorderStyle = FormBorderStyle.None;
 				this.WindowState = FormWindowState.Maximized;
 			}
-			
+
 			TranslateImageForm();
 
 			if (_wType == WinType.second){
@@ -191,8 +192,8 @@ namespace Next_View
 				_mainHeight = picBox.Height;
 				_scWidth = this.Width;
 				_scHeight = this.Height;
-				picBox.BackColor = SystemColors.Control;   
-			}  // end 2nd 
+				picBox.BackColor = SystemColors.Control;
+			}  // end 2nd
 		}
 
 		void FrmImageShown(object sender, EventArgs e)
@@ -508,7 +509,7 @@ namespace Next_View
 					break;
 
 				case 13:    // enter    start / end full screen
-				case 27:    // esc 
+				case 27:    // esc
 					ShowFullScreen();
 					break;
 				case 76:    // 'l
@@ -522,7 +523,7 @@ namespace Next_View
 						SaveOri();
 					}
 					break;
-				case 87:    // ctrl w     end program 
+				case 87:    // ctrl w     end program
 					if (ctrl){
 						SetCommand('w', "");
 					}
@@ -697,7 +698,7 @@ namespace Next_View
 				int scalePerc = PicSetSize();
 				//Debug.WriteLine("Size: {0}x{1}", picBox.Image.Width, picBox.Image.Height);
 				SetStatusText(-2, String.Format("Size: {0} x {1} ({2} %)", picBox.Image.Width, picBox.Image.Height, scalePerc));
-			
+
 				if (_wType != WinType.second){
 					Settings.Default.LastImage = pPath;
 				}
@@ -719,9 +720,9 @@ namespace Next_View
 		// called by: picLoad, L, R
 		{
 			int imHeight = _myImg.Height;
-			int imWidth = _myImg.Width;	
-			float scaleFactor = 0;	
-			int scalePerc = 100;	
+			int imWidth = _myImg.Width;
+			float scaleFactor = 0;
+			int scalePerc = 100;
 			if (_wType == WinType.full){
 				if ((imWidth + _borderWidth > _scWidth) || (imHeight + _borderHeight > _scHeight)){
 					picBox.SizeMode = PictureBoxSizeMode.Zoom;
@@ -730,11 +731,11 @@ namespace Next_View
 				}
 				else {
 					picBox.SizeMode = PictureBoxSizeMode.CenterImage;
-					 scalePerc = 100;	
+					 scalePerc = 100;
 				}
 				return scalePerc;
 			}
-				
+
 			//Debug.WriteLine("Image W / H: {0}/{1}", imWidth, imHeight);
 			int scWidth = 0;
 			if (Scrollbar1.Visible){
@@ -750,7 +751,7 @@ namespace Next_View
 					int ih = (imHeight * (_scWidth - _borderWidth) / imWidth);
 					//splitContainer1.SplitterDistance = _scWidth;
 					SetWindowSize(_scWidth, ih + _borderHeight, _exifType);
-					scaleFactor = (float) imWidth / (_scWidth - _borderWidth); 
+					scaleFactor = (float) imWidth / (_scWidth - _borderWidth);
 					scalePerc = (int) Math.Round(100 / scaleFactor);
 				}
 				else {    // high img
@@ -766,7 +767,7 @@ namespace Next_View
 				//splitContainer1.Panel2.Width = 12;
 				//splitContainer1.SplitterDistance = imWidth;
 				SetWindowSize(imWidth + _borderWidth + scWidth, imHeight + _borderHeight, _exifType);
-				scalePerc = 100;		
+				scalePerc = 100;
 			}
 			return scalePerc;
 		}
@@ -785,10 +786,10 @@ namespace Next_View
 			  Debug.WriteLine("bw1: busy - cancel ");
 			  backgroundWorker1.CancelAsync();
 			}
-				
+
 			while (backgroundWorker1.IsBusy)
 			  Application.DoEvents();
-				
+
 			//Debug.WriteLine("bw1: start: ");
 			backgroundWorker1.RunWorkerAsync(parameters);
 		}
@@ -1099,7 +1100,7 @@ namespace Next_View
 				DateTime dtOriginal = DateTime.MinValue;
 				ExifRead.ExifODate(out dtOriginal, _currentPath);
 				System.IO.File.SetLastWriteTime(_currentPath, dtOriginal);
-				
+
 				//Debug.WriteLine("Orient ini: {0}, current {1}, byte {2} ", _oriInitial, _oriCurrent, ori);
 				return true;
 			}
@@ -1295,7 +1296,7 @@ namespace Next_View
 				this.Close();
 			}
 		}
-		
+
 		public void RotateLeft()
 		{
 			_myImg.RotateFlip(RotateFlipType.Rotate270FlipNone);
@@ -1504,14 +1505,14 @@ namespace Next_View
 		}
 
 		public void AdjustBookmark(int bPos)
-		{ 
+		{
 			foreach (ScrollBarBookmark bm in Scrollbar1.Bookmarks)
 			{
 				int scPos = (int) bm.Value;
 				if (bPos <= scPos){
 					bm.Value = --scPos;
 				}
-					
+
 				if (bm is ValueRangeScrollBarBookmark) {
 					int raPos = (int) ((ValueRangeScrollBarBookmark)bm).EndValue;
 					if (bPos <= raPos){
@@ -1533,7 +1534,7 @@ namespace Next_View
 			int postAction = (int) parameters[2];
 
 			int pCount;
-			_il.DirScan(out pCount, picPath, allDirs);
+			_sameDir = _il.DirScan(out pCount, picPath, allDirs);
 			if (pCount == 0 && postAction == 1) {        // rescan for lower
 				_il.DirScan(out pCount, picPath, true);
 			}
@@ -1584,8 +1585,10 @@ namespace Next_View
 				Scrollbar1.Value = picPos;
 			}
 
-			// scan for scroll bar
-			Bw2Run( );
+			// scan for scroll bar, after 'normal' scan
+			if (!_sameDir){
+				Bw2Run( );
+			}
 		}
 
 		void Bw2Run( )
@@ -1594,15 +1597,15 @@ namespace Next_View
 			  Debug.WriteLine("bw2: busy - cancel ");
 			  backgroundWorker1.CancelAsync();
 			}
-				
+
 			while (bw2.IsBusy)
 			  Application.DoEvents();
-			  
+
 			bw2.RunWorkerAsync( );
 		}
 
 		void Bw2DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
-		// called by: 
+		// called by:
 		{
 			ScanImagesBar( );
 			CalcBar ();
@@ -1952,7 +1955,7 @@ namespace Next_View
 				this.SelfChanged(this, e);
 			}
 		}
-		
+
 	}  // end frmImage
 
 	public enum WinType

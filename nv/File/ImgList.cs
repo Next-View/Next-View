@@ -78,8 +78,9 @@ namespace Next_View
 			return _imList.Count;
 		}
 
-		public void DirScan(out int picCount, string picPath, bool allDirs)
+		public bool DirScan(out int picCount, string picPath, bool allDirs)
 		{
+			bool sameDir = true;
 			// called by: PicScan - open, refesh, drop, main: formShow, recent
 			string picDir = "";
 			if (File.Exists(picPath)) {
@@ -107,7 +108,7 @@ namespace Next_View
 				FilenameComparer fc = new FilenameComparer();
 				iList.Sort(fc);
 				_imList.Clear();
-				
+
 				foreach(string fName in iList)
 				{
 					_imList.Add(new ImgFile(fName, DateTime.MinValue, DateTime.MinValue));
@@ -116,9 +117,11 @@ namespace Next_View
 			}
 			else {
 				Debug.WriteLine("no dir change");
+				sameDir = false;
 			}
 			picCount = _imList.Count();
 			if (picCount == 0) _picDir = "";   // fix for re-scan
+			return sameDir;
 		}
 
 		public void DirPosPath(ref int picPos, ref int picAll, string pPath)
@@ -340,7 +343,7 @@ namespace Next_View
 				}
 			}
 			imgCount = _imList.Count;
-			
+
 			int pPos = _logList.IndexOf(nameDel);
 			if (pPos > -1){
 				_logList.RemoveAt(pPos);
