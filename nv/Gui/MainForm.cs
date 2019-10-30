@@ -179,6 +179,7 @@ namespace Next_View
 				firstImage = args[1];
 			}
 			if (File.Exists(firstImage)) {
+			  Debug.WriteLine("Image command line: " + firstImage);
 				m_Image.PicScan(firstImage, false, 0);
 				if (doShow){
 					m_Image.PicLoadPos(firstImage, true);
@@ -562,6 +563,7 @@ namespace Next_View
 		{
 			string commandLine = e.DataGram.Message;
 			if (File.Exists(commandLine)) {
+			  Debug.WriteLine("2nd command: " + commandLine);
 				m_Image.PicScan(commandLine, false, 0);
 				m_Image.PicLoadPos(commandLine, true);
 				recentItem1.AddRecentItem(commandLine);
@@ -674,11 +676,12 @@ namespace Next_View
 			//Debug.WriteLine(String.Format("Status msg: {0}, {1} ", sVal, sText));
 			switch(sVal)
 			{
-				case 0:
+				case 0:   // directory / seach / hist / no img
 					this.statusLabel1.Text = sText;
+					this.picLabel1.Text = "";
 					break;
 
-				case -1:
+				case -1:   // dash progress
 					_step++;
 					if (_step <= _maxStep){
 						progress1.Value = _step;
@@ -687,13 +690,17 @@ namespace Next_View
 						progress1.Value = 0;
 					}
 					break;
-
-				case -9:
+					
+        case -2:
+        	this.picLabel1.Text = sText;
+          break;
+          
+				case -9:   // dash complete
 					progress1.Value = 0;
 					_maxStep = 0;
 					break;
 
-				default:  // start progress
+				default:  // > 0 = start progress
 					statusLabel1.Text = T._("Scan");
 					_maxStep = sVal;
 					progress1.Maximum = _maxStep;
