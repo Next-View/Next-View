@@ -18,6 +18,8 @@ History:
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;  // Debug
+using System.Drawing;  // Image
+using System.Drawing.Imaging;  // frame
 using System.Windows.Forms;
 using MetadataExtractor;
 
@@ -64,6 +66,15 @@ namespace Next_View
 						textExif0.Text += directory.Name + " - " + tag.Name + " = " + tDesc.Replace("\0", String.Empty) + Environment.NewLine;
 					}
 				}
+				string ext = System.IO.Path.GetExtension(fName).ToLower();  
+				if (ext == ".gif"){                      
+					Image gifImage = Image.FromFile(fName);
+					var dimension = new FrameDimension(gifImage.FrameDimensionsList[0]);
+					int frameCount = gifImage.GetFrameCount(dimension);	
+					textExif0.Text += " " + Environment.NewLine;
+					textExif0.Text += "Number of GIF images: " + frameCount.ToString();
+				} 
+				
 				return true;
 			}
 			catch (Exception e)

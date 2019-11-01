@@ -47,7 +47,7 @@ namespace Next_View
 			dtOriginal = default(DateTime);
 			try
 			{
-				string ext = System.IO.Path.GetExtension(fName).ToLower();
+				string ext = System.IO.Path.GetExtension(fName).ToLower();        // full qualified to use directory
 				if (ext != ".jpg"){         
 					return false;
 				}
