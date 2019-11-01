@@ -80,7 +80,7 @@ namespace Next_View
 
 		public bool DirScan(out int picCount, string picPath, bool allDirs)
 		{
-			bool sameDir = true;
+			bool dirChanged = true;
 			// called by: PicScan - open, refesh, drop, main: formShow, recent
 			string picDir = "";
 			if (File.Exists(picPath)) {
@@ -116,12 +116,17 @@ namespace Next_View
 
 			}
 			else {
-				Debug.WriteLine("no dir change");
-				sameDir = false;
+			  if (_picDir == ""){
+				  ;  // first run 			    
+			  }
+			  else {
+				  Debug.WriteLine("no dir change");
+				  dirChanged = false;
+			  }
 			}
 			picCount = _imList.Count();
 			if (picCount == 0) _picDir = "";   // fix for re-scan
-			return sameDir;
+			return dirChanged;
 		}
 
 		public void DirPosPath(ref int picPos, ref int picAll, string pPath)

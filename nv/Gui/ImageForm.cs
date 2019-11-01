@@ -52,7 +52,7 @@ namespace Next_View
 		string _lastSearchStr = "";
 		Image _myImg;
 		bool _loadNextPic = true;
-		bool _sameDir  = false;
+		bool _dirChanged  = true;
 
 		int _currentScrollPos = 0;
 		Color[] _colors = {Color.Aqua, Color.Magenta, Color.Blue, Color.Lime, Color.Yellow, Color.Red};
@@ -677,7 +677,7 @@ namespace Next_View
 				}
 				_oriCurrent = _oriInitial;
 				GC.Collect();
-				Application.DoEvents();
+				Application.DoEvents();      // like delphi processMessages  
 
 				//using (Image bmpTemp = new Bitmap(pPath))      // abort for invalid jpg
 				//{
@@ -781,7 +781,6 @@ namespace Next_View
 			object oAction = postAction;
 			object[] parameters = new object [] { oPath, oDirs, oAction };
 
-			Scrollbar1.Bookmarks.Clear();
 			if (backgroundWorker1.IsBusy == true){
 			  Debug.WriteLine("bw1: busy - cancel ");
 			  backgroundWorker1.CancelAsync();
@@ -1534,7 +1533,7 @@ namespace Next_View
 			int postAction = (int) parameters[2];
 
 			int pCount;
-			_sameDir = _il.DirScan(out pCount, picPath, allDirs);
+			_dirChanged = _il.DirScan(out pCount, picPath, allDirs);
 			if (pCount == 0 && postAction == 1) {        // rescan for lower
 				_il.DirScan(out pCount, picPath, true);
 			}
@@ -1586,13 +1585,14 @@ namespace Next_View
 			}
 
 			// scan for scroll bar, after 'normal' scan
-			if (!_sameDir){
+			if (_dirChanged){
 				Bw2Run( );
 			}
 		}
 
 		void Bw2Run( )
 		{
+		  Scrollbar1.Bookmarks.Clear();
 			if (bw2.IsBusy == true){
 			  Debug.WriteLine("bw2: busy - cancel ");
 			  backgroundWorker1.CancelAsync();
