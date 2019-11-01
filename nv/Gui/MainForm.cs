@@ -145,7 +145,8 @@ namespace Next_View
 				if (args.Length > 1){
 					commandLine = args[1];
 				}
-				XDBroadcast.SendToChannel("NVMessage", commandLine);   // receive: listener_MessageReceived
+				Debug.WriteLine("send message:");
+				XDBroadcast.SendToChannel("NVMessage", commandLine);   // receive: listener_MessageReceived    // send is to itself as well, before exit
 				// NvSendMsg();  does not work for strings,
 				ExitApp();
 			}
@@ -539,7 +540,11 @@ namespace Next_View
 			m_Image.NameSort();
 		}
 
-
+		void MnuSortFNameClick(object sender, EventArgs e)
+		{
+			m_Image.NameSort();	
+		}
+		
 		//--------------------------  test  ---------------------------//
 
 		void MnuTestClick(object sender, EventArgs e)
@@ -563,7 +568,8 @@ namespace Next_View
 		{
 			string commandLine = e.DataGram.Message;
 			if (File.Exists(commandLine)) {
-			  Debug.WriteLine("2nd command: " + commandLine);
+				Debug.WriteLine("2nd command: " + commandLine);
+				Application.DoEvents();
 				m_Image.PicScan(commandLine, false, 0);
 				m_Image.PicLoadPos(commandLine, true);
 				recentItem1.AddRecentItem(commandLine);

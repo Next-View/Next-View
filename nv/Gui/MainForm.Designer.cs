@@ -84,6 +84,7 @@ namespace Next_View
 			this.mnuTest = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusMain = new System.Windows.Forms.StatusStrip();
 			this.statusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+			this.picLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
 			this.progress1 = new System.Windows.Forms.ToolStripProgressBar();
 			this.addCommentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
@@ -107,7 +108,7 @@ namespace Next_View
 			this.mnuSortFDate = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuSortExifDate = new System.Windows.Forms.ToolStripMenuItem();
 			this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-			this.picLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+			this.mnuSortFName = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuMain.SuspendLayout();
 			this.statusMain.SuspendLayout();
 			this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
@@ -528,6 +529,11 @@ namespace Next_View
 			this.statusLabel1.Text = "    ";
 			this.statusLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
+			// picLabel1
+			// 
+			this.picLabel1.Name = "picLabel1";
+			this.picLabel1.Size = new System.Drawing.Size(0, 25);
+			// 
 			// progress1
 			// 
 			this.progress1.Name = "progress1";
@@ -585,7 +591,7 @@ namespace Next_View
 			this.btnSortName});
 			this.toolStrip2.Location = new System.Drawing.Point(3, 0);
 			this.toolStrip2.Name = "toolStrip2";
-			this.toolStrip2.Size = new System.Drawing.Size(440, 31);
+			this.toolStrip2.Size = new System.Drawing.Size(471, 31);
 			this.toolStrip2.TabIndex = 1;
 			// 
 			// bnOpen
@@ -729,7 +735,8 @@ namespace Next_View
 			this.btnSortName.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
 			this.btnSortName.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
 			this.mnuSortFDate,
-			this.mnuSortExifDate});
+			this.mnuSortExifDate,
+			this.mnuSortFName});
 			this.btnSortName.Image = ((System.Drawing.Image)(resources.GetObject("btnSortName.Image")));
 			this.btnSortName.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.btnSortName.Name = "btnSortName";
@@ -740,14 +747,14 @@ namespace Next_View
 			// mnuSortFDate
 			// 
 			this.mnuSortFDate.Name = "mnuSortFDate";
-			this.mnuSortFDate.Size = new System.Drawing.Size(143, 22);
+			this.mnuSortFDate.Size = new System.Drawing.Size(152, 22);
 			this.mnuSortFDate.Text = "Sort file date";
 			this.mnuSortFDate.Click += new System.EventHandler(this.MnuSortFDateClick);
 			// 
 			// mnuSortExifDate
 			// 
 			this.mnuSortExifDate.Name = "mnuSortExifDate";
-			this.mnuSortExifDate.Size = new System.Drawing.Size(143, 22);
+			this.mnuSortExifDate.Size = new System.Drawing.Size(152, 22);
 			this.mnuSortExifDate.Text = "Sort Exif Date";
 			this.mnuSortExifDate.Click += new System.EventHandler(this.MnuSortExifDateClick);
 			// 
@@ -760,10 +767,12 @@ namespace Next_View
 			this.imageList1.Images.SetKeyName(2, "exif-3.png");
 			this.imageList1.Images.SetKeyName(3, "exif-4.png");
 			// 
-			// picLabel1
+			// mnuSortFName
 			// 
-			this.picLabel1.Name = "picLabel1";
-			this.picLabel1.Size = new System.Drawing.Size(0, 25);
+			this.mnuSortFName.Name = "mnuSortFName";
+			this.mnuSortFName.Size = new System.Drawing.Size(152, 22);
+			this.mnuSortFName.Text = "Sort file name";
+			this.mnuSortFName.Click += new System.EventHandler(this.MnuSortFNameClick);
 			// 
 			// frmMain
 			// 
@@ -870,5 +879,6 @@ namespace Next_View
 		private System.Windows.Forms.ToolStripMenuItem mnuSortFDate;
 		private System.Windows.Forms.ToolStripMenuItem mnuSortExifDate;
 		private System.Windows.Forms.ToolStripStatusLabel picLabel1;
+		private System.Windows.Forms.ToolStripMenuItem mnuSortFName;
 	}
 }
