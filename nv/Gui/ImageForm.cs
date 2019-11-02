@@ -714,11 +714,14 @@ namespace Next_View
 
 				string ext = Path.GetExtension(pPath).ToLower();
 				if (ext == ".gif"){
+					SetCommand('g', "");
 					picBox.Image = Image.FromFile(pPath);    // workaround, only direct load makes gif animation, but file can't be renamed
 					gifImage = new GifImage(pPath);
 				}
 				else {
+					SetCommand('h', "");
 					picBox.Image = _myImg;
+					picBox.Enabled = true;
 				}
 
 				int scalePerc = PicSetSize();
@@ -1953,7 +1956,7 @@ namespace Next_View
 		// called by: recent: Filename: openPic, FrmImageDragDrop
 		// dash: kdown e
 
-		// main command, HandleFilename
+		// main command, HandleCommand
 			OnCommandChanged(new SetCommandEventArgs(comm, fName));
 			Application.DoEvents();
 		}

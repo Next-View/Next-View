@@ -129,6 +129,7 @@ namespace Next_View
 				//Debug.WriteLine("Culture: " + cultureStr);
 				T.SetCatalog(moPath, cultureStr);
 				TranslateMainForm();
+				tbNoGif();
 
 				string recentPath = Settings.Default.RecentImgs;
 				this.recentItem1.LoadList(recentPath);
@@ -473,7 +474,6 @@ namespace Next_View
 		void BnGifPriorClick(object sender, EventArgs e)
 		{
 			m_Image.PriorGif();
-			tbNoGif();
 		}
 
 		void BnGifAnimateClick(object sender, EventArgs e)
@@ -600,7 +600,7 @@ namespace Next_View
 		{
 			string commandLine = e.DataGram.Message;
 			if (File.Exists(commandLine)) {
-				Debug.WriteLine("2nd command: " + commandLine);
+				//Debug.WriteLine("2nd command: " + commandLine);
 				Application.DoEvents();
 				m_Image.PicScan(commandLine, false, 0);
 				m_Image.PicLoadPos(commandLine, true);
@@ -773,12 +773,18 @@ namespace Next_View
 		{
 			char comm = e.Command;
 			string fName = e.Fname;
-			Debug.WriteLine("Command: " +  comm);
+			//Debug.WriteLine("Command: " +  comm);
 			switch(comm)
 			{
 				case 'e':  //  exifdash
 					m_ExifDash.SetPath2(_currentPath);
 					m_ExifDash.Show(dockPanel1, DockState.Document);
+					break;
+				case 'g':  //  show gif
+					tbGif();
+					break;
+				case 'h':  //  show no gif
+					tbNoGif();
 					break;
 				case 'i':  //  exif dash img
 					List<ImgFile> exImgList;

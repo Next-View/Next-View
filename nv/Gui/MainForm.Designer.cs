@@ -604,7 +604,6 @@ namespace Next_View
 			// 
 			// bnGifPrior
 			// 
-			this.bnGifPrior.AutoSize = false;
 			this.bnGifPrior.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
 			this.bnGifPrior.Image = ((System.Drawing.Image)(resources.GetObject("bnGifPrior.Image")));
 			this.bnGifPrior.ImageTransparentColor = System.Drawing.Color.Magenta;
