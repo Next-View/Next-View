@@ -93,6 +93,36 @@ namespace Next_View.Gui {
 		/// <summary>
 		///   Looks up a localized resource of type System.Drawing.Bitmap.
 		/// </summary>
+		internal static System.Drawing.Bitmap bnGifAnimate_Image {
+			get {
+				object obj = ResourceManager.GetObject("bnGifAnimate.Image", resourceCulture);
+				return ((System.Drawing.Bitmap)(obj));
+			}
+		}
+		
+		/// <summary>
+		///   Looks up a localized resource of type System.Drawing.Bitmap.
+		/// </summary>
+		internal static System.Drawing.Bitmap bnGifNext_Image {
+			get {
+				object obj = ResourceManager.GetObject("bnGifNext.Image", resourceCulture);
+				return ((System.Drawing.Bitmap)(obj));
+			}
+		}
+		
+		/// <summary>
+		///   Looks up a localized resource of type System.Drawing.Bitmap.
+		/// </summary>
+		internal static System.Drawing.Bitmap bnGifPrior_Image {
+			get {
+				object obj = ResourceManager.GetObject("bnGifPrior.Image", resourceCulture);
+				return ((System.Drawing.Bitmap)(obj));
+			}
+		}
+		
+		/// <summary>
+		///   Looks up a localized resource of type System.Drawing.Bitmap.
+		/// </summary>
 		internal static System.Drawing.Bitmap bnHelp_Image {
 			get {
 				object obj = ResourceManager.GetObject("bnHelp.Image", resourceCulture);

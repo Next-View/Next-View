@@ -104,6 +104,7 @@
     <Compile Include="File\ExifReader.cs" />
     <Compile Include="File\FileInfo.cs" />
     <Compile Include="File\FilenameComparer.cs" />
+    <Compile Include="File\GifImage.cs" />
     <Compile Include="File\ImgList.cs" />
     <Compile Include="Gui\About.cs" />
     <Compile Include="Gui\About.Designer.cs">

@@ -51,6 +51,7 @@ namespace Next_View
 		int _exifType = 0;
 		string _lastSearchStr = "";
 		Image _myImg;
+		GifImage gifImage = null;
 		bool _loadNextPic = true;
 		bool _dirChanged  = true;
 
@@ -603,6 +604,30 @@ namespace Next_View
 
 		//------------------------------   pic functions  ----------------------------------------------------------
 
+		public void NextGif()
+		{
+			picBox.Enabled = false;
+			picBox.Image = gifImage.GetNextFrame();
+
+		}
+
+		public void AnimateGif()
+		{
+			picBox.Enabled = true;
+
+		}
+
+		public void PriorGif()
+		{
+			picBox.Enabled = false;
+			picBox.Image = gifImage.GetPriorFrame();
+		}
+
+		void OnFrameChanged(object sender, EventArgs e)
+		{
+   			// frame change
+		}
+
 		public bool PicLoadPos(string pPath, bool log)
 		{
 			int picPos = 0;
@@ -677,7 +702,7 @@ namespace Next_View
 				}
 				_oriCurrent = _oriInitial;
 				GC.Collect();
-				Application.DoEvents();      // like delphi processMessages  
+				Application.DoEvents();      // like delphi processMessages
 
 				//using (Image bmpTemp = new Bitmap(pPath))      // abort for invalid jpg
 				//{
@@ -690,6 +715,7 @@ namespace Next_View
 				string ext = Path.GetExtension(pPath).ToLower();
 				if (ext == ".gif"){
 					picBox.Image = Image.FromFile(pPath);    // workaround, only direct load makes gif animation, but file can't be renamed
+					gifImage = new GifImage(pPath);
 				}
 				else {
 					picBox.Image = _myImg;

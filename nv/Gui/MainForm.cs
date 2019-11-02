@@ -84,10 +84,10 @@ namespace Next_View
 			listener.RegisterChannel("NVMessage");
 
 			bool kShift = (Control.ModifierKeys == Keys.Shift);
-			  
+
 			bool created;
 			s_event = new EventWaitHandle (false, EventResetMode.ManualReset, "Next-View", out created);   //  instead of mutex
-   		if (created || kShift){         // 1st instance or shift key 
+   		if (created || kShift){         // 1st instance or shift key
 				if (Properties.Settings.Default.UpgradeRequired) {
 					Settings.Default.Upgrade();
 					Settings.Default.UpgradeRequired = false;
@@ -453,6 +453,38 @@ namespace Next_View
 
 		//--------------------------  toolbar  ---------------------------//
 
+		void tbGif()
+		{
+			bnGifPrior.Width = 24;
+			bnGifAnimate.Width = 24;
+			bnGifNext.Width = 24;
+			toolStripSeparator8.Width = 6;
+		}
+
+		void tbNoGif()
+		{
+			bnGifPrior.Width = 0;
+			bnGifAnimate.Width = 0;
+			bnGifNext.Width = 0;
+			toolStripSeparator8.Width = 0;
+		}
+
+
+		void BnGifPriorClick(object sender, EventArgs e)
+		{
+			m_Image.PriorGif();
+			tbNoGif();
+		}
+
+		void BnGifAnimateClick(object sender, EventArgs e)
+		{
+			m_Image.AnimateGif();
+		}
+
+		void BnGifNextClick(object sender, EventArgs e)
+		{
+			m_Image.NextGif();
+		}
 
 		void BnOpenClick(object sender, EventArgs e)
 		{
@@ -542,9 +574,9 @@ namespace Next_View
 
 		void MnuSortFNameClick(object sender, EventArgs e)
 		{
-			m_Image.NameSort();	
+			m_Image.NameSort();
 		}
-		
+
 		//--------------------------  test  ---------------------------//
 
 		void MnuTestClick(object sender, EventArgs e)
@@ -696,11 +728,11 @@ namespace Next_View
 						progress1.Value = 0;
 					}
 					break;
-					
+
         case -2:
         	this.picLabel1.Text = sText;
           break;
-          
+
 				case -9:   // dash complete
 					progress1.Value = 0;
 					_maxStep = 0;

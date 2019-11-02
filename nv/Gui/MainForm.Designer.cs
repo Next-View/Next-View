@@ -89,6 +89,10 @@ namespace Next_View
 			this.addCommentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
 			this.toolStrip2 = new System.Windows.Forms.ToolStrip();
+			this.bnGifPrior = new System.Windows.Forms.ToolStripButton();
+			this.bnGifAnimate = new System.Windows.Forms.ToolStripButton();
+			this.bnGifNext = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
 			this.bnOpen = new System.Windows.Forms.ToolStripButton();
 			this.bnStartEditor = new System.Windows.Forms.ToolStripButton();
 			this.bnDelete = new System.Windows.Forms.ToolStripButton();
@@ -107,8 +111,8 @@ namespace Next_View
 			this.btnSortName = new System.Windows.Forms.ToolStripSplitButton();
 			this.mnuSortFDate = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuSortExifDate = new System.Windows.Forms.ToolStripMenuItem();
-			this.imageList1 = new System.Windows.Forms.ImageList(this.components);
 			this.mnuSortFName = new System.Windows.Forms.ToolStripMenuItem();
+			this.imageList1 = new System.Windows.Forms.ImageList(this.components);
 			this.menuMain.SuspendLayout();
 			this.statusMain.SuspendLayout();
 			this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
@@ -573,6 +577,10 @@ namespace Next_View
 			this.toolStrip2.Dock = System.Windows.Forms.DockStyle.None;
 			this.toolStrip2.ImageScalingSize = new System.Drawing.Size(20, 20);
 			this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.bnGifPrior,
+			this.bnGifAnimate,
+			this.bnGifNext,
+			this.toolStripSeparator8,
 			this.bnOpen,
 			this.bnStartEditor,
 			this.bnDelete,
@@ -591,8 +599,47 @@ namespace Next_View
 			this.btnSortName});
 			this.toolStrip2.Location = new System.Drawing.Point(3, 0);
 			this.toolStrip2.Name = "toolStrip2";
-			this.toolStrip2.Size = new System.Drawing.Size(471, 31);
+			this.toolStrip2.Size = new System.Drawing.Size(549, 31);
 			this.toolStrip2.TabIndex = 1;
+			// 
+			// bnGifPrior
+			// 
+			this.bnGifPrior.AutoSize = false;
+			this.bnGifPrior.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.bnGifPrior.Image = ((System.Drawing.Image)(resources.GetObject("bnGifPrior.Image")));
+			this.bnGifPrior.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.bnGifPrior.Name = "bnGifPrior";
+			this.bnGifPrior.Size = new System.Drawing.Size(24, 28);
+			this.bnGifPrior.Text = "Prior Gif";
+			this.bnGifPrior.Click += new System.EventHandler(this.BnGifPriorClick);
+			// 
+			// bnGifAnimate
+			// 
+			this.bnGifAnimate.AutoSize = false;
+			this.bnGifAnimate.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.bnGifAnimate.Image = ((System.Drawing.Image)(resources.GetObject("bnGifAnimate.Image")));
+			this.bnGifAnimate.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.bnGifAnimate.Name = "bnGifAnimate";
+			this.bnGifAnimate.Size = new System.Drawing.Size(24, 28);
+			this.bnGifAnimate.Text = "Animate Gif";
+			this.bnGifAnimate.Click += new System.EventHandler(this.BnGifAnimateClick);
+			// 
+			// bnGifNext
+			// 
+			this.bnGifNext.AutoSize = false;
+			this.bnGifNext.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.bnGifNext.Image = ((System.Drawing.Image)(resources.GetObject("bnGifNext.Image")));
+			this.bnGifNext.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.bnGifNext.Name = "bnGifNext";
+			this.bnGifNext.Size = new System.Drawing.Size(24, 28);
+			this.bnGifNext.Text = "Next Gif";
+			this.bnGifNext.Click += new System.EventHandler(this.BnGifNextClick);
+			// 
+			// toolStripSeparator8
+			// 
+			this.toolStripSeparator8.AutoSize = false;
+			this.toolStripSeparator8.Name = "toolStripSeparator8";
+			this.toolStripSeparator8.Size = new System.Drawing.Size(6, 31);
 			// 
 			// bnOpen
 			// 
@@ -747,16 +794,23 @@ namespace Next_View
 			// mnuSortFDate
 			// 
 			this.mnuSortFDate.Name = "mnuSortFDate";
-			this.mnuSortFDate.Size = new System.Drawing.Size(152, 22);
+			this.mnuSortFDate.Size = new System.Drawing.Size(147, 22);
 			this.mnuSortFDate.Text = "Sort file date";
 			this.mnuSortFDate.Click += new System.EventHandler(this.MnuSortFDateClick);
 			// 
 			// mnuSortExifDate
 			// 
 			this.mnuSortExifDate.Name = "mnuSortExifDate";
-			this.mnuSortExifDate.Size = new System.Drawing.Size(152, 22);
+			this.mnuSortExifDate.Size = new System.Drawing.Size(147, 22);
 			this.mnuSortExifDate.Text = "Sort Exif Date";
 			this.mnuSortExifDate.Click += new System.EventHandler(this.MnuSortExifDateClick);
+			// 
+			// mnuSortFName
+			// 
+			this.mnuSortFName.Name = "mnuSortFName";
+			this.mnuSortFName.Size = new System.Drawing.Size(147, 22);
+			this.mnuSortFName.Text = "Sort file name";
+			this.mnuSortFName.Click += new System.EventHandler(this.MnuSortFNameClick);
 			// 
 			// imageList1
 			// 
@@ -766,13 +820,6 @@ namespace Next_View
 			this.imageList1.Images.SetKeyName(1, "exif-2.png");
 			this.imageList1.Images.SetKeyName(2, "exif-3.png");
 			this.imageList1.Images.SetKeyName(3, "exif-4.png");
-			// 
-			// mnuSortFName
-			// 
-			this.mnuSortFName.Name = "mnuSortFName";
-			this.mnuSortFName.Size = new System.Drawing.Size(152, 22);
-			this.mnuSortFName.Text = "Sort file name";
-			this.mnuSortFName.Click += new System.EventHandler(this.MnuSortFNameClick);
 			// 
 			// frmMain
 			// 
@@ -880,5 +927,9 @@ namespace Next_View
 		private System.Windows.Forms.ToolStripMenuItem mnuSortExifDate;
 		private System.Windows.Forms.ToolStripStatusLabel picLabel1;
 		private System.Windows.Forms.ToolStripMenuItem mnuSortFName;
+		private System.Windows.Forms.ToolStripButton bnGifPrior;
+		private System.Windows.Forms.ToolStripButton bnGifNext;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
+		private System.Windows.Forms.ToolStripButton bnGifAnimate;
 	}
 }
