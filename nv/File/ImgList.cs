@@ -117,10 +117,10 @@ namespace Next_View
 			}
 			else {
 			  if (_picDir == ""){
-				  ;  // first run 			    
+				  ;  // first run
 			  }
 			  else {
-				  Debug.WriteLine("no dir change");
+				  //	Debug.WriteLine("no dir change");
 				  dirChanged = false;
 			  }
 			}

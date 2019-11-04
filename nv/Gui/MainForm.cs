@@ -146,7 +146,7 @@ namespace Next_View
 				if (args.Length > 1){
 					commandLine = args[1];
 				}
-				Debug.WriteLine("send message:");
+				//Debug.WriteLine("send message:");
 				XDBroadcast.SendToChannel("NVMessage", commandLine);   // receive: listener_MessageReceived    // send is to itself as well, before exit
 				// NvSendMsg();  does not work for strings,
 				ExitApp();
@@ -181,7 +181,7 @@ namespace Next_View
 				firstImage = args[1];
 			}
 			if (File.Exists(firstImage)) {
-			  Debug.WriteLine("Image command line: " + firstImage);
+			  //Debug.WriteLine("Image command line: " + firstImage);
 				m_Image.PicScan(firstImage, false, 0);
 				if (doShow){
 					m_Image.PicLoadPos(firstImage, true);
@@ -190,7 +190,7 @@ namespace Next_View
 				else _currentPath = firstImage;
 			}
 			else if (File.Exists(Settings.Default.LastImage)) {
-				Debug.WriteLine("Last image settings: " + Settings.Default.LastImage);
+				//Debug.WriteLine("Last image settings: " + Settings.Default.LastImage);
 				m_Image.PicScan(Settings.Default.LastImage, false, 0);
 				if (doShow){
 					 m_Image.PicLoadPos(Settings.Default.LastImage, true);
@@ -208,7 +208,7 @@ namespace Next_View
 					m_Image.PicLoadPos(firstImage, true);
 				}
 				else _currentPath = firstImage;
-				Debug.WriteLine("Default image: " + _currentPath);
+				//Debug.WriteLine("Default image: " + _currentPath);
 			}
 		}
 
@@ -598,10 +598,11 @@ namespace Next_View
 
 		void listener_MessageReceived(object sender, XDMessageEventArgs e)
 		{
+
+			Application.DoEvents();
 			string commandLine = e.DataGram.Message;
 			if (File.Exists(commandLine)) {
 				//Debug.WriteLine("2nd command: " + commandLine);
-				Application.DoEvents();
 				m_Image.PicScan(commandLine, false, 0);
 				m_Image.PicLoadPos(commandLine, true);
 				recentItem1.AddRecentItem(commandLine);

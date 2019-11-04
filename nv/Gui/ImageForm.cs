@@ -811,7 +811,7 @@ namespace Next_View
 			object[] parameters = new object [] { oPath, oDirs, oAction };
 
 			if (backgroundWorker1.IsBusy == true){
-			  Debug.WriteLine("bw1: busy - cancel ");
+			  //Debug.WriteLine("bw1: busy - cancel ");
 			  backgroundWorker1.CancelAsync();
 			}
 
@@ -1623,7 +1623,7 @@ namespace Next_View
 		{
 		  Scrollbar1.Bookmarks.Clear();
 			if (bw2.IsBusy == true){
-			  Debug.WriteLine("bw2: busy - cancel ");
+			  //Debug.WriteLine("bw2: busy - cancel ");
 			  backgroundWorker1.CancelAsync();
 			}
 
