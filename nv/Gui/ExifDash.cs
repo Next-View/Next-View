@@ -37,6 +37,7 @@ namespace Next_View
 	{
 		readonly string[] _validExtensions  = new [] {".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tif", ".ico", ".wmf", ".emf"};
 		bool _stop = false;
+		bool _leave = true;
 		string _imgDir = "";
 
 		Stopwatch _sw1 = new Stopwatch();
@@ -90,6 +91,12 @@ namespace Next_View
 			this.Text = edImgPath.Text;
 		}
 
+		public void NoLeave()
+		// from main
+		{
+			_leave = false;
+		}
+		
 		public void FormClear()
 		{
 			lblInfo.Text = T._("Info:");
@@ -579,7 +586,7 @@ namespace Next_View
 
 		void ExifDashEnter(object sender, EventArgs e)
 		{
-			//Debug.WriteLine("dash enter: ");
+			Debug.WriteLine("dash enter: ");
 			Settings.Default.LastTab = 2;
 			int dW = Settings.Default.DashW;
 			int dH = Settings.Default.DashH;
@@ -589,8 +596,11 @@ namespace Next_View
 
 		void ExifDashLeave(object sender, EventArgs e)
 		{
-			//Debug.WriteLine("dash leave: ");
-			SetCommand('l', "");
+		  if (_leave){
+			  Debug.WriteLine("dash leave: ");
+			  SetCommand('l', "");
+		  }
+		  _leave = true;
 		}
 
 		void ExifDashFormClosing(object sender, FormClosingEventArgs e)

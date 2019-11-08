@@ -71,6 +71,7 @@ namespace Next_View
 			this.TopMost = true;
 			this.TopMost = false;
 			this.Activate();
+			m_ExifDash.NoLeave();
 			m_Image.Show(dockPanel1, DockState.Document);
     	}
 
