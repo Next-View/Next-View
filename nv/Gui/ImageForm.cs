@@ -54,6 +54,7 @@ namespace Next_View
 		GifImage gifImage = null;
 		bool _loadNextPic = true;
 		bool _dirChanged  = true;
+		bool _isGif  = false;
 
 		int _currentScrollPos = 0;
 		Color[] _colors = {Color.Aqua, Color.Magenta, Color.Blue, Color.Lime, Color.Yellow, Color.Red};
@@ -62,7 +63,7 @@ namespace Next_View
 		Dictionary<int, DateTime> _rangeDict = new Dictionary<int, DateTime>();
 		int _rangeType = 0;
 		DateTime _r0Date = DateTime.MinValue;
-		bool _barClick = false;
+		bool _barClick = false;     // for scrollbar change
 
 		WinType _wType;   // normal, full, second
 		public bool _ndRunning {get;set;}
@@ -606,26 +607,27 @@ namespace Next_View
 
 		public void NextGif()
 		{
-			picBox.Enabled = false;
-			picBox.Image = gifImage.GetNextFrame();
+			if (_isGif){
+				picBox.Enabled = false;
+				picBox.Image = gifImage.GetNextFrame();
+			}
 
 		}
 
 		public void AnimateGif()
 		{
-			picBox.Enabled = true;
+			if (_isGif){
+				picBox.Enabled = true;
+			}
 
 		}
 
 		public void PriorGif()
 		{
-			picBox.Enabled = false;
-			picBox.Image = gifImage.GetPriorFrame();
-		}
-
-		void OnFrameChanged(object sender, EventArgs e)
-		{
-   			// frame change
+			if (_isGif){
+				picBox.Enabled = false;
+				picBox.Image = gifImage.GetPriorFrame();
+			}
 		}
 
 		public bool PicLoadPos(string pPath, bool log)
@@ -717,11 +719,13 @@ namespace Next_View
 					SetCommand('g', "");
 					picBox.Image = Image.FromFile(pPath);    // workaround, only direct load makes gif animation, but file can't be renamed
 					gifImage = new GifImage(pPath);
+					_isGif = true;
 				}
 				else {
 					SetCommand('h', "");
 					picBox.Image = _myImg;
 					picBox.Enabled = true;
+					_isGif = false;
 				}
 
 				int scalePerc = PicSetSize();

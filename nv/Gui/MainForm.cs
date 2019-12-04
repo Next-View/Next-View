@@ -57,13 +57,14 @@ namespace Next_View
 		}
 
 		protected override void WndProc(ref Message m) {
-			if(m.Msg == NativeMethods.WM_SHOWME) {
+			if(m.Msg == NativeMethods.WM_SHOWME) {     // process windows message showMe
 				ShowMe();
 			}
 			base.WndProc(ref m);
  		}
 
 		void ShowMe()
+		// called by: start 2nd
 		{
 			WindowState = FormWindowState.Minimized;
 			WindowState = FormWindowState.Normal;
