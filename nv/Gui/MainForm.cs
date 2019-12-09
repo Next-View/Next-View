@@ -288,6 +288,7 @@ namespace Next_View
 				recentItem1.AddRecentItem(picPath);
 				m_Image.PicScan(picPath, false, 0);
 				m_Image.PicLoadPos(picPath, true);
+				ShowMe();
 			}
 			else
 				MessageBox.Show (sender.ToString(), T._("File does not exist"),
