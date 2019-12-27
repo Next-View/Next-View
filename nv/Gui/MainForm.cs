@@ -212,6 +212,7 @@ namespace Next_View
 				else _currentPath = firstImage;
 				//Debug.WriteLine("Default image: " + _currentPath);
 			}
+			m_Image.ScollbarVis(true);
 		}
 
 
@@ -334,15 +335,15 @@ namespace Next_View
 			m_Image.SearchPic();
 		}
 
-		void MnuSearchBarClick(object sender, EventArgs e)
+		void MnuScrollBarClick(object sender, EventArgs e)
 		{
-			if (mnuSearchBar.Checked == true) {
-				mnuSearchBar.Checked = false;
+			if (mnuScrollBar.Checked == true) {
+				mnuScrollBar.Checked = false;
 			}
 			else {
-				mnuSearchBar.Checked = true;
+				mnuScrollBar.Checked = true;
 			}
-			m_Image.ScollbarVis(mnuSearchBar.Checked);
+			m_Image.ScollbarVis(mnuScrollBar.Checked);
 		}
 
 		//--------------------------  menu view ---------------------------//
@@ -702,8 +703,16 @@ namespace Next_View
 			bnNext.Text = T._("Next image");
 			bnFullscreen.Text = T._("Fullscreen");
 			bnExif.Text = T._("Exif");
+			bnSearchPrior.Text = T._("Search prior");
 			bnSearch.Text = T._("Search");
+			bnSearchNext.Text = T._("Search next");
 			bnHelp.Text = T._("Help");
+
+			btnSortName.Text = T._("Sort");
+			mnuSortFDate.Text = T._("Sort file date");
+			mnuSortExifDate.Text = T._("Sort Exif date");
+			mnuSortFName.Text = T._("Sort file name");
+
 		}
 
 
@@ -826,6 +835,7 @@ namespace Next_View
 		{
 			//Debug.WriteLine("main key: " + e.KeyValue.ToString());
 		}
+
 
 
 	}  // end main

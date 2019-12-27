@@ -52,7 +52,7 @@ namespace Next_View
 			this.mnuEdit = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuOptions = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuSearch = new System.Windows.Forms.ToolStripMenuItem();
-			this.mnuSearchBar = new System.Windows.Forms.ToolStripMenuItem();
+			this.mnuScrollBar = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
 			this.mnuStartEditor = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuLanguage = new System.Windows.Forms.ToolStripMenuItem();
@@ -232,7 +232,7 @@ namespace Next_View
 			this.mnuEdit.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
 			this.mnuOptions,
 			this.mnuSearch,
-			this.mnuSearchBar,
+			this.mnuScrollBar,
 			this.toolStripSeparator7,
 			this.mnuStartEditor,
 			this.mnuLanguage});
@@ -258,14 +258,14 @@ namespace Next_View
 			this.mnuSearch.Text = "Search...";
 			this.mnuSearch.Click += new System.EventHandler(this.MnuSearchClick);
 			// 
-			// mnuSearchBar
+			// mnuScrollBar
 			// 
-			this.mnuSearchBar.Checked = true;
-			this.mnuSearchBar.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.mnuSearchBar.Name = "mnuSearchBar";
-			this.mnuSearchBar.Size = new System.Drawing.Size(152, 22);
-			this.mnuSearchBar.Text = "Show Scrollbar";
-			this.mnuSearchBar.Click += new System.EventHandler(this.MnuSearchBarClick);
+			this.mnuScrollBar.Checked = true;
+			this.mnuScrollBar.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.mnuScrollBar.Name = "mnuScrollBar";
+			this.mnuScrollBar.Size = new System.Drawing.Size(152, 22);
+			this.mnuScrollBar.Text = "Show Scrollbar";
+			this.mnuScrollBar.Click += new System.EventHandler(this.MnuScrollBarClick);
 			// 
 			// toolStripSeparator7
 			// 
@@ -508,6 +508,7 @@ namespace Next_View
 			this.mnuTest.Name = "mnuTest";
 			this.mnuTest.Size = new System.Drawing.Size(142, 22);
 			this.mnuTest.Text = "Test";
+			this.mnuTest.Visible = false;
 			this.mnuTest.Click += new System.EventHandler(this.MnuTestClick);
 			// 
 			// statusMain
@@ -599,7 +600,7 @@ namespace Next_View
 			this.btnSortName});
 			this.toolStrip2.Location = new System.Drawing.Point(3, 0);
 			this.toolStrip2.Name = "toolStrip2";
-			this.toolStrip2.Size = new System.Drawing.Size(549, 31);
+			this.toolStrip2.Size = new System.Drawing.Size(518, 31);
 			this.toolStrip2.TabIndex = 1;
 			// 
 			// bnGifPrior
@@ -802,7 +803,7 @@ namespace Next_View
 			// 
 			this.mnuSortExifDate.Name = "mnuSortExifDate";
 			this.mnuSortExifDate.Size = new System.Drawing.Size(147, 22);
-			this.mnuSortExifDate.Text = "Sort Exif Date";
+			this.mnuSortExifDate.Text = "Sort Exif date";
 			this.mnuSortExifDate.Click += new System.EventHandler(this.MnuSortExifDateClick);
 			// 
 			// mnuSortFName
@@ -920,7 +921,7 @@ namespace Next_View
 		private System.Windows.Forms.ToolStripTextBox edSearch;
 		private System.Windows.Forms.ToolStripButton bnSearchPrior;
 		private System.Windows.Forms.ToolStripButton bnSearchNext;
-		private System.Windows.Forms.ToolStripMenuItem mnuSearchBar;
+		private System.Windows.Forms.ToolStripMenuItem mnuScrollBar;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
 		private System.Windows.Forms.ToolStripSplitButton btnSortName;
 		private System.Windows.Forms.ToolStripMenuItem mnuSortFDate;

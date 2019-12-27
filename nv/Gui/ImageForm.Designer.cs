@@ -89,14 +89,14 @@ namespace Next_View
 			this.toolStripSeparator3,
 			this.popClose});
 			this.popImage.Name = "popPath";
-			this.popImage.Size = new System.Drawing.Size(219, 322);
+			this.popImage.Size = new System.Drawing.Size(165, 242);
 			// 
 			// popOpen
 			// 
 			this.popOpen.Image = ((System.Drawing.Image)(resources.GetObject("popOpen.Image")));
 			this.popOpen.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
 			this.popOpen.Name = "popOpen";
-			this.popOpen.Size = new System.Drawing.Size(218, 30);
+			this.popOpen.Size = new System.Drawing.Size(164, 22);
 			this.popOpen.Text = "Open...";
 			this.popOpen.Click += new System.EventHandler(this.PopOpenClick);
 			// 
@@ -104,7 +104,7 @@ namespace Next_View
 			// 
 			this.popRename.Name = "popRename";
 			this.popRename.ShortcutKeyDisplayString = "F2";
-			this.popRename.Size = new System.Drawing.Size(218, 30);
+			this.popRename.Size = new System.Drawing.Size(164, 22);
 			this.popRename.Text = "Rename...";
 			this.popRename.Click += new System.EventHandler(this.PopRenameClick);
 			// 
@@ -112,35 +112,35 @@ namespace Next_View
 			// 
 			this.popDelete.Name = "popDelete";
 			this.popDelete.ShortcutKeyDisplayString = "Del";
-			this.popDelete.Size = new System.Drawing.Size(218, 30);
+			this.popDelete.Size = new System.Drawing.Size(164, 22);
 			this.popDelete.Text = "Delete";
 			this.popDelete.Click += new System.EventHandler(this.PopDeleteClick);
 			// 
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(215, 6);
+			this.toolStripSeparator1.Size = new System.Drawing.Size(161, 6);
 			// 
 			// popSearch
 			// 
 			this.popSearch.Image = ((System.Drawing.Image)(resources.GetObject("popSearch.Image")));
 			this.popSearch.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
 			this.popSearch.Name = "popSearch";
-			this.popSearch.Size = new System.Drawing.Size(218, 30);
+			this.popSearch.Size = new System.Drawing.Size(164, 22);
 			this.popSearch.Text = "Search...";
 			this.popSearch.Click += new System.EventHandler(this.PopSearchClick);
 			// 
 			// popStartEditor
 			// 
 			this.popStartEditor.Name = "popStartEditor";
-			this.popStartEditor.Size = new System.Drawing.Size(218, 30);
+			this.popStartEditor.Size = new System.Drawing.Size(164, 22);
 			this.popStartEditor.Text = "Start editor...";
 			this.popStartEditor.Click += new System.EventHandler(this.PopStartEditorClick);
 			// 
 			// toolStripSeparator2
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(215, 6);
+			this.toolStripSeparator2.Size = new System.Drawing.Size(161, 6);
 			// 
 			// popNext
 			// 
@@ -148,7 +148,7 @@ namespace Next_View
 			this.popNext.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
 			this.popNext.Name = "popNext";
 			this.popNext.ShortcutKeyDisplayString = "->";
-			this.popNext.Size = new System.Drawing.Size(218, 30);
+			this.popNext.Size = new System.Drawing.Size(164, 22);
 			this.popNext.Text = "Next image";
 			this.popNext.Click += new System.EventHandler(this.PopNextClick);
 			// 
@@ -158,7 +158,7 @@ namespace Next_View
 			this.popPrior.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
 			this.popPrior.Name = "popPrior";
 			this.popPrior.ShortcutKeyDisplayString = "<-";
-			this.popPrior.Size = new System.Drawing.Size(218, 30);
+			this.popPrior.Size = new System.Drawing.Size(164, 22);
 			this.popPrior.Text = "Prior image";
 			this.popPrior.Click += new System.EventHandler(this.PopPriorClick);
 			// 
@@ -166,7 +166,7 @@ namespace Next_View
 			// 
 			this.popRefresh.Name = "popRefresh";
 			this.popRefresh.ShortcutKeyDisplayString = "F5";
-			this.popRefresh.Size = new System.Drawing.Size(218, 30);
+			this.popRefresh.Size = new System.Drawing.Size(164, 22);
 			this.popRefresh.Text = "Refresh";
 			this.popRefresh.Click += new System.EventHandler(this.PopRefreshClick);
 			// 
@@ -174,21 +174,21 @@ namespace Next_View
 			// 
 			this.popFullscreen.Name = "popFullscreen";
 			this.popFullscreen.ShortcutKeyDisplayString = "Enter";
-			this.popFullscreen.Size = new System.Drawing.Size(218, 30);
+			this.popFullscreen.Size = new System.Drawing.Size(164, 22);
 			this.popFullscreen.Text = "Full screen";
 			this.popFullscreen.Click += new System.EventHandler(this.PopFullscreenClick);
 			// 
 			// toolStripSeparator3
 			// 
 			this.toolStripSeparator3.Name = "toolStripSeparator3";
-			this.toolStripSeparator3.Size = new System.Drawing.Size(215, 6);
+			this.toolStripSeparator3.Size = new System.Drawing.Size(161, 6);
 			// 
 			// popClose
 			// 
 			this.popClose.Image = ((System.Drawing.Image)(resources.GetObject("popClose.Image")));
 			this.popClose.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
 			this.popClose.Name = "popClose";
-			this.popClose.Size = new System.Drawing.Size(218, 30);
+			this.popClose.Size = new System.Drawing.Size(164, 22);
 			this.popClose.Text = "Exit";
 			this.popClose.Click += new System.EventHandler(this.PopCloseClick);
 			// 
@@ -202,7 +202,7 @@ namespace Next_View
 			0,
 			0});
 			this.Scrollbar1.Location = new System.Drawing.Point(0, 0);
-			this.Scrollbar1.Margin = new System.Windows.Forms.Padding(2);
+			this.Scrollbar1.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
 			this.Scrollbar1.Maximum = new decimal(new int[] {
 			1000,
 			0,
@@ -213,10 +213,10 @@ namespace Next_View
 			0,
 			0,
 			0});
-			this.Scrollbar1.MinimumSize = new System.Drawing.Size(23, 63);
+			this.Scrollbar1.MinimumSize = new System.Drawing.Size(14, 41);
 			this.Scrollbar1.Name = "Scrollbar1";
 			this.Scrollbar1.RepeatRate = 200;
-			this.Scrollbar1.Size = new System.Drawing.Size(27, 663);
+			this.Scrollbar1.Size = new System.Drawing.Size(16, 431);
 			this.Scrollbar1.SmallChange = new decimal(new int[] {
 			1,
 			0,
@@ -239,10 +239,10 @@ namespace Next_View
 			| System.Windows.Forms.AnchorStyles.Left) 
 			| System.Windows.Forms.AnchorStyles.Right)));
 			this.picBox.BackColor = System.Drawing.SystemColors.Control;
-			this.picBox.Location = new System.Drawing.Point(30, 0);
-			this.picBox.Margin = new System.Windows.Forms.Padding(2);
+			this.picBox.Location = new System.Drawing.Point(18, 0);
+			this.picBox.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
 			this.picBox.Name = "picBox";
-			this.picBox.Size = new System.Drawing.Size(1015, 663);
+			this.picBox.Size = new System.Drawing.Size(609, 431);
 			this.picBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
 			this.picBox.TabIndex = 45;
 			this.picBox.TabStop = false;
@@ -275,10 +275,10 @@ namespace Next_View
 			// 
 			this.AllowDrop = true;
 			this.AllowEndUserDocking = false;
-			this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.SystemColors.ControlDark;
-			this.ClientSize = new System.Drawing.Size(1046, 663);
+			this.ClientSize = new System.Drawing.Size(628, 431);
 			this.ContextMenuStrip = this.popImage;
 			this.Controls.Add(this.Scrollbar1);
 			this.Controls.Add(this.picBox);
@@ -288,7 +288,7 @@ namespace Next_View
 			| WeifenLuo.WinFormsUI.Docking.DockAreas.Document)));
 			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-			this.Margin = new System.Windows.Forms.Padding(2);
+			this.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
 			this.Name = "frmImage";
 			this.Text = "Next-View";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmImageFormClosing);

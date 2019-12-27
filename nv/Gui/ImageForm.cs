@@ -1268,7 +1268,7 @@ namespace Next_View
 			if (sVisible){
 				picBox.Left = 18;
 				picBox.Width = picBox.Width - Scrollbar1.Width + 1;
-				Scrollbar1.Visible = true;
+				Scrollbar1.Visible = true;  
 			}
 			else {
 				picBox.Left = 0;

@@ -33,14 +33,14 @@ namespace Next_View
 	/// </summary>
 	public static class ExifRead
 	{
-	  
+
 	 	static int _messageBoxCount = 0;
 
 		public static void ResetBox( )
 		{
 		  _messageBoxCount = 0;
 		}
-			  
+
 		public static bool ExifODate(out DateTime dtOriginal, string fName)
 		// called by: image.PicLoad, ScanImagesBar
 		{
@@ -48,7 +48,7 @@ namespace Next_View
 			try
 			{
 				string ext = System.IO.Path.GetExtension(fName).ToLower();        // full qualified to use directory
-				if (ext != ".jpg"){         
+				if (ext != ".jpg"){
 					return false;
 				}
 				IEnumerable<Directory> directories = ImageMetadataReader.ReadMetadata(fName);
@@ -61,7 +61,7 @@ namespace Next_View
 					dateValid = DateTime.TryParseExact(dtOriginalS, "yyyy:MM:dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out dtOriginal);
 					if (!dateValid){                    // try default format
 					  dateValid = DateTime.TryParse(dtOriginalS, CultureInfo.InvariantCulture, DateTimeStyles.None, out dtOriginal);
-					}					
+					}
 				}
 				return true;
 			}
@@ -69,20 +69,20 @@ namespace Next_View
 			{
 				Debug.WriteLine(e.Message);
 				if (_messageBoxCount == 0){   // one message per scan
-  				MessageBox.Show("Exif. File is invalid" + "\n " + e.Message, "Invalid date", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+  				MessageBox.Show(T._("Exif. File is invalid") + "\n " + e.Message, T._("Invalid date"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
   			}
   			_messageBoxCount++;
 				return false;
 			}
 		}
-				
+
 		public static bool ExifOrient(ref int exifType, ref string orientation, string fName)
 		// called by: image.PicLoad
 		{
 			try
 			{
 				int exCount = 0;
-				exifType = 0;     
+				exifType = 0;
 				orientation = "";
 				string ext = System.IO.Path.GetExtension(fName).ToLower();
 				if (ext == ".wmf" || ext == ".emf"){         // invalid for MetadataExtractor
@@ -98,19 +98,19 @@ namespace Next_View
 					string or = ifd0Directory.GetDescription(ExifDirectoryBase.TagOrientation);
 					if (or != null) orientation = or.ToLower();
 				}
-				
+
 				string dtOriginal = "";
 				var subIfdDirectory = directories.OfType<ExifSubIfdDirectory>().FirstOrDefault();
 				if (subIfdDirectory != null){
 					exCount += subIfdDirectory.TagCount;
 					dtOriginal = subIfdDirectory.GetDescription(ExifDirectoryBase.TagDateTimeOriginal);
 				}
-				
+
 				if (exCount > 5) exifType = 1;     // partial
 				if (exCount > 15){
 					exifType = 2;     // full exif
 					if (string.IsNullOrEmpty(dtOriginal)){
-						exifType = 1; 
+						exifType = 1;
 					}
 				}
 
@@ -120,7 +120,7 @@ namespace Next_View
 					string latitude = gpsDirectory.GetDescription(GpsDirectory.TagLatitude);
 					if (latitude != null) exifType = 3;
 				}
-						
+
 				return true;
 			}
 			catch (Exception e)
@@ -166,17 +166,17 @@ namespace Next_View
 					exCount = ifd0Directory.TagCount;
 					string orientation1 = ifd0Directory.GetDescription(ExifDirectoryBase.TagOrientation);
 					if (orientation1 != null) orientation = orientation1.ToLower();
-					
+
 					string make = "";
 					string make1 = ifd0Directory.GetDescription(ExifDirectoryBase.TagMake);
-					if (make1 != null){ 
+					if (make1 != null){
 						Match match1 = Regex.Match(make1, @"^([\w\-]+)");
 						if (match1.Success){
 							make =  match1.Groups[0].Value;
-							
+
 						}
 					}
-					
+
 					string model1 = ifd0Directory.GetDescription(ExifDirectoryBase.TagModel);
 					if (model1 != null) model = model1;
 					if (!model.Contains(make)){
@@ -198,12 +198,12 @@ namespace Next_View
 					dtOriginalS = subIfdDirectory.GetDescription(ExifDirectoryBase.TagDateTimeOriginal);
 					// if DateTimeOriginal does not exist, do not use exif.DateTime. This is the date of image editing if image was changed or rotated
 					// date format  mostly:   2017:10:17 09:28:15
-					// some older picture have this format   2008-07-31T20:39:13-04:00 
+					// some older picture have this format   2008-07-31T20:39:13-04:00
 					dateValid = DateTime.TryParseExact(dtOriginalS, "yyyy:MM:dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out dtOriginal);
 					if (!dateValid){                    // try default format
 					  dateValid = DateTime.TryParse(dtOriginalS, CultureInfo.InvariantCulture, DateTimeStyles.None, out dtOriginal);
 					}
-					if (dateValid){ 
+					if (dateValid){
 						DateTime myTime = default(DateTime).Add(dtOriginal.TimeOfDay);
 						TimeSpan orTime = dtOriginal.TimeOfDay;
 						int orHours = (int)orTime.Hours;
@@ -217,7 +217,7 @@ namespace Next_View
 					}
 					else {
 						if (!String.IsNullOrEmpty(dtOriginalS)){
-							exifError = "Unknown original date format";
+							exifError = T._("Unknown original date format");
 						}
 					}
 
@@ -251,10 +251,10 @@ namespace Next_View
 				if (exCount > 15){
 					exType = 2;     // full exif
 					if (string.IsNullOrEmpty(dtOriginalS)){
-						exType = 1; 
+						exType = 1;
 					}
 				}
-				
+
 				// ------------------------------   makernotes   ----------------------------------------------------------
 
 				var canonDirectory = directories.OfType<CanonMakernoteDirectory>().FirstOrDefault();
@@ -274,7 +274,7 @@ namespace Next_View
 				var olympusCameraDirectory = directories.OfType<OlympusCameraSettingsMakernoteDirectory>().FirstOrDefault();
 				if (olympusCameraDirectory != null){
 					string focusMode1 = olympusCameraDirectory.GetDescription(OlympusCameraSettingsMakernoteDirectory.TagFocusMode);
-					if (focusMode1 != null) focusMode = focusMode1;				
+					if (focusMode1 != null) focusMode = focusMode1;
 					if (focusMode.Contains("Face detect")){
 						face = true;
 					}
@@ -295,7 +295,7 @@ namespace Next_View
 						face = true;
 					}
 				}
-				
+
 				var samsungDirectory = directories.OfType<SamsungType2MakernoteDirectory>().FirstOrDefault();
 				if (samsungDirectory != null){
 					string faceDetect = samsungDirectory.GetDescription(SamsungType2MakernoteDirectory.TagFaceDetect);
@@ -328,7 +328,7 @@ namespace Next_View
 			{
 				Debug.WriteLine(e.Message);
 				if (_messageBoxCount == 0){   // one message per scan
-				  MessageBox.Show(T._("Exif is invalid") + "\n " + e.Message, T._("Invalid file") + fName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				  MessageBox.Show(T._("Exif is invalid") + "\n " + e.Message, T._("Invalid file") + " " + fName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				}
 				_messageBoxCount++;
 				return false;
