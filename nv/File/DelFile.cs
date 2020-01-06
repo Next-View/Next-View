@@ -16,6 +16,7 @@ History:
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 using System;
+using System.Diagnostics;  // Debug
 using System.Runtime.InteropServices;
 
 namespace Next_View
@@ -122,9 +123,10 @@ namespace Next_View
 				SHFileOperation(ref fs);
 				return true;
 			}
-			catch (Exception)
+			catch (Exception e)
 			{
-					return false;
+				Debug.WriteLine("Deletion error: " + path + " " + e.Message);
+				return false;
 			}
 		}
 	
