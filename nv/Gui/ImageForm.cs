@@ -126,10 +126,14 @@ namespace Next_View
 		}
 
 		private void HandleSelf(object sender, SetSelfEventArgs e)
-		// return from full
+		// return from full, setSelf
 		{
-			_currentPath = e.Fname;
-			PicLoadPos(_currentPath, true);
+		  if (e.Fname == "d"){
+		    DarkPic2();
+		  } else {
+			  _currentPath = e.Fname;
+			  PicLoadPos(_currentPath, true);
+		  }
 		}
 
 		void FrmImageLoad(object sender, EventArgs e)
@@ -241,6 +245,9 @@ namespace Next_View
 			}
 			if (_wType == WinType.full){
 				_fullRunning = false;
+			}
+  			if (CanShowExif()){
+				m_Exif.Close();
 			}
 		}
 
@@ -471,10 +478,10 @@ namespace Next_View
 				case 116:    // F5
 					RefreshDir();
 					break;
-				case 46:    // del
+				case 46:     // del
 					DelPic();
 					break;
-				case 79:    // 'o'
+				case 79:     // 'o'
 					if (ctrl){
 						OpenPic();
 					}
@@ -608,8 +615,8 @@ namespace Next_View
 		public void NextGif()
 		{
 			if (_isGif){
-				picBox.Enabled = false;
-				picBox.Image = gifImage.GetNextFrame();
+			picBox.Enabled = false;
+			picBox.Image = gifImage.GetNextFrame();
 			}
 
 		}
@@ -617,7 +624,7 @@ namespace Next_View
 		public void AnimateGif()
 		{
 			if (_isGif){
-				picBox.Enabled = true;
+			  picBox.Enabled = true;
 			}
 
 		}
@@ -625,9 +632,14 @@ namespace Next_View
 		public void PriorGif()
 		{
 			if (_isGif){
-				picBox.Enabled = false;
-				picBox.Image = gifImage.GetPriorFrame();
-			}
+			  picBox.Enabled = false;
+			  picBox.Image = gifImage.GetPriorFrame();
+		  }
+		}
+
+		void OnFrameChanged(object sender, EventArgs e)
+		{
+   			// frame change
 		}
 
 		public bool PicLoadPos(string pPath, bool log)
@@ -826,9 +838,20 @@ namespace Next_View
 			backgroundWorker1.RunWorkerAsync(parameters);
 		}
 
-		void DarkPic()
+		public void DarkPic()
 		{
 			picBox.Image = null;
+			SetWindowText("");
+			SetStatusText(0, "");
+			Dark2nd();
+			SetSelf("d");
+		}
+
+		void DarkPic2()
+		{
+			picBox.Image = null;
+			SetWindowText("");
+			SetStatusText(0, "");
 			Dark2nd();
 		}
 
@@ -1268,7 +1291,7 @@ namespace Next_View
 			if (sVisible){
 				picBox.Left = 18;
 				picBox.Width = picBox.Width - Scrollbar1.Width + 1;
-				Scrollbar1.Visible = true;  
+				Scrollbar1.Visible = true;
 			}
 			else {
 				picBox.Left = 0;
@@ -1297,20 +1320,6 @@ namespace Next_View
 			Bw2Run( );
 		}
 
-		public void ShowFullScreenold()
-		{
-			string pPath = "";
-			var frm = new FullScreen(_il);
-			if (_il.DirPosCurrent(ref pPath)){
-				frm.FPicLoad(pPath, false);
-				var result = frm.ShowDialog();
-				pPath = frm.ReturnPath;
-				PicLoadPos(pPath, true);
-			}
-			else {
-				SetStatusText(0, T._("No image loaded"));
-			}
-		}
 
 		public void ShowFullScreen()
 		{
@@ -1320,7 +1329,7 @@ namespace Next_View
 				m_ImageF.PicLoadPos(_currentPath, false);
 				m_ImageF.Show();
 				m_ImageF.BringToFront();
-				SetCommand('y', _currentPath);
+				//??SetCommand('y', _currentPath);
 			}
 			if (_wType == WinType.full) {
 				Debug.WriteLine("close full " + _currentPath);
@@ -1798,6 +1807,7 @@ namespace Next_View
 		{
 			if (CanShow2nd()){
 				m_Image2.picBox.Image = null;
+				m_Image2.Text = "";
 			}
 		}
 
@@ -1843,7 +1853,7 @@ namespace Next_View
 		}
 
 
-		public bool StartExif()   //  with e
+		public bool StartExif()   //  with e, i
 		{
 			try
 			{
@@ -1987,6 +1997,10 @@ namespace Next_View
 			{
 				this.SelfChanged(this, e);
 			}
+		}
+		void Scrollbar1Click(object sender, EventArgs e)
+		{
+	
 		}
 
 	}  // end frmImage

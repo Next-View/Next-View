@@ -48,7 +48,7 @@ namespace Next_View
 			return GetFrame(currentFrame);
 		}
 
-		Image GetFrame(int index)
+		public Image GetFrame(int index)
 		{
 			gifImage.SelectActiveFrame(dimension, index);
 			return (Image)gifImage.Clone();

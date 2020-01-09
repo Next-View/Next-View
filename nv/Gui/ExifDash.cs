@@ -45,7 +45,7 @@ namespace Next_View
 		List<Exif> exList = new List<Exif>();
 		List<ImgFile> _exifImgList = new List<ImgFile>();
 		List<string> errorList = new List<string>();
-
+		
 		Dictionary<int, int> dicExift = new Dictionary<int, int>();
 		Dictionary<int, int> dicToD = new Dictionary<int, int>();
 		Dictionary<string, int> dicModel = new Dictionary<string, int>();
@@ -96,7 +96,7 @@ namespace Next_View
 		{
 			_dashLeave = false;
 		}
-
+		
 		public void FormClear()
 		{
 			lblInfo.Text = T._("Info:");
@@ -183,9 +183,9 @@ namespace Next_View
 			// timespan for info
 			string error1 = "";
 			if (errorList.Count > 0) {
-				error1 = "               " + errorList[0] + " :" + errorList.Count.ToString();
+				error1 = "               " + errorList[0] + " :" + errorList.Count.ToString(); 
 			}
-
+			
 			if (_dateCount > 0){
 				TimeSpan imgSpan = _maxDate.Subtract(_minDate);
 				if (imgSpan.TotalDays > 730){
@@ -456,7 +456,7 @@ namespace Next_View
 			foreach (Exif exi in exList) {
 				if (exi.eType ==  ext){
 					ListViewItem item = this.listImg.Items.Add(exi.eFname);
-					_exifImgList.Add(new ImgFile(exi.eFname, exi.dtFile, exi.eDtOriginal));
+					_exifImgList.Add(new ImgFile(exi.eFname, exi.dtFile, exi.eDtOriginal));   
 				}
 			}
 		}
@@ -466,7 +466,7 @@ namespace Next_View
 			foreach (Exif exi in exList) {
 				if (string.Compare(exi.eModel, searchStr, StringComparison.InvariantCulture) == 0){
 					ListViewItem item = this.listImg.Items.Add(exi.eFname);
-					_exifImgList.Add(new ImgFile(exi.eFname, exi.dtFile, exi.eDtOriginal));
+					_exifImgList.Add(new ImgFile(exi.eFname, exi.dtFile, exi.eDtOriginal));   
 				}
 			}
 		}
@@ -476,7 +476,7 @@ namespace Next_View
 			foreach (Exif exi in exList) {
 				if (string.Compare(exi.eLensmodel, searchStr, StringComparison.InvariantCulture) == 0){
 					ListViewItem item = this.listImg.Items.Add(exi.eFname);
-					_exifImgList.Add(new ImgFile(exi.eFname, exi.dtFile, exi.eDtOriginal));
+					_exifImgList.Add(new ImgFile(exi.eFname, exi.dtFile, exi.eDtOriginal));   
 				}
 			}
 		}
@@ -486,7 +486,7 @@ namespace Next_View
 			foreach (Exif exi in exList) {
 				if (string.Compare(exi.eExposi, searchStr, StringComparison.InvariantCulture) == 0){
 					ListViewItem item = this.listImg.Items.Add(exi.eFname);
-					_exifImgList.Add(new ImgFile(exi.eFname, exi.dtFile, exi.eDtOriginal));
+					_exifImgList.Add(new ImgFile(exi.eFname, exi.dtFile, exi.eDtOriginal));   
 				}
 			}
 		}
@@ -496,7 +496,7 @@ namespace Next_View
 			foreach (Exif exi in exList) {
 				if (string.Compare(exi.eScene, searchStr, StringComparison.InvariantCulture) == 0){
 					ListViewItem item = this.listImg.Items.Add(exi.eFname);
-					_exifImgList.Add(new ImgFile(exi.eFname, exi.dtFile, exi.eDtOriginal));
+					_exifImgList.Add(new ImgFile(exi.eFname, exi.dtFile, exi.eDtOriginal));   
 				}
 			}
 		}
@@ -513,7 +513,7 @@ namespace Next_View
 			foreach (Exif exi in exList) {
 				if (exi.eTimeOfD ==  tod){
 					ListViewItem item = this.listImg.Items.Add(exi.eFname);
-					_exifImgList.Add(new ImgFile(exi.eFname, exi.dtFile, exi.eDtOriginal));
+					_exifImgList.Add(new ImgFile(exi.eFname, exi.dtFile, exi.eDtOriginal));   
 				}
 			}
 		}
@@ -523,7 +523,7 @@ namespace Next_View
 			foreach (Exif exi in exList) {
 				if (string.Compare(exi.eFLength, searchStr, StringComparison.InvariantCulture) == 0){
 					ListViewItem item = this.listImg.Items.Add(exi.eFname);
-					_exifImgList.Add(new ImgFile(exi.eFname, exi.dtFile, exi.eDtOriginal));
+					_exifImgList.Add(new ImgFile(exi.eFname, exi.dtFile, exi.eDtOriginal));   
 				}
 			}
 		}
@@ -533,7 +533,7 @@ namespace Next_View
 			foreach (Exif exi in exList) {
 				if (exi.eGps == true){
 					ListViewItem item = this.listImg.Items.Add(exi.eFname);
-					_exifImgList.Add(new ImgFile(exi.eFname, exi.dtFile, exi.eDtOriginal));
+					_exifImgList.Add(new ImgFile(exi.eFname, exi.dtFile, exi.eDtOriginal));   
 				}
 			}
 		}
@@ -543,7 +543,7 @@ namespace Next_View
 			foreach (Exif exi in exList) {
 				if (exi.eFace == true){
 					ListViewItem item = this.listImg.Items.Add(exi.eFname);
-					_exifImgList.Add(new ImgFile(exi.eFname, exi.dtFile, exi.eDtOriginal));
+					_exifImgList.Add(new ImgFile(exi.eFname, exi.dtFile, exi.eDtOriginal));   
 				}
 			}
 		}
@@ -553,7 +553,7 @@ namespace Next_View
 			foreach (Exif exi in exList) {
 				if (exi.eFlash == true){
 					ListViewItem item = this.listImg.Items.Add(exi.eFname);
-					_exifImgList.Add(new ImgFile(exi.eFname, exi.dtFile, exi.eDtOriginal));
+					_exifImgList.Add(new ImgFile(exi.eFname, exi.dtFile, exi.eDtOriginal));   
 				}
 			}
 		}
@@ -577,7 +577,7 @@ namespace Next_View
 				}
 				if (string.Compare(datePart, searchStr, StringComparison.InvariantCulture) == 0){
 					ListViewItem item = this.listImg.Items.Add(exi.eFname);
-					_exifImgList.Add(new ImgFile(exi.eFname, exi.dtFile, exi.eDtOriginal));
+					_exifImgList.Add(new ImgFile(exi.eFname, exi.dtFile, exi.eDtOriginal));   
 				}
 			}
 		}
@@ -786,7 +786,7 @@ namespace Next_View
 		// shown with ExifDataShow
 		{
 			var dashImgList = new List<string>();
-			bool allDirs = false;
+			bool allDirs = false;			
 			if (allDirs){
 				dashImgList = Directory.GetFiles(_imgDir, "*.*", SearchOption.AllDirectories)
 									.Where(file => _validExtensions.Any(file.ToLower().EndsWith))
@@ -798,8 +798,8 @@ namespace Next_View
 									.ToList();
 			}
 			FilenameComparer fc = new FilenameComparer();
-			dashImgList.Sort(fc);
-
+			dashImgList.Sort(fc);					
+				
 			int exType;
 			string orientation;
 			string model;
@@ -824,9 +824,9 @@ namespace Next_View
 			DateTime priorDate = DateTime.MaxValue;
 			var spanDict = new Dictionary<int, int>();
 			ExifRead.ResetBox();
-
+			
 			foreach (string picPath in dashImgList)
-			{
+			{	
 				ExifRead.CheckExif(out exType, out orientation, out model, out dtOriginal, out timeOfD, out expotime, out fnumber, out fLength, out flash, out exposi, out lens, out scene,
 				               out gps, out face, out exError, picPath);
 				DateTime dtCreation = File.GetCreationTime(picPath);
@@ -838,7 +838,7 @@ namespace Next_View
 				else {
 					dtFile = dtChanged;
 				}
-
+				
 				exList.Add(new Exif(exType, model, dtOriginal, timeOfD,
 				                  expotime, fnumber, fLength, flash,  exposi, lens, scene,
 					                gps, face, picPath, dtFile));

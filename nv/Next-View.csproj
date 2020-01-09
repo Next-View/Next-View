@@ -118,10 +118,6 @@
     <Compile Include="Gui\ExifForm0.Designer.cs">
       <DependentUpon>ExifForm0.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\FullScreen.cs" />
-    <Compile Include="Gui\FullScreen.Designer.cs">
-      <DependentUpon>FullScreen.cs</DependentUpon>
-    </Compile>
     <Compile Include="Gui\MainForm.cs">
       <Generator>open </Generator>
     </Compile>
@@ -165,9 +161,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExifForm0.resx">
       <DependentUpon>ExifForm0.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\FullScreen.resx">
-      <DependentUpon>FullScreen.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
