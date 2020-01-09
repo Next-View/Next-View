@@ -544,6 +544,9 @@ namespace Next_View
 
 		void EdSearchKeyDown(object sender, KeyEventArgs e)
 		{
+			if (e.Modifiers == Keys.Control && (e.KeyValue == 66 || e.KeyValue == 68)){    // 'b' 'd' dark
+				m_Image.DarkPic();
+			}
 			if (e.KeyCode == Keys.Enter){
 				m_Image.NextSearchPic(edSearch.Text);
 			}
@@ -707,12 +710,10 @@ namespace Next_View
 			bnSearch.Text = T._("Search");
 			bnSearchNext.Text = T._("Search next");
 			bnHelp.Text = T._("Help");
-
 			btnSortName.Text = T._("Sort");
 			mnuSortFDate.Text = T._("Sort file date");
 			mnuSortExifDate.Text = T._("Sort Exif date");
 			mnuSortFName.Text = T._("Sort file name");
-
 		}
 
 
@@ -742,7 +743,7 @@ namespace Next_View
 					}
 					break;
 
-        case -2:
+        case -2:    // pic load
         	this.picLabel1.Text = sText;
           break;
 
@@ -763,8 +764,10 @@ namespace Next_View
 		private void HandleWindow(object sender, SetTitleEventArgs e)
 		// called by: SetWindowText: picLoad, Rename, Remove
 		{
+		  if (e.NewValue != ""){
 			_currentPath = e.NewValue;
-			this.Text = _currentPath + "  -  Next-View";
+		  }
+			this.Text = e.NewValue + "  -  Next-View";
 		}
 
 
@@ -835,7 +838,6 @@ namespace Next_View
 		{
 			//Debug.WriteLine("main key: " + e.KeyValue.ToString());
 		}
-
 
 
 	}  // end main
