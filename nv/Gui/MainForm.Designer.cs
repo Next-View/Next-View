@@ -84,7 +84,6 @@ namespace Next_View
 			this.mnuTest = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusMain = new System.Windows.Forms.StatusStrip();
 			this.statusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-			this.picLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
 			this.progress1 = new System.Windows.Forms.ToolStripProgressBar();
 			this.addCommentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
@@ -518,7 +517,6 @@ namespace Next_View
 			this.statusMain.ImageScalingSize = new System.Drawing.Size(22, 22);
 			this.statusMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
 			this.statusLabel1,
-			this.picLabel1,
 			this.progress1});
 			this.statusMain.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
 			this.statusMain.Location = new System.Drawing.Point(0, 0);
@@ -533,11 +531,6 @@ namespace Next_View
 			this.statusLabel1.Size = new System.Drawing.Size(25, 25);
 			this.statusLabel1.Text = "    ";
 			this.statusLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			// 
-			// picLabel1
-			// 
-			this.picLabel1.Name = "picLabel1";
-			this.picLabel1.Size = new System.Drawing.Size(0, 25);
 			// 
 			// progress1
 			// 
@@ -929,7 +922,6 @@ namespace Next_View
 		private System.Windows.Forms.ToolStripSplitButton btnSortName;
 		private System.Windows.Forms.ToolStripMenuItem mnuSortFDate;
 		private System.Windows.Forms.ToolStripMenuItem mnuSortExifDate;
-		private System.Windows.Forms.ToolStripStatusLabel picLabel1;
 		private System.Windows.Forms.ToolStripMenuItem mnuSortFName;
 		private System.Windows.Forms.ToolStripButton bnGifPrior;
 		private System.Windows.Forms.ToolStripButton bnGifNext;

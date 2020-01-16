@@ -43,6 +43,7 @@ namespace Next_View
 		private XDListener listener;
 
 		string _currentPath = "";
+		string _statusText = "";
 		private int _step = 0;
 		private int _maxStep = 0;
 
@@ -728,9 +729,9 @@ namespace Next_View
 			//Debug.WriteLine(String.Format("Status msg: {0}, {1} ", sVal, sText));
 			switch(sVal)
 			{
-				case 0:   // directory / seach / hist / no img
+				case 0:   // no img
 					this.statusLabel1.Text = sText;
-					this.picLabel1.Text = "";
+					         // no picLabel1, flicker effect
 					break;
 
 				case -1:   // dash progress
@@ -743,10 +744,16 @@ namespace Next_View
 					}
 					break;
 
-        case -2:    // pic load
-        	this.picLabel1.Text = sText;
+        case -2:    // directory / seach / hist   suspended message   
+        	_statusText = sText;
+        	//this.picLabel1.Text = sText;
           break;
 
+        case -3:    // pic load, size perc        complete message 
+        	this.statusLabel1.Text = _statusText + sText;
+        	//this.picLabel1.Text = sText;
+          break;
+          
 				case -9:   // dash complete
 					progress1.Value = 0;
 					_maxStep = 0;
