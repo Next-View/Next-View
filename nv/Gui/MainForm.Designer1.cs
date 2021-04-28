@@ -153,6 +153,16 @@ namespace Next_View.Gui {
 		/// <summary>
 		///   Looks up a localized resource of type System.Drawing.Bitmap.
 		/// </summary>
+		internal static System.Drawing.Bitmap bnPlus_Image {
+			get {
+				object obj = ResourceManager.GetObject("bnPlus.Image", resourceCulture);
+				return ((System.Drawing.Bitmap)(obj));
+			}
+		}
+		
+		/// <summary>
+		///   Looks up a localized resource of type System.Drawing.Bitmap.
+		/// </summary>
 		internal static System.Drawing.Bitmap bnPrior_Image {
 			get {
 				object obj = ResourceManager.GetObject("bnPrior.Image", resourceCulture);
@@ -216,6 +226,16 @@ namespace Next_View.Gui {
 		internal static System.Windows.Forms.ImageListStreamer imageList1_ImageStream {
 			get {
 				object obj = ResourceManager.GetObject("imageList1.ImageStream", resourceCulture);
+				return ((System.Windows.Forms.ImageListStreamer)(obj));
+			}
+		}
+		
+		/// <summary>
+		///   Looks up a localized resource of type System.Windows.Forms.ImageListStreamer.
+		/// </summary>
+		internal static System.Windows.Forms.ImageListStreamer imageList2_ImageStream {
+			get {
+				object obj = ResourceManager.GetObject("imageList2.ImageStream", resourceCulture);
 				return ((System.Windows.Forms.ImageListStreamer)(obj));
 			}
 		}

@@ -21,6 +21,7 @@ using System.Diagnostics;  // Debug
 using System.Drawing;  // rectangle
 using System.Globalization;   // CultureInfo
 using System.IO;   // path
+using System.Linq;	 //	count
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System.Threading;
@@ -46,7 +47,7 @@ namespace Next_View
 		string _statusText = "";
 		private int _step = 0;
 		private int _maxStep = 0;
-
+        
 		public frmMain()
 		{
 			//
@@ -81,7 +82,7 @@ namespace Next_View
 
 		void FrmMainLoad(object sender, EventArgs e)
 		{
-			//Debug.WriteLine("Main start: ");
+			Debug.WriteLine("Main start: ");
 			listener = new XDListener();
 			listener.MessageReceived += new XDListener.XDMessageHandler(listener_MessageReceived);
 			listener.RegisterChannel("NVMessage");
@@ -90,7 +91,7 @@ namespace Next_View
 
 			bool created;
 			s_event = new EventWaitHandle (false, EventResetMode.ManualReset, "Next-View", out created);   //  instead of mutex
-   		if (created || kShift){         // 1st instance or shift key
+   			if (created || kShift){         // 1st instance or shift key
 				if (Properties.Settings.Default.UpgradeRequired) {
 					Settings.Default.Upgrade();
 					Settings.Default.UpgradeRequired = false;
@@ -205,7 +206,7 @@ namespace Next_View
 				if (Directory.Exists(userImagePath)) {
 					m_Image.PicScan(userImagePath, true, 0);
 				}
-				firstImage = Directory.GetCurrentDirectory() + @"\Next-View-0.6.jpg";
+				firstImage = Directory.GetCurrentDirectory() + @"\Next-View-0.7.jpg";
 				recentItem1.AddRecentItem(firstImage);
 				if (doShow) {
 					m_Image.PicLoadPos(firstImage, true);
@@ -431,7 +432,10 @@ namespace Next_View
 		void MnuHelp1Click(object sender, EventArgs e)
 		{
 			//Help.ShowHelp(this, "Next-View.chm");
-			MessageBox.Show("Help not yet done", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+	        var c = this.ActiveControl;
+            if(c!=null)
+                MessageBox.Show(c.Name);
+			//MessageBox.Show("Help not yet done", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 		}
 
 		void FrmMainHelpRequested(object sender, HelpEventArgs hlpevent)   // F1
@@ -606,16 +610,23 @@ namespace Next_View
 
 		void listener_MessageReceived(object sender, XDMessageEventArgs e)
 		{
-
 			Application.DoEvents();
 			string commandLine = e.DataGram.Message;
-			if (File.Exists(commandLine)) {
-				//Debug.WriteLine("2nd command: " + commandLine);
-				m_Image.PicScan(commandLine, false, 0);
-				m_Image.PicLoadPos(commandLine, true);
-				recentItem1.AddRecentItem(commandLine);
+			// Debug.WriteLine(DateTime.Now + " " + commandLine);
+			string[] fileList = commandLine.Split('\t');
+			if (fileList.Length == 1){
+				string oneFile = fileList[0];
+				if (File.Exists(oneFile)) {
+					m_Image.PicScan(oneFile, false, 0);
+					m_Image.PicLoadPos(oneFile, true);
+					recentItem1.AddRecentItem(oneFile);
+				}
+				ShowMe();
 			}
-			ShowMe();
+			else {  // list of files
+				m_Image.ProcessDrop(fileList, false);
+				ShowMe();
+			}
 		}
 
 		void NvSendMsg()
@@ -771,10 +782,14 @@ namespace Next_View
 		private void HandleWindow(object sender, SetTitleEventArgs e)
 		// called by: SetWindowText: picLoad, Rename, Remove
 		{
+		  int count = 0;
 		  if (e.NewValue != ""){
 			_currentPath = e.NewValue;
+			string fname = Path.GetFileNameWithoutExtension(_currentPath);
+			count = fname.Count(f => f == '+');
 		  }
 			this.Text = e.NewValue + "  -  Next-View";
+			bnPlus.Image = imageList2.Images[count];
 		}
 
 
@@ -844,6 +859,10 @@ namespace Next_View
 		void FrmMainKeyDown(object sender, KeyEventArgs e)
 		{
 			//Debug.WriteLine("main key: " + e.KeyValue.ToString());
+		}
+		void MenuMainItemClicked(object sender, ToolStripItemClickedEventArgs e)
+		{
+	
 		}
 
 
