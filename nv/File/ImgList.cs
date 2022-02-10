@@ -32,7 +32,7 @@ namespace Next_View
 		public List<ImgFile> _imList = new List<ImgFile>();
 		int _picPos = 1;
 		string _picDir = "";
-		readonly string[] _validExtensions  = new [] {".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tif", ".ico", ".wmf", ".emf"};
+		readonly string[] _validExtensions  = new [] {".jpg", ".jpeg", ".jfif", ".png", ".gif", ".bmp", ".tif", ".ico", ".wmf", ".emf"};
 		// no .lnk files
 
 		List<string> _logList = new List<string>();

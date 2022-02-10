@@ -16,15 +16,13 @@ History:
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 using System;
-using System.Collections.Generic;
+using System.Drawing;  // graphics
 using System.Diagnostics;
 using System.Linq;	 //	OfType
 using System.Globalization;   // CultureInfo
-using System.Text.RegularExpressions;  // Regex
+using System.Runtime.InteropServices;    // DllImport
 using System.Windows.Forms;  // MessageBox
-using MetadataExtractor;
-using MetadataExtractor.Formats.Exif;
-using MetadataExtractor.Formats.Exif.Makernotes;
+
 
 namespace Next_View
 {
@@ -70,5 +68,26 @@ namespace Next_View
 			}
 		}
 
+        [DllImport("gdi32.dll")]
+        static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
+        public enum DeviceCap
+        {
+            VERTRES = 10,
+            DESKTOPVERTRES = 117,
+        	// https://stackoverflow.com/questions/5977445/how-to-get-windows-display-settings
+            // http://pinvoke.net/default.aspx/gdi32/GetDeviceCaps.html
+        }
+
+        public static float getScalingFactor()
+        {
+            Graphics g = Graphics.FromHwnd(IntPtr.Zero);
+            IntPtr desktop = g.GetHdc();
+            int LogicalScreenHeight = GetDeviceCaps(desktop, (int)DeviceCap.VERTRES);
+            int PhysicalScreenHeight = GetDeviceCaps(desktop, (int)DeviceCap.DESKTOPVERTRES); 
+        
+            float ScreenScalingFactor = (float)PhysicalScreenHeight / (float)LogicalScreenHeight;
+        
+            return ScreenScalingFactor; // 1.25 = 125%
+        }
 	}
 }

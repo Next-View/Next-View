@@ -22,7 +22,7 @@ using System.IO;	 //	directory
 using System.Linq;	 //	Where
 using System.Text.RegularExpressions;  // Regex
 using System.Windows.Forms;
-using Microsoft.VisualBasic;
+using Next_View.Properties;
 
 
 namespace Next_View
@@ -39,7 +39,9 @@ namespace Next_View
 		public string _selImg {get;set;}
 		
 		List<string> _searchList2 = new List<string>();
-		
+
+        public event HandleKeyChange  KeyChanged;
+        		
 		public SearchForm(string pPath, string lastSearchStr, ImgList il)
 		{
 			//
@@ -71,6 +73,22 @@ namespace Next_View
 			AcceptButton = cmdSearch;
 		}
 
+		void SearchFormActivated(object sender, EventArgs e)
+		{
+	        SetKeyChange(82, true, false);    // R efresh	
+		}
+		
+		void SearchFormDeactivate(object sender, EventArgs e)
+		{
+		    if (Settings.Default.HideImg)
+		    {
+    	        if (frmRename.ActiveForm == null)   //  app inactive
+    	        {
+    	            SetKeyChange(68, true, false);     // D ark
+    	        }
+    	    }
+		}
+		
 		void EdSearchForEnter(object sender, EventArgs e)
 		{
 			AcceptButton = cmdSearch;
@@ -160,7 +178,7 @@ namespace Next_View
 		public void	DoSearch(string startDir, string sFor, bool subDirs, ref int findCount)
 		{
 			var searchList1 = new List<string>();
-			string[]	validExtensions	=	new	[] {".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tif", ".ico", ".wmf", ".emf"};
+			string[]	validExtensions	=	new	[] {".jpg", ".jpeg", ".jfif", ".png", ".gif", ".bmp", ".tif", ".ico", ".wmf", ".emf"};
 			if (subDirs){
 				searchList1 = Directory.GetFiles(startDir, "*.*", SearchOption.AllDirectories)
 									.Where(file	=> validExtensions.Any(file.ToLower().EndsWith))
@@ -215,6 +233,31 @@ namespace Next_View
 			label2.Text = T._("Search in:");
 			label3.Text = T._("One dir up");
 			chkStartWith.Text = T._("Start with");
+		}
+		
+		void SearchFormHelpRequested(object sender, HelpEventArgs hlpevent)
+		{
+		    var c = this.ActiveControl;
+            if(c!=null)
+                MessageBox.Show(c.Name);
+		}
+
+		// ------------------------------   delegates   ----------------------------------------------------------
+
+		public void SetKeyChange(int kVal, bool alt, bool ctrl)
+		{
+			// called by: PicLoad, 'no img loaded'
+			// output: imageForm.HandleKey
+			OnKeyChanged(new SetKeyEventArgs(kVal, alt, ctrl));
+			Application.DoEvents();
+		}
+
+		protected virtual void OnKeyChanged(SetKeyEventArgs e)
+		{
+			if(this.KeyChanged != null)     // nothing subscribed to this event
+			{
+				this.KeyChanged(this, e);
+			}
 		}
 
 		

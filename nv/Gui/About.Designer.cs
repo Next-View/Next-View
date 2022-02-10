@@ -55,20 +55,20 @@ namespace Next_View
 			| System.Windows.Forms.AnchorStyles.Left) 
 			| System.Windows.Forms.AnchorStyles.Right)));
 			this.webBrowser1.Location = new System.Drawing.Point(0, 0);
-			this.webBrowser1.Margin = new System.Windows.Forms.Padding(4);
-			this.webBrowser1.MinimumSize = new System.Drawing.Size(26, 25);
+			this.webBrowser1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+			this.webBrowser1.MinimumSize = new System.Drawing.Size(23, 20);
 			this.webBrowser1.Name = "webBrowser1";
-			this.webBrowser1.Size = new System.Drawing.Size(399, 334);
+			this.webBrowser1.Size = new System.Drawing.Size(355, 267);
 			this.webBrowser1.TabIndex = 0;
 			this.webBrowser1.TabStop = false;
 			this.webBrowser1.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.WebBrowser1Navigating);
 			// 
 			// cmdOk
 			// 
-			this.cmdOk.Location = new System.Drawing.Point(282, 370);
-			this.cmdOk.Margin = new System.Windows.Forms.Padding(4);
+			this.cmdOk.Location = new System.Drawing.Point(251, 296);
+			this.cmdOk.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
 			this.cmdOk.Name = "cmdOk";
-			this.cmdOk.Size = new System.Drawing.Size(100, 28);
+			this.cmdOk.Size = new System.Drawing.Size(89, 22);
 			this.cmdOk.TabIndex = 1;
 			this.cmdOk.Text = "&OK";
 			this.cmdOk.UseVisualStyleBackColor = true;
@@ -78,18 +78,21 @@ namespace Next_View
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(400, 408);
+			this.ClientSize = new System.Drawing.Size(356, 326);
 			this.Controls.Add(this.cmdOk);
 			this.Controls.Add(this.webBrowser1);
 			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-			this.Margin = new System.Windows.Forms.Padding(4);
+			this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+			this.MaximizeBox = false;
+			this.MinimizeBox = false;
 			this.Name = "frmAbout";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "About";
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmAboutFormClosed);
 			this.Load += new System.EventHandler(this.FrmAboutLoad);
 			this.Shown += new System.EventHandler(this.frmAboutShown);
+			this.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.FrmAboutHelpRequested);
 			this.ResumeLayout(false);
 
 		}

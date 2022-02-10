@@ -346,6 +346,18 @@ namespace Next_View.Properties {
 				this["UseMediaDefault"] = value;
 			}
 		}
-		
+
+		[global::System.Configuration.UserScopedSettingAttribute()]
+		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+		[global::System.Configuration.DefaultSettingValueAttribute("True")]
+		public bool HideImg {
+			get {
+				return ((bool)(this["HideImg"]));
+			}
+			set {
+				this["HideImg"] = value;
+			}
+		}
+				
 	}
 }

@@ -29,6 +29,11 @@ namespace Next_View
 	public static class Multi
 	{
 
+		public static int ScreenNumbers()
+		{
+		    return Screen.AllScreens.Length;
+		}
+		
 		public static void MainLoad(out int left, out int top)
 		{
 			if(Screen.AllScreens.Length == 1){
@@ -102,6 +107,8 @@ namespace Next_View
 		}
 		
 		public static void FormShowVisible(out bool visible, ref int left, ref int top, int width, int height)
+		// checks x, y, pos, and fix position if form not visible
+		// called by: main, image (2nd), exif; each 2*
 		{
 			visible = false;
 			int areaForm = width * height;
@@ -122,7 +129,7 @@ namespace Next_View
 						screenFix = rectScreen;
 					}
 				}
-				// Debug.WriteLine("screens: X: {0}  Y: {1}  W: {2}  H: {3} ", screen.WorkingArea.Left, screen.WorkingArea.Top, screen.WorkingArea.Width, screen.WorkingArea.Height);
+				//Debug.WriteLine("screens: X: {0}  Y: {1}  W: {2}  H: {3} ", screen.WorkingArea.Left, screen.WorkingArea.Top, screen.WorkingArea.Width, screen.WorkingArea.Height);
 			}
 			double visPerc = (double) areaVisible * 100.0 / areaForm;
 			if (visPerc >= 60.0){

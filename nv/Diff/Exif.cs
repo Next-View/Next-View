@@ -48,7 +48,7 @@ namespace Next_View
 			try
 			{
 				string ext = System.IO.Path.GetExtension(fName).ToLower();        // full qualified to use directory
-				if (ext != ".jpg"  && ext != ".jpeg"){         
+				if (ext != ".jpg"  && ext != ".jpeg" && ext != ".jfif"){         
 					return false;
 				}
 				IEnumerable<Directory> directories = ImageMetadataReader.ReadMetadata(fName);
@@ -69,7 +69,7 @@ namespace Next_View
 			{
 				Debug.WriteLine(e.Message);
 				if (_messageBoxCount == 0){   // one message per scan
-  				MessageBox.Show(T._("Exif. File is invalid") + "\n " + e.Message, T._("Invalid date"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+  				//MessageBox.Show(T._("Exif. File is invalid") + "\n " + e.Message, T._("Invalid date"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
   			}
   			_messageBoxCount++;
 				return false;
@@ -116,17 +116,20 @@ namespace Next_View
 
 				// ------------------------------   gps    --------------
 				var gpsDirectory = directories.OfType<GpsDirectory>().FirstOrDefault();
-				if (gpsDirectory != null){
+				string nullGps = "0° 0' 0";
+				if (gpsDirectory != null){				    
 					string latitude = gpsDirectory.GetDescription(GpsDirectory.TagLatitude);
-					if (latitude != null) exifType = 3;
+					if (latitude != null){
+					     if (latitude.IndexOf(nullGps) == -1) exifType = 3;
+					}	
 				}
-						
 				return true;
 			}
 			catch (Exception e)
 			{
 				Debug.WriteLine(e.Message);
-				MessageBox.Show("Exif. File is invalid" + "\n " + e.Message, "Invalid orientation", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				// some files are valid, but have no orientation, no error
+				//MessageBox.Show("Exif. File is invalid" + "\n " + e.Message, "Invalid orientation", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				return false;
 			}
 		}
@@ -328,7 +331,7 @@ namespace Next_View
 			{
 				Debug.WriteLine(e.Message);
 				if (_messageBoxCount == 0){   // one message per scan
-				  MessageBox.Show(T._("Exif is invalid") + "\n " + e.Message, T._("Invalid file") + " " + fName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				  MessageBox.Show(T._("Exif is invalid.") + "\n " + e.Message, T._("Invalid file") + " " + fName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				}
 				_messageBoxCount++;
 				return false;

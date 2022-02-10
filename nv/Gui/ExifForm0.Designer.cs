@@ -77,7 +77,11 @@ namespace Next_View
 			this.Controls.Add(this.textExif0);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Margin = new System.Windows.Forms.Padding(4);
+			this.MaximizeBox = false;
+			this.MinimizeBox = false;
+			this.MinimumSize = new System.Drawing.Size(600, 400);
 			this.Name = "ExifForm0";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "ExifForm0";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ExifForm0FormClosing);
 			this.ResumeLayout(false);

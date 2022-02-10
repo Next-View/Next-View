@@ -30,21 +30,25 @@ namespace Next_View
 			frameCount = gifImage.GetFrameCount(dimension);
 		}
 
-		public Image GetNextFrame()
+		public Image GetNextFrame(out int fCount, out int fIndex)
 		{
 			currentFrame++;
 			if (currentFrame >= frameCount) {
 					currentFrame = 0;
 			}
+			fCount = frameCount; 
+			fIndex = currentFrame + 1;
 			return GetFrame(currentFrame);
 		}
 
-		public Image GetPriorFrame()
+		public Image GetPriorFrame(out int fCount, out int fIndex)
 		{
 			currentFrame--;
 			if (currentFrame < 0) {
 					currentFrame = frameCount - 1;
 			}
+			fCount = frameCount; 
+			fIndex = currentFrame + 1;			
 			return GetFrame(currentFrame);
 		}
 

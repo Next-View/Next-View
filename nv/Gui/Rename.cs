@@ -16,9 +16,11 @@ History:
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 using System;
+using System.Diagnostics;  // Debug
 using System.Drawing;
-using	System.IO;	 //	path
+using System.IO;	 //	path
 using System.Windows.Forms;
+using Next_View.Properties;
 
 namespace Next_View
 {
@@ -29,8 +31,10 @@ namespace Next_View
 	{
 		string _pPath;
 		public string _ReturnPath {get;set;}
-		char[] _invalidChars = {'*', '/', '\\', '[', ']', ':', ';', '|', '=', ',', '"'};
+		char[] _invalidChars = {'*', '/', '\\', '[', ']', ':', ';', '|', '=', '"'};
 
+        public event HandleKeyChange  KeyChanged;
+        
 		public frmRename(string pPath)
 		{
 			//
@@ -41,6 +45,8 @@ namespace Next_View
 			_ReturnPath = "";
 		}
 
+		// ------------------------------   events form ----------------------------------------------------------
+		
 		void FrmRenameLoad(object sender, EventArgs e)
 		{
 			TranslateRenameForm( );
@@ -52,12 +58,40 @@ namespace Next_View
 			edExt.Text = Path.GetExtension(_pPath);
 		}
 
+		void FrmRenameHelpRequested(object sender, HelpEventArgs hlpevent)
+		{
+		    var c = this.ActiveControl;
+            if(c!=null)
+                MessageBox.Show(c.Name);
+		}
+
+		void FrmRenameActivated(object sender, EventArgs e)
+		{
+	        SetKeyChange(82, true, false);    // R efresh
+		}
+		
+		void FrmRenameDeactivate(object sender, EventArgs e)
+		{
+		    if (Settings.Default.HideImg)
+		    {
+    	        if (frmRename.ActiveForm == null)   //  app inactive
+    	        {
+    	            SetKeyChange(68, true, false);     // D ark
+    	        }
+	        }
+		}
+				
+		// ------------------------------   button ----------------------------------------------------------
+		
 		void CmdRenameOkClick(object sender, EventArgs e)
 		{
 			// dialog result must be 'none' to stay open in case of error
 			string newName = edFilename.Text;
-			if (newName.IndexOfAny(_invalidChars) > -1) {
-				MessageBox.Show(T._("Invalid letter in filename") + Environment.NewLine
+			int invalPos = newName.IndexOfAny(_invalidChars);
+			if (invalPos > -1) {
+				edFilename.Focus();
+				edFilename.Select(invalPos, 1);
+				MessageBox.Show(T._("Invalid letter in filename, position " + invalPos) + Environment.NewLine
 				+ newName + Environment.NewLine + T._("Invalid letters are") + ": * / \\ [ ] : ; | = , \" ",
 				T._("Error"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}
@@ -76,6 +110,14 @@ namespace Next_View
 			}
 		}
 
+		void CmdRenameCancelClick(object sender, EventArgs e)
+		{
+			this._ReturnPath = "";
+			this.Close();
+		}
+
+		// ------------------------------   functions ----------------------------------------------------------
+				
 		bool FileRename(string nameFrom, string nameTo, ref string eMessage)
 		{
 			try {
@@ -87,13 +129,7 @@ namespace Next_View
 				return false;
 			}
 		}
-
-		void CmdRenameCancelClick(object sender, EventArgs e)
-		{
-			this._ReturnPath = "";
-			this.Close();
-		}
-		
+ 	
 		public void TranslateRenameForm( )
 		{
 			Text = T._("Rename");
@@ -102,6 +138,24 @@ namespace Next_View
 			label1.Text = T._("New name:");
 		}
 
+		// ------------------------------   delegates   ----------------------------------------------------------
+
+		public void SetKeyChange(int kVal, bool alt, bool ctrl)
+		{
+			// called by: PicLoad, 'no img loaded'
+			// output: imageForm.HandleKey
+			OnKeyChanged(new SetKeyEventArgs(kVal, alt, ctrl));
+			Application.DoEvents();
+		}
+
+		protected virtual void OnKeyChanged(SetKeyEventArgs e)
+		{
+			if(this.KeyChanged != null)     // nothing subscribed to this event
+			{
+				this.KeyChanged(this, e);
+			}
+		}
+		
 
 	}
 }

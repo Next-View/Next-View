@@ -76,10 +76,10 @@ namespace Next_View
 			// 
 			this.cmdCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.cmdCancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.cmdCancel.Location = new System.Drawing.Point(25, 486);
+			this.cmdCancel.Location = new System.Drawing.Point(22, 389);
 			this.cmdCancel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.cmdCancel.Name = "cmdCancel";
-			this.cmdCancel.Size = new System.Drawing.Size(124, 37);
+			this.cmdCancel.Size = new System.Drawing.Size(110, 30);
 			this.cmdCancel.TabIndex = 7;
 			this.cmdCancel.Text = "&Cancel";
 			this.cmdCancel.UseVisualStyleBackColor = true;
@@ -89,10 +89,10 @@ namespace Next_View
 			// 
 			this.cmdOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.cmdOk.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.cmdOk.Location = new System.Drawing.Point(905, 486);
-			this.cmdOk.Margin = new System.Windows.Forms.Padding(5);
+			this.cmdOk.Location = new System.Drawing.Point(804, 389);
+			this.cmdOk.Margin = new System.Windows.Forms.Padding(4);
 			this.cmdOk.Name = "cmdOk";
-			this.cmdOk.Size = new System.Drawing.Size(133, 37);
+			this.cmdOk.Size = new System.Drawing.Size(118, 30);
 			this.cmdOk.TabIndex = 8;
 			this.cmdOk.Text = "&OK";
 			this.cmdOk.UseVisualStyleBackColor = true;
@@ -105,10 +105,10 @@ namespace Next_View
 			this.listSearch.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
 			this.colFilename});
 			this.listSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.listSearch.Location = new System.Drawing.Point(16, 96);
+			this.listSearch.Location = new System.Drawing.Point(14, 77);
 			this.listSearch.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.listSearch.Name = "listSearch";
-			this.listSearch.Size = new System.Drawing.Size(1044, 366);
+			this.listSearch.Size = new System.Drawing.Size(928, 294);
 			this.listSearch.TabIndex = 6;
 			this.listSearch.UseCompatibleStateImageBehavior = false;
 			this.listSearch.View = System.Windows.Forms.View.Details;
@@ -122,29 +122,30 @@ namespace Next_View
 			// edSearchFor
 			// 
 			this.edSearchFor.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.edSearchFor.Location = new System.Drawing.Point(156, 15);
+			this.edSearchFor.Location = new System.Drawing.Point(139, 12);
 			this.edSearchFor.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.edSearchFor.Name = "edSearchFor";
-			this.edSearchFor.Size = new System.Drawing.Size(369, 21);
+			this.edSearchFor.Size = new System.Drawing.Size(328, 24);
 			this.edSearchFor.TabIndex = 1;
 			this.edSearchFor.Enter += new System.EventHandler(this.EdSearchForEnter);
 			// 
 			// label1
 			// 
 			this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label1.Location = new System.Drawing.Point(16, 17);
+			this.label1.Location = new System.Drawing.Point(14, 14);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(133, 28);
+			this.label1.Size = new System.Drawing.Size(118, 22);
 			this.label1.TabIndex = 5;
 			this.label1.Text = "Search for:";
 			// 
 			// cmdSearch
 			// 
+			this.cmdSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.cmdSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.cmdSearch.Location = new System.Drawing.Point(465, 486);
-			this.cmdSearch.Margin = new System.Windows.Forms.Padding(5);
+			this.cmdSearch.Location = new System.Drawing.Point(413, 389);
+			this.cmdSearch.Margin = new System.Windows.Forms.Padding(4);
 			this.cmdSearch.Name = "cmdSearch";
-			this.cmdSearch.Size = new System.Drawing.Size(176, 37);
+			this.cmdSearch.Size = new System.Drawing.Size(156, 30);
 			this.cmdSearch.TabIndex = 2;
 			this.cmdSearch.Text = "&Start search";
 			this.cmdSearch.UseVisualStyleBackColor = true;
@@ -154,10 +155,10 @@ namespace Next_View
 			// 
 			this.chkSubdir.Checked = true;
 			this.chkSubdir.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.chkSubdir.Location = new System.Drawing.Point(789, 10);
+			this.chkSubdir.Location = new System.Drawing.Point(701, 8);
 			this.chkSubdir.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.chkSubdir.Name = "chkSubdir";
-			this.chkSubdir.Size = new System.Drawing.Size(291, 32);
+			this.chkSubdir.Size = new System.Drawing.Size(259, 26);
 			this.chkSubdir.TabIndex = 3;
 			this.chkSubdir.Text = "Search subdirectories";
 			this.chkSubdir.UseVisualStyleBackColor = true;
@@ -168,10 +169,10 @@ namespace Next_View
 			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
 			this.toolStripStatusLabel1,
 			this.statusLabel2});
-			this.statusStrip1.Location = new System.Drawing.Point(0, 554);
+			this.statusStrip1.Location = new System.Drawing.Point(0, 439);
 			this.statusStrip1.Name = "statusStrip1";
-			this.statusStrip1.Padding = new System.Windows.Forms.Padding(3, 0, 19, 0);
-			this.statusStrip1.Size = new System.Drawing.Size(1084, 22);
+			this.statusStrip1.Padding = new System.Windows.Forms.Padding(3, 0, 17, 0);
+			this.statusStrip1.Size = new System.Drawing.Size(964, 22);
 			this.statusStrip1.TabIndex = 8;
 			this.statusStrip1.Text = "statusSearch";
 			// 
@@ -188,47 +189,47 @@ namespace Next_View
 			// label2
 			// 
 			this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label2.Location = new System.Drawing.Point(16, 52);
+			this.label2.Location = new System.Drawing.Point(14, 42);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(133, 28);
+			this.label2.Size = new System.Drawing.Size(118, 22);
 			this.label2.TabIndex = 9;
 			this.label2.Text = "Search in:";
 			// 
 			// edSearchIn
 			// 
 			this.edSearchIn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.edSearchIn.Location = new System.Drawing.Point(156, 49);
+			this.edSearchIn.Location = new System.Drawing.Point(139, 39);
 			this.edSearchIn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.edSearchIn.Name = "edSearchIn";
-			this.edSearchIn.Size = new System.Drawing.Size(609, 21);
+			this.edSearchIn.Size = new System.Drawing.Size(542, 24);
 			this.edSearchIn.TabIndex = 4;
 			this.edSearchIn.Enter += new System.EventHandler(this.EdSearchInEnter);
 			// 
 			// cmdUp
 			// 
 			this.cmdUp.Image = ((System.Drawing.Image)(resources.GetObject("cmdUp.Image")));
-			this.cmdUp.Location = new System.Drawing.Point(787, 47);
+			this.cmdUp.Location = new System.Drawing.Point(700, 38);
 			this.cmdUp.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.cmdUp.Name = "cmdUp";
-			this.cmdUp.Size = new System.Drawing.Size(45, 28);
+			this.cmdUp.Size = new System.Drawing.Size(40, 22);
 			this.cmdUp.TabIndex = 5;
 			this.cmdUp.Click += new System.EventHandler(this.CmdUpClick);
 			// 
 			// label3
 			// 
-			this.label3.Location = new System.Drawing.Point(860, 57);
+			this.label3.Location = new System.Drawing.Point(764, 46);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(107, 22);
+			this.label3.Size = new System.Drawing.Size(95, 18);
 			this.label3.TabIndex = 10;
 			this.label3.Text = "One dir up";
 			// 
 			// chkStartWith
 			// 
 			this.chkStartWith.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.chkStartWith.Location = new System.Drawing.Point(575, 10);
+			this.chkStartWith.Location = new System.Drawing.Point(511, 8);
 			this.chkStartWith.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.chkStartWith.Name = "chkStartWith";
-			this.chkStartWith.Size = new System.Drawing.Size(191, 32);
+			this.chkStartWith.Size = new System.Drawing.Size(170, 26);
 			this.chkStartWith.TabIndex = 11;
 			this.chkStartWith.Text = "Start with";
 			this.chkStartWith.UseVisualStyleBackColor = true;
@@ -236,9 +237,9 @@ namespace Next_View
 			// SearchForm
 			// 
 			this.AcceptButton = this.cmdSearch;
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1084, 576);
+			this.ClientSize = new System.Drawing.Size(964, 461);
 			this.Controls.Add(this.chkStartWith);
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.cmdUp);
@@ -255,10 +256,17 @@ namespace Next_View
 			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+			this.MaximizeBox = false;
+			this.MinimizeBox = false;
+			this.MinimumSize = new System.Drawing.Size(800, 400);
 			this.Name = "SearchForm";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Search files";
+			this.Activated += new System.EventHandler(this.SearchFormActivated);
+			this.Deactivate += new System.EventHandler(this.SearchFormDeactivate);
 			this.Load += new System.EventHandler(this.SearchFormLoad);
 			this.Shown += new System.EventHandler(this.SearchFormShown);
+			this.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.SearchFormHelpRequested);
 			this.statusStrip1.ResumeLayout(false);
 			this.statusStrip1.PerformLayout();
 			this.ResumeLayout(false);

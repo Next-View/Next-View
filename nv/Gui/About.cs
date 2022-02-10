@@ -93,6 +93,13 @@ namespace Next_View
 			Text = T._("About");
 			cmdOk.Text = T._("&OK"); 
 		}
+		
+		void FrmAboutHelpRequested(object sender, HelpEventArgs hlpevent)
+		{
+		    var c = this.ActiveControl;
+            if(c!=null)
+                MessageBox.Show(c.Name);
+		}
 
 
 	}

@@ -85,5 +85,8 @@
     <Setting Name="UseMediaDefault" Type="System.Boolean" Scope="User" Roaming="false">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="HideImg" Type="System.Boolean" Scope="User" Roaming="false">
+      <Value Profile="(Default)">False</Value>
+    </Setting>    
   </Settings>
 </SettingsFile>

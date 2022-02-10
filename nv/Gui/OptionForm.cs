@@ -29,6 +29,8 @@ namespace Next_View
 	/// </summary>
 	public partial class frmOption : Form
 	{
+	    public event HandleKeyChange  KeyChanged;
+	    
 		public frmOption()
 		{
 			//
@@ -41,15 +43,42 @@ namespace Next_View
 			//
 		}
 
-		//--------------------------  methods  ------------------------------------//
 
-		public void OptionTranslate()
+		//--------------------------  events form  ------------------------------------//
+
+		void frmOptionLoad(object sender, EventArgs e)
 		{
-			cmdOk.Text = T._("&OK");
-			cmdCancel.Text = T._("&Cancel");
+			OptionTranslate();
+			this.edEditor.Text = Settings.Default.Editor;
+			this.chkImageEditor.Checked = Settings.Default.UseMediaDefault;
+			this.chkHide.Checked = Settings.Default.HideImg;
+		}		
+
+		void FrmOptionHelpRequested(object sender, HelpEventArgs hlpevent)
+		{
+		    var c = this.ActiveControl;
+            if(c!=null)
+                MessageBox.Show(c.Name);
 		}
 
-		//--------------------------  events  ------------------------------------//
+		void FrmOptionActivated(object sender, EventArgs e)
+		{
+	        SetKeyChange(82, true, false);    // R efresh	
+		}
+		
+		void FrmOptionDeactivate(object sender, EventArgs e)
+		{
+		    if (Settings.Default.HideImg)
+		    {
+    	        if (frmRename.ActiveForm == null)   //  app inactive
+    	        {
+    	            SetKeyChange(68, true, false);     // D ark
+    	        }
+	        }
+		}
+						
+		//--------------------------  buttons  ------------------------------------//
+				
 		void CmdCancelClick(object sender, EventArgs e)
 		{
 			this.Close();
@@ -57,6 +86,7 @@ namespace Next_View
 
 		void CmdOkClick(object sender, EventArgs e)
 		{
+		    Settings.Default.HideImg = this.chkHide.Checked;
 			if (File.Exists(edEditor.Text)){
 
 				Settings.Default.Editor = this.edEditor.Text;
@@ -71,21 +101,6 @@ namespace Next_View
 			}
 		}
 
-		void frmOptionLoad(object sender, EventArgs e)
-		{
-			OptionTranslate();
-			this.edEditor.Text = Settings.Default.Editor;
-			this.chkImageEditor.Checked = Settings.Default.UseMediaDefault;
-		}
-
-		void ChkUseProxyCheckedChanged(object sender, EventArgs e)
-		{
-
-		}
-
-
-
-
 		void CmdEditorClick(object sender, EventArgs e)
 		{
 			OpenFileDialog dialog = new OpenFileDialog();
@@ -99,17 +114,44 @@ namespace Next_View
 			}
 		}
 
-		void CmdExtAssignClick(object sender, EventArgs e)
+
+		void ChkHideCheckedChanged(object sender, EventArgs e)
 		{
-			foreach(ListViewItem li in listExtensions.Items)
+			Settings.Default.HideImg = this.chkHide.Checked;
+		}
+				
+		//--------------------------  methods  ------------------------------------//
+
+		public void OptionTranslate()
+		{
+		    this.Text = T._("Options");
+		    tabGeneral.Text = T._("General");
+			lblEditor.Text = T._("Image editor");
+			chkImageEditor.Text = T._("Use this program to edit images");
+			chkHide.Text = T._("Hide image on deactivate");
+			cmdOk.Text = T._("&OK");
+			cmdCancel.Text = T._("&Cancel");
+		}
+		
+		// ------------------------------   delegates   ----------------------------------------------------------
+
+		public void SetKeyChange(int kVal, bool alt, bool ctrl)
+		{
+			// called by: PicLoad, 'no img loaded'
+			// output: imageForm.HandleKey
+			OnKeyChanged(new SetKeyEventArgs(kVal, alt, ctrl));
+			Application.DoEvents();
+		}
+
+		protected virtual void OnKeyChanged(SetKeyEventArgs e)
+		{
+			if(this.KeyChanged != null)     // nothing subscribed to this event
 			{
-				string ext = li.Text;
-				int spacePos = ext.IndexOf(" ");
-				if (spacePos > -1){
-					ext = ext.Substring(0, spacePos);
-				}
-				Debug.WriteLine("ext: " + ext);
+				this.KeyChanged(this, e);
 			}
 		}
+
+
+				
 	}
 }

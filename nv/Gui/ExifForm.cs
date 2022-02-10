@@ -21,6 +21,8 @@ using System.Diagnostics;  //   debug
 using System.Drawing;  // rectangle
 //  using System.IO;    duplicate names with metadataExtractor 
 using System.Linq;	 //	OfType
+using System.Globalization;   // CultureInfo
+using System.Text.RegularExpressions;  // Regex
 using System.Windows.Forms;
 using MetadataExtractor;
 using MetadataExtractor.Formats.Exif;
@@ -40,8 +42,9 @@ namespace Next_View
 	public partial class ExifForm : Form
 	{
 		string _fPath = "";
-		string _gps2 = "";
-
+		string _long = "";
+		string _lat = "";
+		
 		public event HandleKeyChange  KeyChanged;
 
 
@@ -111,6 +114,7 @@ namespace Next_View
 		}
 
 		void ExifFormActivated(object sender, EventArgs e)
+		// check position for draw
 		{
 			int wX = this.Left;
 			int wY = this.Top;
@@ -131,13 +135,54 @@ namespace Next_View
 					this.Top = wY;
 				}
 			}
+			SetKeyChange(82, true, false);    // R efresh
 		}
 
-		void Button1Click(object sender, EventArgs e)
+		void ExifFormDeactivate(object sender, EventArgs e)
 		{
-			Clipboard.SetText(_gps2);
+		    if (Settings.Default.HideImg)
+		    {
+    	        if (ExifForm.ActiveForm == null)   //  app inactive
+    	        {
+    	            SetKeyChange(68, true, false);     // D ark
+    	        }
+	        }
 		}
+		
+		void ExifFormHelpRequested(object sender, HelpEventArgs hlpevent)
+		{
+		    var c = this.ActiveControl;
+            if(c!=null)
+                MessageBox.Show(c.Name);
+		}
+				
+		// ------------------------------   buttons  ----------------------------------------------------------
 
+		void PopEditClick(object sender, EventArgs e)
+		{
+			FileInfo.ShowFileProperties(_fPath);
+		}
+		
+		
+		void CmdGpsGoogleClick(object sender, EventArgs e)
+		{
+            string gUrl = String.Format("https://www.google.com/maps?q={0},{1}", _lat, _long);
+            Process.Start(gUrl);
+		}
+		
+		void CmdGpsOpenClick(object sender, EventArgs e)
+		{
+            string openUrl = String.Format("https://www.openstreetmap.org/#map=18/{0}/{1}", _lat, _long);
+            Process.Start(openUrl);
+		}
+		
+		void CmdGpsWegoClick(object sender, EventArgs e)
+		{
+            string weUrl = String.Format("https://wego.here.com/?map={0},{1},12,normal", _lat, _long);
+            Process.Start(weUrl);
+		}
+		
+				
 		// ------------------------------   functions  ----------------------------------------------------------
 
 		public bool CheckFile(ref int exifType, ref string orientation, string fPath)
@@ -145,12 +190,12 @@ namespace Next_View
 		{
 			_fPath = fPath;
 			listExif.Items.Clear();
-			_gps2 = "";
 			int exCount = 0;
 			exifType = 0;          // default, no exif
 			orientation = "";
 			int iWidthVal = 0;
 			int exifWidthVal = 0;
+			bool hasGPS = false;
 
 			try
 			{
@@ -415,21 +460,40 @@ namespace Next_View
 
 				// ------------------------------   gps    --------------
 				var gpsDirectory = directories.OfType<GpsDirectory>().FirstOrDefault();
+				hasGPS = false;
 				if (gpsDirectory != null){
 					AddListItem(" ", "+");
 					AddListItem("GPS:", "+");
 					string laRef = gpsDirectory.GetDescription(GpsDirectory.TagLatitudeRef);
 					string latitude = gpsDirectory.GetDescription(GpsDirectory.TagLatitude);
-					if (latitude != null) exifType = 3;
-					AddListItem(T._("Latitude"), laRef + latitude);
-					string loRef = gpsDirectory.GetDescription(GpsDirectory.TagLongitudeRef);
-					string longitude = gpsDirectory.GetDescription(GpsDirectory.TagLongitude);
-					AddListItem(T._("Longitude"), loRef + longitude);
-					string gps1 = latitude + laRef + "+" + longitude + loRef;
-					_gps2 = gps1.Replace(" ", "").Replace(",", ".");
-
+					if (latitude != null) {
+						exifType = 3;
+						AddListItem(T._("Latitude"), laRef + latitude);
+						string loRef = gpsDirectory.GetDescription(GpsDirectory.TagLongitudeRef);
+						string longitude = gpsDirectory.GetDescription(GpsDirectory.TagLongitude);
+						AddListItem(T._("Longitude"), loRef + longitude);
+						double latDec = ConvertDegreeAngleToDouble(latitude + laRef);
+						double longDec = ConvertDegreeAngleToDouble(longitude + loRef);
+						NumberFormatInfo nfi = new NumberFormatInfo();
+	                    nfi.NumberDecimalSeparator = ".";
+						_lat = String.Format(nfi, "{0:0.0#####}", latDec);
+						_long = String.Format(nfi, "{0:0.0#####}", longDec);
+						AddListItem(T._("Coord"), _lat + "," + _long);
+						hasGPS = true;
+					}
 				}
-
+                if (hasGPS)
+                {
+					cmdGpsGoogle.Visible = true;
+					cmdGpsOpen.Visible = true;
+					cmdGpsWego.Visible = true;                    
+                }
+                else
+                {
+					cmdGpsGoogle.Visible = false;
+					cmdGpsOpen.Visible = false;
+					cmdGpsWego.Visible = false;                    
+                }               
 				AddFileData(fPath);
 
 				return true;
@@ -483,6 +547,24 @@ namespace Next_View
 		{
 			Text = T._("Exif data");
 		}
+
+        public double ConvertDegreeAngleToDouble(string point)
+        {
+            // 51°29'26.03"N+7°13'34.84"E
+            var sep1 = new string[]{"°", "'", "\""};
+            var multiplier = (point.Contains("S") || point.Contains("W")) ? -1 : 1; //handle south and west
+            //point = Regex.Replace(point, "[^0-9.]", ""); //remove the characters
+            var pointArray = point.Split(sep1, StringSplitOptions.None);
+            //Decimal degrees = 
+            //   whole number of degrees, 
+            //   plus minutes divided by 60, 
+            //   plus seconds divided by 3600
+            var degrees = Math.Abs(Double.Parse(pointArray[0]));  // some images have a wrong sign additionally to East "E"
+            var minutes = Double.Parse(pointArray[1]) / 60;
+            var seconds = Double.Parse(pointArray[2]) / 3600;
+        
+            return (degrees + minutes + seconds) * multiplier;
+        }
 		
 		// ------------------------------   delegates   ----------------------------------------------------------
 
@@ -502,10 +584,6 @@ namespace Next_View
 			}
 		}
 
-		void PopEditClick(object sender, EventArgs e)
-		{
-			FileInfo.ShowFileProperties(_fPath);
-		}
 
 
 	}
