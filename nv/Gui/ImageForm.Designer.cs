@@ -50,6 +50,7 @@ namespace Next_View
 			this.popImage = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.popOpen = new System.Windows.Forms.ToolStripMenuItem();
 			this.popRename = new System.Windows.Forms.ToolStripMenuItem();
+			this.popCopyPath = new System.Windows.Forms.ToolStripMenuItem();
 			this.popDelete = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.popSearch = new System.Windows.Forms.ToolStripMenuItem();
@@ -77,6 +78,7 @@ namespace Next_View
 			this.popImage.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
 			this.popOpen,
 			this.popRename,
+			this.popCopyPath,
 			this.popDelete,
 			this.toolStripSeparator1,
 			this.popSearch,
@@ -89,7 +91,7 @@ namespace Next_View
 			this.toolStripSeparator3,
 			this.popClose});
 			this.popImage.Name = "popPath";
-			this.popImage.Size = new System.Drawing.Size(191, 262);
+			this.popImage.Size = new System.Drawing.Size(191, 286);
 			// 
 			// popOpen
 			// 
@@ -107,6 +109,14 @@ namespace Next_View
 			this.popRename.Size = new System.Drawing.Size(190, 24);
 			this.popRename.Text = "Rename...";
 			this.popRename.Click += new System.EventHandler(this.PopRenameClick);
+			// 
+			// popCopyPath
+			// 
+			this.popCopyPath.Name = "popCopyPath";
+			this.popCopyPath.ShortcutKeyDisplayString = "F11";
+			this.popCopyPath.Size = new System.Drawing.Size(190, 24);
+			this.popCopyPath.Text = "Copy path";
+			this.popCopyPath.Click += new System.EventHandler(this.PopCopyPathClick);
 			// 
 			// popDelete
 			// 
@@ -202,7 +212,7 @@ namespace Next_View
 			0,
 			0});
 			this.Scrollbar1.Location = new System.Drawing.Point(0, 0);
-			this.Scrollbar1.Margin = new System.Windows.Forms.Padding(2);
+			this.Scrollbar1.Margin = new System.Windows.Forms.Padding(0);
 			this.Scrollbar1.Maximum = new decimal(new int[] {
 			1000,
 			0,
@@ -213,10 +223,10 @@ namespace Next_View
 			0,
 			0,
 			0});
-			this.Scrollbar1.MinimumSize = new System.Drawing.Size(23, 63);
+			this.Scrollbar1.MinimumSize = new System.Drawing.Size(20, 63);
 			this.Scrollbar1.Name = "Scrollbar1";
 			this.Scrollbar1.RepeatRate = 200;
-			this.Scrollbar1.Size = new System.Drawing.Size(27, 663);
+			this.Scrollbar1.Size = new System.Drawing.Size(24, 663);
 			this.Scrollbar1.SmallChange = new decimal(new int[] {
 			1,
 			0,
@@ -240,13 +250,14 @@ namespace Next_View
 			| System.Windows.Forms.AnchorStyles.Left) 
 			| System.Windows.Forms.AnchorStyles.Right)));
 			this.picBox.BackColor = System.Drawing.SystemColors.Control;
-			this.picBox.Location = new System.Drawing.Point(30, 0);
-			this.picBox.Margin = new System.Windows.Forms.Padding(2);
+			this.picBox.Location = new System.Drawing.Point(0, 0);
+			this.picBox.Margin = new System.Windows.Forms.Padding(0);
 			this.picBox.Name = "picBox";
-			this.picBox.Size = new System.Drawing.Size(1015, 663);
+			this.picBox.Size = new System.Drawing.Size(1046, 663);
 			this.picBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
 			this.picBox.TabIndex = 45;
 			this.picBox.TabStop = false;
+			this.picBox.Paint += new System.Windows.Forms.PaintEventHandler(this.PicBoxPaint);
 			// 
 			// Icon1
 			// 
@@ -278,7 +289,7 @@ namespace Next_View
 			this.AllowEndUserDocking = false;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.BackColor = System.Drawing.SystemColors.ControlDark;
+			this.BackColor = System.Drawing.SystemColors.Control;
 			this.ClientSize = new System.Drawing.Size(1046, 663);
 			this.ContextMenuStrip = this.popImage;
 			this.Controls.Add(this.Scrollbar1);
@@ -329,5 +340,6 @@ namespace Next_View
 		private System.ComponentModel.BackgroundWorker backgroundWorker1;
 		private System.ComponentModel.BackgroundWorker bw2;
 		private System.Windows.Forms.NotifyIcon barIcon;
+		private System.Windows.Forms.ToolStripMenuItem popCopyPath;
 	}
 }
