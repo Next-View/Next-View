@@ -28,6 +28,7 @@ using System.Threading;
 using System.Windows.Forms;
 using Next_View.Properties;
 using WeifenLuo.WinFormsUI.Docking;
+//using WeifenLuo.WinFormsUI.Docking.ThemeVS2015; nicht notwendig
 using XDMessaging;   // XDBroadcast
 
 namespace Next_View
@@ -42,7 +43,8 @@ namespace Next_View
 		public ExifDash  m_ExifDash;
 		static EventWaitHandle s_event ;
 		private XDListener listener;
-
+        Stopwatch _sw1 = new Stopwatch();
+        
 		string _currentPath = "";
 		string _statusText = "";
 		private int _step = 0;
@@ -53,8 +55,9 @@ namespace Next_View
 			//
 			// The InitializeComponent() call is required for Windows Forms designer support.
 			//
-			InitializeComponent();
-
+			InitializeComponent(); 
+			// ist zeile im designer, im gui editor wird kein theme angezeigt 
+			//  this.dockPanel1.Theme = new WeifenLuo.WinFormsUI.Docking.VS2015LightTheme();
 			_deserializeDockContent = new DeserializeDockContent(GetContentFromPersistString);
 		}
 
@@ -82,11 +85,11 @@ namespace Next_View
 
 		void FrmMainLoad(object sender, EventArgs e)
 		{
-			Debug.WriteLine("Main start: ");
+			//Debug.WriteLine("Main start: ");
+			_sw1.Restart();
 			listener = new XDListener();
 			listener.MessageReceived += new XDListener.XDMessageHandler(listener_MessageReceived);
-			listener.RegisterChannel("NVMessage");
-
+			listener.RegisterChannel("NVMessage");   
 			bool kShift = (Control.ModifierKeys == Keys.Shift);
 
 			bool created;
@@ -215,6 +218,10 @@ namespace Next_View
 				//Debug.WriteLine("Default image: " + _currentPath);
 			}
 			m_Image.ScollbarVis(true);
+			
+			_sw1.Stop();
+			TimeSpan t = _sw1.Elapsed;
+			Debug.WriteLine(string.Format("Start seconds: {0:D2}:{1:D3} ", t.Seconds, t.Milliseconds));
 		}
 
 
@@ -237,6 +244,32 @@ namespace Next_View
 
 		}
 
+		void FrmMainActivated(object sender, EventArgs e)
+		{
+			//Debug.WriteLine("activated main: ");
+			if (m_Image != null)         // at program start
+			    m_Image.RefreshPic();
+		}
+
+		void FrmMainLeave(object sender, EventArgs e)
+		{
+	        //Debug.WriteLine("leave main: ");
+	        
+		}
+		
+		void FrmMainDeactivate(object sender, EventArgs e)
+		{
+	        if (Settings.Default.HideImg)
+	        {
+    	        if (frmMain.ActiveForm == null)   //  app inactive
+    	        {
+    	            if (m_Image != null)          // at program end
+    	                m_Image.DarkPic0();
+    	        }
+	        }           
+
+		}
+		
 		//--------------------------  drop  ---------------------------
 
 		void FrmMainDragDrop(object sender, DragEventArgs e)
@@ -303,6 +336,11 @@ namespace Next_View
 			m_Image.RenamePic();
 		}
 
+		void MnuCopyPathClick(object sender, EventArgs e)
+		{
+	        m_Image.CopyDirString();
+		}
+		
 		void MnuDeleteClick(object sender, EventArgs e)
 		{
 			m_Image.DelPic();
@@ -324,6 +362,7 @@ namespace Next_View
 		void MnuOptionsClick(object sender, EventArgs e)
 		{
 			frmOption frm = new frmOption();
+			frm.KeyChanged += new HandleKeyChange(HandleKey);   // subscribed to this event
 			frm.ShowDialog();
 		}
 
@@ -481,8 +520,9 @@ namespace Next_View
 
 
 		void BnGifPriorClick(object sender, EventArgs e)
-		{
+		{	    
 			m_Image.PriorGif();
+
 		}
 
 		void BnGifAnimateClick(object sender, EventArgs e)
@@ -493,6 +533,7 @@ namespace Next_View
 		void BnGifNextClick(object sender, EventArgs e)
 		{
 			m_Image.NextGif();
+			
 		}
 
 		void BnOpenClick(object sender, EventArgs e)
@@ -600,6 +641,24 @@ namespace Next_View
 		//--------------------------  functions  ---------------------------//
 
 
+		public bool KDownMain(int kValue, bool ctrl, bool alt)
+		// for OptionForm hide handling only
+		{
+			switch(kValue)
+			{
+				case 68:    // 'd'   dark
+					m_Image.DarkPic0();
+					break;
+				case 82:    //  'r
+					if (alt){
+						m_Image.RefreshPic();
+					}
+					break;					
+			}
+			return true;
+			//  ctrl 17
+		}
+				
 		void ExitApp()
 		{
 			this.Close();
@@ -678,6 +737,7 @@ namespace Next_View
 			mnuOpenImage.Text = T._("Open...");
 			recentItem1.Text = T._("Recent images") + "               ";
 			mnuRename.Text = T._("Rename...");
+			mnuCopyPath.Text = T._("Copy path");
 			mnuDelete.Text = T._("Delete");
 			mnuSaveOri.Text = T._("Save orientation");
 			mnuExit.Text = T._("Exit");
@@ -686,6 +746,7 @@ namespace Next_View
 			mnuOptions.Text = T._("Options...");
 			mnuStartEditor.Text = T._("Start editor...");
 			mnuSearch.Text = T._("Search...");
+			mnuScrollBar.Text = T._("Show scollbar");
 			mnuLanguage.Text = T._("Language");
 			langEnglish.Text = T._("English");
 			langGerman.Text = T._("German");
@@ -782,14 +843,14 @@ namespace Next_View
 		private void HandleWindow(object sender, SetTitleEventArgs e)
 		// called by: SetWindowText: picLoad, Rename, Remove
 		{
-		  int count = 0;
-		  if (e.NewValue != ""){
-			_currentPath = e.NewValue;
-			string fname = Path.GetFileNameWithoutExtension(_currentPath);
-			count = fname.Count(f => f == '+');
-		  }
-			this.Text = e.NewValue + "  -  Next-View";
-			bnPlus.Image = imageList2.Images[count];
+	        int count = 0;
+	        if (e.NewValue != ""){
+    			_currentPath = e.NewValue;
+    			string fname = Path.GetFileNameWithoutExtension(_currentPath);
+    			count = fname.Count(f => f == '+');
+    	    }
+    		this.Text = e.NewValue + "  -  Next-View";
+    		bnPlus.Image = imageList2.Images[count];
 		}
 
 
@@ -814,6 +875,12 @@ namespace Next_View
 			//Debug.WriteLine("Command: " +  comm);
 			switch(comm)
 			{
+				case 'f':  //  full hide
+					this.Hide();
+					break;			    
+				case 'n':  //  normal show
+					this.Show();
+					break;	
 				case 'e':  //  exifdash
 					m_ExifDash.SetPath2(_currentPath);
 					m_ExifDash.Show(dockPanel1, DockState.Document);
@@ -824,7 +891,7 @@ namespace Next_View
 				case 'h':  //  show no gif
 					tbNoGif();
 					break;
-				case 'i':  //  exif dash img
+				case 'i':  //  exif dash img, transfer img list
 					List<ImgFile> exImgList;
 					m_ExifDash.DashImgList(out exImgList);
 					//Debug.WriteLine("img on main: " + exImgList.Count.ToString());
@@ -842,7 +909,7 @@ namespace Next_View
 				case 'r':  //  recent  for drop and open
 					recentItem1.AddRecentItem(fName);
 					break;
-				case 'w':  //  exit
+				case 'w':  //  exit   ctrl+w
 					ExitApp();
 					break;
 				default:     //  unknown
@@ -851,23 +918,20 @@ namespace Next_View
 
 			}
 		}
-		void FrmMainActivated(object sender, EventArgs e)
-		{
-			//Debug.WriteLine("activated main: ");
-		}
 
-		void FrmMainKeyDown(object sender, KeyEventArgs e)
+		private void HandleKey(object sender, SetKeyEventArgs e)
+		// HandleKeyChange for options form
 		{
-			//Debug.WriteLine("main key: " + e.KeyValue.ToString());
-		}
-		void MenuMainItemClicked(object sender, ToolStripItemClickedEventArgs e)
-		{
-	
+			int kVal = e.kValue;
+			bool alt = e.alt;
+			bool ctrl = e.ctrl;
+			KDownMain(kVal, ctrl, alt);
 		}
 
 
 	}  // end main
 
+		
 	//--------------------------------------------------------------//
 
 	class NativeMethods {
@@ -888,4 +952,5 @@ namespace Next_View
 	public delegate void HandleWindowSize(object sender, SetSizeEventArgs e);
 
 	public delegate void HandleCommandChange(object sender, SetCommandEventArgs e);
+	
 }
