@@ -209,7 +209,7 @@ namespace Next_View
 				if (Directory.Exists(userImagePath)) {
 					m_Image.PicScan(userImagePath, true, 0);
 				}
-				firstImage = Directory.GetCurrentDirectory() + @"\Next-View-0.7.jpg";
+				firstImage = Directory.GetCurrentDirectory() + @"\Next-View-0.7.png";
 				recentItem1.AddRecentItem(firstImage);
 				if (doShow) {
 					m_Image.PicLoadPos(firstImage, true);
@@ -671,7 +671,7 @@ namespace Next_View
 		{
 			Application.DoEvents();
 			string commandLine = e.DataGram.Message;
-			// Debug.WriteLine(DateTime.Now + " " + commandLine);
+			//Debug.WriteLine(DateTime.Now + " " + commandLine);
 			string[] fileList = commandLine.Split('\t');
 			if (fileList.Length == 1){
 				string oneFile = fileList[0];
