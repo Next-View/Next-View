@@ -9,6 +9,7 @@
 using System;
 using System.Drawing;  // Image
 using System.Drawing.Imaging;  // frame
+using System.IO;   // FileStream
 
 namespace Next_View
 {
@@ -25,7 +26,12 @@ namespace Next_View
 
 		public GifImage(string path)
 		{
-			gifImage = Image.FromFile(path);
+			FileStream  fs = new System.IO.FileStream(path, System.IO.FileMode.Open, System.IO.FileAccess.Read);
+			MemoryStream ms = new System.IO.MemoryStream();
+			fs.CopyTo(ms);
+			fs.Close();
+			ms.Position = 0;               
+			gifImage = Image.FromStream(ms);
 			dimension = new FrameDimension(gifImage.FrameDimensionsList[0]);
 			frameCount = gifImage.GetFrameCount(dimension);
 		}

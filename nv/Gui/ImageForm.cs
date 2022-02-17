@@ -52,7 +52,7 @@ namespace Next_View
         int _exifType = 0;
         string _lastSearchStr = "";
         Image _myImg;
-        GifImage gifImage = null;
+        GifImage _gifImage = null;     // to load frames
         bool _loadNextPic = true;
         bool _dirChanged  = true;
         bool _isGif  = false;
@@ -651,7 +651,7 @@ namespace Next_View
                 int fCount;
                 int fIndex;
                 picBox.Enabled = false;
-                picBox.Image = gifImage.GetNextFrame(out fCount, out fIndex);
+                picBox.Image = _gifImage.GetNextFrame(out fCount, out fIndex);
                 SetStatusText(-3, String.Format(" Gif: ({0}/{1})", fIndex, fCount));
             }
 
@@ -672,7 +672,7 @@ namespace Next_View
                 int fCount;
                 int fIndex;
                 picBox.Enabled = false;
-                picBox.Image = gifImage.GetPriorFrame(out fCount, out fIndex);
+                picBox.Image = _gifImage.GetPriorFrame(out fCount, out fIndex);
                 SetStatusText(-3, String.Format(" Gif: ({0}/{1})", fIndex, fCount));
           }
         }
@@ -768,16 +768,24 @@ namespace Next_View
                 //GC.Collect();
 
                 string ext = Path.GetExtension(pPath).ToLower();
+                picBox.Enabled = true;
                 if (ext == ".gif"){
-                    SetCommand('g', "");
-                    picBox.Image = Image.FromFile(pPath);    // workaround, only direct load makes gif animation, but file can't be renamed
-                    gifImage = new GifImage(pPath);
+                    SetCommand('g', "");     // show gif menu
+                    
+                    FileStream  fs = new System.IO.FileStream(pPath, System.IO.FileMode.Open, System.IO.FileAccess.Read);
+		            MemoryStream ms = new System.IO.MemoryStream();
+		            fs.CopyTo(ms);
+		            fs.Close();
+		            ms.Position = 0;                             
+		            picBox.Image = Image.FromStream(ms);          // gif need memory stream
+			
+ 
+                    _gifImage = new GifImage(pPath);
                     _isGif = true;
                 }
                 else {
-                    SetCommand('h', "");
+                    SetCommand('h', "");       // hide gif menu
                     picBox.Image = _myImg;
-                    picBox.Enabled = true;
                     _isGif = false;
                 }
 
@@ -1117,7 +1125,7 @@ namespace Next_View
                 _il.RenameListLog(_currentPath, newPath);
                 _currentPath = newPath;
                 SetWindowText(_currentPath);
-                //PicLoadPos(_currentPath, true);
+                PicLoadPos(_currentPath, true);
             }
         }
 
@@ -1294,16 +1302,7 @@ namespace Next_View
 
         bool FileRename2(string nameFrom, string nameTo)
         {
-            try {
-                string ext = Path.GetExtension(nameFrom).ToLower();
-                if (ext == ".gif"){
-                    File.Copy(nameFrom, nameTo, true);
-                    picBox.Image = null;
-                    Thread.Sleep(1000); 
-                    picBox.Image = Image.FromFile(nameTo);
-                    Thread.Sleep(1000);     
-                    DelFile.MoveToRecycleBin(nameFrom);          //  still blocked file
-                }    
+            try {  
                 File.Move(nameFrom, nameTo);
                 return true;
             }
